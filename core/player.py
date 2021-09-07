@@ -32,25 +32,30 @@ manaBar = {
     }
 }
 
-def getHealth():
-    global healthBar
-    healthBarPos = getHealthBarPos()
-    if healthBarPos == None:
+def getBarPercentValue(bar, barPos):
+    if barPos == None:
         # TODO: throw a custom exception
         return None
+    # TODO: export current screenshot from observable function to gain performance
     im = pyautogui.screenshot()
-    for percentValue in healthBar['percentValues'].keys():
-        # pixel to check if health bar contains current value
-        currentValueLeft = healthBarPos['left'] + healthBar['percentValues'][percentValue]['distance']
-        # middle of health bar
-        middleOfHealthBar = healthBarPos['top'] + int(healthBarPos['height'] / 2)
-        pixelCoordinate = (currentValueLeft, middleOfHealthBar)
+    for percentValue in bar['percentValues'].keys():
+        # pixel to check if bar contains current value
+        currentValueLeft = barPos['left'] + bar['percentValues'][percentValue]['distance']
+        # middle of bar
+        middleOfBar = barPos['top'] + int(barPos['height'] / 2)
+        pixelCoordinate = (currentValueLeft, middleOfBar)
         pixelColor = im.getpixel(pixelCoordinate)
-        hasCurrentPercentValue = pixelColor == healthBar['percentValues'][percentValue]['pixelColor']
+        hasCurrentPercentValue = pixelColor == bar['percentValues'][percentValue]['pixelColor']
         if hasCurrentPercentValue:
             return percentValue
-    # its really hard to determinate when player has 0 or 1 of health
+    # its really hard to determinate when player has 0 or 1 of bar percent
     return 0
+
+def getHealthPercent():
+    global healthBar
+    healthBarPos = getHealthBarPos()
+    healthPercent = getBarPercentValue(healthBar, healthBarPos)
+    return healthPercent
 
 def getHealthBarPos():
     global healthBar
@@ -86,22 +91,8 @@ def getManaSymbolPos():
     pos = pyautogui.locateOnScreen('player/mana.png', confidence=0.85)
     return pos
 
-def getMana():
+def getManaPercent():
     global manaBar
     manaBarPos = getManaBarPos()
-    if manaBarPos == None:
-        # TODO: throw a custom exception
-        return None
-    im = pyautogui.screenshot()
-    for percentValue in manaBar['percentValues'].keys():
-        # pixel to check if health bar contains current value
-        currentValueLeft = manaBarPos['left'] + manaBar['percentValues'][percentValue]['distance']
-        # middle of mana bar
-        middleOfManaBar = manaBarPos['top'] + int(manaBarPos['height'] / 2)
-        pixelCoordinate = (currentValueLeft, middleOfManaBar)
-        pixelColor = im.getpixel(pixelCoordinate)
-        hasCurrentPercentValue = pixelColor == manaBar['percentValues'][percentValue]['pixelColor']
-        if hasCurrentPercentValue:
-            return percentValue
-    # its really hard to determinate when player has 0 or 1 of mana
-    return 0
+    manaPercent = getBarPercentValue(manaBar, manaBarPos)
+    return manaPercent
