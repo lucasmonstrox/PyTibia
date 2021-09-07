@@ -1,6 +1,10 @@
 import pyautogui
 
 healthBar = {
+    "dimensions": {
+        "width": 89,
+        "height": 11
+    },
     "percentValues": {
         "100": { "distance": 89, "pixelColor": (100, 46, 49) },
         "80": { "distance": 71, "pixelColor": (219, 79, 79) },
@@ -13,13 +17,17 @@ healthBar = {
 }
 
 manaBar = {
+    "dimensions": {
+        "width": 89,
+        "height": 11
+    },
     "percentValues": {
-        "100": { "distance": 90, "pixelColor": (45, 45, 105) },
+        "100": { "distance": 89, "pixelColor": (45, 45, 105) },
         "80": { "distance": 71, "pixelColor": (83, 80, 218) },
         "60": { "distance": 53, "pixelColor": (83, 80, 218) },
         "40": { "distance": 36, "pixelColor": (83, 80, 218) },
         "20": { "distance": 18, "pixelColor": (83, 80, 218) },
-        "10": { "distance": 9, "pixelColor": (83, 80, 218) },
+        "10": { "distance": 10, "pixelColor": (83, 80, 218) },
         "5": { "distance": 4, "pixelColor": (83, 80, 218) }
     }
 }
@@ -45,12 +53,15 @@ def getHealth():
     return 0
 
 def getHealthBarPos():
+    global healthBar
     symbolPos = getHearthSymbolPos()
+    distanceBetweenSymbolAndBar = 16
+    extraYBetweenSymbolAndBar = 1
     pos = {
-        "left": symbolPos.left + 16,
-        "top": symbolPos.top - 1,
-        "width": 89,
-        "height": 11
+        "left": symbolPos.left + distanceBetweenSymbolAndBar,
+        "top": symbolPos.top - extraYBetweenSymbolAndBar,
+        "width": healthBar['dimensions']['width'],
+        "height": healthBar['dimensions']['height']
     }
     return pos
 
@@ -59,12 +70,15 @@ def getHearthSymbolPos():
     return pos
 
 def getManaBarPos():
+    global manaBar
     symbolPos = getManaSymbolPos()
+    distanceBetweenSymbolAndBar = 17
+    extraYBetweenSymbolAndBar = 1
     pos = {
-        "left": symbolPos.left + 16,
-        "top": symbolPos.top - 1,
-        "width": 89,
-        "height": 11
+        "left": symbolPos.left + distanceBetweenSymbolAndBar,
+        "top": symbolPos.top - extraYBetweenSymbolAndBar,
+        "width": manaBar['dimensions']['width'],
+        "height": manaBar['dimensions']['height']
     }
     return pos
 
