@@ -4,5 +4,5 @@ from core import player
 os.chdir('images')
 
 while True:
-    print(player.getHealth())
-    print(player.getMana())
+    print('health', player.getHealthPercent())
+    print('mana', player.getManaPercent())
