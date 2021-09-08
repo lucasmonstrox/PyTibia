@@ -121,3 +121,8 @@ def isHoldingAttack():
     pos = pyautogui.locateOnScreen('player/holding-attack.png', confidence=0.9)
     isHoldingAttack = pos != None
     return isHoldingAttack
+
+def isPz():
+    pos = pyautogui.locateOnScreen('player/pz.png', confidence=0.9)
+    isPz = pos != None
+    return isPz

@@ -11,3 +11,4 @@ while True:
     print('defensive attack', player.hasDefensiveAttack())
     print('is holding attack', player.isHoldingAttack())
     print('is following attack', player.isFollowingAttack())
+    print('is in pz zone', player.isPz())
