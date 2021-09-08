@@ -97,6 +97,11 @@ def getManaPercent():
     manaPercent = getBarPercentValue(manaBar, manaBarPos)
     return manaPercent
 
+def hasBalancedAttack():
+    pos = pyautogui.locateOnScreen('player/balanced-attack.png', confidence=0.9)
+    hasBalancedAttack = pos != None
+    return hasBalancedAttack
+
 def hasFullAttack():
     pos = pyautogui.locateOnScreen('player/full-attack.png', confidence=0.9)
     hasFullAttack = pos != None

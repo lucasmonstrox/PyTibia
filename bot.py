@@ -7,3 +7,4 @@ while True:
     print('health', player.getHealthPercent())
     print('mana', player.getManaPercent())
     print('full attack', player.hasFullAttack())
+    print('balanced attack', player.hasBalancedAttack())
