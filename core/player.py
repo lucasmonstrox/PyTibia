@@ -126,3 +126,8 @@ def isInPz():
     pos = pyautogui.locateOnScreen('player/pz.png', confidence=0.9)
     isPz = pos != None
     return isPz
+
+def isPoisoned():
+    pos = pyautogui.locateOnScreen('player/poisoned.png', confidence=0.9)
+    isPoisoned = pos != None
+    return isPoisoned
