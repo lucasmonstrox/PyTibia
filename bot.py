@@ -6,3 +6,4 @@ os.chdir('images')
 while True:
     print('health', player.getHealthPercent())
     print('mana', player.getManaPercent())
+    print('full attack', player.hasFullAttack())
