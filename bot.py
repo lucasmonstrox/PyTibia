@@ -13,5 +13,6 @@ while True:
     print('is following attack', player.isFollowingAttack())
     print('is in pz zone', player.isInPz())
     print('is burning', player.isBurning())
+    print('is drunk', player.isDrunk())
     print('is poisoned', player.isPoisoned())
     print('is slowed', player.isSlowed())

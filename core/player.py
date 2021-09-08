@@ -117,6 +117,11 @@ def isBurning():
     isBurning = pos != None
     return isBurning
 
+def isDrunk():
+    pos = pyautogui.locateOnScreen('player/drunk.png', confidence=0.9)
+    isDrunk = pos != None
+    return isDrunk
+
 def isFollowingAttack():
     pos = pyautogui.locateOnScreen('player/following-attack.png', confidence=0.9)
     isFollowingAttack = pos != None
