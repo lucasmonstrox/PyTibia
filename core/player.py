@@ -122,7 +122,7 @@ def isHoldingAttack():
     isHoldingAttack = pos != None
     return isHoldingAttack
 
-def isPz():
+def isInPz():
     pos = pyautogui.locateOnScreen('player/pz.png', confidence=0.9)
     isPz = pos != None
     return isPz
