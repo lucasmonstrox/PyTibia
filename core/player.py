@@ -136,3 +136,8 @@ def isPoisoned():
     pos = pyautogui.locateOnScreen('player/poisoned.png', confidence=0.9)
     isPoisoned = pos != None
     return isPoisoned
+
+def isSlowed():
+    pos = pyautogui.locateOnScreen('player/slowed.png', confidence=0.9)
+    isSlowed = pos != None
+    return isSlowed
