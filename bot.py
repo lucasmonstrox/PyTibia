@@ -8,3 +8,4 @@ while True:
     print('mana', player.getManaPercent())
     print('full attack', player.hasFullAttack())
     print('balanced attack', player.hasBalancedAttack())
+    print('defensive attack', player.hasDefensiveAttack())

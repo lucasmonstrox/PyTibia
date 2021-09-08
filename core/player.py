@@ -102,6 +102,11 @@ def hasBalancedAttack():
     hasBalancedAttack = pos != None
     return hasBalancedAttack
 
+def hasDefensiveAttack():
+    pos = pyautogui.locateOnScreen('player/defensive-attack.png', confidence=0.9)
+    hasDefensiveAttack = pos != None
+    return hasDefensiveAttack
+
 def hasFullAttack():
     pos = pyautogui.locateOnScreen('player/full-attack.png', confidence=0.9)
     hasFullAttack = pos != None
