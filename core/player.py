@@ -142,6 +142,11 @@ def hasShieldEquipped():
     hasShieldEquipped = pos == None
     return hasShieldEquipped
 
+def hasWeaponEquipped():
+    pos = pyautogui.locateOnScreen('player/empty-weapon.png', confidence=0.9)
+    hasWeaponEquipped = pos == None
+    return hasWeaponEquipped
+
 def isBurning():
     pos = pyautogui.locateOnScreen('player/burning.png', confidence=0.9)
     isBurning = pos != None
