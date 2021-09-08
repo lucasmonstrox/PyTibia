@@ -97,6 +97,11 @@ def getManaPercent():
     manaPercent = getBarPercentValue(manaBar, manaBarPos)
     return manaPercent
 
+def hasArmorEquipped():
+    pos = pyautogui.locateOnScreen('player/empty-armor.png', confidence=0.9)
+    hasArmorEquipped = pos == None
+    return hasArmorEquipped
+
 def hasBalancedAttack():
     pos = pyautogui.locateOnScreen('player/balanced-attack.png', confidence=0.9)
     hasBalancedAttack = pos != None
