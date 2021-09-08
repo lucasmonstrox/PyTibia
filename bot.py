@@ -21,4 +21,5 @@ while True:
     print('has helmet equipped', player.hasHelmetEquipped())
     print('has legs equipped', player.hasLegsEquipped())
     print('has necklace equipped', player.hasNecklaceEquipped())
+    print('has shield equipped', player.hasShieldEquipped())
     

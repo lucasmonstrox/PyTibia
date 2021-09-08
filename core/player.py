@@ -137,6 +137,11 @@ def hasNecklaceEquipped():
     hasNecklaceEquipped = pos == None
     return hasNecklaceEquipped
 
+def hasShieldEquipped():
+    pos = pyautogui.locateOnScreen('player/empty-shield.png', confidence=0.9)
+    hasShieldEquipped = pos == None
+    return hasShieldEquipped
+
 def isBurning():
     pos = pyautogui.locateOnScreen('player/burning.png', confidence=0.9)
     isBurning = pos != None
