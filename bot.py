@@ -17,3 +17,4 @@ while True:
     print('is poisoned', player.isPoisoned())
     print('is slowed', player.isSlowed())
     print('has necklace equipped', player.hasNecklaceEquipped())
+    print('has helmet equipped', player.hasHelmetEquipped())
