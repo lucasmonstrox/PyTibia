@@ -112,6 +112,11 @@ def hasFullAttack():
     hasFullAttack = pos != None
     return hasFullAttack
 
+def hasNecklaceEquipped():
+    pos = pyautogui.locateOnScreen('player/empty-necklace.png', confidence=0.9)
+    hasNecklaceEquipped = pos == None
+    return hasNecklaceEquipped
+
 def isBurning():
     pos = pyautogui.locateOnScreen('player/burning.png', confidence=0.9)
     isBurning = pos != None

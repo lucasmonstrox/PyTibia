@@ -16,3 +16,4 @@ while True:
     print('is drunk', player.isDrunk())
     print('is poisoned', player.isPoisoned())
     print('is slowed', player.isSlowed())
+    print('has necklace equipped', player.hasNecklaceEquipped())
