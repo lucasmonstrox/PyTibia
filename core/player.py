@@ -187,15 +187,15 @@ def isInPz():
     isPz = pos != None
     return isPz
 
-def isReadyForPvp():
-    pos = pyautogui.locateOnScreen('player/ready-for-pvp.png', confidence=0.9)
-    isReadyForPvp = pos != None
-    return isReadyForPvp
-
 def isPoisoned():
     pos = pyautogui.locateOnScreen('player/poisoned.png', confidence=0.9)
     isPoisoned = pos != None
     return isPoisoned
+
+def isReadyForPvp():
+    pos = pyautogui.locateOnScreen('player/ready-for-pvp.png', confidence=0.9)
+    isReadyForPvp = pos != None
+    return isReadyForPvp
 
 def isSlowed():
     pos = pyautogui.locateOnScreen('player/slowed.png', confidence=0.9)
