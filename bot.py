@@ -25,4 +25,5 @@ while True:
     print('has necklace equipped', player.hasNecklaceEquipped())
     print('has ring equipped', player.hasRingEquipped())
     print('has weapon equipped', player.hasWeaponEquipped())
+    print('is ready for pvp', player.isReadyForPvp())
     
