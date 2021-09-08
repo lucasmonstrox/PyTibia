@@ -107,6 +107,11 @@ def hasBalancedAttack():
     hasBalancedAttack = pos != None
     return hasBalancedAttack
 
+def hasBootsEquipped():
+    pos = pyautogui.locateOnScreen('player/empty-boots.png', confidence=0.9)
+    hasBootsEquipped = pos == None
+    return hasBootsEquipped
+
 def hasDefensiveAttack():
     pos = pyautogui.locateOnScreen('player/defensive-attack.png', confidence=0.9)
     hasDefensiveAttack = pos != None
