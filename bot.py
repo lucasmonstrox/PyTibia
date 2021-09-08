@@ -16,6 +16,7 @@ while True:
     print('is drunk', player.isDrunk())
     print('is poisoned', player.isPoisoned())
     print('is slowed', player.isSlowed())
+    print('has accessories equipped', player.hasAccessoriesEquiped())
     print('has armor equipped', player.hasArmorEquipped())
     print('has backpack equipped', player.hasBackpackEquipped())
     print('has boots equipped', player.hasBootsEquipped())
