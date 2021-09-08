@@ -9,3 +9,4 @@ while True:
     print('full attack', player.hasFullAttack())
     print('balanced attack', player.hasBalancedAttack())
     print('defensive attack', player.hasDefensiveAttack())
+    print('is following attack', player.isFollowingAttack())

@@ -111,3 +111,8 @@ def hasFullAttack():
     pos = pyautogui.locateOnScreen('player/full-attack.png', confidence=0.9)
     hasFullAttack = pos != None
     return hasFullAttack
+
+def isFollowingAttack():
+    pos = pyautogui.locateOnScreen('player/following-attack.png', confidence=0.9)
+    isFollowingAttack = pos != None
+    return isFollowingAttack
