@@ -122,6 +122,11 @@ def hasHelmetEquipped():
     hasHelmetEquipped = pos == None
     return hasHelmetEquipped
 
+def hasLegsEquipped():
+    pos = pyautogui.locateOnScreen('player/empty-legs.png', confidence=0.9)
+    hasLegsEquipped = pos == None
+    return hasLegsEquipped
+
 def hasNecklaceEquipped():
     pos = pyautogui.locateOnScreen('player/empty-necklace.png', confidence=0.9)
     hasNecklaceEquipped = pos == None
