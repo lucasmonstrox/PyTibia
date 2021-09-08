@@ -137,6 +137,11 @@ def hasNecklaceEquipped():
     hasNecklaceEquipped = pos == None
     return hasNecklaceEquipped
 
+def hasRingEquipped():
+    pos = pyautogui.locateOnScreen('player/empty-ring.png', confidence=0.9)
+    hasRingEquipped = pos == None
+    return hasRingEquipped
+
 def hasShieldEquipped():
     pos = pyautogui.locateOnScreen('player/empty-shield.png', confidence=0.9)
     hasShieldEquipped = pos == None
