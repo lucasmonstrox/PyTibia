@@ -102,6 +102,11 @@ def hasArmorEquipped():
     hasArmorEquipped = pos == None
     return hasArmorEquipped
 
+def hasBackpackEquipped():
+    pos = pyautogui.locateOnScreen('player/empty-backpack.png', confidence=0.9)
+    hasBackpackEquipped = pos == None
+    return hasBackpackEquipped
+
 def hasBalancedAttack():
     pos = pyautogui.locateOnScreen('player/balanced-attack.png', confidence=0.9)
     hasBalancedAttack = pos != None
