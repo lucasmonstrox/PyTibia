@@ -162,6 +162,11 @@ def hasWeaponEquipped():
     hasWeaponEquipped = pos == None
     return hasWeaponEquipped
 
+def isBleeding():
+    pos = pyautogui.locateOnScreen('player/bleeding.png', confidence=0.9)
+    isBleeding = pos != None
+    return isBleeding
+
 def isBurning():
     pos = pyautogui.locateOnScreen('player/burning.png', confidence=0.9)
     isBurning = pos != None

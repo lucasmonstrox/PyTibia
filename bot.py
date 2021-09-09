@@ -12,6 +12,7 @@ while True:
     print('is holding attack', player.isHoldingAttack())
     print('is following attack', player.isFollowingAttack())
     print('is in pz zone', player.isInPz())
+    print('is bleeding', player.isBleeding())
     print('is burning', player.isBurning())
     print('is drunk', player.isDrunk())
     print('is haste', player.isHaste())
