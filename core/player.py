@@ -207,6 +207,11 @@ def isInPz():
     isPz = pos != None
     return isPz
 
+def isLogoutBlock():
+    pos = pyautogui.locateOnScreen('player/logout-block.png', confidence=0.9)
+    isLogoutBlock = pos != None
+    return isLogoutBlock
+
 def isPoisoned():
     pos = pyautogui.locateOnScreen('player/poisoned.png', confidence=0.9)
     isPoisoned = pos != None

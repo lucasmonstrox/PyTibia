@@ -30,4 +30,5 @@ while True:
     print('has weapon equipped', player.hasWeaponEquipped())
     print('is inventory visible', player.isInventoryVisible())
     print('is ready for pvp', player.isReadyForPvp())
+    print('is logout block', player.isLogoutBlock())
     
