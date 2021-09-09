@@ -15,6 +15,7 @@ while True:
     print('is bleeding', player.isBleeding())
     print('is burning', player.isBurning())
     print('is drunk', player.isDrunk())
+    print('is eletrified', player.isEletrified())
     print('is haste', player.isHaste())
     print('is poisoned', player.isPoisoned())
     print('is slowed', player.isSlowed())

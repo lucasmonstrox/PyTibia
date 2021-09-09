@@ -177,6 +177,11 @@ def isDrunk():
     isDrunk = pos != None
     return isDrunk
 
+def isEletrified():
+    pos = pyautogui.locateOnScreen('player/eletrified.png', confidence=0.9)
+    isEletrified = pos != None
+    return isEletrified
+
 def isFollowingAttack():
     pos = pyautogui.locateOnScreen('player/following-attack.png', confidence=0.9)
     isFollowingAttack = pos != None
