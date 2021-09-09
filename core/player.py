@@ -182,10 +182,10 @@ def isHoldingAttack():
     isHoldingAttack = pos != None
     return isHoldingAttack
 
-def isInventoryHidden():
+def isInventoryVisible():
     pos = pyautogui.locateOnScreen('player/inventory-hidden.png', confidence=0.9)
-    isInventoryHidden = pos != None
-    return isInventoryHidden
+    isInventoryVisible = pos == None
+    return isInventoryVisible
 
 def isInPz():
     pos = pyautogui.locateOnScreen('player/pz.png', confidence=0.9)
