@@ -177,6 +177,11 @@ def isFollowingAttack():
     isFollowingAttack = pos != None
     return isFollowingAttack
 
+def isHaste():
+    pos = pyautogui.locateOnScreen('player/haste.png', confidence=0.9)
+    isHaste = pos != None
+    return isHaste
+
 def isHoldingAttack():
     pos = pyautogui.locateOnScreen('player/holding-attack.png', confidence=0.9)
     isHoldingAttack = pos != None
