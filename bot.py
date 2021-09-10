@@ -1,4 +1,4 @@
-from core import player
+from player import player
 from radar import radar
 
 while True:

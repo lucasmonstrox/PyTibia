@@ -71,7 +71,7 @@ def getHealthBarPos():
     return pos
 
 def getHearthSymbolPos():
-    pos = pyautogui.locateOnScreen('images/player/health.png', confidence=0.85)
+    pos = pyautogui.locateOnScreen('player/images/health.png', confidence=0.85)
     return pos
 
 def getManaBarPos():
@@ -88,7 +88,7 @@ def getManaBarPos():
     return pos
 
 def getManaSymbolPos():
-    pos = pyautogui.locateOnScreen('images/player/mana.png', confidence=0.85)
+    pos = pyautogui.locateOnScreen('player/images/mana.png', confidence=0.85)
     return pos
 
 def getManaPercent():
@@ -98,131 +98,131 @@ def getManaPercent():
     return manaPercent
 
 def hasAccessoriesEquiped():
-    pos = pyautogui.locateOnScreen('images/player/empty-arrow.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/empty-arrow.png', confidence=0.9)
     hasAccessoriesEquiped = pos == None
     return hasAccessoriesEquiped
 
 def hasArmorEquipped():
-    pos = pyautogui.locateOnScreen('images/player/empty-armor.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/empty-armor.png', confidence=0.9)
     hasArmorEquipped = pos == None
     return hasArmorEquipped
 
 def hasBackpackEquipped():
-    pos = pyautogui.locateOnScreen('images/player/empty-backpack.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/empty-backpack.png', confidence=0.9)
     hasBackpackEquipped = pos == None
     return hasBackpackEquipped
 
 def hasBalancedAttack():
-    pos = pyautogui.locateOnScreen('images/player/balanced-attack.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/balanced-attack.png', confidence=0.9)
     hasBalancedAttack = pos != None
     return hasBalancedAttack
 
 def hasBootsEquipped():
-    pos = pyautogui.locateOnScreen('images/player/empty-boots.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/empty-boots.png', confidence=0.9)
     hasBootsEquipped = pos == None
     return hasBootsEquipped
 
 def hasDefensiveAttack():
-    pos = pyautogui.locateOnScreen('images/player/defensive-attack.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/defensive-attack.png', confidence=0.9)
     hasDefensiveAttack = pos != None
     return hasDefensiveAttack
 
 def hasFullAttack():
-    pos = pyautogui.locateOnScreen('images/player/full-attack.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/full-attack.png', confidence=0.9)
     hasFullAttack = pos != None
     return hasFullAttack
 
 def hasHelmetEquipped():
-    pos = pyautogui.locateOnScreen('images/player/empty-helmet.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/empty-helmet.png', confidence=0.9)
     hasHelmetEquipped = pos == None
     return hasHelmetEquipped
 
 def hasLegsEquipped():
-    pos = pyautogui.locateOnScreen('images/player/empty-legs.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/empty-legs.png', confidence=0.9)
     hasLegsEquipped = pos == None
     return hasLegsEquipped
 
 def hasNecklaceEquipped():
-    pos = pyautogui.locateOnScreen('images/player/empty-necklace.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/empty-necklace.png', confidence=0.9)
     hasNecklaceEquipped = pos == None
     return hasNecklaceEquipped
 
 def hasRingEquipped():
-    pos = pyautogui.locateOnScreen('images/player/empty-ring.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/empty-ring.png', confidence=0.9)
     hasRingEquipped = pos == None
     return hasRingEquipped
 
 def hasShieldEquipped():
-    pos = pyautogui.locateOnScreen('images/player/empty-shield.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/empty-shield.png', confidence=0.9)
     hasShieldEquipped = pos == None
     return hasShieldEquipped
 
 def hasWeaponEquipped():
-    pos = pyautogui.locateOnScreen('images/player/empty-weapon.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/empty-weapon.png', confidence=0.9)
     hasWeaponEquipped = pos == None
     return hasWeaponEquipped
 
 def isBleeding():
-    pos = pyautogui.locateOnScreen('images/player/bleeding.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/bleeding.png', confidence=0.9)
     isBleeding = pos != None
     return isBleeding
 
 def isBurning():
-    pos = pyautogui.locateOnScreen('images/player/burning.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/burning.png', confidence=0.9)
     isBurning = pos != None
     return isBurning
 
 def isDrunk():
-    pos = pyautogui.locateOnScreen('images/player/drunk.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/drunk.png', confidence=0.9)
     isDrunk = pos != None
     return isDrunk
 
 def isEletrified():
-    pos = pyautogui.locateOnScreen('images/player/eletrified.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/eletrified.png', confidence=0.9)
     isEletrified = pos != None
     return isEletrified
 
 def isFollowingAttack():
-    pos = pyautogui.locateOnScreen('images/player/following-attack.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/following-attack.png', confidence=0.9)
     isFollowingAttack = pos != None
     return isFollowingAttack
 
 def isHaste():
-    pos = pyautogui.locateOnScreen('images/player/haste.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/haste.png', confidence=0.9)
     isHaste = pos != None
     return isHaste
 
 def isHoldingAttack():
-    pos = pyautogui.locateOnScreen('images/player/holding-attack.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/holding-attack.png', confidence=0.9)
     isHoldingAttack = pos != None
     return isHoldingAttack
 
 def isInventoryVisible():
-    pos = pyautogui.locateOnScreen('images/player/inventory-hidden.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/inventory-hidden.png', confidence=0.9)
     isInventoryVisible = pos == None
     return isInventoryVisible
 
 def isInPz():
-    pos = pyautogui.locateOnScreen('images/player/pz.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/pz.png', confidence=0.9)
     isPz = pos != None
     return isPz
 
 def isLogoutBlock():
-    pos = pyautogui.locateOnScreen('images/player/logout-block.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/logout-block.png', confidence=0.9)
     isLogoutBlock = pos != None
     return isLogoutBlock
 
 def isPoisoned():
-    pos = pyautogui.locateOnScreen('images/player/poisoned.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/poisoned.png', confidence=0.9)
     isPoisoned = pos != None
     return isPoisoned
 
 def isReadyForPvp():
-    pos = pyautogui.locateOnScreen('images/player/ready-for-pvp.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/ready-for-pvp.png', confidence=0.9)
     isReadyForPvp = pos != None
     return isReadyForPvp
 
 def isSlowed():
-    pos = pyautogui.locateOnScreen('images/player/slowed.png', confidence=0.9)
+    pos = pyautogui.locateOnScreen('player/images/slowed.png', confidence=0.9)
     isSlowed = pos != None
     return isSlowed
