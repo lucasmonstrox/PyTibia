@@ -1,4 +1,5 @@
 from core import player
+from radar import radar
 
 while True:
     print('health', player.getHealthPercent())
@@ -28,4 +29,5 @@ while True:
     print('is inventory visible', player.isInventoryVisible())
     print('is ready for pvp', player.isReadyForPvp())
     print('is logout block', player.isLogoutBlock())
+    print('radar center', radar.getCenter())
     
