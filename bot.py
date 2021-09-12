@@ -1,6 +1,5 @@
 from player import player
 from radar import radar
-from rx import create
 
 while True:
     print('health', player.getHealthPercent())
