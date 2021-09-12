@@ -7,7 +7,7 @@
 ## ⚙ Running the app
 
 ```bash
-python Bot.py
+python bot.py
 ```
 
 # ✅ ROADMAP
