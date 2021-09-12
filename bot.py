@@ -1,5 +1,6 @@
 from player import player
 from radar import radar
+from rx import create
 
 while True:
     print('health', player.getHealthPercent())
@@ -30,4 +31,5 @@ while True:
     print('is ready for pvp', player.isReadyForPvp())
     print('is logout block', player.isLogoutBlock())
     print('radar center', radar.getCenter())
-    
+    print('radar floor', radar.getFloorLevel())
+    print('player coordinate', player.getCurrentCoordinate())
