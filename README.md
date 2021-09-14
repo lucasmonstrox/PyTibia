@@ -12,9 +12,8 @@ python bot.py
 
 # ✅ ROADMAP
 
-- [Auto Life]() : :warning:
-- [Auto Mana]() : :warning:
-- [Auto Hur]() : :warning:
+- Add confidence to floor level to have more accuracy detecting user coordinates since some levels have a lot of "black" pixels.
+- reduce/increase confidence when player bounds is not found. Add retry strategy.
 
 # 👷 Authors
 
