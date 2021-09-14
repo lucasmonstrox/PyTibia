@@ -29,6 +29,6 @@ while True:
     print('is inventory visible', player.isInventoryVisible())
     print('is ready for pvp', player.isReadyForPvp())
     print('is logout block', player.isLogoutBlock())
-    print('radar center', radar.getCenter())
+    print('radar center', radar.getCenterBounds())
     print('radar floor', radar.getFloorLevel())
-    print('player coordinate', player.getCurrentCoordinate())
+    print('player coordinate', player.getCoordinate())
