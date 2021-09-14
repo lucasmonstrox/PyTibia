@@ -1,7 +1,7 @@
 import pyautogui
-from time import sleep
 import skimage.graph
 from radar import radar
+from time import sleep
 from utils import utils
 
 healthBar = {
@@ -55,23 +55,26 @@ def getBarPercentValue(bar, barPos):
     # its really hard to determinate when player has 0 or 1 of bar percent
     return 0
 
-def getCoordinateFromPixel(pixel):
-    y, x = pixel
-    return (x + 31744, y + 30976)
-
-def getCurrentCoordinate():
-    radarCenter = radar.getCenter()
-    if not radarCenter:
+def getCoordinate():
+    # TODO: cache it if window coordinates doesn't change
+    radarPos = radar.getPos()
+    if not radarPos:
         # TODO: throw a custom exception
         return None
-    radarCenterX, radarCenterY = radarCenter
+    radarPosX, radarPosY = radarPos
     floorLevel = radar.getFloorLevel()
-    radarCenterScreenshot = pyautogui.screenshot(region=(radarCenterX - 10, radarCenterY - 6, 20, 12))
-    currentPositionBounds = pyautogui.locate(radarCenterScreenshot, 'radar/images/floor-{}.png'.format(floorLevel), confidence=0.7)
+    radarScreenshot = pyautogui.screenshot(region=(radarPosX, radarPosY, 106, 109))
+    # load directly into numpy array to gain performance all possible radar center with radius
+    currentPositionBounds = pyautogui.locate(
+        radarScreenshot,
+        radar.floorsAreaImgs[floorLevel],
+        confidence=radar.floorsConfidence[floorLevel]
+    )
     currentX, currentY = utils.getCenterOfBounds(currentPositionBounds)
-    currentMapPixelCoordinate = (int(currentY + 2), int(currentX + 1))
-    (playerCoordinateX, playerCoordinateY) = getCoordinateFromPixel(currentMapPixelCoordinate)
-    return (playerCoordinateX, playerCoordinateY, floorLevel)
+    currentMapPixelCoordinate = (int(currentY), int(currentX))
+    (playerCoordinateX, playerCoordinateY) = utils.getCoordinateFromPixel(currentMapPixelCoordinate)
+    playerCoordinate = (playerCoordinateX, playerCoordinateY, floorLevel)
+    return playerCoordinate
 
 def getHealthPercent():
     global healthBar
@@ -121,23 +124,16 @@ def getManaSymbolPos():
 
 def getPlayerWindowCoordinate():
     # TODO: detect game window automatically
-    playerWindowCoordinateX = 6 +(772 / 2)
+    playerWindowCoordinateX = 6 +(736 / 2)
     # TODO: detect game window automatically
-    playerWindowCoordinateY = 90 + (566 / 2)
+    playerWindowCoordinateY = 90 + (539 / 2)
     return (playerWindowCoordinateX, playerWindowCoordinateY)
-
-def getPixelFromCoordinate(coordinate):
-    x, y, z = coordinate
-    return (y - 30976, x - 31744)
-
-def getSquareMeterSize():
-    return 51.455
 
 # this is a experimental function
 def goToCoordinate(destinationCoordinate):
-    currentCoordinate = getCurrentCoordinate()
-    currentPixelCoordinate = getPixelFromCoordinate(currentCoordinate)
-    destinationPixelCoordinate = getPixelFromCoordinate(destinationCoordinate)
+    currentCoordinate = getCoordinate()
+    currentPixelCoordinate = utils.getPixelFromCoordinate(currentCoordinate)
+    destinationPixelCoordinate = utils.getPixelFromCoordinate(destinationCoordinate)
     currentFloor = radar.getFloorLevel()
     paths, cost = skimage.graph.route_through_array(radar.floorsAsBoolean[currentFloor], start=currentPixelCoordinate, end=destinationPixelCoordinate, fully_connected=False)
     pathsLength = len(paths)
@@ -151,45 +147,45 @@ def goToCoordinate(destinationCoordinate):
         shouldMoveUp = currentPositionX > nextPositionX
         if shouldMoveUp:
             pyautogui.press('up')
-            sleep(0.5)
+            sleep(0.25)
             continue
         shouldMoveDown = currentPositionX < nextPositionX
         if shouldMoveDown:
             pyautogui.press('down')
-            sleep(0.5)
+            sleep(0.25)
             continue
         shouldMoveLeft = currentPositionY > nextPositionY
         if shouldMoveLeft:
             pyautogui.press('left')
-            sleep(0.5)
+            sleep(0.25)
             continue
         shouldMoveRight = currentPositionY < nextPositionY
         if shouldMoveRight:
             pyautogui.press('right')
-            sleep(0.5)
+            sleep(0.25)
             continue
 
-def goToCoordinateByMouseClick(coordinate):
-    playerCoordinateX, playerCoordinateY, playerCoordinateZ = getCurrentCoordinate()
+def goToCoordinateByScreenClick(coordinate):
+    playerCoordinateX, playerCoordinateY, playerCoordinateZ = getCoordinate()
     playerWindowCoordinateX, playerWindowCoordinateY = getPlayerWindowCoordinate()
     destinationX, destinationY, destinationZ = coordinate
-    squareMeterSize = getSquareMeterSize()
+    squareMeterSize = utils.getSquareMeterSize()
     # TODO: avoid battleye detection clicking in a random pixel inside squaremeter
     mouseClickX = playerWindowCoordinateX + ((destinationX - playerCoordinateX) * squareMeterSize)
     # TODO: avoid battleye detection clicking in a random pixel inside squaremeter
     mouseClickY = playerWindowCoordinateY + ((destinationY - playerCoordinateY) * squareMeterSize)
     # TODO: avoid battleye detection adding humanoid movementation
-    pyautogui.moveTo(mouseClickX, mouseClickY, duration=5)
+    pyautogui.moveTo(mouseClickX, mouseClickY, duration=0.15)
     pyautogui.click(mouseClickX, mouseClickY)
 
 # TODO: do not click in same pixel to avoid batleeye detection, click near by
 def goToCoordinateByRadarClick(coordinate):
-    (radarCenterX, radarCenterY) = radar.getCenter()
-    playerCoordinate = getCurrentCoordinate()
-    (playerCoordinatePixelY, playerCoordinatePixelX) = getPixelFromCoordinate(playerCoordinate)
-    (destinationCoordinatePixelY, destinationCoordinatePixelX) = getPixelFromCoordinate(coordinate)
-    x = destinationCoordinatePixelX - playerCoordinatePixelX + radarCenterX + 1
-    y = destinationCoordinatePixelY - playerCoordinatePixelY + radarCenterY + 2
+    (radarCenterX, radarCenterY) = radar.getCenterBounds()
+    playerCoordinate = getCoordinate()
+    (playerCoordinatePixelY, playerCoordinatePixelX) = utils.getPixelFromCoordinate(playerCoordinate)
+    (destinationCoordinatePixelY, destinationCoordinatePixelX) = utils.getPixelFromCoordinate(coordinate)
+    x = destinationCoordinatePixelX - playerCoordinatePixelX + radarCenterX
+    y = destinationCoordinatePixelY - playerCoordinatePixelY + radarCenterY
     pyautogui.moveTo(x, y)
     pyautogui.click()
 
