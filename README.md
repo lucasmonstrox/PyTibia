@@ -7,7 +7,11 @@
 ## ⚙ Running the app
 
 ```bash
-python bot.py
+# main file to track basic functions output like(is burning, has helmet equipped, etc)
+python main.py
+
+# to test last experiments with mess code
+python test.py
 ```
 
 # ✅ ROADMAP
