@@ -72,7 +72,7 @@ for floor in floors:
         1,
         1000
     )
-    floorsAsBoolean.append(pixelsColors)
+    floorsAsBoolean.append(matrixOfMapPixelsColors)
 
 def getCenterBounds():
      # TODO: check previous tibia location. If didnt move, avoid this comparation
@@ -99,14 +99,12 @@ def getCenterBounds():
 
 def getFloorLevel():
     # TODO: check previous tibia location. If didnt move, avoid this comparison
-    pos = pyautogui.locateOnScreen('radar/images/radar-tools.png', confidence=0.85)
-    if pos == None:
-        return None
+    floorLevelPos = pyautogui.locateOnScreen('radar/images/radar-tools.png', confidence=0.85)
     gapBetweenRadarToolsAndLevels = 8
-    left = pos.left + pos.width + gapBetweenRadarToolsAndLevels
+    left = floorLevelPos.left + floorLevelPos.width + gapBetweenRadarToolsAndLevels
     # radar tools are a little lower than the radar level
     extraY = 7
-    top = pos.top - extraY
+    top = floorLevelPos.top - extraY
     height = 67
     width = 2
     floorLevelImg = pyautogui.screenshot(region=(left, top, width, height))
