@@ -1,31 +1,13 @@
 # 📝 Description
 
-> tibia bot api using python
+> tibia bot api using python and gpu to get unlocked fps
 
 # 🗺️ Features Status
 
-- [Auto Life]() : :heavy_check_mark:
-- [Auto Mana]() : :heavy_check_mark:
-- [Auto Hur]() : :heavy_check_mark:
-- [Auto SSA]() : :warning::
-- [Auto Ring]() : :warning:
-- [Auto Login]() : :warning:
-- [Auto Banker]() : :warning:
-- [Auto Fish]() : :warning:
-- [Auto Grouping]() : :warning:
-- [Auto Seller]() : :warning:
-- [Refill]() : :warning:
-- [Ammo Restack]() : :warning:
-- [Cave Bot]() : :warning: :heavy_check_mark:
-- [Creature Info]() : :heavy_check_mark:
-- [Food Eater]() : :warning:
-- [FPS Changer]() : :warning:
-- [General Options]() : :warning:
-- [Healer Friends]() : :warning:
-- [Save Config]() : :warning:
-- [Sort Loot]() : :warning:
-- [Timed Spells]() : :warning:
-- [Show Map]() : :warning:
+- [Get Life]() : :heavy_check_mark:
+- [Get Mana]() : :heavy_check_mark:
+- [Get BattleList Creatures]() : :heavy_check_mark:
+- [Get HUD Creatures]() : :warning:
 
 # ⌨ Development
 
@@ -38,12 +20,6 @@ python main.py
 # to test last experiments with mess code
 python test.py
 ```
-
-# ✅ TODO
-
-- reduce/increase confidence when player bounds is not found. Add retry strategy.
-- add anti-afk system to retry waypoint
-- change image detection to opencv
 
 # 👷 Authors
 
