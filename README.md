@@ -2,6 +2,31 @@
 
 > tibia bot api using python
 
+# 🗺️ Features Status
+
+- [Auto Life]() : :heavy_check_mark:
+- [Auto Mana]() : :heavy_check_mark:
+- [Auto Hur]() : :heavy_check_mark:
+- [Auto SSA]() : :warning::
+- [Auto Ring]() : :warning:
+- [Auto Login]() : :warning:
+- [Auto Banker]() : :warning:
+- [Auto Fish]() : :warning:
+- [Auto Grouping]() : :warning:
+- [Auto Seller]() : :warning:
+- [Refill]() : :warning:
+- [Ammo Restack]() : :warning:
+- [Cave Bot]() : :warning: :heavy_check_mark:
+- [Creature Info]() : :heavy_check_mark:
+- [Food Eater]() : :warning:
+- [FPS Changer]() : :warning:
+- [General Options]() : :warning:
+- [Healer Friends]() : :warning:
+- [Save Config]() : :warning:
+- [Sort Loot]() : :warning:
+- [Timed Spells]() : :warning:
+- [Show Map]() : :warning:
+
 # ⌨ Development
 
 ## ⚙ Running the app
@@ -14,10 +39,11 @@ python main.py
 python test.py
 ```
 
-# ✅ ROADMAP
+# ✅ TODO
 
-- Add confidence to floor level to have more accuracy detecting user coordinates since some levels have a lot of "black" pixels.
 - reduce/increase confidence when player bounds is not found. Add retry strategy.
+- add anti-afk system to retry waypoint
+- change image detection to opencv
 
 # 👷 Authors
 

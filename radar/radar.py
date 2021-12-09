@@ -1,9 +1,16 @@
 from PIL import Image
+import cv2
 import numpy as np
+from numba import njit, jit
 import pyautogui
 
+images = {
+    "radarTools": cv2.cvtColor(
+        np.array(cv2.imread('radar/images/radar-tools.png')), cv2.COLOR_RGB2GRAY)
+}
 floors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-floorsConfidence = [0.85, 0.85, 0.9, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.9, 0.85, 0.85]
+floorsConfidence = [0.85, 0.85, 0.9, 0.95, 0.95, 0.95,
+                    0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.9, 0.85, 0.85]
 floorsAreaImgs = [
     Image.open('radar/images/floor-0.png').convert('RGB'),
     Image.open('radar/images/floor-1.png').convert('RGB'),
@@ -23,60 +30,39 @@ floorsAreaImgs = [
     Image.open('radar/images/floor-15.png').convert('RGB'),
 ]
 floorsLevelImgs = [
-    Image.open('radar/images/floor-level-0.png').convert('RGB'),
-    Image.open('radar/images/floor-level-1.png').convert('RGB'),
-    Image.open('radar/images/floor-level-2.png').convert('RGB'),
-    Image.open('radar/images/floor-level-3.png').convert('RGB'),
-    Image.open('radar/images/floor-level-4.png').convert('RGB'),
-    Image.open('radar/images/floor-level-5.png').convert('RGB'),
-    Image.open('radar/images/floor-level-6.png').convert('RGB'),
-    Image.open('radar/images/floor-level-7.png').convert('RGB'),
-    Image.open('radar/images/floor-level-8.png').convert('RGB'),
-    Image.open('radar/images/floor-level-9.png').convert('RGB'),
-    Image.open('radar/images/floor-level-10.png').convert('RGB'),
-    Image.open('radar/images/floor-level-11.png').convert('RGB'),
-    Image.open('radar/images/floor-level-12.png').convert('RGB'),
-    Image.open('radar/images/floor-level-13.png').convert('RGB'),
-    Image.open('radar/images/floor-level-14.png').convert('RGB'),
-    Image.open('radar/images/floor-level-15.png').convert('RGB'),
+    cv2.imread('radar/images/floor-level-0.png'),
+    cv2.imread('radar/images/floor-level-1.png'),
+    cv2.imread('radar/images/floor-level-2.png'),
+    cv2.imread('radar/images/floor-level-3.png'),
+    cv2.imread('radar/images/floor-level-4.png'),
+    cv2.imread('radar/images/floor-level-5.png'),
+    cv2.imread('radar/images/floor-level-6.png'),
+    cv2.imread('radar/images/floor-level-7.png'),
+    cv2.imread('radar/images/floor-level-8.png'),
+    cv2.imread('radar/images/floor-level-9.png'),
+    cv2.imread('radar/images/floor-level-10.png'),
+    cv2.imread('radar/images/floor-level-11.png'),
+    cv2.imread('radar/images/floor-level-12.png'),
+    cv2.imread('radar/images/floor-level-13.png'),
+    cv2.imread('radar/images/floor-level-14.png'),
+    cv2.imread('radar/images/floor-level-15.png'),
 ]
+
+floors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 floorsLevelImgsHashes = {}
+toolsAreaWidth = 176
 
 for floor in floors:
-    floorImgArray = np.array(floorsLevelImgs[floor])
+    floorImgArray = cv2.cvtColor(
+        np.array(floorsLevelImgs[floor]), cv2.COLOR_RGB2GRAY)
     floorHash = hash(floorImgArray.tostring())
     floorsLevelImgsHashes[floorHash] = floor
 
-darkPixelColor = [0, 0, 0]
-pyramidEdgeColor = [255, 255, 0]
-stonePixelColor = [102, 102, 102]
-treePixelColor = [0, 102, 0]
-waterPixelColor = [51, 102, 153]
-wallPixelColor = [255, 51, 0]
-forbiddenPixels = [
-    darkPixelColor,
-    pyramidEdgeColor,
-    stonePixelColor,
-    treePixelColor,
-    wallPixelColor,
-    waterPixelColor
-]
-floorsAsBoolean = []
-
-# loading all map pixels into numpy arrays in a 3D array
-for floor in floors:
-    floorAreaImg = floorsAreaImgs[floor]
-    pixelsColors = np.asarray(floorAreaImg)
-    matrixOfMapPixelsColors = np.where(
-        np.isin(pixelsColors, forbiddenPixels, invert=True).any(axis=2),
-        1,
-        1000
-    )
-    floorsAsBoolean.append(matrixOfMapPixelsColors)
 
 def getCenterBounds():
-     # TODO: check previous tibia location. If didnt move, avoid this comparation
-    radarBounds = pyautogui.locateOnScreen('radar/images/compass.png', confidence=0.8)
+    # TODO: check previous tibia location. If didnt move, avoid this comparation
+    radarBounds = pyautogui.locateOnScreen(
+        'radar/images/compass.png', confidence=0.8)
     if radarBounds == None:
         return None
     """
@@ -97,20 +83,20 @@ def getCenterBounds():
     )
     return radarCenter
 
-def getFloorLevel():
-    # TODO: check previous tibia location. If didnt move, avoid this comparison
-    floorLevelPos = pyautogui.locateOnScreen('radar/images/radar-tools.png', confidence=0.85)
+
+def getFloorLevel(screenshot):
+    """
+     Avg FPS: 400+
+    """
+    left, top, width, height = getRadarToolsPos(screenshot)
     gapBetweenRadarToolsAndLevels = 8
-    left = floorLevelPos.left + floorLevelPos.width + gapBetweenRadarToolsAndLevels
+    left = left + width + gapBetweenRadarToolsAndLevels
     # radar tools are a little lower than the radar level
     extraY = 7
-    top = floorLevelPos.top - extraY
+    top = top - extraY
     height = 67
     width = 2
-    floorLevelImg = pyautogui.screenshot(region=(left, top, width, height))
-    if floorLevelImg == None:
-        return None
-    floorLevelImg = np.array(floorLevelImg)
+    floorLevelImg = screenshot[top:top + height, left:left + width]
     floorImgHash = hash(floorLevelImg.tostring())
     hashNotExists = not floorImgHash in floorsLevelImgsHashes
     if hashNotExists:
@@ -118,9 +104,37 @@ def getFloorLevel():
     floorLevel = floorsLevelImgsHashes[floorImgHash]
     return floorLevel
 
+
+def getRadarToolsPos(screenshot):
+    """
+     Avg FPS: 400+
+    """
+    screenshotWidth = len(screenshot[0])
+    grayToolsArea = getRightContent(screenshot)
+    res = cv2.matchTemplate(grayToolsArea, images['radarTools'], cv2.TM_CCOEFF)
+    pos = cv2.minMaxLoc(res)[3]
+    left = pos[0] + screenshotWidth - toolsAreaWidth
+    top = pos[1]
+    width = len(images['radarTools'][0])
+    height = len(images['radarTools'])
+    return (left, top, width, height)
+
+
+def getRightContent(screenshot):
+    '''
+    Avg FPS: Unlimited
+    '''
+    screenshotWidth = len(screenshot[0])
+    cropX0 = screenshotWidth - toolsAreaWidth
+    cropX1 = screenshotWidth
+    toolsArea = screenshot[:, cropX0:cropX1]
+    return toolsArea
+
+
 def getPos():
-     # TODO: check previous tibia location. If didnt move, avoid this comparation
-    radarBounds = pyautogui.locateOnScreen('radar/images/compass.png', confidence=0.8)
+    # TODO: check previous tibia location. If didnt move, avoid this comparation
+    radarBounds = pyautogui.locateOnScreen(
+        'radar/images/compass.png', confidence=0.8)
     if radarBounds == None:
         return None
     gapBetweenRadarAndCompass = 11
