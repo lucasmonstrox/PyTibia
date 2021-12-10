@@ -1,8 +1,8 @@
 creatures = {
     "A Greedy Eye": {"exp": None, "hp": None},
     "A Shielded Astral Glyph": {"exp": None, "hp": None},
-    "A Weak Spot": {"exp": None, "hp": None},
-    "Abominable Spawn": {"exp": None, "hp": None},
+    "A Weak Spot": {"exp": None, "hp": None}, #not working
+    "Abominable Spawn": {"exp": None, "hp": None}, #not working
     "Abyssador": {"exp": 50000, "hp": 340000},
     "Abyssal Calamary": {"exp": 200, "hp": 300},
     "Achad": {"exp": 70, "hp": 185},
@@ -12,16 +12,16 @@ creatures = {
     "Adept of the Cult": {"exp": 400, "hp": 430},
     "Adult Goanna": {"exp": 6650, "hp": 8300},
     "Adventurer": {"exp": 0, "hp": 65},
-    "Afflicted Strider": {"exp": 5700, "hp": 10000},
+    "Afflicted Strider": {"exp": 5700, "hp": 10000}, #not working
     "Aftershock": {"exp": None, "hp": None},
-    "Aggressive Chicken": {"exp": 0, "hp": 15000},
+    "Aggressive Chicken": {"exp": 0, "hp": 15000}, #not working
     "Aggressive Lava": {"exp": None, "hp": None},
     "Aggressive Matter": {"exp": 0, "hp": None},
     "Agrestic Chicken": {"exp": 0, "hp": 15},
     "Alptramun": {"exp": 55000, "hp": None},
-    "Amarie": {"exp": None, "hp": None},
-    "Amazon": {"exp": 60, "hp": 110},
-    "Amenef the Burning": {"exp": 21500, "hp": 26000},
+    "Amarie": {"exp": None, "hp": None}, #not working
+    "Amazon": {"exp": 60, "hp": 110}, 
+    "Amenef the Burning": {"exp": 21500, "hp": 26000}, #not working
     "An Astral Glyph": {"exp": None, "hp": None},
     "An Observer Eye": {"exp": 0, "hp": 30000},
     "Ancient Lion Archer": {"exp": None, "hp": None},
@@ -31,8 +31,8 @@ creatures = {
     "Ancient Spawn of Morgathla": {"exp": None, "hp": None},
     "Angry Adventurer": {"exp": 50, "hp": 65},
     "Angry Demon": {"exp": 6000, "hp": 8200},
-    "Angry Elemental": {"exp": 0, "hp": 7000},
-    "Angry King Chuck": {"exp": None, "hp": None},
+    "Angry Elemental": {"exp": 0, "hp": 7000}, #not working
+    "Angry King Chuck": {"exp": None, "hp": None}, #not working
     "Angry Plant": {"exp": None, "hp": 10000},
     "Animated Clomp": {"exp": 475, "hp": 900},
     "Animated Cyclops": {"exp": 150, "hp": 260},
@@ -47,9 +47,9 @@ creatures = {
     "Animated Skunk": {"exp": None, "hp": None},
     "Animated Snowman": {"exp": 400, "hp": 450},
     "Animated Sword": {"exp": None, "hp": None},
-    "Anmothra": {"exp": 15000, "hp": 7000},
+    "Anmothra": {"exp": 15000, "hp": 7000}, #not working
     "Annihilon": {"exp": 15000, "hp": 46500},
-    "Annoying Dog": {"exp": None, "hp": None},
+    "Annoying Dog": {"exp": None, "hp": None}, #not working
     "Anomaly": {"exp": 50000, "hp": 290000},
     "Apprentice Sheng": {"exp": 150, "hp": 95},
     "Arachir the Ancient One": {"exp": 1800, "hp": 1600},
@@ -57,19 +57,19 @@ creatures = {
     "Arctic Faun": {"exp": 300, "hp": 300},
     "Armadile": {"exp": 2900, "hp": 3800},
     "Armenius": {"exp": 500, "hp": 550},
-    "Arthei": {"exp": 4000, "hp": 4200},
-    "Arthom the Hunter": {"exp": 550, "hp": 500},
+    "Arthei": {"exp": 4000, "hp": 4200}, #not working
+    "Arthom the Hunter": {"exp": 550, "hp": 500}, #not working
     "Ascending Ferumbras": {"exp": None, "hp": None},
     "Ashmunrah": {"exp": 3100, "hp": 5000},
     "Askarak Demon": {"exp": 900, "hp": 1500},
     "Askarak Lord": {"exp": 1200, "hp": 2100},
     "Askarak Prince": {"exp": 1700, "hp": 2600},
-    "Aspect of Power": {"exp": 0, "hp": 0},
+    "Aspect of Power": {"exp": 0, "hp": 0}, #not working
     "Assassin": {"exp": 105, "hp": 175},
     "Avalanche": {"exp": 305, "hp": 550},
     "Axeitus Headbanger": {"exp": 140, "hp": 365},
-    "Azaram's Soul": {"exp": 0, "hp": None},
-    "Azerus": {"exp": 6000, "hp": 26000},
+    "Azaram's Soul": {"exp": 0, "hp": None}, #not working
+    "Azerus": {"exp": 6000, "hp": 26000}, #not working
     "Azure Frog": {"exp": 20, "hp": 60},
     "Baby Dragon": {"exp": None, "hp": None},
     "Bad Dream": {"exp": None, "hp": None},
