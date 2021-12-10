@@ -70,11 +70,6 @@ creaturesHashes = {
 }
 
 
-class BattleListIsClosedError():
-    """Raised when battle list is closed"""
-    pass
-
-
 class BattleListIsTooSmallError():
     """Raised when battle list is too small"""
     pass
@@ -91,8 +86,11 @@ def getCreatureBySlot(battleListContent, slot):
     y = 0 if isFirstSlot else slot * 22
     slotImg = battleListContent[y:y + battleList["slot"]["height"], :]
     creatureNameImg = slotImg[:15, 22:22 + 132]
+    flattenedCreatureNameImg = creatureNameImg.flatten()
+    isEmpty = np.any(flattenedCreatureNameImg == 192)
+    if isEmpty:
+        return None
     creatureHash = getHash(creatureNameImg)
-    # utils.saveImg(creatureNameImg, "creature-{}.png".format(creatureHash))
     unknownCreature = not creatureHash in creaturesHashes
     creature = {
         "creature": "Unknown" if unknownCreature else creaturesHashes[creatureHash]["name"],
@@ -103,9 +101,10 @@ def getCreatureBySlot(battleListContent, slot):
 
 
 def getCreatures(battleListContent):
-    (left, top, width, height) = getPos(battleListContent)
-    battleListContent = battleListContent[top + height:,
-                                          left:left + battleList["container"]["width"]]
+    (battleListContentLeft, battleListContentTop, _,
+     battleListContentHeight) = getPos(battleListContent)
+    battleListContent = battleListContent[battleListContentTop + battleListContentHeight:,
+                                          battleListContentLeft:battleListContentLeft + battleList["container"]["width"]]
     endOfContainer = getNextEndOfContainer(battleListContent)
     battleListContent = battleListContent[:endOfContainer[1] - 11, :]
     battleListContent = utils.graysToBlack(battleListContent)
@@ -114,17 +113,14 @@ def getCreatures(battleListContent):
     if battleListIsTooSmall:
         raise BattleListIsTooSmallError
     filledSlots = getFilledSlots(battleListContent)
-    hasNoFilledSlots = filledSlots == 0
-    if hasNoFilledSlots:
-        return np.array([])
     possibleCreatures = np.array(list(map(lambda x: getCreatureBySlot(
         battleListContent, x), np.arange(filledSlots))))
-    print(possibleCreatures)
-    return possibleCreatures
+    creatures = possibleCreatures[possibleCreatures != None]
+    return creatures
 
 
 def getFilledSlots(battleListContent):
-    battleListContentFlattened = battleListContent.flatten()
+    battleListContentFlattened = battleListContent[:, 78:79].flatten()
     possibleCreatureNames = np.nonzero(
         np.where(
             battleListContentFlattened == battleList["creatures"]["nameColor"],
@@ -136,7 +132,7 @@ def getFilledSlots(battleListContent):
     if hasNoFilledSlots:
         return 0
     lastPossibleCreatureIndex = possibleCreatureNames[len(
-        possibleCreatureNames) - 1] // battleList["container"]["width"]
+        possibleCreatureNames) - 1]
     filledSlots = math.ceil(lastPossibleCreatureIndex / 22)
     return filledSlots
 

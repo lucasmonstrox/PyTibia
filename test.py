@@ -23,17 +23,17 @@ from PIL import Image
 
 waypoints = [
     # 0
-    # {
-    #     "type": "floor",
-    #     "coordinate": (33121, 32837, 7),
-    #     "walkType": "screen"
-    # },
+    {
+        "type": "floor",
+        "coordinate": (33121, 32837, 7),
+        "walkType": "screen"
+    },
     # 1
-    # {
-    #     "type": "floor",
-    #     "coordinate": (33122, 32837, 7),
-    #     "walkType": "screen"
-    # },
+    {
+        "type": "floor",
+        "coordinate": (33122, 32837, 7),
+        "walkType": "screen"
+    },
     # 2
     {
         "type": "floor",
