@@ -85,11 +85,12 @@ def getCreatureBySlot(battleListContent, slot):
     isFirstSlot = slot == 0
     y = 0 if isFirstSlot else slot * 22
     slotImg = battleListContent[y:y + battleList["slot"]["height"], :]
-    creatureNameImg = slotImg[:15, 22:22 + 132]
+    creatureNameImg = slotImg[3:11+3, 23:23 + 131]
     flattenedCreatureNameImg = creatureNameImg.flatten()
-    isEmpty = np.any(flattenedCreatureNameImg == 192)
+    isEmpty = not np.any(flattenedCreatureNameImg == 192)
     if isEmpty:
         return None
+    utils.saveImg(creatureNameImg, 'creatureNameImg-{}.png'.format(slot))
     creatureHash = getHash(creatureNameImg)
     unknownCreature = not creatureHash in creaturesHashes
     creature = {
@@ -120,7 +121,7 @@ def getCreatures(battleListContent):
 
 
 def getFilledSlots(battleListContent):
-    battleListContentFlattened = battleListContent[:, 78:79].flatten()
+    battleListContentFlattened = battleListContent[:, 23:24].flatten()
     possibleCreatureNames = np.nonzero(
         np.where(
             battleListContentFlattened == battleList["creatures"]["nameColor"],
@@ -137,12 +138,12 @@ def getFilledSlots(battleListContent):
     return filledSlots
 
 
-@utils.cacheObjectPos
+@ utils.cacheObjectPos
 def getNextEndOfContainer(img):
     return utils.locate(img, endOfContainerImg)
 
 
-@utils.cacheObjectPos
+@ utils.cacheObjectPos
 def getPos(img):
     return utils.locate(img, battleListImg)
 
