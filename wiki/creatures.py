@@ -1,8 +1,8 @@
 creatures = {
     "A Greedy Eye": {"exp": None, "hp": None},
     "A Shielded Astral Glyph": {"exp": None, "hp": None},
-    "A Weak Spot": {"exp": None, "hp": None}, #not working
-    "Abominable Spawn": {"exp": None, "hp": None}, #not working
+    "A Weak Spot": {"exp": None, "hp": None},  # not working
+    "Abominable Spawn": {"exp": None, "hp": None},  # not working
     "Abyssador": {"exp": 50000, "hp": 340000},
     "Abyssal Calamary": {"exp": 200, "hp": 300},
     "Achad": {"exp": 70, "hp": 185},
@@ -12,16 +12,16 @@ creatures = {
     "Adept of the Cult": {"exp": 400, "hp": 430},
     "Adult Goanna": {"exp": 6650, "hp": 8300},
     "Adventurer": {"exp": 0, "hp": 65},
-    "Afflicted Strider": {"exp": 5700, "hp": 10000}, #not working
+    "Afflicted Strider": {"exp": 5700, "hp": 10000},  # not working
     "Aftershock": {"exp": None, "hp": None},
-    "Aggressive Chicken": {"exp": 0, "hp": 15000}, #not working
+    "Aggressive Chicken": {"exp": 0, "hp": 15000},  # not working
     "Aggressive Lava": {"exp": None, "hp": None},
     "Aggressive Matter": {"exp": 0, "hp": None},
     "Agrestic Chicken": {"exp": 0, "hp": 15},
     "Alptramun": {"exp": 55000, "hp": None},
-    "Amarie": {"exp": None, "hp": None}, #not working
-    "Amazon": {"exp": 60, "hp": 110}, 
-    "Amenef the Burning": {"exp": 21500, "hp": 26000}, #not working
+    "Amarie": {"exp": None, "hp": None},  # not working
+    "Amazon": {"exp": 60, "hp": 110},
+    "Amenef the Burning": {"exp": 21500, "hp": 26000},  # not working
     "An Astral Glyph": {"exp": None, "hp": None},
     "An Observer Eye": {"exp": 0, "hp": 30000},
     "Ancient Lion Archer": {"exp": None, "hp": None},
@@ -31,8 +31,8 @@ creatures = {
     "Ancient Spawn of Morgathla": {"exp": None, "hp": None},
     "Angry Adventurer": {"exp": 50, "hp": 65},
     "Angry Demon": {"exp": 6000, "hp": 8200},
-    "Angry Elemental": {"exp": 0, "hp": 7000}, #not working
-    "Angry King Chuck": {"exp": None, "hp": None}, #not working
+    "Angry Elemental": {"exp": 0, "hp": 7000},  # not working
+    "Angry King Chuck": {"exp": None, "hp": None},  # not working
     "Angry Plant": {"exp": None, "hp": 10000},
     "Animated Clomp": {"exp": 475, "hp": 900},
     "Animated Cyclops": {"exp": 150, "hp": 260},
@@ -47,9 +47,9 @@ creatures = {
     "Animated Skunk": {"exp": None, "hp": None},
     "Animated Snowman": {"exp": 400, "hp": 450},
     "Animated Sword": {"exp": None, "hp": None},
-    "Anmothra": {"exp": 15000, "hp": 7000}, #not working
+    "Anmothra": {"exp": 15000, "hp": 7000},  # not working
     "Annihilon": {"exp": 15000, "hp": 46500},
-    "Annoying Dog": {"exp": None, "hp": None}, #not working
+    "Annoying Dog": {"exp": None, "hp": None},  # not working
     "Anomaly": {"exp": 50000, "hp": 290000},
     "Apprentice Sheng": {"exp": 150, "hp": 95},
     "Arachir the Ancient One": {"exp": 1800, "hp": 1600},
@@ -57,28 +57,28 @@ creatures = {
     "Arctic Faun": {"exp": 300, "hp": 300},
     "Armadile": {"exp": 2900, "hp": 3800},
     "Armenius": {"exp": 500, "hp": 550},
-    "Arthei": {"exp": 4000, "hp": 4200}, #not working
-    "Arthom the Hunter": {"exp": 550, "hp": 500}, #not working
+    "Arthei": {"exp": 4000, "hp": 4200},  # not working
+    "Arthom the Hunter": {"exp": 550, "hp": 500},  # not working
     "Ascending Ferumbras": {"exp": None, "hp": None},
     "Ashmunrah": {"exp": 3100, "hp": 5000},
     "Askarak Demon": {"exp": 900, "hp": 1500},
     "Askarak Lord": {"exp": 1200, "hp": 2100},
     "Askarak Prince": {"exp": 1700, "hp": 2600},
-    "Aspect of Power": {"exp": 0, "hp": 0}, #not working
+    "Aspect of Power": {"exp": 0, "hp": 0},  # not working
     "Assassin": {"exp": 105, "hp": 175},
     "Avalanche": {"exp": 305, "hp": 550},
     "Axeitus Headbanger": {"exp": 140, "hp": 365},
-    "Azaram's Soul": {"exp": 0, "hp": None}, #not working
-    "Azerus": {"exp": 6000, "hp": 26000}, #not working
+    "Azaram's Soul": {"exp": 0, "hp": None},  # not working
+    "Azerus": {"exp": 6000, "hp": 26000},  # not working
     "Azure Frog": {"exp": 20, "hp": 60},
     "Baby Dragon": {"exp": None, "hp": None},
     "Bad Dream": {"exp": None, "hp": None},
-    "Bad Thought": {"exp": 0, "hp": 500},
+    "Bad Thought": {"exp": 0, "hp": 500},  # not working
     "Badger": {"exp": 5, "hp": 23},
     "Baleful Bunny": {"exp": 450, "hp": 500},
     "Bandit": {"exp": 65, "hp": 245},
     "Bane Bringer": {"exp": 400, "hp": 2500},
-    "Bane Lord": {"exp": 500, "hp": 3000},
+    "Bane Lord": {"exp": 500, "hp": 3000},  # not working
     "Bane of Light": {"exp": 750, "hp": 1100},
     "Banshee": {"exp": 900, "hp": 1000},
     "Barbaria": {"exp": 355, "hp": 345},
@@ -89,13 +89,13 @@ creatures = {
     "Barkless Devotee": {"exp": 2200, "hp": 2800},
     "Barkless Fanatic": {"exp": 2500, "hp": 3200},
     "Baron Brute": {"exp": 3000, "hp": 5025},
-    "Bashmu": {"exp": 5000, "hp": 8200},
+    "Bashmu": {"exp": 5000, "hp": 8200},  # not working
     "Bat": {"exp": 10, "hp": 30},
     "Battlemaster Zunzu": {"exp": 2500, "hp": 4000},
     "Bear": {"exp": 23, "hp": 80},
     "Behemoth": {"exp": 2500, "hp": 4000},
-    "Bellicose Orger": {"exp": 500, "hp": 700},
-    "Berrypest": {"exp": 0, "hp": 500},
+    "Bellicose Orger": {"exp": 500, "hp": 700},  # not working
+    "Berrypest": {"exp": 0, "hp": 500},  # not working
     "Berserker Chicken": {"exp": 220, "hp": 465},
     "Betrayed Wraith": {"exp": 3500, "hp": 4200},
     "Bibby Bloodbath": {"exp": 1500, "hp": 1200},
@@ -108,23 +108,23 @@ creatures = {
     "Black Sphinx Acolyte": {"exp": 7200, "hp": 8100},
     "Black Vixen": {"exp": 3200, "hp": 3200},
     "Blazing Fire Elemental": {"exp": 450, "hp": 650},
-    "Blemished Spawn": {"exp": 5300, "hp": 9000},
+    "Blemished Spawn": {"exp": 5300, "hp": 9000},  # not working
     "Blightwalker": {"exp": 5850, "hp": 8900},
     "Blistering Fire Elemental": {"exp": 1300, "hp": 1500},
     "Blood Beast": {"exp": 1000, "hp": 1600},
     "Blood Crab": {"exp": 160, "hp": 290},
     "Blood Hand": {"exp": 750, "hp": 700},
     "Blood Priest": {"exp": 900, "hp": 820},
-    "Blood Tear": {"exp": 0, "hp": 3500},
+    "Blood Tear": {"exp": 0, "hp": 3500},  # not working
     "Bloodback": {"exp": 4000, "hp": 5200},
     "Bloodpaw": {"exp": 50, "hp": 100},
-    "Bloom of Doom": {"exp": None, "hp": 30000},
-    "Blue Djinn": {"exp": 215, "hp": 330},
-    "Blue Soul Stealer": {"exp": None, "hp": None},
+    "Bloom of Doom": {"exp": None, "hp": 30000},  # not working
+    "Blue Djinn": {"exp": 215, "hp": 330},  # not working
+    "Blue Soul Stealer": {"exp": None, "hp": None},  # not working
     "Boar": {"exp": 60, "hp": 198},
     "Bog Frog": {"exp": 0, "hp": 25},
     "Bog Raider": {"exp": 800, "hp": 1300},
-    "Bolfrim": {"exp": 35000, "hp": 100000},
+    "Bolfrim": {"exp": 35000, "hp": 100000},  # not working
     "Bone Capsule": {"exp": None, "hp": None},
     "Bone Jaw": {"exp": 0, "hp": 4500},
     "Bonebeast": {"exp": 580, "hp": 515},
@@ -133,25 +133,25 @@ creatures = {
     "Bony Sea Devil": {"exp": 19470, "hp": 24000},
     "Boogey": {"exp": 475, "hp": 930},
     "Boogy": {"exp": 950, "hp": 1300},
-    "Boreth": {"exp": 1800, "hp": 1400},
+    "Boreth": {"exp": 1800, "hp": 1400},  # not working
     "Bound Astral Power": {"exp": None, "hp": None},
     "Bovinus": {"exp": 60, "hp": 150},
     "Brachiodemon": {"exp": 14080, "hp": 25000},
     "Bragrumol": {"exp": 18000, "hp": 38000},
-    "Brain Head": {"exp": None, "hp": None},
+    "Brain Head": {"exp": None, "hp": None},  # not working
     "Brain Squid": {"exp": 17672, "hp": 18000},
     "Braindeath": {"exp": 985, "hp": 1225},
     "Branchy Crawler": {"exp": 19000, "hp": 27000},
     "Breach Brood": {"exp": 1760, "hp": 3500},
     "Bretzecutioner": {"exp": 3700, "hp": 5600},
-    "Bride of Night": {"exp": 450, "hp": 275},
+    "Bride of Night": {"exp": 450, "hp": 275},  # not working
     "Brimstone Bug": {"exp": 900, "hp": 1300},
     "Brittle Skeleton": {"exp": 35, "hp": 50},
     "Broken Shaper": {"exp": 1600, "hp": 2200},
     "Brokul": {"exp": 23000, "hp": 50000},
     "Brother Chill": {"exp": None, "hp": None},
     "Brother Freeze": {"exp": None, "hp": None},
-    "Brother Worm": {"exp": None, "hp": None},
+    "Brother Worm": {"exp": None, "hp": None},  # not working
     "Bruise Payne": {"exp": 1000, "hp": 1600},
     "Brutus Bloodbeard": {"exp": 795, "hp": 1555},
     "Bug": {"exp": 18, "hp": 29},
@@ -159,7 +159,7 @@ creatures = {
     "Burning Book": {"exp": 11934, "hp": 18000},
     "Burning Gladiator": {"exp": 7350, "hp": 10000},
     "Burrowing Beetle": {"exp": None, "hp": None},
-    "Burster": {"exp": 10000, "hp": None},
+    "Burster": {"exp": 10000, "hp": None},  # not working
     "Burster Spectre": {"exp": 6000, "hp": 6500},
     "Butterfly": {"exp": 0, "hp": 2},
     "Cake Golem": {"exp": 100, "hp": 444},
