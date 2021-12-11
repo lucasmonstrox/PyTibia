@@ -1,12 +1,12 @@
 # 📝 Description
 
-> tibia bot api using python and gpu to get unlocked fps
+> Tibia bot api using python and gpu to get unlocked fps
 
 # 🗺️ Features Status
 
 - [Get Life]() : :heavy_check_mark:
 - [Get Mana]() : :heavy_check_mark:
-- [Get BattleList Creatures]() : :heavy_check_mark:
+- [Get BattleList Creatures](battleList/docs/README.md) : :heavy_check_mark:
 - [Get HUD Creatures]() : :warning:
 
 # ⌨ Development
