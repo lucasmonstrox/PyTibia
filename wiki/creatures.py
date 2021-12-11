@@ -612,11 +612,11 @@ creatures = {
     "Guzzlemaw": {"exp": 6050, "hp": 6400},  # not working
     "Hairman the Huge": {"exp": 335, "hp": 600},
     "Hand of Cursed Fate": {"exp": 5000, "hp": 7500},
-    "Harbinger of Darkness": {"exp": 8700, "hp": 120000},
-    "Hardened Usurper Archer": {"exp": 0, "hp": 7300},
-    "Hardened Usurper Knight": {"exp": 0, "hp": 8200},
-    "Hardened Usurper Warlock": {"exp": 0, "hp": 7500},
-    "Hatebreeder": {"exp": 10000, "hp": 18000},
+    "Harbinger of Darkness": {"exp": 8700, "hp": 120000},  # not working
+    "Hardened Usurper Archer": {"exp": 0, "hp": 7300},  # not working
+    "Hardened Usurper Knight": {"exp": 0, "hp": 8200},  # not working
+    "Hardened Usurper Warlock": {"exp": 0, "hp": 7500},  # not working
+    "Hatebreeder": {"exp": 10000, "hp": 18000},  # not working
     "Hateful Soul": {"exp": None, "hp": None},
     "Haunted Dragon": {"exp": 6500, "hp": 6500},
     "Haunted Treeling": {"exp": 310, "hp": 450},
@@ -635,22 +635,22 @@ creatures = {
     "Hibernal Moth": {"exp": 700, "hp": 850},
     "Hide": {"exp": 240, "hp": 500},
     "Hideous Fungus": {"exp": 2900, "hp": 4600},
-    "High Templar Cobrass": {"exp": 515, "hp": 410},
+    "High Templar Cobrass": {"exp": 515, "hp": 410},  # not working
     "High Voltage Elemental": {"exp": 1500, "hp": 1500},
     "Hirintror": {"exp": 800, "hp": 1500},
     "Hive Overseer": {"exp": 5500, "hp": 7500},
     "Hive Pore": {"exp": None, "hp": None},
-    "Holy Bog Frog": {"exp": 0, "hp": 25},
+    "Holy Bog Frog": {"exp": 0, "hp": 25},  # not working
     "Honour Guard": {"exp": 55, "hp": 85},
-    "Hoodinion": {"exp": 0, "hp": 0},
+    "Hoodinion": {"exp": 0, "hp": 0},  # not working
     "Horadron": {"exp": 18000, "hp": 30000},
     "Horestis": {"exp": 3500, "hp": 6000},
     "Horrible Dream": {"exp": 0, "hp": None},
-    "Horror": {"exp": None, "hp": None},
+    "Horror": {"exp": None, "hp": None},  # not working
     "Horse": {"exp": 0, "hp": 75},
     "Hot Dog": {"exp": 190, "hp": 505},
-    "Hulking Carnisylvan": {"exp": 4200, "hp": 8600},
-    "Human": {"exp": 50, "hp": 150},
+    "Hulking Carnisylvan": {"exp": 4200, "hp": 8600},  # not working
+    "Human": {"exp": 50, "hp": 150},  # not working
     "Humongous Fungus": {"exp": 2600, "hp": 3400},
     "Humorless Fungus": {"exp": 0, "hp": 2500},
     "Hunger Worm": {"exp": None, "hp": None},
