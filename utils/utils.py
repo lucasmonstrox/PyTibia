@@ -1,4 +1,4 @@
-import cupy as cp
+#import cupy as cp
 import cv2
 import numpy as np
 from PIL import Image
@@ -73,10 +73,10 @@ def locate(compareImg, img):
     return (left, top, width, height)
 
 
-def saveCpImg(cpArray, name):
-    npArray = cp.asnumpy(cpArray)
-    im = Image.fromarray(npArray)
-    im.save(name)
+#def saveCpImg(cpArray, name):
+#    npArray = cp.asnumpy(cpArray)
+#    im = Image.fromarray(npArray)
+#    im.save(name)
 
 
 def saveImg(arr, name):
