@@ -698,7 +698,7 @@ creatures = {
     "Jellyfish": {"exp": 0, "hp": 55},
     "Jesse the Wicked": {"exp": 180, "hp": 280},
     "Juggernaut": {"exp": 11200, "hp": 20000},
-    "Juvenile Bashmu": {"exp": 4500, "hp": 7500},
+    "Juvenile Bashmu": {"exp": 4500, "hp": 7500},  # not working
     "Juvenile Cyclops": {"exp": 130, "hp": 260},
     "Kalyassa": {"exp": 9000, "hp": 10000},
     "Katex Blood Tongue": {"exp": 5000, "hp": 6300},
