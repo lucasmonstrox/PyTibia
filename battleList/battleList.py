@@ -4,6 +4,7 @@ import math
 import numpy as np
 from utils import utils
 import xxhash
+from wiki.creatures import creatures
 
 
 battleList = {
@@ -26,48 +27,23 @@ def getHash(creatureNameImg):
     return hashCode
 
 
-butterflyImg = np.array(cv2.imread(
-    'battleList/images/monsters/butterfly.png', cv2.IMREAD_GRAYSCALE))
-centipedeImg = np.array(cv2.imread(
-    'battleList/images/monsters/centipede.png', cv2.IMREAD_GRAYSCALE))
-crocodileImg = np.array(cv2.imread(
-    'battleList/images/monsters/crocodile.png', cv2.IMREAD_GRAYSCALE))
-elephantImg = np.array(cv2.imread(
-    'battleList/images/monsters/elephant.png', cv2.IMREAD_GRAYSCALE))
-flamingoImg = np.array(cv2.imread(
-    'battleList/images/monsters/flamingo.png', cv2.IMREAD_GRAYSCALE))
-hunterImg = np.array(cv2.imread(
-    'battleList/images/monsters/hunter.png', cv2.IMREAD_GRAYSCALE))
-lizardSentinelImg = np.array(cv2.imread(
-    'battleList/images/monsters/lizardSentinel.png', cv2.IMREAD_GRAYSCALE))
-lizardTemplarImg = np.array(cv2.imread(
-    'battleList/images/monsters/lizardTemplar.png', cv2.IMREAD_GRAYSCALE))
-poisonSpiderImg = np.array(cv2.imread(
-    'battleList/images/monsters/poisonSpider.png', cv2.IMREAD_GRAYSCALE))
-sandcrawlerImg = np.array(cv2.imread(
-    'battleList/images/monsters/sandcrawler.png', cv2.IMREAD_GRAYSCALE))
-snakeImg = np.array(cv2.imread(
-    'battleList/images/monsters/snake.png', cv2.IMREAD_GRAYSCALE))
-spitNettleImg = np.array(cv2.imread(
-    'battleList/images/monsters/spitNettle.png', cv2.IMREAD_GRAYSCALE))
-waspImg = np.array(cv2.imread(
-    'battleList/images/monsters/wasp.png', cv2.IMREAD_GRAYSCALE))
+creaturesHashes = {}
 
-creaturesHashes = {
-    getHash(butterflyImg): {"name": "Butterfly", "type": "Monster"},
-    getHash(centipedeImg): {"name": "Centipede", "type": "Monster"},
-    getHash(crocodileImg): {"name": "Crocodile", "type": "Monster"},
-    getHash(elephantImg): {"name": "Elephant", "type": "Monster"},
-    getHash(flamingoImg): {"name": "Flamingo", "type": "Monster"},
-    getHash(hunterImg): {"name": "Hunter", "type": "Monster"},
-    getHash(lizardSentinelImg): {"name": "Lizard Sentinel", "type": "Monster"},
-    getHash(lizardTemplarImg): {"name": "Lizard Templar", "type": "Monster"},
-    getHash(poisonSpiderImg): {"name": "Poison Spider", "type": "Monster"},
-    getHash(sandcrawlerImg): {"name": "Sandcrawler", "type": "Monster"},
-    getHash(snakeImg): {"name": "Snake", "type": "Monster"},
-    getHash(spitNettleImg): {"name": "Spit Nettle", "type": "Monster"},
-    getHash(waspImg): {"name": "Wasp", "type": "Monster"},
-}
+for creature in creatures:
+    if creature == 'Butterfly':
+        break
+    creatureImg = np.array(
+        cv2.imread(
+            'battleList/images/monsters/{}.png'.format(creature),
+            cv2.IMREAD_GRAYSCALE
+        )
+    )
+    creatureHash = xxhash.xxh64(creatureImg).intdigest()
+    creaturesHashes[creatureHash] = {
+        "name": creature,
+        "hash": creatureHash,
+        "info": creatures[creature]
+    }
 
 
 class BattleListIsTooSmallError():
@@ -90,7 +66,7 @@ def getCreatureBySlot(battleListContent, slot):
     isEmpty = not np.any(flattenedCreatureNameImg == 192)
     if isEmpty:
         return None
-    utils.saveImg(creatureNameImg, 'creatureNameImg-{}.png'.format(slot))
+    # utils.saveImg(creatureNameImg, 'creatureNameImg-{}.png'.format(slot))
     creatureHash = getHash(creatureNameImg)
     unknownCreature = not creatureHash in creaturesHashes
     creature = {

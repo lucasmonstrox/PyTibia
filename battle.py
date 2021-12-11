@@ -23,15 +23,15 @@ def main():
     screenshot = np.ascontiguousarray(
         np.array(cv2.imread('screenshot.png', cv2.IMREAD_GRAYSCALE)))
     while True:
-        # screenshot = getScreenshot(d3)
+        screenshot = getScreenshot(d3)
         creatures = battleList.getCreatures(screenshot)
-        # print(creatures)
+        # print(creatures, flush=True)
         # break
-        timef = (time() - loop_time)
-        timef = timef if timef else 1
-        fps = 1 / timef
-        print('FPS {}'.format(fps))
-        loop_time = time()
+        # timef = (time() - loop_time)
+        # timef = timef if timef else 1
+        # fps = 1 / timef
+        # print('FPS {}'.format(fps))
+        # loop_time = time()
 
 
 if __name__ == '__main__':
