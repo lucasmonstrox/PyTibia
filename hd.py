@@ -23,7 +23,7 @@ frostDragonHash = cp.array(cv2.imread(
 frostDragonHash = cp.where(frostDragonHash == 0, 1, 0)
 frostDragonHashKeys = cp.nonzero(frostDragonHash)
 
-messHash = cp.array(cv2.imread('messHash.png', cv2.IMREAD_GRAYSCALE))
+messHash = cp.array(cv2.imread('messHash2.png', cv2.IMREAD_GRAYSCALE))
 
 creaturesHashes = {
     "Dromedary": {
@@ -52,8 +52,9 @@ def getMonsterNameFromMessHash(creaturesNames, possibleCreatureHash):
 def main():
     loop_time = time()
     while True:
-        print(getMonsterNameFromMessHash(
-            ["Dromedary", "Frost Dragon"], messHash))
+        currentMonster = getMonsterNameFromMessHash(
+            ["Dromedary", "Frost Dragon"], messHash)
+        print(currentMonster)
         break
         timef = (time() - loop_time)
         timef = timef if timef else 1

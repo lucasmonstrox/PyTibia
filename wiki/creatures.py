@@ -262,7 +262,7 @@ creatures = {
     "Damned Soul": {"exp": None, "hp": None},
     "Darakan the Executioner": {"exp": 1600, "hp": 3480},
     "Dark Apprentice": {"exp": 100, "hp": 225},
-    "Dark Carnisylvan": {"exp": 3900, "hp": 7500},
+    "Dark Carnisylvan": {"exp": 3900, "hp": 7500},  # not working
     "Dark Druid": {"exp": None, "hp": None},
     "Dark Faun": {"exp": 900, "hp": 1100},
     "Dark Knight": {"exp": None, "hp": None},
@@ -284,7 +284,7 @@ creatures = {
     "Death Dragon": {"exp": None, "hp": 8350},
     "Death Priest": {"exp": 750, "hp": 800},
     "Death Priest Shargon": {"exp": None, "hp": 65000},
-    "Death Reaper": {"exp": None, "hp": None},
+    "Death Reaper": {"exp": None, "hp": None},  # not working
     "Deathbine": {"exp": 340, "hp": 525},
     "Deathbringer": {"exp": 5100, "hp": 8440},
     "Deathling Scout": {"exp": 6300, "hp": 7200},
@@ -306,7 +306,7 @@ creatures = {
     "Deepworm": {"exp": 2300, "hp": 3500},
     "Deer": {"exp": 0, "hp": 25},
     "Defiler": {"exp": 3700, "hp": 3650},
-    "Delany": {"exp": 30000, "hp": 100000},
+    "Delany": {"exp": 30000, "hp": 100000},  # not working
     "Demodras": {"exp": 6000, "hp": 4500},
     "Demon": {"exp": 6000, "hp": 8200},
     "Demon Blood": {"exp": 0, "hp": None},
@@ -323,7 +323,7 @@ creatures = {
     "Destroyed Pillar": {"exp": 0, "hp": 0},
     "Destroyer": {"exp": 2500, "hp": 3700},
     "Devourer": {"exp": 1755, "hp": 1900},
-    "Devovorga": {"exp": None, "hp": 500000},
+    "Devovorga": {"exp": None, "hp": 500000},  # not working
     "Dharalion": {"exp": 570, "hp": 380},
     "Diabolic Imp": {"exp": 2900, "hp": 1950},
     "Diamond Servant": {"exp": 700, "hp": 1000},
@@ -341,10 +341,10 @@ creatures = {
     "Distorted Phantom": {"exp": 18870, "hp": 26000},
     "Doctor Perhaps": {"exp": 325, "hp": 475},
     "Dog": {"exp": 0, "hp": 20},
-    "Domestikion": {"exp": 0, "hp": 0},
+    "Domestikion": {"exp": 0, "hp": 0},  # not working
     "Doom Deer": {"exp": 200, "hp": 405},
     "Doomhowl": {"exp": 3750, "hp": 8500},
-    "Doomsday Cultist": {"exp": 100, "hp": 125},
+    "Doomsday Cultist": {"exp": 100, "hp": 125},  # not working
     "Dracola": {"exp": 11000, "hp": 16200},
     "Dragon": {"exp": 700, "hp": 1000},
     "Dragon Egg": {"exp": None, "hp": None},
@@ -366,7 +366,7 @@ creatures = {
     "Dread Intruder": {"exp": 2400, "hp": 4500},
     "Dread Minion": {"exp": 0, "hp": None},
     "Dreadbeast": {"exp": 250, "hp": 800},
-    "Dreadful Disruptor": {"exp": 14000, "hp": None},
+    "Dreadful Disruptor": {"exp": 14000, "hp": None},  # not working
     "Dreadful Harvester": {"exp": None, "hp": None},
     "Dreadmaw": {"exp": None, "hp": None},
     "Dreadwing": {"exp": 3750, "hp": 8500},
@@ -379,10 +379,10 @@ creatures = {
     "Duke Krule": {"exp": 55000, "hp": None},
     "Duskbringer": {"exp": 2600, "hp": 3550},
     "Dwarf": {"exp": 45, "hp": 90},
-    "Dwarf Dispenser": {"exp": None, "hp": None},
+    "Dwarf Dispenser": {"exp": None, "hp": None},  # not working
     "Dwarf Geomancer": {"exp": 265, "hp": 380},
     "Dwarf Guard": {"exp": 165, "hp": 245},
-    "Dwarf Henchman": {"exp": 15, "hp": 350},
+    "Dwarf Henchman": {"exp": 15, "hp": 350},  # not working
     "Dwarf Miner": {"exp": 60, "hp": 120},
     "Dwarf Soldier": {"exp": 70, "hp": 135},
     "Dworc Fleshhunter": {"exp": 40, "hp": 85},

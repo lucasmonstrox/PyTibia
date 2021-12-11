@@ -1,7 +1,8 @@
-#import cupy as cp
+import cupy as cp
 import cv2
 import numpy as np
 from PIL import Image
+import xxhash
 
 
 def cacheObjectPos(func):
@@ -14,9 +15,9 @@ def cacheObjectPos(func):
     def inner(screenshot):
         nonlocal lastX, lastY, lastW, lastH, lastImgHash
         if(lastX != None and lastY != None and lastW != None and lastH != None):
-            copiedImg = screenshot[lastY:lastY +
-                                   lastH, lastX:lastX + lastW]
-            copiedImgHash = hash(copiedImg.tostring())
+            copiedImg = np.ascontiguousarray(screenshot[lastY:lastY +
+                                                        lastH, lastX:lastX + lastW])
+            copiedImgHash = xxhash.xxh64(copiedImg).intdigest()
             if copiedImgHash == lastImgHash:
                 return (lastX, lastY, lastW, lastH)
         (x, y, w, h) = func(screenshot)
@@ -24,8 +25,9 @@ def cacheObjectPos(func):
         lastY = y
         lastW = w
         lastH = h
-        lastImgHash = hash(
-            screenshot[lastY:lastY + lastH, lastX:lastX + lastW].tobytes())
+        lastImg = np.ascontiguousarray(
+            screenshot[lastY:lastY + lastH, lastX:lastX + lastW])
+        lastImgHash = xxhash.xxh64(lastImg).intdigest()
         return (x, y, w, h)
     return inner
 
@@ -71,10 +73,10 @@ def locate(compareImg, img):
     return (left, top, width, height)
 
 
-#def saveCpImg(cpArray, name):
-#    npArray = cp.asnumpy(cpArray)
-#    im = Image.fromarray(npArray)
-#    im.save(name)
+def saveCpImg(cpArray, name):
+    npArray = cp.asnumpy(cpArray)
+    im = Image.fromarray(npArray)
+    im.save(name)
 
 
 def saveImg(arr, name):
