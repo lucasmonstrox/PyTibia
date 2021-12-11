@@ -27,7 +27,7 @@ Each slot dimension is 156x20. The cropped image to detect a single monster is s
 
 To detect monster name is necessary to crop only the name area like the image below:
 
-![Creature marked name](./images/creature-slot-marked-name.png)
+![Creature black name](./images/creature-black-name.png)
 
 Once the name area is cropped, a hash will be generated to access creatures dict variable to get the correct creature.
 
