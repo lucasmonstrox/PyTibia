@@ -30,8 +30,6 @@ def getHash(creatureNameImg):
 creaturesHashes = {}
 
 for creature in creatures:
-    if creature == 'Butterfly':
-        break
     creatureImg = np.array(
         cv2.imread(
             'battleList/images/monsters/{}.png'.format(creature),
@@ -44,6 +42,8 @@ for creature in creatures:
         "hash": creatureHash,
         "info": creatures[creature]
     }
+    if creature == 'Juvenile Cyclops':
+        break
 
 
 class BattleListIsTooSmallError():
@@ -66,7 +66,7 @@ def getCreatureBySlot(battleListContent, slot):
     isEmpty = not np.any(flattenedCreatureNameImg == 192)
     if isEmpty:
         return None
-    utils.saveImg(creatureNameImg, 'creatureNameImg-{}.png'.format(slot))
+    # utils.saveImg(creatureNameImg, 'creatureNameImg-{}.png'.format(slot))
     creatureHash = getHash(creatureNameImg)
     unknownCreature = not creatureHash in creaturesHashes
     creature = {

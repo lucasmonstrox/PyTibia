@@ -323,32 +323,19 @@ def goToCoordinate(destinationCoordinate):
 
 
 def goToCoordinateByScreenClick(coordinate):
-    print('coordinate: ', coordinate)
     playerCoordinateX, playerCoordinateY, playerCoordinateZ = getCoordinate()
-    print('playerCoordinateX: {}, playerCoordinateY: {}, playerCoordinateZ: {}'.format(
-        playerCoordinateX, playerCoordinateY, playerCoordinateZ))
     playerWindowCoordinateX, playerWindowCoordinateY = getPlayerWindowCoordinate()
-    print('playerWindowCoordinateX: {}, playerWindowCoordinateY: {}'.format(
-        playerWindowCoordinateX, playerWindowCoordinateY))
     destinationX, destinationY, destinationZ = coordinate
-    print('destinationX: {}, destinationY: {}, destinationZ: {}'.format(
-        destinationX, destinationY, destinationZ))
     squareMeterSize = utils.getSquareMeterSize()
-    print('squareMeterSize: {}'.format(squareMeterSize))
     # TODO: avoid battleye detection clicking in a random pixel inside squaremeter
     mouseClickX = playerWindowCoordinateX + \
         ((destinationX - playerCoordinateX) * squareMeterSize)
-    # 33121 / ((33122 - 33121) * 51.45)
-    print('mouseClickX: {}'.format(mouseClickX))
     # TODO: avoid battleye detection clicking in a random pixel inside squaremeter
     mouseClickY = playerWindowCoordinateY + \
         ((destinationY - playerCoordinateY) * squareMeterSize)
-    print('mouseClickY: {}'.format(mouseClickY))
     # TODO: avoid battleye detection adding humanoid movementation
     pyautogui.moveTo(mouseClickX, mouseClickY, duration=0.75)
-    print('deu 1')
     pyautogui.click(mouseClickX, mouseClickY)
-    print('deu 2')
 
 
 def goToCoordinateByRadarClick(coordinate):

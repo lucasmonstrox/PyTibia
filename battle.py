@@ -23,9 +23,9 @@ def main():
     screenshot = np.ascontiguousarray(
         np.array(cv2.imread('screenshot.png', cv2.IMREAD_GRAYSCALE)))
     while True:
-        # screenshot = getScreenshot(d3)
+        screenshot = getScreenshot(d3)
         creatures = battleList.getCreatures(screenshot)
-        # print(creatures, flush=True)
+        print(creatures, flush=True)
         # break
         timef = (time() - loop_time)
         timef = timef if timef else 1

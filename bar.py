@@ -25,14 +25,20 @@ x = i % lengthPerRow
 y = math.ceil(i / lengthPerRow)
 
 
+[3, 2, 1, 0, 0, 0, 3, 2, 1, 0, 0, 0, 3, 2, 1, 0, 0, 0]
+
+
 # TODO: use asyncio to get possible monsters
 def getPossibleMonstersInPlayableWindow(arr, seq):
     r_seq = cp.arange(seq.size)
     # TODO: initialize values directly
-    arr = arr[cp.arange(arr.size - seq.size + 1)[:, None] + r_seq]
-    possibleMonsters = cp.nonzero((arr == seq).all(1))[0]
-    if len(possibleMonsters) == 0:
-        return cp.array([])
+    arr = cp.where(arr == 0, 1, 0)
+    arrKeys = cp.nonzero(arr == 1)
+    print(len(arrKeys[0]))
+    # arr = arr[cp.arange(arr.size - seq.size + 1)[:, None] + r_seq]
+    # possibleMonsters = cp.nonzero((arr == seq).all(1))[0]
+    # if len(possibleMonsters) == 0:
+    #     return cp.array([])
     # print(arr[0])
     # possibleMonsters = cp.where(
     # cp.logical_and(
@@ -42,11 +48,11 @@ def getPossibleMonstersInPlayableWindow(arr, seq):
     # ),
     # 0, possibleMonsters
     # )
-    x = possibleMonsters[0] % 480
-    y = math.ceil(possibleMonsters[0] / 480)
-    print('x, y', (x, y))
-    possibleMonsters = possibleMonsters[possibleMonsters != 0]
-    return possibleMonsters
+    # x = possibleMonsters[0] % 480
+    # y = math.ceil(possibleMonsters[0] / 480)
+    # print('x, y', (x, y))
+    # possibleMonsters = possibleMonsters[possibleMonsters != 0]
+    # return possibleMonsters
 
 
 def getScreenshot(d3):
@@ -64,11 +70,12 @@ def main():
     screenshot = cp.ascontiguousarray(
         cp.array(cv2.imread('screenshot.png', cv2.IMREAD_GRAYSCALE)))
     while True:
-        screenshot = getScreenshot(d3)
+        # screenshot = getScreenshot(d3)
         playable = screenshot[35:35 + 352, 151:151 + 480].flatten()
         possibleMonsters = getPossibleMonstersInPlayableWindow(
             playable, upperBar)
         # print(possibleMonsters)
+        break
         timef = (time() - loop_time)
         timef = timef if timef else 1
         fps = 1 / timef

@@ -443,13 +443,6 @@ def getMonsterHashByImg(img):
 
 
 monstersHashes = {
-    getMonsterHashByImg(Image.open('monsters/images/battlelist/centipede.png').convert('RGB')): {"name": "Centipede"},
-    getMonsterHashByImg(Image.open('monsters/images/battlelist/cobra.png').convert('RGB')): {"name": "Cobra"},
-    getMonsterHashByImg(Image.open('monsters/images/battlelist/crocodile.png').convert('RGB')): {"name": "Crocodile"},
-    getMonsterHashByImg(Image.open('monsters/images/battlelist/lizard-sentinel.png').convert('RGB')): {"name": "Lizard Sentinel"},
-    getMonsterHashByImg(Image.open('monsters/images/battlelist/lizard-snakecharmer.png').convert('RGB')): {"name": "Lizard Snakecharmer"},
-    getMonsterHashByImg(Image.open('monsters/images/battlelist/lizard-templar.png').convert('RGB')): {"name": "Lizard Templar"},
-    getMonsterHashByImg(Image.open('monsters/images/battlelist/spit-nettle.png').convert('RGB')): {"name": "Spit Nettle"}
 }
 
 shouldRetryWaypoint = True

@@ -119,7 +119,7 @@ creatures = {
     "Bloodback": {"exp": 4000, "hp": 5200},
     "Bloodpaw": {"exp": 50, "hp": 100},
     "Bloom of Doom": {"exp": None, "hp": 30000},  # not working
-    "Blue Djinn": {"exp": 215, "hp": 330},  # not working
+    "Blue Djinn": {"exp": 215, "hp": 330},
     "Blue Soul Stealer": {"exp": None, "hp": None},  # not working
     "Boar": {"exp": 60, "hp": 198},
     "Bog Frog": {"exp": 0, "hp": 25},
@@ -208,7 +208,7 @@ creatures = {
     "Cocoon": {"exp": None, "hp": None},  # not working
     "Coldheart": {"exp": 3500, "hp": 7000},
     "Colerian the Barbarian": {"exp": 90, "hp": 265},
-    "Concentrated Death": {"exp": None, "hp": None},  # not working
+    "Concentrated Death": {"exp": None, "hp": None},
     "Condensed Sin": {"exp": 0, "hp": None},  # not working
     "Containment Crystal": {"exp": 0, "hp": None},
     "Containment Machine": {"exp": 0, "hp": 6500},
@@ -218,10 +218,10 @@ creatures = {
     "Corym Charlatan": {"exp": 150, "hp": 250},
     "Corym Skirmisher": {"exp": 260, "hp": 450},
     "Corym Vanguard": {"exp": 490, "hp": 700},
-    "Cosmic Energy Prism A": {"exp": 840, "hp": 1000},  # 1
-    "Cosmic Energy Prism B": {"exp": 840, "hp": 1000},
-    "Cosmic Energy Prism C": {"exp": 840, "hp": 1000},
-    "Cosmic Energy Prism D": {"exp": 840, "hp": 1000},
+    "Cosmic Energy Prism A": {"exp": 840, "hp": 1000},  # collision name
+    "Cosmic Energy Prism B": {"exp": 840, "hp": 1000},  # collision name
+    "Cosmic Energy Prism C": {"exp": 840, "hp": 1000},  # collision name
+    "Cosmic Energy Prism D": {"exp": 840, "hp": 1000},  # collision name
     "Count Vlarkorth": {"exp": None, "hp": None},
     "Countess Sorrow": {"exp": 13000, "hp": 6500},
     "Courage Leech": {"exp": 18900, "hp": 27000},
@@ -235,7 +235,7 @@ creatures = {
     "Crazed Summer Vanguard": {"exp": 5000, "hp": 5500},
     "Crazed Winter Rearguard": {"exp": 4700, "hp": 5200},
     "Crazed Winter Vanguard": {"exp": 5400, "hp": 5800},
-    "Crimson Frog": {"exp": 20, "hp": 60},  # not working
+    "Crimson Frog": {"exp": 20, "hp": 60},
     "Crocodile": {"exp": 40, "hp": 105},
     "Crustacea Gigantica": {"exp": 1800, "hp": 1600},
     "Crypt Defiler": {"exp": 70, "hp": 185},
@@ -247,15 +247,15 @@ creatures = {
     "Crystalcrusher": {"exp": 500, "hp": 570},
     "Cublarc the Plunderer": {"exp": 400, "hp": 400},  # not working
     "Cult Believer": {"exp": 850, "hp": 975},
-    "Cult Enforcer": {"exp": 1000, "hp": 1150},  # not working
-    "Cult Scholar": {"exp": 1100, "hp": 1650},  # not working
+    "Cult Enforcer": {"exp": 1000, "hp": 1150},
+    "Cult Scholar": {"exp": 1100, "hp": 1650},
     "Cursed Book": {"exp": 13345, "hp": 20000},
-    "Cursed Gladiator": {"exp": 215, "hp": 435},  # not working
-    "Cursed Prospector": {"exp": 5250, "hp": 3900},  # not working
-    "Custodian": {"exp": 27500, "hp": 47000},  # not working
-    "Cyclops": {"exp": 150, "hp": 260},  # not working
-    "Cyclops Drone": {"exp": 200, "hp": 325},  # not working
-    "Cyclops Smith": {"exp": 255, "hp": 435},  # not working
+    "Cursed Gladiator": {"exp": 215, "hp": 435},
+    "Cursed Prospector": {"exp": 5250, "hp": 3900},
+    "Custodian": {"exp": 27500, "hp": 47000},
+    "Cyclops": {"exp": 150, "hp": 260},
+    "Cyclops Drone": {"exp": 200, "hp": 325},
+    "Cyclops Smith": {"exp": 255, "hp": 435},
     "Damage Resonance": {"exp": None, "hp": 11000},
     "Damaged Crystal Golem": {"exp": 0, "hp": 500},
     "Damaged Worker Golem": {"exp": 95, "hp": 260},
@@ -264,7 +264,7 @@ creatures = {
     "Dark Apprentice": {"exp": 100, "hp": 225},
     "Dark Carnisylvan": {"exp": 3900, "hp": 7500},  # not working
     "Dark Druid": {"exp": None, "hp": None},
-    "Dark Faun": {"exp": 900, "hp": 1100},
+    "Dark Faun": {"exp": 900, "hp": 1100},  # disappearing
     "Dark Knight": {"exp": None, "hp": None},
     "Dark Knowledge": {"exp": 0, "hp": None},
     "Dark Magician": {"exp": 185, "hp": 325},
@@ -400,17 +400,17 @@ creatures = {
     "Elder Bonelord": {"exp": 280, "hp": 500},
     "Elder Forest Fury": {"exp": 330, "hp": 670},  # not working
     "Elder Mummy": {"exp": 560, "hp": 850},
-    "Elder Wyrm": {"exp": 2500, "hp": 2700}, 
+    "Elder Wyrm": {"exp": 2500, "hp": 2700},
     "Elephant": {"exp": 160, "hp": 320},
     "Elf": {"exp": 42, "hp": 100},
     "Elf Arcanist": {"exp": 175, "hp": 220},
-    "Elf Overseer": {"exp": 290, "hp": 500}, #not working
+    "Elf Overseer": {"exp": 290, "hp": 500},  # not working
     "Elf Scout": {"exp": 75, "hp": 160},
-    "Elvira Hammerthrust": {"exp": 165, "hp": 245}, #not working
+    "Elvira Hammerthrust": {"exp": 165, "hp": 245},  # not working
     "Ember Beast": {"exp": None, "hp": None},
     "Emerald Damselfly": {"exp": 35, "hp": 90},
-    "Empowered Glooth Horror": {"exp": None, "hp": 25000}, 
-    "Empty": {"exp": None, "hp": None}, #not working
+    "Empowered Glooth Horror": {"exp": None, "hp": 25000},
+    "Empty": {"exp": None, "hp": None},  # not working
     "Energetic Book": {"exp": 12034, "hp": 18500},
     "Energized Raging Mage": {"exp": 0, "hp": 3500},
     "Energuardian of Tales": {"exp": 11361, "hp": 14000},
@@ -419,17 +419,17 @@ creatures = {
     "Energy Pulse": {"exp": None, "hp": None},
     "Enfeebled Silencer": {"exp": 1100, "hp": 1100},
     "Enlightened of the Cult": {"exp": 500, "hp": 700},
-    "Enraged Bookworm": {"exp": 55, "hp": 145}, #not working
-    "Enraged Crystal Golem": {"exp": 550, "hp": 700}, 
+    "Enraged Bookworm": {"exp": 55, "hp": 145},  # not working
+    "Enraged Crystal Golem": {"exp": 550, "hp": 700},
     "Enraged Sand Brood": {"exp": None, "hp": None},
     "Enraged Soul": {"exp": 120, "hp": 150},
     "Enraged Squirrel": {"exp": 15, "hp": 35},
     "Enraged White Deer": {"exp": 165, "hp": 255},
     "Enslaved Dwarf": {"exp": 2700, "hp": 3800},
     "Enthralled Demon": {"exp": None, "hp": 8200},
-    "Enusat the Onyx Wing": {"exp": 21500, "hp": 25000}, #not working
+    "Enusat the Onyx Wing": {"exp": 21500, "hp": 25000},  # not working
     "Eradicator": {"exp": 50000, "hp": 290000},
-    "Eruption of Destruction": {"exp": 0, "hp": 8500}, #not working
+    "Eruption of Destruction": {"exp": 0, "hp": 8500},
     "Esmeralda": {"exp": 600, "hp": 800},
     "Essence of Darkness": {"exp": 30, "hp": None},
     "Essence of Malice": {"exp": 150000, "hp": 250000},
@@ -527,20 +527,20 @@ creatures = {
     "Ghastly Dragon": {"exp": 4600, "hp": 7800},
     "Ghazbaran": {"exp": 15000, "hp": 60000},
     "Ghost": {"exp": 120, "hp": 150},
-    "Ghost of a Planegazer": {"exp": 1100, "hp": 1450}, #not working
-    "Ghost Rat": {"exp": 0, "hp": None}, #not working
+    "Ghost of a Planegazer": {"exp": 1100, "hp": 1450},  # not working
+    "Ghost Rat": {"exp": 0, "hp": None},  # not working
     "Ghost Wolf": {"exp": 65, "hp": 160},
-    "Ghostly Apparition": {"exp": 120, "hp": 150}, #not working
+    "Ghostly Apparition": {"exp": 120, "hp": 150},  # not working
     "Ghoul": {"exp": 85, "hp": 100},
     "Ghoulish Hyaena": {"exp": 195, "hp": 400},
     "Ghulosh": {"exp": 45000, "hp": None},
     "Ghulosh' Deathgaze": {"exp": 0, "hp": None},
     "Giant Spider": {"exp": 900, "hp": 1300},
-    "Girtablilu Warrior": {"exp": 5800, "hp": 8500}, #not working
+    "Girtablilu Warrior": {"exp": 5800, "hp": 8500},  # not working
     "Gladiator": {"exp": 90, "hp": 185},
     "Glitterscale": {"exp": 700, "hp": 1000},
     "Gloom Wolf": {"exp": 70, "hp": 200},
-    "Gloombringer": {"exp": 6000, "hp": 50000}, #not working
+    "Gloombringer": {"exp": 6000, "hp": 50000},  # not working
     "Glooth Anemone": {"exp": 1755, "hp": 2400},
     "Glooth Bandit": {"exp": 2000, "hp": 2600},
     "Glooth Battery": {"exp": 3000, "hp": 8000},
@@ -555,7 +555,7 @@ creatures = {
     "Glooth Slasher": {"exp": None, "hp": None},
     "Glooth Trasher": {"exp": None, "hp": None},
     "Glooth-Generator": {"exp": 0, "hp": 12000},
-    "Glowing Lava": {"exp": 0, "hp": 0}, #not working
+    "Glowing Lava": {"exp": 0, "hp": 0},  # not working
     "Gnarlhound": {"exp": 60, "hp": 198},
     "Gnome Pack Crawler": {"exp": None, "hp": None},
     "Gnomevil": {"exp": 45000, "hp": 250000},
@@ -567,7 +567,7 @@ creatures = {
     "Golden Servant": {"exp": 450, "hp": 550},
     "Golden Servant Replica": {"exp": 450, "hp": 2000},
     "Goldhanded Cultist": {"exp": 2000, "hp": 3000},
-    "Goldhanded Cultist Bride": {"exp": 2000, "hp": 3000}, #not working
+    "Goldhanded Cultist Bride": {"exp": 2000, "hp": 3000},  # not working
     "Golgordan": {"exp": 10000, "hp": 40000},
     "Gorgo": {"exp": 7000, "hp": 4500},
     "Gorzindel": {"exp": None, "hp": None},
@@ -588,27 +588,27 @@ creatures = {
     "Grave Robber": {"exp": 65, "hp": 165},
     "Gravedigger": {"exp": 950, "hp": 1500},
     "Gravelord Oshuran": {"exp": 2400, "hp": 3100},
-    "Greater Canopic Jar": {"exp": 0, "hp": 7000}, #not working
+    "Greater Canopic Jar": {"exp": 0, "hp": 7000},  # not working
     "Greater Death Minion": {"exp": 0, "hp": 1500},
-    "Greater Splinter of Madness": {"exp": None, "hp": None}, #not working
+    "Greater Splinter of Madness": {"exp": None, "hp": None},  # not working
     "Greed": {"exp": None, "hp": None},
-    "Greed Worm": {"exp": None, "hp": None}, #not working
+    "Greed Worm": {"exp": None, "hp": None},  # not working
     "Greedbeast": {"exp": 0, "hp": 0},
     "Green Djinn": {"exp": 215, "hp": 330},
     "Green Frog": {"exp": 0, "hp": 25},
-    "Green Soul Stealer": {"exp": None, "hp": None}, #not working
+    "Green Soul Stealer": {"exp": None, "hp": None},  # not working
     "Grim Reaper": {"exp": 5500, "hp": 3900},
     "Grimeleech": {"exp": 7216, "hp": 9500},
     "Grimgor Guteater": {"exp": 670, "hp": 1155},
     "Groam": {"exp": 180, "hp": 400},
-    "Grodrik": {"exp": None, "hp": None}, #not working
+    "Grodrik": {"exp": None, "hp": None},  # not working
     "Grorlam": {"exp": 2400, "hp": 3000},
     "Grynch Clan Goblin": {"exp": 4, "hp": 80},
     "Gryphon": {"exp": 1000, "hp": 3200},
     "Guard Captain Quaid": {"exp": 28000, "hp": 55000},
     "Guardian of Tales": {"exp": 9204, "hp": 15000},
     "Guilt": {"exp": None, "hp": None},
-    "Gust of Wind": {"exp": None, "hp": None}, #not working
+    "Gust of Wind": {"exp": None, "hp": None},  # not working
     "Guzzlemaw": {"exp": 6050, "hp": 6400},
     "Hairman the Huge": {"exp": 335, "hp": 600},
     "Hand of Cursed Fate": {"exp": 5000, "hp": 7500},
@@ -674,23 +674,23 @@ creatures = {
     "Infernalist": {"exp": 4000, "hp": 3650},
     "Ink Blob": {"exp": 14450, "hp": 9500},
     "Inky": {"exp": 250, "hp": 750},
-    "Innocent Soul": {"exp": None, "hp": None}, #not working
+    "Innocent Soul": {"exp": None, "hp": None},  # not working
     "Insane Siren": {"exp": 6000, "hp": 6500},
     "Insect Swarm": {"exp": 40, "hp": 50},
     "Insectoid Scout": {"exp": 150, "hp": 230},
-    "Insectoid Worker": {"exp": 650, "hp": 950}, 
+    "Insectoid Worker": {"exp": 650, "hp": 950},
     "Instable Breach Brood": {"exp": 1100, "hp": 2200},
-    "Instable Fire": {"exp": 0, "hp": 1000}, #not working
+    "Instable Fire": {"exp": 0, "hp": 1000},  # not working
     "Instable Sparkion": {"exp": 1350, "hp": 1900},
     "Invading Demon": {"exp": None, "hp": None},
-    "Irahsae": {"exp": 15000, "hp": 35000}, #not working
+    "Irahsae": {"exp": 15000, "hp": 35000},  # not working
     "Irgix the Flimsy": {"exp": 18000, "hp": 24000},
     "Iron Servant": {"exp": 210, "hp": 350},
     "Iron Servant Replica": {"exp": 210, "hp": 1000},
     "Ironblight": {"exp": 4400, "hp": 6600},
     "Island Troll": {"exp": 20, "hp": 50},
-    "Izcandar Champion of Summer": {"exp": None, "hp": None}, #not working
-    "Izcandar Champion of Winter": {"exp": 55000, "hp": None}, #not working
+    "Izcandar Champion of Summer": {"exp": None, "hp": None},  # not working
+    "Izcandar Champion of Winter": {"exp": 55000, "hp": None},  # not working
     "Izcandar the Banished": {"exp": None, "hp": None},
     "Jagged Earth Elemental": {"exp": 1300, "hp": 1500},
     "Jailer": {"exp": 45, "hp": 65},
@@ -701,14 +701,14 @@ creatures = {
     "Juvenile Bashmu": {"exp": 4500, "hp": 7500},  # not working
     "Juvenile Cyclops": {"exp": 130, "hp": 260},
     "Kalyassa": {"exp": 9000, "hp": 10000},
-    "Katex Blood Tongue": {"exp": 5000, "hp": 6300}, #not working
+    "Katex Blood Tongue": {"exp": 5000, "hp": 6300},  # not working
     "Kerberos": {"exp": 10000, "hp": 11000},
-    "Kesar": {"exp": None, "hp": None}, #not working
+    "Kesar": {"exp": None, "hp": None},  # not working
     "Killer Caiman": {"exp": 900, "hp": 1500},
     "Killer Rabbit": {"exp": 160, "hp": 205},
-    "King Chuck": {"exp": None, "hp": None}, #not working
+    "King Chuck": {"exp": None, "hp": None},  # not working
     "King Zelos": {"exp": None, "hp": None},
-    "Kitty": {"exp": None, "hp": None}, #not working
+    "Kitty": {"exp": None, "hp": None},  # not working
     "Knight Familiar": {"exp": None, "hp": 10000},
     "Knight's Apparition": {"exp": 18870, "hp": 25000},
     "Knowledge Elemental": {"exp": 10603, "hp": 10500},
