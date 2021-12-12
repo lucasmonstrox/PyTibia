@@ -7,7 +7,7 @@ import xxhash
 from wiki.creatures import creatures
 
 
-battleList = {
+config = {
     "container": {
         "width": 156
     },
@@ -17,8 +17,11 @@ battleList = {
     },
     "slot": {
         "height": 20,
+        "gap": 2
     },
 }
+
+creaturesHashes = {}
 
 
 def getHash(creatureNameImg):
@@ -26,8 +29,6 @@ def getHash(creatureNameImg):
     hashCode = xxhash.xxh64(creatureNameImg).intdigest()
     return hashCode
 
-
-creaturesHashes = {}
 
 for creature in creatures:
     creatureImg = np.array(
@@ -55,16 +56,27 @@ endOfContainerImg = np.array(cv2.cvtColor(cv2.imread(
     'battleList/images/endOfContainer.png'), cv2.COLOR_RGB2GRAY))
 
 
-def getCreatureBySlot(battleListContent, slot):
+def getCreatureSlotImg(content, slot):
     isFirstSlot = slot == 0
-    y = 0 if isFirstSlot else slot * 22
-    slotImg = battleListContent[y:y + battleList["slot"]["height"], :]
-    creatureNameImg = slotImg[3:11+3, 23:23 + 131]
-    flattenedCreatureNameImg = creatureNameImg.flatten()
-    isEmpty = not np.any(flattenedCreatureNameImg == 192)
+    startingY = 0 if isFirstSlot else slot * \
+        (config["slot"]["height"] + config["slot"]["gap"])
+    finishingY = startingY + config["slot"]["height"]
+    slotImg = content[startingY:finishingY, :]
+    return slotImg
+
+
+def getCreatureNameImg(slotImg):
+    # TODO: improve clean code
+    return slotImg[3:11 + 3, 23:23 + 131]
+
+
+def getCreatureFromSlot(content, slot):
+    slotImg = getCreatureSlotImg(content, slot)
+    creatureNameImg = getCreatureNameImg(slotImg)
+    creatureNameImg = np.ravel(creatureNameImg)
+    isEmpty = not np.any(creatureNameImg == config["creatures"]["nameColor"])
     if isEmpty:
         return None
-    # utils.saveImg(creatureNameImg, 'creatureNameImg-{}.png'.format(slot))
     creatureHash = getHash(creatureNameImg)
     unknownCreature = not creatureHash in creaturesHashes
     creature = {
@@ -75,30 +87,35 @@ def getCreatureBySlot(battleListContent, slot):
     return creature
 
 
-def getCreatures(battleListContent):
-    (battleListContentLeft, battleListContentTop, _,
-     battleListContentHeight) = getPos(battleListContent)
-    battleListContent = battleListContent[battleListContentTop + battleListContentHeight:,
-                                          battleListContentLeft:battleListContentLeft + battleList["container"]["width"]]
-    endOfContainer = getNextEndOfContainer(battleListContent)
-    battleListContent = battleListContent[:endOfContainer[1] - 11, :]
-    battleListContent = utils.graysToBlack(battleListContent)
-    battleListContent = replaceHighlightedName(battleListContent)
-    battleListIsTooSmall = battleListContent.shape[0] < battleList["slot"]["height"]
-    if battleListIsTooSmall:
+def getCreatures(screenshot):
+    content = getContent(screenshot)
+    content = utils.graysToBlack(content)
+    content = replaceHighlightedName(content)
+    contentIsTooSmall = content.shape[0] < config["slot"]["height"]
+    if contentIsTooSmall:
         raise BattleListIsTooSmallError
-    filledSlots = getFilledSlots(battleListContent)
-    possibleCreatures = np.array(list(map(lambda x: getCreatureBySlot(
-        battleListContent, x), np.arange(filledSlots))))
-    creatures = possibleCreatures[possibleCreatures != None]
+    filledSlots = getFilledSlots(content)
+    creatures = np.array(
+        list(map(lambda x: getCreatureFromSlot(content, x), np.arange(filledSlots))))
+    creatures = creatures[creatures != None]
     return creatures
 
 
-def getFilledSlots(battleListContent):
-    battleListContentFlattened = battleListContent[:, 23:24].flatten()
+def getContent(screenshot):
+    (contentLeft, contentTop, _, contentHeight) = getPos(screenshot)
+    startingY = contentTop + contentHeight
+    endingX = contentLeft + config["container"]["width"]
+    content = screenshot[startingY:, contentLeft:endingX]
+    endOfContainer = getNextEndOfContainer(content)
+    content = content[:endOfContainer[1] - 11, :]
+    return content
+
+
+def getFilledSlots(content):
+    content = np.ravel(content[:, 23:24])
     possibleCreatureNames = np.nonzero(
         np.where(
-            battleListContentFlattened == battleList["creatures"]["nameColor"],
+            content == config["creatures"]["nameColor"],
             True,
             False
         )
@@ -106,25 +123,25 @@ def getFilledSlots(battleListContent):
     hasNoFilledSlots = len(possibleCreatureNames) == 0
     if hasNoFilledSlots:
         return 0
-    lastPossibleCreatureIndex = possibleCreatureNames[len(
-        possibleCreatureNames) - 1]
-    filledSlots = math.ceil(lastPossibleCreatureIndex / 22)
+    lastCreatureIndex = possibleCreatureNames[len(possibleCreatureNames) - 1]
+    filledSlots = math.ceil(
+        lastCreatureIndex / (config["slot"]["height"] + config["slot"]["gap"]))
     return filledSlots
 
 
-@ utils.cacheObjectPos
+@utils.cacheObjectPos
 def getNextEndOfContainer(img):
     return utils.locate(img, endOfContainerImg)
 
 
-@ utils.cacheObjectPos
+@utils.cacheObjectPos
 def getPos(img):
     return utils.locate(img, battleListImg)
 
 
-def replaceHighlightedName(nameImg):
+def replaceHighlightedName(creatureNameImg):
     return np.where(
-        nameImg == battleList["creatures"]["highlightedNameColor"],
-        battleList["creatures"]["nameColor"],
-        nameImg
+        creatureNameImg == config["creatures"]["highlightedNameColor"],
+        config["creatures"]["nameColor"],
+        creatureNameImg
     )
