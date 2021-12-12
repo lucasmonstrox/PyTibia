@@ -42,8 +42,6 @@ for creature in creatures:
         "hash": creatureHash,
         "info": creatures[creature]
     }
-    if creature == 'Juvenile Cyclops':
-        break
 
 
 class BattleListIsTooSmallError():
