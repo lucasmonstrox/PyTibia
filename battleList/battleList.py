@@ -37,7 +37,7 @@ for creature in creatures:
             cv2.IMREAD_GRAYSCALE
         )
     )
-    creatureHash = xxhash.xxh64(creatureImg).intdigest()
+    creatureHash = getHash(creatureImg)
     creaturesHashes[creatureHash] = {
         "name": creature,
         "hash": creatureHash,
