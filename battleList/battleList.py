@@ -73,6 +73,7 @@ def getCreatureNameImg(slotImg):
 def getCreatureFromSlot(content, slot):
     slotImg = getCreatureSlotImg(content, slot)
     creatureNameImg = getCreatureNameImg(slotImg)
+    utils.saveImg(creatureNameImg, 'creatureName-{}.png'.format(slot))
     creatureNameImg = np.ravel(creatureNameImg)
     isEmpty = not np.any(creatureNameImg == config["creatures"]["nameColor"])
     if isEmpty:
