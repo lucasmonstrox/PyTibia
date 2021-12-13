@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image, ImageGrab
 from PIL.ImageOps import grayscale
 from radar import radar
+import skimage
 from time import sleep
 from utils import utils
 import pyautogui
