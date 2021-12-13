@@ -957,13 +957,13 @@ creatures = {
     "Shaburak Prince": {"exp": 1700, "hp": 2600},
     "Shadow Fiend": {"exp": None, "hp": None},
     "Shadow Hound": {"exp": 600, "hp": 555},
-    "Shadow of Boreth": {"exp": None, "hp": 600},
-    "Shadow of Lersatio": {"exp": None, "hp": 600},
-    "Shadow of Marziel": {"exp": None, "hp": 600},
+    "Shadow of Boreth": {"exp": None, "hp": 600}, #not working
+    "Shadow of Lersatio": {"exp": None, "hp": 600}, #not working
+    "Shadow of Marziel": {"exp": None, "hp": 600},  #not working
     "Shadow Pupil": {"exp": 410, "hp": 450},
     "Shadow Tentacle": {"exp": None, "hp": None},
     "Shadowpelt": {"exp": 4600, "hp": 6000},
-    "Shadowstalker": {"exp": 4000, "hp": 6100},
+    "Shadowstalker": {"exp": 4000, "hp": 6100}, #not working
     "Shaper Matriarch": {"exp": 1650, "hp": 2000},
     "Shard of Corruption": {"exp": 5, "hp": 600},
     "Shard of Magnor": {"exp": 0, "hp": None},
@@ -972,12 +972,12 @@ creatures = {
     "Sharpclaw": {"exp": 3000, "hp": 3300},
     "Sharptooth": {"exp": 1600, "hp": 3100},
     "Sheep": {"exp": 0, "hp": 20},
-    "Shimmying Butterfly": {"exp": 0, "hp": 20},
-    "Ship Core": {"exp": 0, "hp": None},
+    "Shimmying Butterfly": {"exp": 0, "hp": 20}, #not working
+    "Ship Core": {"exp": 0, "hp": None}, #not working
     "Shiversleep": {"exp": 1900, "hp": 4600},
-    "Shlorg": {"exp": None, "hp": None},
+    "Shlorg": {"exp": None, "hp": None}, #not working
     "Shock Head": {"exp": 2300, "hp": 4200},
-    "Shredderthrower": {"exp": None, "hp": None},
+    "Shredderthrower": {"exp": None, "hp": None}, #no name
     "Shulgrax": {"exp": 50000, "hp": 290000},
     "Sibang": {"exp": 105, "hp": 225},
     "Sight of Surrender": {"exp": 17000, "hp": 28000},
@@ -987,8 +987,8 @@ creatures = {
     "Sir Baeloc": {"exp": 55000, "hp": None},
     "Sir Nictros": {"exp": 55000, "hp": None},
     "Sir Valorcrest": {"exp": 1800, "hp": 1600},
-    "Siramal": {"exp": 35000, "hp": 100000},
-    "Sister Hetai": {"exp": 20500, "hp": 25000},
+    "Siramal": {"exp": 35000, "hp": 100000}, #not working
+    "Sister Hetai": {"exp": 20500, "hp": 25000}, #not working
     "Skeleton": {"exp": 35, "hp": 50},
     "Skeleton Elite Warrior": {"exp": 4500, "hp": 7800},
     "Skeleton Warrior": {"exp": 45, "hp": 65},
@@ -996,10 +996,10 @@ creatures = {
     "Slick Water Elemental": {"exp": 450, "hp": 550},
     "Slim": {"exp": 580, "hp": 1025},
     "Slime": {"exp": 160, "hp": 150},
-    "Slime Puddle": {"exp": None, "hp": None},
-    "Slippery Northern Pike": {"exp": 0, "hp": 100},
-    "Sloth Wraith": {"exp": None, "hp": None},
-    "Slowing Slime": {"exp": None, "hp": None},
+    "Slime Puddle": {"exp": None, "hp": None}, #not working
+    "Slippery Northern Pike": {"exp": 0, "hp": 100}, #not working
+    "Sloth Wraith": {"exp": None, "hp": None}, #not working
+    "Slowing Slime": {"exp": None, "hp": None}, #not working
     "Slug": {"exp": 70, "hp": 255},
     "Smuggler": {"exp": 48, "hp": 130},
     "Smuggler Baron Silvertoe": {"exp": 170, "hp": 280},
@@ -1008,15 +1008,15 @@ creatures = {
     "Snake God Essence": {"exp": 7410, "hp": 65000},
     "Snake Thing": {"exp": None, "hp": 70000},
     "Solid Frozen Horror": {"exp": None, "hp": None},
-    "Somewhat Beatable Dragon": {"exp": 0, "hp": None},
+    "Somewhat Beatable Dragon": {"exp": 0, "hp": None}, #not working
     "Son of Verminor": {"exp": 5900, "hp": 8500},
     "Sorcerer Familiar": {"exp": None, "hp": 20000},
     "Sorcerer's Apparition": {"exp": 18870, "hp": 25000},
     "Soul of Dragonking Zyrtarch": {"exp": None, "hp": None},
     "Soul Reaper": {"exp": None, "hp": None},
-    "Soul Scourge": {"exp": 0, "hp": None},
-    "Soul Spark": {"exp": 0, "hp": 115},
-    "Soul Sphere": {"exp": None, "hp": None},
+    "Soul Scourge": {"exp": 0, "hp": None}, #not working
+    "Soul Spark": {"exp": 0, "hp": 115}, #not working
+    "Soul Sphere": {"exp": None, "hp": None}, #not working
     "Soul-Broken Harbinger": {"exp": 5800, "hp": 6300},
     "Soulcatcher": {"exp": None, "hp": None},
     "Souleater": {"exp": 1300, "hp": 1100},
@@ -1024,11 +1024,11 @@ creatures = {
     "Soulsnatcher": {"exp": None, "hp": None},
     "Spark of Destruction": {"exp": None, "hp": 3900},
     "Sparkion": {"exp": 1520, "hp": 2700},
-    "Spawn of Despair": {"exp": 2550, "hp": 35000},
-    "Spawn of Devovorga": {"exp": None, "hp": None},
-    "Spawn of Havoc": {"exp": None, "hp": None},
-    "Spawn of the Schnitzel": {"exp": 0, "hp": None},
-    "Spawn of the Welter": {"exp": None, "hp": None},
+    "Spawn of Despair": {"exp": 2550, "hp": 35000}, #not working
+    "Spawn of Devovorga": {"exp": None, "hp": None}, #not working
+    "Spawn of Havoc": {"exp": None, "hp": None}, 
+    "Spawn of the Schnitzel": {"exp": 0, "hp": None}, #not working
+    "Spawn of the Welter": {"exp": None, "hp": None}, #not working
     "Spectral Scum": {"exp": None, "hp": None},
     "Spectre": {"exp": 2100, "hp": 1350},
     "Sphere of Wrath": {"exp": None, "hp": None},
@@ -1040,24 +1040,24 @@ creatures = {
     "Spiky Carnivor": {"exp": 1650, "hp": 2800},
     "Spirit of Earth": {"exp": 800, "hp": 1200},
     "Spirit of Fertility": {"exp": None, "hp": None},
-    "Spirit of Fire": {"exp": 950, "hp": 2210},
-    "Spirit of Light": {"exp": None, "hp": None},
+    "Spirit of Fire": {"exp": 950, "hp": 2210}, 
+    "Spirit of Light": {"exp": None, "hp": None}, #not working
     "Spirit of Water": {"exp": 850, "hp": 1400},
     "Spit Nettle": {"exp": 20, "hp": 150},
     "Spite of the Emperor": {"exp": None, "hp": 48000},
     "Spiteful Spitter": {"exp": None, "hp": None},
     "Spitter": {"exp": 1100, "hp": 1500},
     "Splasher": {"exp": 500, "hp": 1700},
-    "Spy Rat": {"exp": None, "hp": None},
-    "Spyrat": {"exp": 2500, "hp": 3000},
-    "Spyrat": {"exp": 2500, "hp": 3000},
-    "Spyrat": {"exp": 2500, "hp": 3000},
-    "Spyrat": {"exp": 2500, "hp": 3000},
+    "Spy Rat": {"exp": None, "hp": None}, #not working
+    "Spyrat": {"exp": 2500, "hp": 3000}, #not working
+    "Spyrat": {"exp": 2500, "hp": 3000}, #not working
+    "Spyrat": {"exp": 2500, "hp": 3000}, #not working
+    "Spyrat": {"exp": 2500, "hp": 3000}, #not working
     "Squid Warden": {"exp": 15300, "hp": 16500},
     "Squidgy Slime": {"exp": 55, "hp": 150},
     "Squire of Nictros": {"exp": 0, "hp": None},
     "Squirrel": {"exp": 0, "hp": 20},
-    "Srezz Yellow Eyes": {"exp": 4800, "hp": 6200},
+    "Srezz Yellow Eyes": {"exp": 4800, "hp": 6200}, #not working
     "Stabilizing Dread Intruder": {"exp": 1900, "hp": 2800},
     "Stabilizing Reality Reaver": {"exp": 1950, "hp": 2500},
     "Stalker": {"exp": 90, "hp": 120},
@@ -1075,24 +1075,24 @@ creatures = {
     "Stone Rhino": {"exp": 1800, "hp": 3000},
     "Stonecracker": {"exp": 3500, "hp": 6500},
     "Stonerefiner": {"exp": 500, "hp": 800},
-    "Strange Rat": {"exp": None, "hp": None},
+    "Strange Rat": {"exp": None, "hp": None}, #not working
     "Strange Slime": {"exp": 0, "hp": 15},
-    "Streaked Devourer": {"exp": 6300, "hp": 7000},
+    "Streaked Devourer": {"exp": 6300, "hp": 7000}, #not working
     "Strong Glooth Horror": {"exp": None, "hp": 20000},
-    "Strong Soul": {"exp": None, "hp": None},
+    "Strong Soul": {"exp": None, "hp": None}, #not working
     "Sulphur Scuttler": {"exp": 900, "hp": 1300},
     "Sun-Marked Goanna": {"exp": 7600, "hp": 7800},
     "Supercharged Mazzinor": {"exp": None, "hp": None},
     "Superior Death Minion": {"exp": 0, "hp": None},
-    "Svoren the Mad": {"exp": 3000, "hp": 6310},
+    "Svoren the Mad": {"exp": 3000, "hp": 6310}, 
     "Swamp Troll": {"exp": 25, "hp": 55},
     "Swampling": {"exp": 45, "hp": 80},
     "Swan Maiden": {"exp": 700, "hp": 800},
     "Swarmer": {"exp": 350, "hp": 460},
     "Swarmer Hatchling": {"exp": 0, "hp": 5},
     "Sword of Vengeance": {"exp": None, "hp": None},
-    "Symbol of Fear": {"exp": None, "hp": None},
-    "Symbol of Hatred": {"exp": None, "hp": None},
+    "Symbol of Fear": {"exp": None, "hp": None}, #not working
+    "Symbol of Hatred": {"exp": None, "hp": None}, #not working
     "Tainted Soul": {"exp": 0, "hp": 250},
     "Tainted Soul Splinter": {"exp": 0, "hp": None},
     "Tanjis": {"exp": 15000, "hp": 30000},
