@@ -29,7 +29,7 @@ python test.py
 See also the list of [contributors](../../graphs/contributors) who participated
 in this project
 
-# ❤️ The development of this bot was inspired by Murilo Chianfa
+# ❤️ Development inspired by Murilo Chianfa
 
 - [**Murilo Chianfa**](https://github.com/MuriloChianfa) - Developer
 
