@@ -31,7 +31,7 @@ in this project
 
 # ❤️ Development inspiration
 
-A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa) the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12).
+A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa) the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12).  
 I started pytibia to make this bot unique, the fastest(unlocked fps) tibia pixel bot using GPU, parallelism and precomputation.
 
 # 📝 License
