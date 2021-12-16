@@ -2,10 +2,9 @@ import cv2
 import d3dshot
 from time import time
 import cupy as cp
-import numpy as np
 import pygetwindow as gw
 from hud import hud
-from utils import utils
+import pyautogui
 
 
 def getScreenshot(d3):
@@ -24,17 +23,20 @@ def main():
         cp.array(cv2.imread('screenshot.png', cv2.IMREAD_GRAYSCALE)))
     while True:
         screenshot = getScreenshot(d3)
-        # utils.saveCpImg(screenshot, 'screenshot.png')
         playable = screenshot[35:35 + 352, 151:151 + 480]
-        # utils.saveCpImg(playable, 'playable.png')
         playable = playable.flatten()
         creaturesBars = hud.getCreaturesBars(playable)
-        print(creaturesBars)
-        # break
+        hasCreaturesBars = len(creaturesBars) > 0
+        if hasCreaturesBars:
+            x = creaturesBars[0][0] + 152 + 5
+            y = creaturesBars[0][1] + 36 + 5
+            pyautogui.moveTo(x, y)
+            pyautogui.rightClick()
+            break
         timef = (time() - loop_time)
         timef = timef if timef else 1
         fps = 1 / timef
-        # print('FPS {}'.format(fps))
+        print('FPS {}'.format(fps))
         loop_time = time()
 
 
