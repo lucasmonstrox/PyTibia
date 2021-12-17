@@ -7,7 +7,8 @@
 - [Get Life]() :heavy_check_mark:
 - [Get Mana]() :heavy_check_mark:
 - [Get BattleList Creatures](battleList/docs/README.md) :heavy_check_mark:
-- [Get HUD Creatures](hud/docs/README.md) :heavy_check_mark:
+- [Get HUD Creatures Bars]() :heavy_check_mark:
+- [Get HUD Monsters]() :warning:
 - [Get HUD NPC's]() :warning:
 - [Get HUD Players]() :warning:
 
@@ -34,9 +35,9 @@ in this project
 # ❤️ Development inspiration
 
 A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa) the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12).  
-I started pytibia to make this bot unique, the fastest(unlocked fps) tibia pixel bot using GPU, parallelism and precomputation.
+I started the bot in his honor as it was my inspiration to create the fastest tibia pixel bot using GPU, parallelism and precomputation.
 
 # 📝 License
 
-Copyright © 2020 [**Lucas Silva**](https://github.com/lucasmonstro)  
+Copyright © 2021 [**lucasmonstro**](https://github.com/lucasmonstro)  
 This project is [MIT](https://opensource.org/licenses/MIT) licensed
