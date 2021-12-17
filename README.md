@@ -4,10 +4,12 @@
 
 # 🗺️ Features Status
 
-- [Get Life]() : :heavy_check_mark:
-- [Get Mana]() : :heavy_check_mark:
-- [Get BattleList Creatures](battleList/docs/README.md) : :heavy_check_mark:
-- [Get HUD Creatures]() : :warning:
+- [Get Life]() :heavy_check_mark:
+- [Get Mana]() :heavy_check_mark:
+- [Get BattleList Creatures](battleList/docs/README.md) :heavy_check_mark:
+- [Get HUD Creatures](hud/docs/README.md) :heavy_check_mark:
+- [Get HUD NPC's]() :warning:
+- [Get HUD Players]() :warning:
 
 # ⌨ Development
 
