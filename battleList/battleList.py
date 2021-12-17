@@ -80,7 +80,7 @@ def getCreatureFromSlot(content, slot):
     creatureHash = getHash(creatureNameImg)
     unknownCreature = not creatureHash in creaturesHashes
     creature = {
-        "creature": "Unknown" if unknownCreature else creaturesHashes[creatureHash]["name"],
+        "name": "Unknown" if unknownCreature else creaturesHashes[creatureHash]["name"],
         "hash": creatureHash,
         "isBeingAttacked": False
     }
