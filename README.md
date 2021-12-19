@@ -45,7 +45,7 @@
   - Has weapon equipped :warning:
   - Has armor equipped :warning:
   - Has shield equipped :warning:
-  - Has right equipped :warning:
+  - Has ring equipped :warning:
   - Has boots equipped :warning:
   - Has accessories equipped :warning:
 
