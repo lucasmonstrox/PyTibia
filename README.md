@@ -1,16 +1,53 @@
 # 📝 Description
 
-> Tibia bot api using python and gpu to get unlocked fps
+> Tibia Bot api using python and gpu to get unlocked fps
 
 # 🗺️ Features Status
 
-- [Get Life]() :heavy_check_mark:
-- [Get Mana]() :heavy_check_mark:
-- [Get BattleList Creatures](battleList/docs/README.md) :heavy_check_mark:
-- [Get HUD Creatures Bars]() :heavy_check_mark:
-- [Get HUD Monsters]() :warning:
-- [Get HUD NPC's]() :warning:
-- [Get HUD Players]() :warning:
+- Status:
+  - Getting Life :heavy_check_mark:
+  - Getting Mana :heavy_check_mark:
+- BattleList:
+  - [Getting monsters](battleList/docs/README.md) :heavy_check_mark:
+  - Checking if monster is being attacked :warning:
+- HUD:
+  - Getting Monsters :heavy_check_mark:
+  - Getting NPC's :warning:
+  - Getting Players :warning:
+- Radar:
+  - Floor level :heavy_check_mark:
+  - Tracking coordinates :warning:
+- Special conditions:
+  - Bleeding :heavy_check_mark:
+  - Burning :heavy_check_mark:
+  - Cursed :heavy_check_mark:
+  - Dazzled :warning:
+  - Drowning :warning:
+  - Drunk :warning:
+  - Electrified :warning:
+  - Feared :warning:
+  - Freezing :warning:
+  - Hungry :heavy_check_mark:
+  - Fighting :heavy_check_mark:
+  - Haste :warning:
+  - Poisoned :heavy_check_mark:
+  - Protection Zone Block :warning:
+  - Rooted :warning:
+  - Slowed :warning:
+  - Strengthened :warning:
+  - Within Protection Zone :heavy_check_mark:
+  - Poisoned :heavy_check_mark:
+  - Within Resting Area :heavy_check_mark:
+- Equipments:
+  - Has amulet equipped :warning:
+  - Has helmet equipped :warning:
+  - Has backpack equipped :warning:
+  - Has weapon equipped :warning:
+  - Has armor equipped :warning:
+  - Has shield equipped :warning:
+  - Has right equipped :warning:
+  - Has boots equipped :warning:
+  - Has accessories equipped :warning:
 
 # ⌨ Development
 

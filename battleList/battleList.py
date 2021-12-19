@@ -6,7 +6,6 @@ from utils import utils
 import xxhash
 from wiki.creatures import creatures
 
-
 config = {
     "container": {
         "width": 156
@@ -89,14 +88,14 @@ def getCreatureFromSlot(content, slot):
 
 def getCreatures(screenshot):
     content = getContent(screenshot)
-    content = utils.graysToBlack(content)
-    content = replaceHighlightedName(content)
     contentIsTooSmall = content.shape[0] < config["slot"]["height"]
     if contentIsTooSmall:
         raise BattleListIsTooSmallError
+    content = utils.graysToBlack(content)
+    content = replaceHighlightedName(content)
     filledSlots = getFilledSlots(content)
-    creatures = np.array(
-        list(map(lambda x: getCreatureFromSlot(content, x), np.arange(filledSlots))))
+    creatures = np.array([getCreatureFromSlot(content, x)
+                         for x in np.arange(filledSlots)])
     creatures = creatures[creatures != None]
     return creatures
 

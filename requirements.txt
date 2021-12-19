@@ -1,3 +1,5 @@
 opencv-python
+Pillow
 pyautogui
-rx
+pygetwindow
+scikit-image

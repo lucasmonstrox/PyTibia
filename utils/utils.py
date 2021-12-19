@@ -1,7 +1,9 @@
+import d3dshot
 import cupy as cp
 import cv2
 import numpy as np
 from PIL import Image
+import pygetwindow as gw
 import xxhash
 
 
@@ -73,10 +75,16 @@ def locate(compareImg, img):
     return (left, top, width, height)
 
 
-def saveCpImg(cpArray, name):
-    npArray = cp.asnumpy(cpArray)
-    im = Image.fromarray(npArray)
-    im.save(name)
+d3 = d3dshot.create(capture_output='numpy')
+
+
+def getScreenshot():
+    window = gw.getWindowsWithTitle('Tibia - ADM')[0]
+    region = (window.top, window.left, window.width - 15, window.height)
+    screenshot = d3.screenshot(region=region)
+    screenshot = cv2.cvtColor(screenshot, cv2.COLOR_RGB2GRAY)
+    screenshot = np.array(screenshot)
+    return screenshot
 
 
 def saveImg(arr, name):
