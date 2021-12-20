@@ -1,9 +1,4 @@
-from mss import mss
-import win32con
-import win32ui
-import win32gui
-import cv2 as cv
-# import cupy as cp
+from battleList import battleList
 from player import player
 from radar import radar
 import asyncio
@@ -12,14 +7,10 @@ import rx
 import numpy as np
 from utils import utils
 from time import sleep, time
-from PIL import Image
 from threading import Thread
-from skimage import data
-from skimage.feature import match_template
-from PIL import ImageGrab
-from numba import cuda, jit
 from timeit import default_timer as timer
-from PIL import Image
+
+currentWaypointIndex = 0
 
 waypoints = [
     # 0
@@ -341,18 +332,6 @@ waypoints = [
     },
 ]
 
-currentWaypointIndex = 0
-
-battleListPos = None
-
-battleListImg = np.array(cv.imread('player/images/battlelist.png'))
-
-
-def getBattleListPos(screenshot):
-    global battleListPos
-    # TODO: cache it if window coordinates doesn't change
-    return utils.locate(battleListImg, screenshot)
-
 
 def trackWaypointObservable(observer, scheduler):
     while True:
@@ -398,8 +377,6 @@ def markWaypointObservable(observer, scheduler):
         lambda waypoint: markWaypointInner(waypoint),
     )
 
-# TODO: cancel this function when player start attacking
-
 
 def walk(waypoint):
     global isAttackingMonsters
@@ -418,83 +395,10 @@ def walk(waypoint):
         pyautogui.press(waypoint['direction'])
 
 
-def getBattleListSlotPos(battleListPos, index):
-    index = index - 1
-    x = battleListPos.left + 4
-    y = (battleListPos.top + battleListPos.height) + (index * 21)
-    if index > 0:
-        y = y + index
-    return (x, y)
-
-
-def getMonsterHashFromArray(monster):
-    monster = np.where(np.logical_and(monster >= [50, 50, 50], monster <= [
-                       100, 100, 100]), [0, 0, 0], monster)
-    monster = np.where(monster == [255, 0, 0], [0, 0, 0], monster)
-    monster = np.where(monster == [255, 128, 128], [0, 0, 0], monster)
-    monster = np.where(monster == [255, 255, 255], [0, 0, 0], monster)
-    return hash(monster.tobytes())
-
-
-def getMonsterHashByImg(img):
-    monster = np.array(img)
-    monster = getMonsterHashFromArray(monster)
-    return monster
-
-
 monstersHashes = {
 }
 
 shouldRetryWaypoint = True
-
-
-async def getMonsterBySlot(battleListPos, screenshot, slot):
-    index = slot - 1
-    x = 0
-    y = (index * 21)
-    if index > 0:
-        y = y + index
-    monster = screenshot[y:y + 21]
-    # TODO: improve this adding sugar syntax
-    isBeingAttacked = (monster[0][0][0] == 255 and monster[0][0][1] == 0 and monster[0][0][2] == 0) or (
-        monster[0][0][0] == 255 and monster[0][0][1] == 128 and monster[0][0][2] == 128)
-    monsterHash = getMonsterHashFromArray(monster)
-    invalidMonster = not monsterHash in monstersHashes
-    if invalidMonster:
-        return None
-    monster = monstersHashes[monsterHash]
-    monster = {
-        "monster": monster,
-        "isBeingAttacked": isBeingAttacked,
-        "coordinate": (battleListPos.left + 11, battleListPos.top + battleListPos.height + y + 10)
-    }
-    return monster
-
-
-async def getBattleListCreatures(screenshot):
-    (left, top) = getBattleListPos(screenshot)
-    x = left + 4
-    y = (top + battleListPos.height)
-    screenshot = screenshot[y:y + 196, x:x + 22]
-    im = Image.fromarray(screenshot)
-    im.save("gui.png")
-    possibleMonsters = await asyncio.gather(
-        getMonsterBySlot(battleListPos, screenshot, 1),
-        getMonsterBySlot(battleListPos, screenshot, 2),
-        getMonsterBySlot(battleListPos, screenshot, 3),
-        getMonsterBySlot(battleListPos, screenshot, 4),
-        getMonsterBySlot(battleListPos, screenshot, 5),
-        getMonsterBySlot(battleListPos, screenshot, 6),
-        getMonsterBySlot(battleListPos, screenshot, 7),
-        getMonsterBySlot(battleListPos, screenshot, 8),
-        getMonsterBySlot(battleListPos, screenshot, 9),
-    )
-    monsters = np.array([])
-    for monster in possibleMonsters:
-        if monster == None:
-            continue
-        monsters = np.append(monsters, monster)
-    return monsters
 
 
 def walkingScanner():
@@ -511,7 +415,7 @@ def attackingScanner():
     async def inner():
         global isAttackingMonsters, shouldRetryWaypoint
         while True:
-            monsters = await getBattleListCreatures()
+            monsters = battleList.getCreatures()
             hasNoMonstersToAttack = len(monsters) == 0
             if hasNoMonstersToAttack:
                 isAttackingMonsters = False
@@ -533,163 +437,12 @@ def attackingScanner():
     asyncio.run(inner())
 
 
-class WindowCapture:
-    # properties
-    w = 0
-    h = 0
-    hwnd = None
-    cropped_x = 0
-    cropped_y = 0
-    offset_x = 0
-    offset_y = 0
-
-    def __init__(self, window_name=None):
-        # find the handle for the window we want to capture.
-        # if no window name is given, capture the entire screen
-        if window_name is None:
-            self.hwnd = win32gui.GetDesktopWindow()
-        else:
-            self.hwnd = win32gui.FindWindow(None, window_name)
-            if not self.hwnd:
-                raise Exception('Window not found: {}'.format(window_name))
-
-        # get the window size
-        window_rect = win32gui.GetWindowRect(self.hwnd)
-        self.w = window_rect[2] - window_rect[0]
-        self.h = window_rect[3] - window_rect[1]
-
-        # account for the window border and titlebar and cut them off
-        border_pixels = 8
-        titlebar_pixels = 30
-        self.w = self.w - (border_pixels * 2)
-        self.h = self.h - titlebar_pixels - border_pixels
-        self.cropped_x = border_pixels
-        self.cropped_y = titlebar_pixels
-
-        # set the cropped coordinates offset so we can translate screenshot
-        # images into actual screen positions
-        self.offset_x = window_rect[0] + self.cropped_x
-        self.offset_y = window_rect[1] + self.cropped_y
-
-    def get_screenshot(self):
-        # get the window image data
-        wDC = win32gui.GetWindowDC(self.hwnd)
-        dcObj = win32ui.CreateDCFromHandle(wDC)
-        cDC = dcObj.CreateCompatibleDC()
-        dataBitMap = win32ui.CreateBitmap()
-        dataBitMap.CreateCompatibleBitmap(dcObj, self.w, self.h)
-        cDC.SelectObject(dataBitMap)
-        cDC.BitBlt((0, 0), (self.w, self.h), dcObj,
-                   (self.cropped_x, self.cropped_y), win32con.SRCCOPY)
-
-        # convert the raw data into a format opencv can read
-        # dataBitMap.SaveBitmapFile(cDC, 'debug.bmp')
-        signedIntsArray = dataBitMap.GetBitmapBits(True)
-        img = np.fromstring(signedIntsArray, dtype='uint8')
-        img.shape = (self.h, self.w, 4)
-
-        # free resources
-        dcObj.DeleteDC()
-        cDC.DeleteDC()
-        win32gui.ReleaseDC(self.hwnd, wDC)
-        win32gui.DeleteObject(dataBitMap.GetHandle())
-
-        # drop the alpha channel, or cv.matchTemplate() will throw an error like:
-        #   error: (-215:Assertion failed) (depth == CV_8U || depth == CV_32F) && type == _templ.type()
-        #   && _img.dims() <= 2 in function 'cv::matchTemplate'
-        img = img[..., :3]
-
-        # make image C_CONTIGUOUS to avoid errors that look like:
-        #   File ... in draw_rectangles
-        #   TypeError: an integer is required (got type tuple)
-        # see the discussion here:
-        # https://github.com/opencv/opencv/issues/14866#issuecomment-580207109
-        img = np.ascontiguousarray(img)
-
-        return img[..., ::-1]
-
-    def get_borderless_screenshot_at(self, x1, y1, x2, y2):
-        sizeX = x2-x1
-        sizeY = y2-y1
-
-        # get the window image data
-        wDC = win32gui.GetWindowDC(self.hwnd)
-        dcObj = win32ui.CreateDCFromHandle(wDC)
-        cDC = dcObj.CreateCompatibleDC()
-        dataBitMap = win32ui.CreateBitmap()
-        dataBitMap.CreateCompatibleBitmap(dcObj, sizeX, sizeY)
-        cDC.SelectObject(dataBitMap)
-        cDC.BitBlt((0, 0), (sizeX, sizeY), dcObj, (x1, y1), win32con.SRCCOPY)
-
-        # convert the raw data into a format opencv can read
-        # dataBitMap.SaveBitmapFile(cDC, 'debug.bmp')
-        signedIntsArray = dataBitMap.GetBitmapBits(True)
-        img = np.fromstring(signedIntsArray, dtype='uint8')
-        img.shape = (sizeY, sizeX, 4)
-
-        # free resources
-        dcObj.DeleteDC()
-        cDC.DeleteDC()
-        win32gui.ReleaseDC(self.hwnd, wDC)
-        win32gui.DeleteObject(dataBitMap.GetHandle())
-
-        # drop the alpha channel, or cv.matchTemplate() will throw an error like:
-        #   error: (-215:Assertion failed) (depth == CV_8U || depth == CV_32F) && type == _templ.type()
-        #   && _img.dims() <= 2 in function 'cv::matchTemplate'
-        img = img[..., :3]
-
-        # make image C_CONTIGUOUS to avoid errors that look like:
-        #   File ... in draw_rectangles
-        #   TypeError: an integer is required (got type tuple)
-        # see the discussion here:
-        # https://github.com/opencv/opencv/issues/14866#issuecomment-580207109
-        img = np.ascontiguousarray(img)
-
-        return img
-
-
-def getScreenshot(sct):
-    window = WindowCapture('Tibia - ADM')
-    mon = {
-        'top': window.offset_y,
-        'left': window.offset_x,
-        'width': window.w,
-        'height': window.h
-    }
-    screenshot = sct.grab(mon)
-    screenshot = np.array(screenshot)
-    screenshot = screenshot[..., :3]
-    screenshot = screenshot[..., ::-1]
-    return screenshot
-
-
-# floorImg = np.array(cv.imread('floor-7x.png'))
-# grayFloorImg = cv.cvtColor(floorImg, cv.COLOR_RGB2GRAY)
-
-
 def main():
-    loop_time = time()
-    sct = mss()
-    screenshot = np.array(cv.imread('screenshot.png'))
-    # while True:
-    #     # screenshot = getScreenshot(sct)
-    #     # im = Image.fromarray(screenshot)
-    #     # im.save("screenshot.png")
-    #     # break
-    #     # radar.getCoordinate(screenshot)
-    #     # print(radar.getRadarToolsPos(screenshot))
-    #     # img = np.array(cv.imread('teste.png'))
-    #     # grayImg = cv.cvtColor(img, cv.COLOR_RGB2GRAY)
-    #     # print(utils.locate(grayImg, grayFloorImg))
-    #     timef = (time() - loop_time)
-    #     timef = timef if timef else 1
-    #     fps = 1 / timef
-    #     print('FPS {}'.format(fps))
-    #     loop_time = time()
     # attackingScannerThread = Thread(target=attackingScanner)
     # attackingScannerThread.start()
-    walkingScannerThread = Thread(target=walkingScanner)
-    walkingScannerThread.start()
+    # walkingScannerThread = Thread(target=walkingScanner)
+    # walkingScannerThread.start()
+    print(1)
 
 
 if __name__ == '__main__':
