@@ -1,5 +1,4 @@
 import cv2
-import hashlib
 import numpy as np
 from PIL import Image, ImageGrab
 from PIL.ImageOps import grayscale
@@ -10,56 +9,29 @@ from utils import utils
 import pyautogui
 
 
+accessoriesEquipedImg = np.array(cv2.imread('radar/images/radar-tools.png'))
 hpImg = np.array(cv2.cvtColor(cv2.imread(
     'player/images/hp.png'), cv2.COLOR_RGB2GRAY))
 manaImg = np.array(cv2.cvtColor(cv2.imread(
     'player/images/mana.png'), cv2.COLOR_RGB2GRAY))
-
-
-def getCoordinate():
-    # TODO: cache it if window coordinates doesn't change
-    radarPos = radar.getPos()
-    if not radarPos:
-        # TODO: throw a custom exception
-        return None
-    radarPosX, radarPosY = radarPos
-    floorLevel = 7
-    radarScreenshot = pyautogui.screenshot(
-        region=(radarPosX, radarPosY, 106, 109))
-    # load directly into numpy array to gain performance all possible radar center with radius
-    currentPositionBounds = pyautogui.locate(
-        radarScreenshot,
-        radar.floorsAreaImgs[floorLevel],
-        confidence=radar.floorsConfidence[floorLevel]
-    )
-    print('currentPositionBounds', currentPositionBounds)
-    currentX, currentY = utils.getCenterOfBounds(currentPositionBounds)
-    print('currentX: {}, currentY: {}'.format(currentX, currentY))
-    currentMapPixelCoordinate = (int(currentY), int(currentX))
-    print('currentMapPixelCoordinate', currentMapPixelCoordinate)
-    (playerCoordinateX, playerCoordinateY) = utils.getCoordinateFromPixel(
-        currentMapPixelCoordinate)
-    print('playerCoordinate', (playerCoordinateX, playerCoordinateY))
-    playerCoordinate = (playerCoordinateX, playerCoordinateY, floorLevel)
-    return playerCoordinate
-
-# def getCoordinate(screenshot):
-#     radarWidth = 106
-#     radarHeight = 109
-#     radarPos = radar.getPos(screenshot)
-#     if not radarPos:
-#         # TODO: throw a custom exception
-#         return None
-#     radarPosX, radarPosY = radarPos
-#     radarScreenshot = screenshot[radarPosY:radarPosY +
-#                                  radarHeight, radarPosX: radarPosX + radarWidth]
-#     radarScreenshotHash = hashlib.md5(
-#         np.array(radarScreenshot).tostring()).hexdigest()
-#     if radarScreenshotHash in radar.coordinatesHashes:
-#         return radar.coordinatesHashes[radarScreenshotHash]
-#     radar.coordinatesHashes[radarScreenshotHash] = getCoordinateDeprecated(
-#         screenshot)
-#     return None
+bleedingImg = np.array(cv2.cvtColor(cv2.imread(
+    'player/images/bleeding.png'), cv2.COLOR_RGB2GRAY))
+cursedImg = np.array(cv2.cvtColor(cv2.imread(
+    'player/images/cursed.png'), cv2.COLOR_RGB2GRAY))
+burningImg = np.array(cv2.cvtColor(cv2.imread(
+    'player/images/burning.png'), cv2.COLOR_RGB2GRAY))
+fightImg = np.array(cv2.cvtColor(cv2.imread(
+    'player/images/fight.png'), cv2.COLOR_RGB2GRAY))
+hungryImg = np.array(cv2.cvtColor(cv2.imread(
+    'player/images/hungry.png'), cv2.COLOR_RGB2GRAY))
+poisonedImg = np.array(cv2.cvtColor(cv2.imread(
+    'player/images/poisoned.png'), cv2.COLOR_RGB2GRAY))
+pzImg = np.array(cv2.cvtColor(cv2.imread(
+    'player/images/pz.png'), cv2.COLOR_RGB2GRAY))
+restingAreaImg = np.array(cv2.cvtColor(cv2.imread(
+    'player/images/resting-area.png'), cv2.COLOR_RGB2GRAY))
+stopImg = np.array(cv2.cvtColor(cv2.imread(
+    'player/images/stop.png'), cv2.COLOR_RGB2GRAY))
 
 
 @utils.cacheObjectPos
@@ -124,26 +96,6 @@ def getHp(screenshot):
 @utils.cacheObjectPos
 def getManaPos(screenshot):
     return utils.locate(screenshot, manaImg)
-
-
-bleedingImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/bleeding.png'), cv2.COLOR_RGB2GRAY))
-cursedImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/cursed.png'), cv2.COLOR_RGB2GRAY))
-burningImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/burning.png'), cv2.COLOR_RGB2GRAY))
-fightImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/fight.png'), cv2.COLOR_RGB2GRAY))
-hungryImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/hungry.png'), cv2.COLOR_RGB2GRAY))
-poisonedImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/poisoned.png'), cv2.COLOR_RGB2GRAY))
-pzImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/pz.png'), cv2.COLOR_RGB2GRAY))
-restingAreaImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/resting-area.png'), cv2.COLOR_RGB2GRAY))
-stopImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/stop.png'), cv2.COLOR_RGB2GRAY))
 
 
 @utils.cacheObjectPos
@@ -285,8 +237,8 @@ def getPlayerWindowCoordinate():
     return (playerWindowCoordinateX, playerWindowCoordinateY)
 
 
-def goToCoordinate(destinationCoordinate):
-    currentCoordinate = getCoordinate()
+def goToCoordinate(currentCoordinate, destinationCoordinate):
+    # currentCoordinate = getCoordinate()
     currentPixelCoordinate = utils.getPixelFromCoordinate(currentCoordinate)
     destinationPixelCoordinate = utils.getPixelFromCoordinate(
         destinationCoordinate)
@@ -359,9 +311,6 @@ def enableFollowingAttack():
         # TODO: throw an exception
         return
     pyautogui.click(pos.left, pos.top)
-
-
-accessoriesEquipedImg = np.array(cv2.imread('radar/images/radar-tools.png'))
 
 
 def hasAccessoriesEquiped(screenshot):
