@@ -11,12 +11,13 @@
   - [Getting monsters](battleList/docs/README.md) :heavy_check_mark:
   - Checking if monster is being attacked :warning:
 - HUD:
+  - Getting coordinates(playable area) :heavy_check_mark:
   - Getting Monsters :heavy_check_mark:
   - Getting NPC's :warning:
   - Getting Players :warning:
 - Radar:
   - Floor level :heavy_check_mark:
-  - Tracking coordinates :warning:
+  - Tracking coordinates :heavy_check_mark:
 - Special conditions:
   - Bleeding :heavy_check_mark:
   - Burning :heavy_check_mark:
