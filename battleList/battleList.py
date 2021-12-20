@@ -3,7 +3,6 @@ import cv2
 import math
 import numpy as np
 from utils import utils
-import xxhash
 from wiki.creatures import creatures
 
 config = {
@@ -23,12 +22,6 @@ config = {
 creaturesHashes = {}
 
 
-def getHash(creatureNameImg):
-    creatureNameImg = np.ascontiguousarray(creatureNameImg)
-    hashCode = xxhash.xxh64(creatureNameImg).intdigest()
-    return hashCode
-
-
 for creature in creatures:
     creatureImg = np.array(
         cv2.imread(
@@ -36,7 +29,7 @@ for creature in creatures:
             cv2.IMREAD_GRAYSCALE
         )
     )
-    creatureHash = getHash(creatureImg)
+    creatureHash = utils.hashit(creatureImg)
     creaturesHashes[creatureHash] = {
         "name": creature,
         "hash": creatureHash,
@@ -76,7 +69,7 @@ def getCreatureFromSlot(content, slot):
     isEmpty = not np.any(creatureNameImg == config["creatures"]["nameColor"])
     if isEmpty:
         return None
-    creatureHash = getHash(creatureNameImg)
+    creatureHash = utils.hashit(creatureNameImg)
     unknownCreature = not creatureHash in creaturesHashes
     creature = {
         "name": "Unknown" if unknownCreature else creaturesHashes[creatureHash]["name"],
