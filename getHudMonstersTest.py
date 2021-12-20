@@ -12,25 +12,27 @@ def main():
         np.array(cv2.imread('screenshot.png', cv2.IMREAD_GRAYSCALE)))
     while True:
         screenshot = utils.getScreenshot()
-        playable = screenshot[35:35 + 352, 64:64 + 480]
-        playableFlattened = playable.flatten()
+        hudCoordinates = hud.getCoordinates(screenshot)
+        hudImg = screenshot[hudCoordinates[1]:hudCoordinates[1] +
+                            352, hudCoordinates[0]:hudCoordinates[0] + 480]
         battleListCreatures = battleList.getCreatures(screenshot)
         hasNoBattleListCreatures = len(battleListCreatures) == 0
         if hasNoBattleListCreatures:
             print('There is no battle list creatures')
             continue
-        creaturesBars = hud.getCreaturesBars(playableFlattened)
+        hudImgFlattened = hudImg.flatten()
+        creaturesBars = hud.getCreaturesBars(hudImgFlattened)
         hasNoHudCreaturesBars = len(creaturesBars) == 0
         if hasNoHudCreaturesBars:
             print('There is no hud creatures bars')
             continue
         creatures = hud.getCreatures(
-            playable, creaturesBars, battleListCreatures)
+            hudImg, creaturesBars, battleListCreatures)
         print(creatures)
         timef = (time() - loop_time)
         timef = timef if timef else 1
         fps = 1 / timef
-        print('FPS {}'.format(fps))
+        # print('FPS {}'.format(fps))
         loop_time = time()
 
 

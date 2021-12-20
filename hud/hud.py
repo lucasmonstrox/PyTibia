@@ -1,5 +1,7 @@
 import numpy as np
 import cv2
+from utils import utils
+
 y = np.array([
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
     480, 506,
@@ -7,9 +9,16 @@ y = np.array([
     1440, 1441, 1442, 1443, 1444, 1445, 1446, 1447, 1448, 1449, 1450, 1451, 1452, 1453, 1454, 1455, 1456, 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466
 ])
 x = np.arange(y.size)
-
 allBlack = np.zeros(y.size)
 hudWidth = 480
+creaturesNamesHashes = {
+    "Cyclops": np.array(cv2.imread('hud/images/monsters/Cyclops.png', cv2.IMREAD_GRAYSCALE)),
+    "Frost Dragon Hatchling": np.array(cv2.imread('hud/images/monsters/Frost Dragon Hatchling.png', cv2.IMREAD_GRAYSCALE)),
+    "Rat": np.array(cv2.imread('hud/images/monsters/Rat.png', cv2.IMREAD_GRAYSCALE)),
+}
+leftHud = np.array(cv2.imread('hud/images/leftHud.png', cv2.IMREAD_GRAYSCALE))
+rightHud = np.array(cv2.imread(
+    'hud/images/rightHud.png', cv2.IMREAD_GRAYSCALE))
 
 
 def getCreaturesBars(blackPixels):
@@ -32,11 +41,31 @@ def getCreaturesBars(blackPixels):
     return creatures
 
 
-creaturesNamesHashes = {
-    "Cyclops": np.array(cv2.imread('hud/images/monsters/Cyclops.png', cv2.IMREAD_GRAYSCALE)),
-    "Frost Dragon Hatchling": np.array(cv2.imread('hud/images/monsters/Frost Dragon Hatchling.png', cv2.IMREAD_GRAYSCALE)),
-    "Rat": np.array(cv2.imread('hud/images/monsters/Rat.png', cv2.IMREAD_GRAYSCALE)),
-}
+def getCreatures(hud, creaturesBars, battleListCreatures):
+    hasUniqueMonster = len(battleListCreatures) == 1
+    if hasUniqueMonster:
+        (x, y) = creaturesBars[0]
+        return np.array([[battleListCreatures[0], [x, y]]], dtype=object)
+    creatures = np.array([], dtype=object)
+    for creatureBar in creaturesBars:
+        (x, y) = creatureBar
+        for creatureNameHash in creaturesNamesHashes:
+            creatureMess = hud[y - 13: y - 13 + 11, x: x + 27]
+            creatureMess = np.where(
+                creatureMess == 113, 0, creatureMess)
+            creatureMess = np.where(creatureMess != 0, 255, creatureMess)
+            creatureMessFlattened = creatureMess.flatten()
+            creatureHashFlattened = creaturesNamesHashes[creatureNameHash].flatten(
+            )
+            creatureBlackPixelsIndexes = np.nonzero(
+                creatureHashFlattened == 0)[0]
+            blackPixels = np.take(creatureMessFlattened,
+                                  creatureBlackPixelsIndexes)
+            creatureDidMatch = np.all(blackPixels == 0)
+            if creatureDidMatch:
+                creatures = np.append(
+                    creatures, np.array([creatureNameHash, [x, y]], dtype=object))
+    return creatures
 
 
 def getCreatures_perf(hud, creaturesBars, battleListCreatures):
@@ -75,28 +104,27 @@ def getCreatures_perf(hud, creaturesBars, battleListCreatures):
     return creatures
 
 
-def getCreatures(hud, creaturesBars, battleListCreatures):
-    hasUniqueMonster = len(battleListCreatures) == 1
-    if hasUniqueMonster:
-        (x, y) = creaturesBars[0]
-        return np.array([[battleListCreatures[0], [x, y]]], dtype=object)
-    creatures = np.array([], dtype=object)
-    for creatureBar in creaturesBars:
-        (x, y) = creatureBar
-        for creatureNameHash in creaturesNamesHashes:
-            creatureMess = hud[y - 13: y - 13 + 11, x: x + 27]
-            creatureMess = np.where(
-                creatureMess == 113, 0, creatureMess)
-            creatureMess = np.where(creatureMess != 0, 255, creatureMess)
-            creatureMessFlattened = creatureMess.flatten()
-            creatureHashFlattened = creaturesNamesHashes[creatureNameHash].flatten(
-            )
-            creatureBlackPixelsIndexes = np.nonzero(
-                creatureHashFlattened == 0)[0]
-            blackPixels = np.take(creatureMessFlattened,
-                                  creatureBlackPixelsIndexes)
-            creatureDidMatch = np.all(blackPixels == 0)
-            if creatureDidMatch:
-                creatures = np.append(
-                    creatures, np.array([creatureNameHash, [x, y]], dtype=object))
-    return creatures
+@utils.cacheObjectPos
+def getContainersLeftArrows(screenshot):
+    return utils.locate(screenshot, leftHud)
+
+
+@utils.cacheObjectPos
+def getContainersRightArrows(screenshot):
+    return utils.locate(screenshot, rightHud)
+
+
+def getCoordinates(screenshot):
+    leftHudPos = getContainersLeftArrows(screenshot)
+    rightHudPos = getContainersRightArrows(screenshot)
+    hudCenter = ((rightHudPos[0] - leftHudPos[0]) // 2) + leftHudPos[0]
+    hudLeftBorder = hudCenter - 241
+    hud = screenshot[leftHudPos[1] + 5: leftHudPos[1] +
+                     5 + 352, hudLeftBorder:hudLeftBorder + 1]
+    hud = np.where(np.logical_and(hud >= 18, hud <= 30), 1, 0)
+    isHudDetected = np.all(hud == 1)
+    if isHudDetected:
+        x = hudLeftBorder + 1
+        y = leftHudPos[1] + 5
+        bbox = (x, y, 480, 352)
+        return bbox
