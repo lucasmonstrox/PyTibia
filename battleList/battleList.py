@@ -1,17 +1,20 @@
 
-import cv2
 import math
 import numpy as np
+import pyautogui
 from utils import utils
 from wiki.creatures import creatures
 
 config = {
     "container": {
+        "topImg": utils.loadImgAsArray('battleList/images/battleList.png'),
+        "bottomImg": utils.loadImgAsArray('battleList/images/endOfContainer.png'),
         "width": 156
     },
     "creatures": {
-        "nameColor": 192,
-        "highlightedNameColor": 247
+        "namePixelColor": 192,
+        "highlightedNamePixelColor": 247,
+        "hashes": {}
     },
     "slot": {
         "height": 20,
@@ -19,33 +22,48 @@ config = {
     },
 }
 
-creaturesHashes = {}
 
-
-for creature in creatures:
-    creatureImg = np.array(
-        cv2.imread(
-            'battleList/images/monsters/{}.png'.format(creature),
-            cv2.IMREAD_GRAYSCALE
-        )
-    )
+for creatureName in creatures:
+    creatureImg = utils.loadImgAsArray(
+        'battleList/images/monsters/{}.png'.format(creatureName))
     creatureHash = utils.hashit(creatureImg)
-    creaturesHashes[creatureHash] = {
-        "name": creature,
+    config["creatures"]["hashes"][creatureHash] = {
+        "name": creatureName,
         "hash": creatureHash,
-        "info": creatures[creature]
+        "info": creatures[creatureName]
     }
 
 
-class BattleListIsTooSmallError():
-    """Raised when battle list is too small"""
-    pass
+def attackSlot(screenshot, slot):
+    pos = getContainerTop(screenshot)
+    x = pos[0] + 20
+    y = pos[1] + 13 + (slot * 22) + 22 // 2
+    pyautogui.click(x, y)
 
 
-battleListImg = np.array(cv2.cvtColor(cv2.imread(
-    'battleList/images/battleList.png'), cv2.COLOR_RGB2GRAY))
-endOfContainerImg = np.array(cv2.cvtColor(cv2.imread(
-    'battleList/images/endOfContainer.png'), cv2.COLOR_RGB2GRAY))
+@utils.cacheObjectPos
+def getContainerBottom(img):
+    return utils.locate(img, config["container"]["bottomImg"])
+
+
+@utils.cacheObjectPos
+def getContainerTop(img):
+    return utils.locate(img, config["container"]["topImg"])
+
+
+def getContent(screenshot):
+    (contentLeft, contentTop, _, contentHeight) = getContainerTop(screenshot)
+    startingY = contentTop + contentHeight
+    endingX = contentLeft + config["container"]["width"]
+    content = screenshot[startingY:, contentLeft:endingX]
+    endOfContainer = getContainerBottom(content)
+    content = content[:endOfContainer[1] - 11, :]
+    return content
+
+
+def getCreatureNameImg(slotImg):
+    # TODO: improve clean code
+    return slotImg[3:11 + 3, 23:23 + 131]
 
 
 def getCreatureSlotImg(content, slot):
@@ -57,24 +75,23 @@ def getCreatureSlotImg(content, slot):
     return slotImg
 
 
-def getCreatureNameImg(slotImg):
-    # TODO: improve clean code
-    return slotImg[3:11 + 3, 23:23 + 131]
-
-
 def getCreatureFromSlot(content, slot):
     slotImg = getCreatureSlotImg(content, slot)
+    upperCreatureBorder = slotImg[0:1, 0:19].flatten()
+    isCreatureBeingAttacked = np.all(np.logical_or(
+        upperCreatureBorder == 76, upperCreatureBorder == 166))
+    # TODO: apply it once when parsing content
+    slotImg = utils.graysToBlack(slotImg)
     creatureNameImg = getCreatureNameImg(slotImg)
     creatureNameImg = np.ravel(creatureNameImg)
-    isEmpty = not np.any(creatureNameImg == config["creatures"]["nameColor"])
-    if isEmpty:
-        return None
     creatureHash = utils.hashit(creatureNameImg)
-    unknownCreature = not creatureHash in creaturesHashes
+    unknownCreature = not creatureHash in config["creatures"]["hashes"]
+    creatureName = "Unknown" if unknownCreature else config[
+        "creatures"]["hashes"][creatureHash]["name"]
     creature = {
-        "name": "Unknown" if unknownCreature else creaturesHashes[creatureHash]["name"],
+        "name": creatureName,
         "hash": creatureHash,
-        "isBeingAttacked": False
+        "isBeingAttacked": isCreatureBeingAttacked
     }
     return creature
 
@@ -83,31 +100,25 @@ def getCreatures(screenshot):
     content = getContent(screenshot)
     contentIsTooSmall = content.shape[0] < config["slot"]["height"]
     if contentIsTooSmall:
-        raise BattleListIsTooSmallError
-    content = utils.graysToBlack(content)
+        # TODO: throw custom exception
+        raise None
     content = replaceHighlightedName(content)
     filledSlots = getFilledSlots(content)
-    creatures = np.array([getCreatureFromSlot(content, x)
-                         for x in np.arange(filledSlots)])
-    creatures = creatures[creatures != None]
-    return creatures
-
-
-def getContent(screenshot):
-    (contentLeft, contentTop, _, contentHeight) = getPos(screenshot)
-    startingY = contentTop + contentHeight
-    endingX = contentLeft + config["container"]["width"]
-    content = screenshot[startingY:, contentLeft:endingX]
-    endOfContainer = getNextEndOfContainer(content)
-    content = content[:endOfContainer[1] - 11, :]
-    return content
+    creatures = np.array([getCreatureFromSlot(content, creature)
+                         for creature in np.arange(filledSlots)])
+    isAttackingAnyCreature = False
+    for creature in creatures:
+        if creature["isBeingAttacked"] == True:
+            isAttackingAnyCreature = True
+            break
+    return {"creatures": creatures, "isAttackingAnyCreature": isAttackingAnyCreature}
 
 
 def getFilledSlots(content):
     content = np.ravel(content[:, 23:24])
     possibleCreatureNames = np.nonzero(
         np.where(
-            content == config["creatures"]["nameColor"],
+            content == config["creatures"]["namePixelColor"],
             True,
             False
         )
@@ -121,19 +132,9 @@ def getFilledSlots(content):
     return filledSlots
 
 
-@utils.cacheObjectPos
-def getNextEndOfContainer(img):
-    return utils.locate(img, endOfContainerImg)
-
-
-@utils.cacheObjectPos
-def getPos(img):
-    return utils.locate(img, battleListImg)
-
-
 def replaceHighlightedName(creatureNameImg):
     return np.where(
-        creatureNameImg == config["creatures"]["highlightedNameColor"],
-        config["creatures"]["nameColor"],
+        creatureNameImg == config["creatures"]["highlightedNamePixelColor"],
+        config["creatures"]["namePixelColor"],
         creatureNameImg
     )
