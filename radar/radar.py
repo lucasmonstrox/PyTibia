@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from utils import utils
+import pyautogui
 
 config = {
     "radar": {
@@ -9,109 +10,28 @@ config = {
     },
 }
 images = {
-    "radarTools": cv2.cvtColor(
-        np.array(cv2.imread('radar/images/radar-tools.png')), cv2.COLOR_RGB2GRAY)
+    "radarTools": utils.loadImgAsArray('radar/images/radar-tools.png')
 }
 floors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 floorsConfidence = [0.85, 0.85, 0.9, 0.95, 0.95, 0.95,
                     0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.9, 0.85, 0.85]
 floorsAreaImgs = [
-    np.array(
-        cv2.imread(
-            'radar/images/floor-0.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-1.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-2.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-3.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-4.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-5.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-6.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-7.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-8.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-9.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-10.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-11.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-12.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-13.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-14.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-15.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
+    utils.loadImgAsArray('radar/images/floor-0.png'),
+    utils.loadImgAsArray('radar/images/floor-1.png'),
+    utils.loadImgAsArray('radar/images/floor-2.png'),
+    utils.loadImgAsArray('radar/images/floor-3.png'),
+    utils.loadImgAsArray('radar/images/floor-4.png'),
+    utils.loadImgAsArray('radar/images/floor-5.png'),
+    utils.loadImgAsArray('radar/images/floor-6.png'),
+    utils.loadImgAsArray('radar/images/floor-7.png'),
+    utils.loadImgAsArray('radar/images/floor-8.png'),
+    utils.loadImgAsArray('radar/images/floor-9.png'),
+    utils.loadImgAsArray('radar/images/floor-10.png'),
+    utils.loadImgAsArray('radar/images/floor-11.png'),
+    utils.loadImgAsArray('radar/images/floor-12.png'),
+    utils.loadImgAsArray('radar/images/floor-13.png'),
+    utils.loadImgAsArray('radar/images/floor-14.png'),
+    utils.loadImgAsArray('radar/images/floor-15.png')
 ]
 floorsLevelImgs = [
     np.array(
@@ -218,9 +138,29 @@ for floor in floors:
     floorHash = utils.hashit(floorsLevelImgs[floor])
     floorsLevelImgsHashes[floorHash] = floor
 
+# floorsAsBoolean = []
+darkPixelColor = 0  # [0, 0, 0]
+stonePixelColor = 102  # [102, 102, 102]
+treePixelColor = 59  # [0, 102, 0]
+waterPixelColor = 92  # [51, 102, 153]
+wallPixelColor = 106  # [255, 51, 0]
+forbiddenPixels = [
+    darkPixelColor,
+    stonePixelColor,
+    treePixelColor,
+    wallPixelColor,
+    waterPixelColor
+]
+floorAreaImg = floorsAreaImgs[7]
+floorSevenImg = utils.loadImgAsArray('radar/images/floor-7.png')
+floorSevenBooleans = np.where(
+    np.isin(floorSevenImg, forbiddenPixels),
+    1,
+    0
+)
+
 
 def getCoordinate(floorLevel, radarImage):
-    print(floorLevel)
     (xPixel, yPixel, _, _) = utils.locate(
         floorsAreaImgs[floorLevel], radarImage)
     xCoordinate, yCoordinate = utils.getCoordinateFromPixel(
@@ -235,7 +175,6 @@ def getCoordinate_perf(floorLevel, radarImage):
     global lastCoordinate
     image = floorsAreaImgs[floorLevel] if lastCoordinate is None else getQuadrantImg(
         lastCoordinate)
-    print(lastCoordinate)
     match = cv2.matchTemplate(image, radarImage, cv2.TM_CCOEFF_NORMED)
     (_, confidence, _, (x, y)) = cv2.minMaxLoc(match)
     if confidence >= 0.7:
@@ -296,3 +235,42 @@ def getRadarImage(screenshot, radarToolsPos):
 @utils.cacheObjectPos
 def getRadarToolsPos(screenshot):
     return utils.locate(screenshot, images['radarTools'])
+
+
+def goToCoordinateByRadarClick(screenshot, playerCoordinate, coordinate):
+    (radarToolsPosX, radarToolsPosY, _, _) = getRadarToolsPos(screenshot)
+    x0 = radarToolsPosX - config['radar']['width'] - 11
+    y0 = radarToolsPosY - 50
+    radarCenterX = x0 + 53
+    radarCenterY = y0 + 54
+    (playerPixelCoordinateX, playerPixelCoordinateY) = utils.getPixelFromCoordinate(
+        playerCoordinate)
+    (destinationPixelCoordinateX,
+     destinationPixelCoordinateY) = utils.getPixelFromCoordinate(coordinate)
+    x = destinationPixelCoordinateX - playerPixelCoordinateX + radarCenterX
+    y = destinationPixelCoordinateY - playerPixelCoordinateY + radarCenterY
+    pyautogui.click(x, y)
+
+
+def goToCoordinateByScreenClick(currentCoordinate, coordinate):
+    playerCoordinateX, playerCoordinateY, playerCoordinateZ = currentCoordinate
+    playerWindowCoordinateX, playerWindowCoordinateY = getPlayerWindowCoordinate()
+    destinationX, destinationY, destinationZ = coordinate
+    squareMeterSize = utils.getSquareMeterSize()
+    # TODO: avoid battleye detection clicking in a random pixel inside squaremeter
+    mouseClickX = playerWindowCoordinateX + \
+        ((destinationX - playerCoordinateX) * squareMeterSize)
+    # TODO: avoid battleye detection clicking in a random pixel inside squaremeter
+    mouseClickY = playerWindowCoordinateY + \
+        ((destinationY - playerCoordinateY) * squareMeterSize)
+    # TODO: avoid battleye detection adding humanoid movementation
+    pyautogui.click(mouseClickX, mouseClickY)
+
+
+def isNearToCoordinate(coordinate, coordinateToCheck, tolerance=10):
+    (x, y, _) = coordinate
+    (xToCheck, yToCheck, _) = coordinateToCheck
+    xDistance = abs(x - xToCheck)
+    yDistance = abs(y - yToCheck)
+    isNear = xDistance <= tolerance and yDistance <= tolerance
+    return isNear
