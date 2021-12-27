@@ -1,5 +1,4 @@
 import d3dshot
-import cupy as cp
 import cv2
 import numpy as np
 from PIL import Image
@@ -53,7 +52,7 @@ def getCoordinateFromPixel(pixel):
 
 def getPixelFromCoordinate(coordinate):
     x, y, _ = coordinate
-    return (y - 30976, x - 31744)
+    return (x - 31744, y - 30976)
 
 
 def getSquareMeterSize():
@@ -66,6 +65,14 @@ def graysToBlack(arr):
 
 def hashit(arr):
     return xxhash.xxh64(np.ascontiguousarray(arr)).intdigest()
+
+
+def loadImg(path):
+    return cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+
+
+def loadImgAsArray(path):
+    return np.array(loadImg(path))
 
 
 def locate(compareImg, img):
