@@ -9,7 +9,7 @@
   - Getting Mana :heavy_check_mark:
 - BattleList:
   - [Getting monsters](battleList/docs/README.md) :heavy_check_mark:
-  - Checking if monster is being attacked :warning:
+  - [Checking if monster is being attacked](battleList/docs/README.md) :heavy_check_mark:
 - HUD:
   - Getting coordinates(playable area) :heavy_check_mark:
   - Getting Monsters :heavy_check_mark:
