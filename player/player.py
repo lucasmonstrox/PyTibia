@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
-from PIL import Image, ImageGrab
-from PIL.ImageOps import grayscale
+from PIL import Image
 from radar import radar
 import skimage
 from time import sleep
@@ -135,10 +134,8 @@ def isCursed(screenshot):
 
 def isHungry(screenshot):
     container = getSpecialConditionsContainer(screenshot)
-    Image.fromarray(container).save('xavier.png')
     match = cv2.matchTemplate(container, hungryImg, cv2.TM_CCOEFF_NORMED)
     res = cv2.minMaxLoc(match)
-    print(res)
     isHungry = res[1] >= 0.9
     return isHungry
 
@@ -273,22 +270,6 @@ def goToCoordinate(currentCoordinate, destinationCoordinate):
             pyautogui.press('right')
             sleep(0.25)
             continue
-
-
-def goToCoordinateByScreenClick(coordinate):
-    playerCoordinateX, playerCoordinateY, playerCoordinateZ = getCoordinate()
-    playerWindowCoordinateX, playerWindowCoordinateY = getPlayerWindowCoordinate()
-    destinationX, destinationY, destinationZ = coordinate
-    squareMeterSize = utils.getSquareMeterSize()
-    # TODO: avoid battleye detection clicking in a random pixel inside squaremeter
-    mouseClickX = playerWindowCoordinateX + \
-        ((destinationX - playerCoordinateX) * squareMeterSize)
-    # TODO: avoid battleye detection clicking in a random pixel inside squaremeter
-    mouseClickY = playerWindowCoordinateY + \
-        ((destinationY - playerCoordinateY) * squareMeterSize)
-    # TODO: avoid battleye detection adding humanoid movementation
-    pyautogui.moveTo(mouseClickX, mouseClickY, duration=0.75)
-    pyautogui.click(mouseClickX, mouseClickY)
 
 
 def goToCoordinateByRadarClick(coordinate):
@@ -463,3 +444,8 @@ def isSlowed():
     pos = pyautogui.locateOnScreen('player/images/slowed.png', confidence=0.9)
     isSlowed = pos != None
     return isSlowed
+
+
+def stop(seconds=1):
+    pyautogui.press('esc')
+    sleep(seconds)
