@@ -34,102 +34,22 @@ floorsAreaImgs = [
     utils.loadImgAsArray('radar/images/floor-15.png')
 ]
 floorsLevelImgs = [
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/0.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/1.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/2.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/3.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/4.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/5.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/6.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/7.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/8.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/9.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/10.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/11.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/12.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/13.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/14.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
-    np.array(
-        cv2.imread(
-            'radar/images/floor-levels/15.png',
-            cv2.IMREAD_GRAYSCALE
-        )
-    ),
+    utils.loadImgAsArray('radar/images/floor-levels/0.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/1.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/2.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/3.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/4.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/5.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/6.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/7.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/8.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/9.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/10.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/11.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/12.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/13.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/14.png'),
+    utils.loadImgAsArray('radar/images/floor-levels/15.png'),
 ]
 floorsLevelImgsHashes = {}
 toolsAreaWidth = 176
@@ -265,6 +185,12 @@ def goToCoordinateByScreenClick(currentCoordinate, coordinate):
         ((destinationY - playerCoordinateY) * squareMeterSize)
     # TODO: avoid battleye detection adding humanoid movementation
     pyautogui.click(mouseClickX, mouseClickY)
+
+
+def isCoordinateWalkable(coordinate):
+    (x, y) = utils.getPixelFromCoordinate(coordinate)
+    walkable = floorSevenBooleans[y, x] == 1
+    return walkable
 
 
 def isNearToCoordinate(coordinate, coordinateToCheck, tolerance=10):
