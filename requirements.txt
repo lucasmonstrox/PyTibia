@@ -1,5 +1,8 @@
+d3dshot
+networkx
 opencv-python
 Pillow
 pyautogui
 pygetwindow
 scikit-image
+xxhash
