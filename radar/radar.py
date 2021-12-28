@@ -75,8 +75,8 @@ floorAreaImg = floorsAreaImgs[7]
 floorSevenImg = utils.loadImgAsArray('radar/images/floor-7.png')
 floorSevenBooleans = np.where(
     np.isin(floorSevenImg, forbiddenPixels),
-    1,
-    0
+    False,
+    True
 )
 
 
@@ -189,7 +189,7 @@ def goToCoordinateByScreenClick(currentCoordinate, coordinate):
 
 def isCoordinateWalkable(coordinate):
     (x, y) = utils.getPixelFromCoordinate(coordinate)
-    walkable = floorSevenBooleans[y, x] == 1
+    walkable = floorSevenBooleans[y, x]
     return walkable
 
 
