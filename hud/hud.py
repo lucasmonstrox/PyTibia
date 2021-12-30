@@ -1,5 +1,5 @@
 import numpy as np
-import cv2
+import pyautogui
 from utils import utils
 
 lifeBarBlackPixelsMapper = np.array([
@@ -12,19 +12,35 @@ x = np.arange(lifeBarBlackPixelsMapper.size)
 lifeBarFlattenedImg = np.zeros(lifeBarBlackPixelsMapper.size)
 hudWidth = 480
 creaturesNamesHashes = {
-    "Centipede": np.array(cv2.imread('hud/images/monsters/Centipede.png', cv2.IMREAD_GRAYSCALE)),
-    "Cobra": np.array(cv2.imread('hud/images/monsters/Cobra.png', cv2.IMREAD_GRAYSCALE)),
-    "Crocodile": np.array(cv2.imread('hud/images/monsters/Crocodile.png', cv2.IMREAD_GRAYSCALE)),
-    "Cyclops": np.array(cv2.imread('hud/images/monsters/Cyclops.png', cv2.IMREAD_GRAYSCALE)),
-    "Frost Dragon Hatchling": np.array(cv2.imread('hud/images/monsters/Frost Dragon Hatchling.png', cv2.IMREAD_GRAYSCALE)),
-    "Rat": np.array(cv2.imread('hud/images/monsters/Rat.png', cv2.IMREAD_GRAYSCALE)),
-    "Lizard Sentinel": np.array(cv2.imread('hud/images/monsters/Lizard Sentinel.png', cv2.IMREAD_GRAYSCALE)),
-    "Lizard Snakecharmer": np.array(cv2.imread('hud/images/monsters/Lizard Snakecharmer.png', cv2.IMREAD_GRAYSCALE)),
-    "Lizard Templar": np.array(cv2.imread('hud/images/monsters/Lizard Templar.png', cv2.IMREAD_GRAYSCALE)),
+    "Centipede": utils.loadImgAsArray('hud/images/monsters/Centipede.png'),
+    "Cobra": utils.loadImgAsArray('hud/images/monsters/Cobra.png'),
+    "Crocodile": utils.loadImgAsArray('hud/images/monsters/Crocodile.png'),
+    "Cyclops": utils.loadImgAsArray('hud/images/monsters/Cyclops.png'),
+    "Frost Dragon Hatchling": utils.loadImgAsArray('hud/images/monsters/Frost Dragon Hatchling.png'),
+    "Rat": utils.loadImgAsArray('hud/images/monsters/Rat.png'),
+    "Lizard Sentinel": utils.loadImgAsArray('hud/images/monsters/Lizard Sentinel.png'),
+    "Lizard Snakecharmer": utils.loadImgAsArray('hud/images/monsters/Lizard Snakecharmer.png'),
+    "Lizard Templar": utils.loadImgAsArray('hud/images/monsters/Lizard Templar.png'),
 }
-leftHud = np.array(cv2.imread('hud/images/leftHud.png', cv2.IMREAD_GRAYSCALE))
-rightHud = np.array(cv2.imread(
-    'hud/images/rightHud.png', cv2.IMREAD_GRAYSCALE))
+leftHud = utils.loadImgAsArray('hud/images/leftHud.png')
+rightHud = utils.loadImgAsArray('hud/images/rightHud.png')
+
+def moveToSlot(slot, hudPos):
+    (hudPosX, hudPosY, hudWidth, hudHeight) = hudPos
+    (slotX, slotY) = slot
+    slotHeight = hudHeight // 11
+    slotWidth = hudWidth // 15
+    slotXCoordinate = hudPosX + (slotX * slotWidth)
+    slotYCoordinate = hudPosY + (slotY * slotHeight)
+    pyautogui.moveTo(slotXCoordinate, slotYCoordinate)
+
+def clickSlot(slot, hudPos):
+    moveToSlot(slot, hudPos)
+    pyautogui.click()
+
+def rightClickSlot(slot, hudPos):
+    moveToSlot(slot, hudPos)
+    pyautogui.rightClick()
 
 
 def getCreaturesBars(hudImg):
