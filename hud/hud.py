@@ -32,7 +32,7 @@ def moveToSlot(slot, hudPos):
     slotWidth = hudWidth // 15
     slotXCoordinate = hudPosX + (slotX * slotWidth)
     slotYCoordinate = hudPosY + (slotY * slotHeight)
-    pyautogui.moveTo(slotXCoordinate, slotYCoordinate)
+    pyautogui.moveTo(slotXCoordinate, slotYCoordinate, duration=3)
 
 def clickSlot(slot, hudPos):
     moveToSlot(slot, hudPos)
