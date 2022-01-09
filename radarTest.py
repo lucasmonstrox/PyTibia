@@ -51,6 +51,10 @@ def main():
         #     print('Cannot find hud')
         #     continue
         battleListCreatures = battleList.getCreatures(screenshot)
+        cannotGetBattleList = battleListCreatures is None
+        if cannotGetBattleList:
+            print('Cannot get battle list creatures')
+            continue
         hasBattleListCreatures = len(battleListCreatures["creatures"]) > 0
         print('hasBattleListCreatures', hasBattleListCreatures)
         print(battleListCreatures)
@@ -84,8 +88,11 @@ def main():
             radarToolsPos = radar.getRadarToolsPos(screenshot)
             radarImage = radar.getRadarImage(screenshot, radarToolsPos)
             coordinate = radar.getCoordinate(floorLevel, radarImage)
+            coordinateIsEmpty = coordinate is None
+            if coordinateIsEmpty:
+                print('Cannot get coordinate')
+                continue
             # (x, y) = utils.getPixelFromCoordinate(coordinate)
-
             if radar.isNearToCoordinate(
                     coordinate, waypoints[currentWaypointIndex]["coordinate"]):
                 player.stop()
