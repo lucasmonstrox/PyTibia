@@ -23,7 +23,11 @@ def cacheObjectPos(func):
             copiedImgHash = hashit(copiedImg)
             if copiedImgHash == lastImgHash:
                 return (lastX, lastY, lastW, lastH)
-        (x, y, w, h) = func(screenshot)
+        res = func(screenshot)
+        didntMatch = res is None
+        if didntMatch:
+            return None
+        (x, y, w, h) = res
         lastX = x
         lastY = y
         lastW = w
@@ -75,9 +79,13 @@ def loadImgAsArray(path):
     return np.array(loadImg(path))
 
 
-def locate(compareImg, img):
+def locate(compareImg, img, confidence=0.85):
     match = cv2.matchTemplate(compareImg, img, cv2.TM_CCOEFF_NORMED)
     res = cv2.minMaxLoc(match)
+    matchConfidence = res[1]
+    didntMatch = matchConfidence <= confidence
+    if didntMatch:
+        return None
     (x, y) = res[3]
     width = len(img[0])
     height = len(img)
