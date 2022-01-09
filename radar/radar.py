@@ -58,37 +58,44 @@ for floor in floors:
     floorHash = utils.hashit(floorsLevelImgs[floor])
     floorsLevelImgsHashes[floorHash] = floor
 
+
 # floorsAsBoolean = []
-darkPixelColor = 0  # [0, 0, 0]
-stonePixelColor = 102  # [102, 102, 102]
-treePixelColor = 59  # [0, 102, 0]
-waterPixelColor = 92  # [51, 102, 153]
-wallPixelColor = 106  # [255, 51, 0]
-forbiddenPixels = [
-    darkPixelColor,
-    stonePixelColor,
-    treePixelColor,
+caveWallPixelColor = 75
+lavaPixelColor = 1
+mountainOrStonePixelColor = 102
+treeOrBushPixelColor = 59
+vacummPixelColor = 0
+wallPixelColor = 106
+waterPixelColor = 92
+forbiddenPixelsColors = [
+    caveWallPixelColor,
+    lavaPixelColor,
+    mountainOrStonePixelColor,
+    treeOrBushPixelColor,
+    vacummPixelColor,
     wallPixelColor,
     waterPixelColor
 ]
 floorAreaImg = floorsAreaImgs[7]
 floorSevenImg = utils.loadImgAsArray('radar/images/floor-7.png')
 floorSevenBooleans = np.where(
-    np.isin(floorSevenImg, forbiddenPixels),
+    np.isin(floorSevenImg, forbiddenPixelsColors),
     False,
     True
 )
+lastCoordinate = None
 
 
 def getCoordinate(floorLevel, radarImage):
-    (xPixel, yPixel, _, _) = utils.locate(
-        floorsAreaImgs[floorLevel], radarImage)
+    coordinate = utils.locate(
+        floorsAreaImgs[floorLevel], radarImage, confidence=0.75)
+    cannotGetCoordinate = coordinate is None
+    if cannotGetCoordinate:
+        return None
+    (xPixel, yPixel, _, _) = coordinate
     xCoordinate, yCoordinate = utils.getCoordinateFromPixel(
         (xPixel + 53, yPixel + 54))
     return (xCoordinate, yCoordinate, floorLevel)
-
-
-lastCoordinate = None
 
 
 def getCoordinate_perf(floorLevel, radarImage):
@@ -108,7 +115,11 @@ def getCoordinate_perf(floorLevel, radarImage):
 
 
 def getFloorLevel(screenshot):
-    left, top, width, height = getRadarToolsPos(screenshot)
+    radarToolsPos = getRadarToolsPos(screenshot)
+    radarToolsPosIsEmpty = radarToolsPos is None
+    if radarToolsPosIsEmpty:
+        return None
+    left, top, width, height = radarToolsPos
     left = left + width + 8
     top = top - 7
     height = 67
@@ -191,6 +202,14 @@ def isCoordinateWalkable(coordinate):
     (x, y) = utils.getPixelFromCoordinate(coordinate)
     walkable = floorSevenBooleans[y, x]
     return walkable
+
+
+def isCoordinateVisible(currentCoordinate, targetCoordinate):
+    return False
+
+
+def isForbiddenPixelColor(pixelColor):
+    return np.isin(pixelColor, forbiddenPixelsColors)
 
 
 def isNearToCoordinate(coordinate, coordinateToCheck, tolerance=10):
