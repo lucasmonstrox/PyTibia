@@ -52,12 +52,16 @@ def getContainerTop(img):
 
 
 def getContent(screenshot):
-    (contentLeft, contentTop, _, contentHeight) = getContainerTop(screenshot)
+    containerTop = getContainerTop(screenshot)
+    cannotGetContainerTop = containerTop is None
+    if cannotGetContainerTop:
+        return None
+    (contentLeft, contentTop, _, contentHeight) = containerTop
     startingY = contentTop + contentHeight
     endingX = contentLeft + config["container"]["width"]
     content = screenshot[startingY:, contentLeft:endingX]
-    endOfContainer = getContainerBottom(content)
-    content = content[:endOfContainer[1] - 11, :]
+    containerBottom = getContainerBottom(content)
+    content = content[:containerBottom[1] - 11, :]
     return content
 
 
@@ -98,6 +102,9 @@ def getCreatureFromSlot(content, slot):
 
 def getCreatures(screenshot):
     content = getContent(screenshot)
+    cannotGetContent = content is None
+    if cannotGetContent:
+        return None
     contentIsTooSmall = content.shape[0] < config["slot"]["height"]
     if contentIsTooSmall:
         # TODO: throw custom exception
