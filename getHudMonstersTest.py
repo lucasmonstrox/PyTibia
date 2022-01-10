@@ -8,8 +8,7 @@ from utils import utils
 
 def main():
     loop_time = time()
-    screenshot = np.ascontiguousarray(
-        np.array(cv2.imread('screenshot.png', cv2.IMREAD_GRAYSCALE)))
+    screenshot = utils.loadImgAsArray('screenshot.png')
     while True:
         screenshot = utils.getScreenshot()
         hudCoordinates = hud.getCoordinates(screenshot)
@@ -29,10 +28,11 @@ def main():
         creatures = hud.getCreatures(
             hudImg, creaturesBars, battleListCreatures)
         print(creatures)
+        break
         timef = (time() - loop_time)
         timef = timef if timef else 1
         fps = 1 / timef
-        # print('FPS {}'.format(fps))
+        print('FPS {}'.format(fps))
         loop_time = time()
 
 
