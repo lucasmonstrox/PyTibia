@@ -21,9 +21,11 @@ creaturesNamesHashes = {
     "Lizard Sentinel": utils.loadImgAsArray('hud/images/monsters/Lizard Sentinel.png'),
     "Lizard Snakecharmer": utils.loadImgAsArray('hud/images/monsters/Lizard Snakecharmer.png'),
     "Lizard Templar": utils.loadImgAsArray('hud/images/monsters/Lizard Templar.png'),
+    "Spit Nettle": utils.loadImgAsArray('hud/images/monsters/Spit Nettle.png'),
 }
 leftHud = utils.loadImgAsArray('hud/images/leftHud.png')
 rightHud = utils.loadImgAsArray('hud/images/rightHud.png')
+
 
 def moveToSlot(slot, hudPos):
     (hudPosX, hudPosY, hudWidth, hudHeight) = hudPos
@@ -32,11 +34,13 @@ def moveToSlot(slot, hudPos):
     slotWidth = hudWidth // 15
     slotXCoordinate = hudPosX + (slotX * slotWidth)
     slotYCoordinate = hudPosY + (slotY * slotHeight)
-    pyautogui.moveTo(slotXCoordinate, slotYCoordinate, duration=3)
+    pyautogui.moveTo(slotXCoordinate, slotYCoordinate, duration=0.5)
+
 
 def clickSlot(slot, hudPos):
     moveToSlot(slot, hudPos)
     pyautogui.click()
+
 
 def rightClickSlot(slot, hudPos):
     moveToSlot(slot, hudPos)
@@ -68,6 +72,24 @@ def getCreaturesBars(hudImg):
     return creatures
 
 
+def getSlotFromCoordinate(currentCoordinate, coordinate):
+    diffX = coordinate[0] - currentCoordinate[0]
+    diffXAbs = abs(diffX)
+    if diffXAbs > 7:
+        # TODO: throw an exception
+        print('diffXAbs > 7')
+        return None
+    diffY = coordinate[1] - currentCoordinate[1]
+    diffYAbs = abs(diffY)
+    if diffYAbs > 5:
+        # TODO: throw an exception
+        print('diffYAbs > 5')
+        return None
+    hudCoordinateX = 7 + diffX
+    hudCoordinateY = 5 + diffY
+    return (hudCoordinateX, hudCoordinateY)
+
+
 def makeCreature(creatureName, coordinate):
     (x, y) = coordinate
     xCoordinate = x - 4 + 16
@@ -83,19 +105,32 @@ def makeCreature(creatureName, coordinate):
 
 
 def getCreatures(hud, creaturesBars, battleListCreatures):
-    hasUniqueMonster = len(battleListCreatures) == 1
+    # TODO: clean names once
+    creatures = np.array([], dtype=object)
+    hasNoBattleListCreatures = len(battleListCreatures["creatures"]) == 0
+    if hasNoBattleListCreatures:
+        return creatures
+    hasUniqueMonster = len(battleListCreatures["creatures"]) == 1
     if hasUniqueMonster:
         (x, y) = creaturesBars[0]
-        return np.array([makeCreature(battleListCreatures[0]["name"], creaturesBars[0])], dtype=object)
-    creatures = np.array([], dtype=object)
+        return np.append(creatures, makeCreature(battleListCreatures["creatures"][0]["name"], creaturesBars[0]))
+    possibleMonsters = {}
+    for battleListCreature in battleListCreatures["creatures"]:
+        alreadyInPossibleMonsters = battleListCreature["name"] in possibleMonsters
+        if alreadyInPossibleMonsters:
+            continue
+        possibleMonsters[battleListCreature["name"]] = creaturesNamesHashes[battleListCreature["name"]]
     for creatureBar in creaturesBars:
         (x, y) = creatureBar
-        for creatureName in creaturesNamesHashes:
-            creatureMess = hud[y - 13: y - 13 + 11, x: x + 27]
-            creatureMess = np.where(
-                creatureMess == 113, 0, creatureMess)
-            creatureMess = np.where(creatureMess != 0, 255, creatureMess)
-            creatureMessFlattened = creatureMess.flatten()
+        creatureMess = hud[y - 13: y - 13 + 11, x: x + 27]
+        creatureMess = np.where(creatureMess == 29, 0, creatureMess)
+        creatureMess = np.where(creatureMess == 91, 0, creatureMess)
+        creatureMess = np.where(creatureMess == 113, 0, creatureMess)
+        creatureMess = np.where(creatureMess == 152, 0, creatureMess)
+        creatureMess = np.where(creatureMess == 170, 0, creatureMess)
+        creatureMess = np.where(creatureMess != 0, 255, creatureMess)
+        creatureMessFlattened = creatureMess.flatten()
+        for creatureName in possibleMonsters:
             creatureHashFlattened = creaturesNamesHashes[creatureName].flatten(
             )
             creatureBlackPixelsIndexes = np.nonzero(
@@ -104,8 +139,7 @@ def getCreatures(hud, creaturesBars, battleListCreatures):
                                   creatureBlackPixelsIndexes)
             creatureDidMatch = np.all(blackPixels == 0)
             if creatureDidMatch:
-                creatures = np.append(
-                    creatures, np.array([makeCreature(creatureName, creatureBar)], dtype=object))
+                creatures = np.append(creatures, makeCreature(creatureName, creatureBar))
     return creatures
 
 
