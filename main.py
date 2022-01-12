@@ -3,8 +3,9 @@ from utils import utils
 
 
 def main():
-    screenshot = utils.getScreenshot()
-    print('hp', player.getHp(screenshot))
+    while True:
+        screenshot = utils.getScreenshot()
+        print('hp', player.getHp(screenshot))
 
 
 if __name__ == '__main__':

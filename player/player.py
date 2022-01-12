@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from PIL import Image
 from radar import radar
 import skimage
 from time import sleep
@@ -9,8 +8,7 @@ import pyautogui
 
 
 accessoriesEquipedImg = np.array(cv2.imread('radar/images/radar-tools.png'))
-hpImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/hp.png'), cv2.COLOR_RGB2GRAY))
+hpImg = utils.loadImgAsArray('player/images/hp.png')
 manaImg = np.array(cv2.cvtColor(cv2.imread(
     'player/images/mana.png'), cv2.COLOR_RGB2GRAY))
 bleedingImg = np.array(cv2.cvtColor(cv2.imread(
@@ -32,6 +30,9 @@ restingAreaImg = np.array(cv2.cvtColor(cv2.imread(
 stopImg = np.array(cv2.cvtColor(cv2.imread(
     'player/images/stop.png'), cv2.COLOR_RGB2GRAY))
 
+hpBarAllowedPixelsColors = np.array([79, 118, 121, 110, 62])
+hpBarSize=94
+
 
 @utils.cacheObjectPos
 def getHpPos(screenshot):
@@ -39,57 +40,31 @@ def getHpPos(screenshot):
 
 
 def getHp(screenshot):
-    (left, top, width, height) = getHpPos(screenshot)
-    statusBar = screenshot[top + 5:top + 6, left + 13:left + 107][0]
-    pixelOf100Percent = statusBar[93]
-    contains100Percent = pixelOf100Percent == 62
-    if contains100Percent:
-        return 100
-    pixelOf90Percent = statusBar[84]
-    contains90Percent = pixelOf90Percent == 121
-    if contains90Percent:
-        return 90
-    pixelOf80Percent = statusBar[75]
-    contains80Percent = pixelOf80Percent == 121
-    if contains80Percent:
-        return 80
-    pixelOf70Percent = statusBar[65]
-    pixelOf70Percent = pixelOf70Percent == 121
-    if pixelOf70Percent:
-        return 70
-    pixelOf60Percent = statusBar[56]
-    pixelOf60Percent = pixelOf60Percent == 121
-    if pixelOf60Percent:
-        return 60
-    pixelOf50Percent = statusBar[47]
-    pixelOf50Percent = pixelOf50Percent == 121
-    if pixelOf50Percent:
-        return 50
-    pixelOf40Percent = statusBar[37]
-    pixelOf40Percent = pixelOf40Percent == 121
-    if pixelOf40Percent:
-        return 40
-    pixelOf30Percent = statusBar[28]
-    pixelOf30Percent = pixelOf30Percent == 121
-    if pixelOf30Percent:
-        return 30
-    pixelOf20Percent = statusBar[18]
-    pixelOf20Percent = pixelOf20Percent == 121
-    if pixelOf20Percent:
-        return 20
-    pixelOf10Percent = statusBar[9]
-    pixelOf10Percent = pixelOf10Percent == 121
-    if pixelOf10Percent:
-        return 10
-    pixelOf5Percent = statusBar[4]
-    pixelOf5Percent = pixelOf5Percent == 121
-    if pixelOf5Percent:
-        return 5
-    pixelOf1Percent = statusBar[0]
-    pixelOf1Percent = pixelOf1Percent == 60
-    if pixelOf1Percent:
-        return 1
-    return 0
+    hpPos = getHpPos(screenshot)
+    didntGetHpPos = hpPos == None
+    if didntGetHpPos:
+        return None
+    bar = getHpBar(screenshot, hpPos)
+    percent = getFilledBarPercent(bar, size=hpBarSize, 
+                               allowedPixelsColors=hpBarAllowedPixelsColors)
+    return percent
+
+
+def getHpBar(screenshot, hpPos):
+    (left, top, _, _) = hpPos
+    y0 = top + 5
+    y1 = y0 + 1
+    x0 = left + 13
+    x1 = x0 + hpBarSize
+    bar = screenshot[y0:y1, x0:x1][0]
+    return bar
+
+
+def getFilledBarPercent(bar, size=100, allowedPixelsColors=[]):
+    bar = np.where(np.isin(bar, allowedPixelsColors), 0, bar)
+    barPercent = np.count_nonzero(bar == 0)
+    percent = (barPercent * 100 // size)
+    return percent
 
 
 @utils.cacheObjectPos
