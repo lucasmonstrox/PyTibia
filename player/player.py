@@ -8,9 +8,8 @@ import pyautogui
 
 
 accessoriesEquipedImg = np.array(cv2.imread('radar/images/radar-tools.png'))
-hpImg = utils.loadImgAsArray('player/images/hp.png')
-manaImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/mana.png'), cv2.COLOR_RGB2GRAY))
+hpImg = utils.loadImgAsArray('player/images/heart.png')
+manaImg = utils.loadImgAsArray('player/images/mana.png')
 bleedingImg = np.array(cv2.cvtColor(cv2.imread(
     'player/images/bleeding.png'), cv2.COLOR_RGB2GRAY))
 cursedImg = np.array(cv2.cvtColor(cv2.imread(
@@ -33,25 +32,35 @@ stopImg = np.array(cv2.cvtColor(cv2.imread(
 hpBarAllowedPixelsColors = np.array([79, 118, 121, 110, 62])
 hpBarSize=94
 
+manaBarAllowedPixelsColors = np.array([68, 95, 97, 89, 52])
+manaBarSize=94
+
+
+def getFilledBarPercentage(bar, size=100, allowedPixelsColors=[]):
+    bar = np.where(np.isin(bar, allowedPixelsColors), 0, bar)
+    barPercent = np.count_nonzero(bar == 0)
+    percent = (barPercent * 100 // size)
+    return percent
+
 
 @utils.cacheObjectPos
-def getHpPos(screenshot):
+def getHeartPos(screenshot):
     return utils.locate(screenshot, hpImg)
 
 
-def getHp(screenshot):
-    hpPos = getHpPos(screenshot)
-    didntGetHpPos = hpPos == None
+def getHealthPercentage(screenshot):
+    heartPos = getHeartPos(screenshot)
+    didntGetHpPos = heartPos == None
     if didntGetHpPos:
         return None
-    bar = getHpBar(screenshot, hpPos)
-    percent = getFilledBarPercent(bar, size=hpBarSize, 
+    bar = getHealthBar(screenshot, heartPos)
+    percent = getFilledBarPercentage(bar, size=hpBarSize, 
                                allowedPixelsColors=hpBarAllowedPixelsColors)
     return percent
 
 
-def getHpBar(screenshot, hpPos):
-    (left, top, _, _) = hpPos
+def getHealthBar(screenshot, heartPos):
+    (left, top, _, _) = heartPos
     y0 = top + 5
     y1 = y0 + 1
     x0 = left + 13
@@ -60,16 +69,30 @@ def getHpBar(screenshot, hpPos):
     return bar
 
 
-def getFilledBarPercent(bar, size=100, allowedPixelsColors=[]):
-    bar = np.where(np.isin(bar, allowedPixelsColors), 0, bar)
-    barPercent = np.count_nonzero(bar == 0)
-    percent = (barPercent * 100 // size)
-    return percent
-
-
 @utils.cacheObjectPos
 def getManaPos(screenshot):
     return utils.locate(screenshot, manaImg)
+
+
+def getManaPercentage(screenshot):
+    manaPos = getManaPos(screenshot)
+    didntGetHpPos = manaPos == None
+    if didntGetHpPos:
+        return None
+    bar = getManaBar(screenshot, manaPos)
+    percent = getFilledBarPercentage(bar, size=manaBarSize, 
+                               allowedPixelsColors=manaBarAllowedPixelsColors)
+    return percent
+
+
+def getManaBar(screenshot, heartPos):
+    (left, top, _, _) = heartPos
+    y0 = top + 5
+    y1 = y0 + 1
+    x0 = left + 14
+    x1 = x0 + manaBarSize
+    bar = screenshot[y0:y1, x0:x1][0]
+    return bar
 
 
 @utils.cacheObjectPos
@@ -145,60 +168,6 @@ def isPoisoned(screenshot):
     res = cv2.minMaxLoc(match)
     isPoisoned = res[1] >= 0.9
     return isPoisoned
-
-
-def getMana(screenshot):
-    (left, top, width, height) = getManaPos(screenshot)
-    statusBar = screenshot[top + 5:top + 6, left + 14:left + 108][0]
-    pixelOf100Percent = statusBar[93]
-    contains100Percent = pixelOf100Percent == 52
-    if contains100Percent:
-        return 100
-    pixelOf90Percent = statusBar[84]
-    contains90Percent = pixelOf90Percent == 97
-    if contains90Percent:
-        return 90
-    pixelOf80Percent = statusBar[75]
-    contains80Percent = pixelOf80Percent == 97
-    if contains80Percent:
-        return 80
-    pixelOf70Percent = statusBar[65]
-    contains70Percent = pixelOf70Percent == 97
-    if contains70Percent:
-        return 70
-    pixelOf60Percent = statusBar[56]
-    contains60Percent = pixelOf60Percent == 97
-    if contains60Percent:
-        return 60
-    pixelOf50Percent = statusBar[47]
-    contains50Percent = pixelOf50Percent == 97
-    if contains50Percent:
-        return 50
-    pixelOf40Percent = statusBar[37]
-    contains40Percent = pixelOf40Percent == 97
-    if contains40Percent:
-        return 40
-    pixelOf30Percent = statusBar[28]
-    contains30Percent = pixelOf30Percent == 97
-    if contains30Percent:
-        return 30
-    pixelOf20Percent = statusBar[18]
-    contains20Percent = pixelOf20Percent == 97
-    if contains20Percent:
-        return 20
-    pixelOf10Percent = statusBar[9]
-    contains10Percent = pixelOf10Percent == 97
-    if contains10Percent:
-        return 10
-    pixelOf5Percent = statusBar[4]
-    contains5Percent = pixelOf5Percent == 97
-    if contains5Percent:
-        return 5
-    pixelOf1Percent = statusBar[0]
-    contains1Percent = pixelOf1Percent == 68
-    if contains1Percent:
-        return 1
-    return 0
 
 
 def getPlayerWindowCoordinate():
