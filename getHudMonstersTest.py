@@ -1,5 +1,3 @@
-import cv2
-import numpy as np
 from time import time
 from hud import hud
 from battleList import battleList
@@ -28,7 +26,6 @@ def main():
         creatures = hud.getCreatures(
             hudImg, creaturesBars, battleListCreatures)
         print(creatures)
-        break
         timef = (time() - loop_time)
         timef = timef if timef else 1
         fps = 1 / timef
