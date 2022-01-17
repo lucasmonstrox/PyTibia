@@ -1,6 +1,8 @@
 import numpy as np
 import pyautogui
 from utils import utils
+from scipy.sparse import csr_matrix
+from scipy.sparse.csgraph import dijkstra
 
 lifeBarBlackPixelsMapper = np.array([
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
@@ -34,7 +36,7 @@ def moveToSlot(slot, hudPos):
     slotWidth = hudWidth // 15
     slotXCoordinate = hudPosX + (slotX * slotWidth)
     slotYCoordinate = hudPosY + (slotY * slotHeight)
-    pyautogui.moveTo(slotXCoordinate, slotYCoordinate, duration=0.5)
+    pyautogui.moveTo(slotXCoordinate, slotYCoordinate, duration=0.1)
 
 
 def clickSlot(slot, hudPos):
@@ -99,9 +101,35 @@ def makeCreature(creatureName, coordinate):
     return {
         "name": creatureName,
         "isBeingAttacked": False,
-        "coordinate": (xCoordinate, yCoordinate),
+        "windowCoordinate": (xCoordinate, yCoordinate),
         "slot": (xSlot, ySlot)
     }
+
+
+def getClosestCreatures(creatures, coordinate, walkableSqms):
+    (x, y) = utils.getPixelFromCoordinate(coordinate)
+    hudWalkableSqms = walkableSqms[y-5:y+6, x-7:x+8]
+    hudWalkableSqmsCreatures = np.zeros((11, 15))
+    for creature in creatures:
+        hudWalkableSqmsCreatures[creature["slot"][1], creature["slot"][0]] = 1
+    adjacencyMatrix = utils.getAdjacencyMatrix(hudWalkableSqms)
+    sqmsGraph = csr_matrix(adjacencyMatrix)
+    sqmsGraphWeights = dijkstra(sqmsGraph, directed=True, indices=82, unweighted=False)
+    creaturesIndexes = np.nonzero(hudWalkableSqmsCreatures.flatten() == 1)[0]
+    creaturesWeights = np.take(sqmsGraphWeights, creaturesIndexes)
+    i = 0
+    shortestDistance = 999999
+    shortestCreatureIndex = None
+    for creatureWeight in creaturesWeights:
+        creatureIndex = creaturesIndexes[i]
+        creatureWeight = creaturesWeights[i]
+        i += 1
+        if creatureWeight == np.inf:
+            continue
+        if creatureWeight < shortestDistance:
+            shortestDistance = creatureWeight
+            shortestCreatureIndex = creatureIndex
+    return shortestCreatureIndex
 
 
 def getCreatures(hud, creaturesBars, battleListCreatures):
