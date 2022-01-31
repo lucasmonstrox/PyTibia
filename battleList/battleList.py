@@ -94,7 +94,6 @@ def getCreatureFromSlot(content, slot):
         "creatures"]["hashes"][creatureHash]["name"]
     creature = {
         "name": creatureName,
-        "hash": creatureHash,
         "isBeingAttacked": isCreatureBeingAttacked
     }
     return creature
