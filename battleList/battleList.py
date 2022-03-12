@@ -82,7 +82,7 @@ def getCreatureSlotImg(content, slot):
 def getCreatureFromSlot(content, slot):
     slotImg = getCreatureSlotImg(content, slot)
     upperCreatureBorder = slotImg[0:1, 0:19].flatten()
-    isCreatureBeingAttacked = np.all(np.logical_or(
+    isBeingAttacked = np.all(np.logical_or(
         upperCreatureBorder == 76, upperCreatureBorder == 166))
     # TODO: apply it once when parsing content
     slotImg = utils.graysToBlack(slotImg)
@@ -92,11 +92,7 @@ def getCreatureFromSlot(content, slot):
     unknownCreature = not creatureHash in config["creatures"]["hashes"]
     creatureName = "Unknown" if unknownCreature else config[
         "creatures"]["hashes"][creatureHash]["name"]
-    creature = {
-        "name": creatureName,
-        "isBeingAttacked": isCreatureBeingAttacked
-    }
-    return creature
+    return (creatureName, isBeingAttacked, 100)
 
 
 def getCreatures(screenshot):
@@ -108,16 +104,12 @@ def getCreatures(screenshot):
     if contentIsTooSmall:
         # TODO: throw custom exception
         raise None
-    content = replaceHighlightedName(content)
+    content = unhighlightName(content)
     filledSlots = getFilledSlots(content)
+    creatureType = np.dtype([('name', np.str_, 64), ('isBeingAttacked', np.bool_), ('life', np.int8)])
     creatures = np.array([getCreatureFromSlot(content, creature)
-                         for creature in np.arange(filledSlots)])
-    isAttackingAnyCreature = False
-    for creature in creatures:
-        if creature["isBeingAttacked"] == True:
-            isAttackingAnyCreature = True
-            break
-    return {"creatures": creatures, "isAttackingAnyCreature": isAttackingAnyCreature}
+                         for creature in np.arange(filledSlots)], dtype=creatureType)
+    return creatures
 
 
 def getFilledSlots(content):
@@ -138,7 +130,11 @@ def getFilledSlots(content):
     return filledSlots
 
 
-def replaceHighlightedName(creatureNameImg):
+def isAttackingCreature(creatures):
+    return np.any(creatures['isBeingAttacked'] == True)
+
+
+def unhighlightName(creatureNameImg):
     return np.where(
         creatureNameImg == config["creatures"]["highlightedNamePixelColor"],
         config["creatures"]["namePixelColor"],
