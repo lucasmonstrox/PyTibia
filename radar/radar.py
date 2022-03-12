@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from time import sleep
 from utils import utils
 import pyautogui
 
@@ -59,7 +60,6 @@ for floor in floors:
     floorsLevelImgsHashes[floorHash] = floor
 
 
-# floorsAsBoolean = []
 caveWallPixelColor = 75
 lavaPixelColor = 1
 mountainOrStonePixelColor = 102
@@ -86,7 +86,10 @@ walkableSqms = np.where(
 lastCoordinate = None
 
 
-def getCoordinate(floorLevel, radarImage):
+def getCoordinate(screenshot):
+    floorLevel = getFloorLevel(screenshot)
+    radarToolsPos = getRadarToolsPos(screenshot)
+    radarImage = getRadarImage(screenshot, radarToolsPos)
     coordinate = utils.locate(
         floorsAreaImgs[floorLevel], radarImage, confidence=0.75)
     cannotGetCoordinate = coordinate is None
@@ -181,6 +184,7 @@ def goToCoordinateByRadarClick(screenshot, playerCoordinate, coordinate):
     x = destinationPixelCoordinateX - playerPixelCoordinateX + radarCenterX
     y = destinationPixelCoordinateY - playerPixelCoordinateY + radarCenterY
     pyautogui.click(x, y)
+    sleep(0.25)
 
 
 def goToCoordinateByScreenClick(currentCoordinate, coordinate):
