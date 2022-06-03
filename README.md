@@ -7,12 +7,20 @@
 - BattleList:
   - [Getting monsters](battleList/docs/README.md) :heavy_check_mark:
   - [Checking if monster is being attacked](battleList/docs/README.md) :heavy_check_mark:
+  - Attack creature by slot :heavy_check_mark:
+  - Is attacking any creature :heavy_check_mark:
 - Cavebot:
   - Attacking closest creature :heavy_check_mark:
   - Ignoring non target monsters :heavy_check_mark:
+- Equipment:
+  - Count cap :warning:
+- Loot:
+  - Get dead monsters by player :warning:
+  - Collect loot :warning:
 - Healing:
-  - By Spell :heavy_check_mark:
-  - By Potion :heavy_check_mark:
+  - Count potions :warning:
+  - Spell :heavy_check_mark:
+  - Potion :heavy_check_mark:
 - HUD:
   - Getting coordinates(playable area) :heavy_check_mark:
   - Getting Monsters :heavy_check_mark:
