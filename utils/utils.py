@@ -3,7 +3,6 @@ import cv2
 import numpy as np
 from PIL import Image
 import pyautogui
-import pygetwindow as gw
 import xxhash
 
 d3 = d3dshot.create(capture_output='numpy')
@@ -113,19 +112,10 @@ def locate(compareImg, img, confidence=0.85):
     return (x, y, width, height)
 
 
-def getScreenshot():
-    targetWindowTitle = None
-    allTitles = gw.getAllTitles()
-    for title in allTitles:
-        if title.startswith('Tibia -'):
-            targetWindowTitle = title
-    if targetWindowTitle == None:
-        return
-    window = gw.getWindowsWithTitle(targetWindowTitle)[0]
+def getScreenshot(window):
     region = (window.top, window.left, window.width - 15, window.height)
     screenshot = d3.screenshot(region=region)
     screenshot = cv2.cvtColor(screenshot, cv2.COLOR_RGB2GRAY)
-    screenshot = np.array(screenshot)
     return screenshot
 
 

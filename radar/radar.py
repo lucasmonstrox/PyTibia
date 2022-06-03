@@ -3,6 +3,7 @@ import numpy as np
 from time import sleep
 from utils import utils
 import pyautogui
+from scipy.spatial import distance
 
 config = {
     "radar": {
@@ -169,6 +170,19 @@ def getRadarImage(screenshot, radarToolsPos):
 @utils.cacheObjectPos
 def getRadarToolsPos(screenshot):
     return utils.locate(screenshot, images['radarTools'])
+
+
+def getWaypointIndexFromClosestCoordinate(coordinate, waypoints):
+    (_, _, floorLevel) = coordinate
+    waypointsIndexes = np.nonzero(waypoints['coordinate'][:, 2] == floorLevel)[0]
+    hasNoWaypointsIndexes = len(waypointsIndexes) == 0
+    if hasNoWaypointsIndexes:
+        return
+    waypointDistanceType = np.dtype([('index', np.uint16), ('distance', np.float32)])
+    possibleWaypoints = np.array([(waypointIndex, distance.euclidean(waypoints[waypointIndex]['coordinate'], coordinate))
+                                for waypointIndex in waypointsIndexes], dtype=waypointDistanceType)
+    sortedWaypoints = np.sort(possibleWaypoints, order='distance')
+    return sortedWaypoints[0]['index']
 
 
 def goToCoordinateByRadarClick(screenshot, playerCoordinate, coordinate):
