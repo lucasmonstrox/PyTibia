@@ -11,7 +11,7 @@ def cavebotObserver(screenshot, currentPlayerCoordinate, battleListCreatures):
     if hasNoHudCreatures:
         print('has no hud creatures')
         return
-    closestCreature = hud.getClosestCreature(hudCreatures, currentPlayerCoordinate, radar.walkableSqms)
+    closestCreature = hud.getClosestCreature(hudCreatures, currentPlayerCoordinate, radar.walkableFloorsSqms)
     hasNoClosestCreature = closestCreature == None
     if hasNoClosestCreature:
         print('has no closest creature')
