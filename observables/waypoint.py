@@ -6,7 +6,7 @@ from utils import utils
 def goToWaypoint(screenshot, waypoint, currentPlayerCoordinate):
     isFloorWaypoint = waypoint['type'] == 'floor'
     if isFloorWaypoint:
-        radar.goToCoordinateByRadarClick(screenshot, currentPlayerCoordinate, waypoint['coordinate'])
+        radar.goToCoordinate(screenshot, currentPlayerCoordinate, waypoint['coordinate'])
         return
     isRampWaypoint = waypoint['type'] == 'ramp'
     if isRampWaypoint:
@@ -32,9 +32,9 @@ def goToWaypoint(screenshot, waypoint, currentPlayerCoordinate):
 
 def waypointObserver(screenshot, coordinate, waypoints, waypointIndex):
     currentWaypoint = waypoints[waypointIndex]
-    if radar.isNearToCoordinate(
+    if radar.isCloseToCoordinate(
             coordinate, waypoints[waypointIndex]['coordinate'],
-            tolerance=currentWaypoint['tolerance']):
+            distanceTolerance=currentWaypoint['tolerance']):
         waypointIndex = 0 if waypointIndex == len(
             waypoints) - 1 else waypointIndex + 1
         player.stop(0.5)

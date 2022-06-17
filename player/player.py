@@ -216,7 +216,7 @@ def goToCoordinate(currentCoordinate, destinationCoordinate):
             continue
 
 
-def goToCoordinateByRadarClick(coordinate):
+def goToCoordinate(coordinate):
     (radarCenterX, radarCenterY) = radar.getCenterBounds()
     playerCoordinate = getCoordinate()
     (playerCoordinatePixelY, playerCoordinatePixelX) = utils.getPixelFromCoordinate(

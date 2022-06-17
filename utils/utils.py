@@ -88,7 +88,20 @@ def graysToBlack(arr):
 
 
 def hashit(arr):
-    return xxhash.xxh64(np.ascontiguousarray(arr)).intdigest()
+    return xxhash.xxh64(np.ascontiguousarray(arr), seed=20220605).intdigest()
+
+
+def hashitHex(arr):
+    return xxhash.xxh64(np.ascontiguousarray(arr), seed=20220605).hexdigest()
+
+
+def hasMatrixInsideOther(matrix, other):
+    matrixFlattened = matrix.flatten()
+    otherFlattened = other.flatten()
+    blackPixelsIndexes = np.nonzero(otherFlattened == 0)[0]
+    blackPixels = np.take(matrixFlattened, blackPixelsIndexes)
+    didMatch = np.all(blackPixels == 0)
+    return True if didMatch else False
 
 
 def loadImg(path):

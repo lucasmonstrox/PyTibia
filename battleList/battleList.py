@@ -79,6 +79,7 @@ def getCreatureSlotImg(content, slot):
     return slotImg
 
 
+# TODO: get creature life
 def getCreatureFromSlot(content, slot):
     slotImg = getCreatureSlotImg(content, slot)
     upperCreatureBorder = slotImg[0:1, 0:19].flatten()
@@ -102,7 +103,6 @@ def getCreatures(screenshot):
         return None
     contentIsTooSmall = content.shape[0] < config["slot"]["height"]
     if contentIsTooSmall:
-        # TODO: throw custom exception
         raise None
     content = unhighlightName(content)
     filledSlots = getFilledSlots(content)

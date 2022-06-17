@@ -80,12 +80,13 @@ waypoints = np.array([
 ], dtype=waypointType)
 waypointIndex = None
 shouldRetrySameWaypoint = True
+window = None
 
 
 def goToWaypoint(screenshot, waypoint, currentPlayerCoordinate):
     isFloorWaypoint = waypoint['type'] == 'floor'
     if isFloorWaypoint:
-        radar.goToCoordinateByRadarClick(screenshot, currentPlayerCoordinate, waypoint['coordinate'])
+        radar.goToCoordinate(screenshot, currentPlayerCoordinate, waypoint['coordinate'])
         return
     isRampWaypoint = waypoint['type'] == 'ramp'
     if isRampWaypoint:
@@ -117,13 +118,13 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures):
     if hasNoHudCreatures:
         print('has no hud creatures')
         return
-    closestCreature = hud.getClosestCreature(hudCreatures, playerCoordinate, radar.walkableSqms)
+    closestCreature = hud.getClosestCreature(hudCreatures, playerCoordinate, radar.config.walkableFloorsSqms[playerCoordinate[2]])
     hasNoClosestCreature = closestCreature == None
     if hasNoClosestCreature:
         print('has no closest creature')
         return
-    hasOnlyCreature = len(hudCreatures) == 1
-    if hasOnlyCreature:
+    hasOnlyOneCreature = len(hudCreatures) == 1
+    if hasOnlyOneCreature:
         battleList.attackSlot(screenshot, 0)
     else:
         (x, y) = closestCreature['windowCoordinate']
@@ -138,9 +139,10 @@ def handleWaypoints(result):
     if waypointIndex == None:
         waypointIndex = radar.getWaypointIndexFromClosestCoordinate(coordinate, waypoints)
     currentWaypoint = waypoints[waypointIndex]
-    if radar.isNearToCoordinate(
+    isCloseToCoordinate = radar.isCloseToCoordinate(
             coordinate, waypoints[waypointIndex]['coordinate'],
-            tolerance=currentWaypoint['tolerance']):
+            distanceTolerance=currentWaypoint['tolerance'])
+    if isCloseToCoordinate:
         waypointIndex = 0 if waypointIndex == len(
             waypoints) - 1 else waypointIndex + 1
         shouldRetrySameWaypoint = False
@@ -150,6 +152,9 @@ def handleWaypoints(result):
     if shouldRetrySameWaypoint:
         shouldRetrySameWaypoint = False
         player.stop(0.5)
+        if(currentWaypoint['type'] == 'ramp'):
+            waypointIndex = waypointIndex + 1
+            currentWaypoint = waypoints[waypointIndex]
         goToWaypoint(screenshot, currentWaypoint, coordinate)
 
 
@@ -194,7 +199,6 @@ def getWindow():
         return None
     return windowTitles[0]
 
-window = None
 
 def handleWindow(_):
     global window
@@ -217,6 +221,7 @@ def main():
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: [screenshot, radar.getCoordinate(screenshot)]),
     )
+    coordinatesObserver.subscribe(lambda result: print(result[1]))
     battlelistObserver = coordinatesObserver.pipe(
         operators.map(lambda result: [result[0], result[1], battleList.getCreatures(result[0])]),
     )
@@ -224,7 +229,7 @@ def main():
         operators.filter(lambda result: len(result[2]) > 0 and not battleList.isAttackingCreature(result[2])),
         operators.subscribe_on(threadPoolScheduler)
     )
-    cavebotObserver = cavebotObserver.subscribe(
+    cavebotObserver.subscribe(
         lambda result: handleCavebot(result[0], result[1], result[2])
     )
     waypointObserver = battlelistObserver.pipe(
@@ -232,12 +237,12 @@ def main():
         operators.subscribe_on(threadPoolScheduler)
     )
     waypointObserver.subscribe(lambda result: handleWaypoints(result))
-    healingObserver = fpsWithScreenshot.pipe(
-        operators.map(lambda screenshot: (screenshot, player.getHealthPercentage(screenshot))),
-        operators.map(lambda result: (result[1], player.getManaPercentage(result[0]))),
-        operators.subscribe_on(threadPoolScheduler)
-    )
-    healingObserver.subscribe(lambda result: healing.healingObserver(result[0], result[1]))
+    # healingObserver = fpsWithScreenshot.pipe(
+    #     operators.map(lambda screenshot: (screenshot, player.getHealthPercentage(screenshot))),
+    #     operators.map(lambda result: (result[1], player.getManaPercentage(result[0]))),
+    #     operators.subscribe_on(threadPoolScheduler)
+    # )
+    # healingObserver.subscribe(lambda result: healing.healingObserver(result[0], result[1]))
     input("Press Enter key to exit...")
 
 

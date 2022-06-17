@@ -18,6 +18,7 @@ creaturesNamesHashes = {
     "Cobra": utils.loadImgAsArray('hud/images/monsters/Cobra.png'),
     "Crocodile": utils.loadImgAsArray('hud/images/monsters/Crocodile.png'),
     "Cyclops": utils.loadImgAsArray('hud/images/monsters/Cyclops.png'),
+    "Hyaena": utils.loadImgAsArray('hud/images/monsters/Hyaena.png'),
     "Frost Dragon Hatchling": utils.loadImgAsArray('hud/images/monsters/Frost Dragon Hatchling.png'),
     "Rat": utils.loadImgAsArray('hud/images/monsters/Rat.png'),
     "Lizard Sentinel": utils.loadImgAsArray('hud/images/monsters/Lizard Sentinel.png'),
@@ -109,18 +110,18 @@ def makeCreature(creatureName, coordinate, hudCoordinates):
     return (creatureName, healthPercentage, isBeingAttacked, slot, windowCoordinate)
 
 
-def getClosestCreature(creatures, coordinate, walkableSqms):
+def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
     (x, y) = utils.getPixelFromCoordinate(coordinate)
-    hudWalkableSqms = walkableSqms[y-5:y+6, x-7:x+8]
-    hudWalkableSqmsCreatures = np.zeros((11, 15))
+    hudwalkableFloorsSqms = walkableFloorsSqms[y-5:y+6, x-7:x+8]
+    hudwalkableFloorsSqmsCreatures = np.zeros((11, 15))
     creaturesDict = {}
     for creature in creatures:
-        hudWalkableSqmsCreatures[creature['slot'][1], creature['slot'][0]] = 1
+        hudwalkableFloorsSqmsCreatures[creature['slot'][1], creature['slot'][0]] = 1
         creaturesDict[(creature['slot'][0], creature['slot'][1])] = creature
-    adjacencyMatrix = utils.getAdjacencyMatrix(hudWalkableSqms)
+    adjacencyMatrix = utils.getAdjacencyMatrix(hudwalkableFloorsSqms)
     sqmsGraph = csr_matrix(adjacencyMatrix)
     sqmsGraphWeights = dijkstra(sqmsGraph, directed=True, indices=82, unweighted=False)
-    creaturesIndexes = np.nonzero(hudWalkableSqmsCreatures.flatten() == 1)[0]
+    creaturesIndexes = np.nonzero(hudwalkableFloorsSqmsCreatures.flatten() == 1)[0]
     creaturesWeights = np.take(sqmsGraphWeights, creaturesIndexes)
     i = 0
     shortestDistance = 999999
@@ -167,10 +168,10 @@ def getCreatures(screenshot, battleListCreatures):
         return creatures
     possibleMonsters = {}
     for battleListCreature in battleListCreatures:
-        alreadyInPossibleMonsters = battleListCreature[0] in possibleMonsters
+        alreadyInPossibleMonsters = battleListCreature['name'] in possibleMonsters
         if alreadyInPossibleMonsters:
             continue
-        possibleMonsters[battleListCreature[0]] = creaturesNamesHashes[battleListCreature[0]]
+        possibleMonsters[battleListCreature['name']] = creaturesNamesHashes[battleListCreature['name']]
     for creatureBar in creaturesBars:
         (x, y) = creatureBar
         creatureMess = hudImg[y - 13: y - 13 + 11, x: x + 27]

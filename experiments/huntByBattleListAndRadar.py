@@ -45,18 +45,18 @@ def main():
             if coordinateIsEmpty:
                 print('Cannot get coordinate')
                 continue
-            if radar.isNearToCoordinate(
+            if radar.isCloseToCoordinate(
                     coordinate, waypoints[currentWaypointIndex]["coordinate"]):
                 player.stop()
                 currentWaypointIndex = 0 if currentWaypointIndex == len(
                     waypoints) - 1 else currentWaypointIndex + 1
-                radar.goToCoordinateByRadarClick(
+                radar.goToCoordinate(
                     screenshot, coordinate, waypoints[currentWaypointIndex]["coordinate"])
                 continue
             if souldRetrySameWaypoint:
                 souldRetrySameWaypoint = False
                 player.stop()
-                radar.goToCoordinateByRadarClick(
+                radar.goToCoordinate(
                     screenshot, coordinate, waypoints[currentWaypointIndex]["coordinate"])
                 continue
 
