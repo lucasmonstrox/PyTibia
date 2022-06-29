@@ -9,6 +9,7 @@
   - [Checking if monster is being attacked](battleList/docs/README.md) :heavy_check_mark:
   - Attack creature by slot :heavy_check_mark:
   - Is attacking any creature :heavy_check_mark:
+  - Get the creature's life :warning:
 - Cavebot:
   - Attacking closest creature :heavy_check_mark:
   - Ignoring non target monsters :heavy_check_mark:
