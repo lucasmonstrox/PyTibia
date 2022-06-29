@@ -84,7 +84,6 @@ def getRadarToolsPos(screenshot):
 
 
 def getWaypointIndexFromClosestCoordinate(coordinate, waypoints):
-    print('coordinate: ', coordinate)
     (_, _, floorLevel) = coordinate
     waypointsIndexes = np.nonzero(waypoints['coordinate'][:, 2] == floorLevel)[0]
     hasNoWaypointsIndexes = len(waypointsIndexes) == 0
