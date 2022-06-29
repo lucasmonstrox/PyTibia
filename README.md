@@ -1,35 +1,44 @@
 # 📝 Description
 
-> Tibia Bot api using python and gpu to get unlocked fps
+> Tibia Bot api using python and cpu/gpu to get unlocked fps
 
-# 🗺️ Features Status
+# 🗺️ MVP Features Status
 
+- ActionBar:
+  - Counting slots :heavy_check_mark:
 - BattleList:
   - [Getting monsters](battleList/docs/README.md) :heavy_check_mark:
   - [Checking if monster is being attacked](battleList/docs/README.md) :heavy_check_mark:
-  - Attack creature by slot :heavy_check_mark:
   - Is attacking any creature :heavy_check_mark:
-  - Get the creature's life :warning:
 - Cavebot:
   - Attacking closest creature :heavy_check_mark:
   - Ignoring non target monsters :heavy_check_mark:
+  - Resume coordinate :heavy_check_mark:
+- Chat:
+  - Check if Server Log is selected :warning:
+  - Talk to NPC's to trade :warning:
 - Equipment:
   - Count cap :warning:
 - Loot:
   - Get dead monsters by player :warning:
+    - Parse server logs message to get loot notification :warning:
   - Collect loot :warning:
+    - When hunting, go to dead monster to collect :warning:
+    - Detect container full :warning:
 - Healing:
-  - Count potions :warning:
   - Spell :heavy_check_mark:
   - Potion :heavy_check_mark:
 - HUD:
   - Getting coordinates(playable area) :heavy_check_mark:
-  - Getting Monsters :heavy_check_mark:
-  - Getting NPC's :warning:
-  - Getting Players :warning:
+  - Getting Monsters :warning: (needs improvement)
 - Radar:
   - Floor level :heavy_check_mark:
   - Tracking coordinates :heavy_check_mark:
+- Refill:
+  - Deposit items in depot :warning:
+  - Detect trade container :warning:
+  - Scroll until icon is detected :warning:
+  - Buy necessary quantity of icon :warning:
 - Status:
   - Getting Life :heavy_check_mark:
   - Getting Mana :heavy_check_mark:
