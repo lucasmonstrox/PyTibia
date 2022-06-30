@@ -1,4 +1,5 @@
 import pyautogui
+from ahocorapy.keywordtree import KeywordTree
 from hud.hud import getLeftSidebarArrows
 from utils import utils
 import pytesseract
@@ -17,7 +18,30 @@ def readMessagesFromActiveChatTab(screenshot):
     chatMessagesContainer = cropImg(screenshot, x, y, width, height)
     chatMessagesContainer = utils.graysToBlack(chatMessagesContainer)
     messages = pytesseract.image_to_string(chatMessagesContainer, lang=None, config='--oem 3 --psm 6').splitlines()
+    messages = list(filter(None, messages))
     return messages
+
+
+def onTextMatch(pos, patterns):
+    print("At pos %s found pattern: %s" % (pos, patterns))
+
+
+def getLootMessages(activeChatText):
+    return searchInActiveChatTab(activeChatText, ['Loot of'])
+
+
+def searchInActiveChatTab(activeChatText, patterns):
+    kwtree = KeywordTree(case_insensitive=True)
+    for i in range(len(patterns)):
+        kwtree.add(patterns[i])
+    kwtree.finalize()
+
+    processedChatText = []
+    for i in range(len(activeChatText)):
+        results = kwtree.search_all(activeChatText[i])
+        if len(patterns) == len(list(results)):
+            processedChatText.append(activeChatText[i])
+    return processedChatText
 
 
 @utils.cacheObjectPos

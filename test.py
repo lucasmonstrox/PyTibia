@@ -25,7 +25,9 @@ def main():
     window = getWindow()
     while True:
         screenshot = utils.getScreenshot(window)
-        print(chat.selectServerLogTab(screenshot))
+        #print(chat.selectServerLogTab(screenshot))
+        text = chat.readMessagesFromActiveChatTab(screenshot)
+        lootText = chat.searchInActiveChatTab(text, ['Loot of'])
         break
         # timef = (time() - loop_time)
         # timef = timef if timef else 1
