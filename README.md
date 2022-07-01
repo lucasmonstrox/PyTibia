@@ -57,8 +57,8 @@ python test.py
 
 # 👷 Authors
 
-- [**Lucas Silva**](https://github.com/lucasmonstro) joao.galiano.silva@gmail.com -
-  Developer
+- [**lucasmonstro**](https://www.linkedin.com/in/lucasmonstro/) - Owner & Developer
+- [**augustocrmattos**](https://www.linkedin.com/in/augustocrmattos/) - Developer
 
 See also the list of [contributors](../../graphs/contributors) who participated
 in this project
