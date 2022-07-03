@@ -62,6 +62,7 @@ python test.py
 
 - [**lucasmonstro**](https://www.linkedin.com/in/lucasmonstro/) - Owner & Developer
 - [**augustocrmattos**](https://www.linkedin.com/in/augustocrmattos/) - Developer
+- [**GuizinhoYT**](https://github.com/GuizinhoYT) - Tester
 
 See also the list of [contributors](../../graphs/contributors) who participated
 in this project
@@ -69,7 +70,7 @@ in this project
 # ❤️ Development inspiration
 
 A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa) the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12).  
-I started the bot in his honor as it was my inspiration to create the fastest tibia pixel bot using GPU, parallelism and precomputation.
+I started this bot to overcome [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12) slowdowns.
 
 # 📝 License
 
