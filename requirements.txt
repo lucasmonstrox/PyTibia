@@ -4,3 +4,4 @@ pyautogui
 pygetwindow
 rx
 xxhash
+numpy
