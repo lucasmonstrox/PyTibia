@@ -53,10 +53,6 @@ for floor in floors:
     )
     walkableFloorsSqms[floor] = walkableFloorSqms
 
-print('walkableFloorsSqms: ', walkableFloorsSqms.shape)
-
-
-
 # radarImagesCoordinates = np.load('radar/npys/radarImagesCoordinates.npy', allow_pickle=True)
 
 # walkableFloorsSqms = np.load('radar/npys/walkableFloorsSqms.npy')
