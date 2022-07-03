@@ -1,7 +1,8 @@
 d3dshot
+numpy
 opencv-python
 pyautogui
 pygetwindow
 rx
+scipy
 xxhash
-numpy
