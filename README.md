@@ -1,6 +1,12 @@
 # 📝 Description
 
-> Tibia Bot api using python and cpu/gpu to get unlocked fps
+> Fastest Tibia PixelBot developed in python to get unlocked fps.
+
+This bot memorizes and applies cache to detect images and thus avoid excessive cpu/gpu usage.
+
+This bot is all based on matrix calculation, applies parallelism and also pre-processing, as it is the only way to have maximum performance.
+
+This bot also uses data structure, arrays, path finding(djkistra), among other important things to have smart gameplay.
 
 # 🗺️ MVP Features Status
 
