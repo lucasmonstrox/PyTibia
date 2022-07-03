@@ -66,17 +66,16 @@ python test.py
 
 # 👷 Authors
 
-- lucasmonstro [**github**](http://github.com/lucasmonstro) [**linkedin**](https://www.linkedin.com/in/lucasmonstro/) - Owner & Developer
-- augustocrmattos [**github**](http://github.com/augustocrmattos) [**linkedin**](https://www.linkedin.com/in/augustocrmattos/) - Developer
-- GuizinhoYT [**github**](http://github.com/GuizinhoYT) [**linkedin**](https://www.linkedin.com/in/guilherme-gra%C3%A7a-3953231a2/) - Tester
+- [**lucasmonstro**](http://github.com/lucasmonstro)([**linkedin**](https://www.linkedin.com/in/lucasmonstro/)) - Owner & Developer
+- [**augustocrmattos**](http://github.com/augustocrmattos)([**linkedin**](https://www.linkedin.com/in/augustocrmattos/)) - Developer
+- [**GuizinhoYT**](http://github.com/GuizinhoYT)([**linkedin**](https://www.linkedin.com/in/guilherme-gra%C3%A7a-3953231a2/)) - Tester
 
 See also the list of [contributors](../../graphs/contributors) who participated
 in this project
 
 # ❤️ Development inspiration
 
-A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa) the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12).  
-I started this bot to overcome [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12) slowdowns.
+A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa) the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12). I started this bot to overcome [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12) slowdowns.
 
 # 📝 License
 
