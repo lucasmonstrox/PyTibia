@@ -1,6 +1,5 @@
 from battleList import battleList
 from hud import hud
-from observables import healing
 from player import player
 from radar import radar
 from rx import operators
