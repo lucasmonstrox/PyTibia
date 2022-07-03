@@ -1,8 +1,11 @@
+import math
 import numpy as np
 import pyautogui
 from utils import utils
+from wiki import creatures
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
+
 
 lifeBarBlackPixelsMapper = np.array([
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
@@ -13,21 +16,13 @@ lifeBarBlackPixelsMapper = np.array([
 x = np.arange(lifeBarBlackPixelsMapper.size)
 lifeBarFlattenedImg = np.zeros(lifeBarBlackPixelsMapper.size)
 hudWidth = 480
-creaturesNamesHashes = {
-    "Centipede": utils.loadImgAsArray('hud/images/monsters/Centipede.png'),
-    "Cobra": utils.loadImgAsArray('hud/images/monsters/Cobra.png'),
-    "Crocodile": utils.loadImgAsArray('hud/images/monsters/Crocodile.png'),
-    "Cyclops": utils.loadImgAsArray('hud/images/monsters/Cyclops.png'),
-    "Hyaena": utils.loadImgAsArray('hud/images/monsters/Hyaena.png'),
-    "Frost Dragon Hatchling": utils.loadImgAsArray('hud/images/monsters/Frost Dragon Hatchling.png'),
-    "Rat": utils.loadImgAsArray('hud/images/monsters/Rat.png'),
-    "Lizard Sentinel": utils.loadImgAsArray('hud/images/monsters/Lizard Sentinel.png'),
-    "Lizard Snakecharmer": utils.loadImgAsArray('hud/images/monsters/Lizard Snakecharmer.png'),
-    "Lizard Templar": utils.loadImgAsArray('hud/images/monsters/Lizard Templar.png'),
-    "Spit Nettle": utils.loadImgAsArray('hud/images/monsters/Spit Nettle.png'),
-}
+creaturesNamesHashes = {}
+for monster in creatures.creatures:
+    creaturesNamesHashes[monster] = utils.loadImgAsArray('hud/images/monsters/{}.png'.format(monster))
 leftHud = utils.loadImgAsArray('hud/images/leftHud.png')
 rightHud = utils.loadImgAsArray('hud/images/rightHud.png')
+
+hudSize = (480, 352)
 
 
 def moveToSlot(slot, hudPos):
@@ -50,6 +45,7 @@ def rightClickSlot(slot, hudPos):
     pyautogui.rightClick()
 
 
+# TODO: group pixels by 27 black pixels, it means a possible life bar
 def getCreaturesBars(hudImg):
     blackPixelsIndexes = np.nonzero(hudImg == 0)[0]
     maxBlackPixelIndex = 168960 - 1468
@@ -66,13 +62,13 @@ def getCreaturesBars(hudImg):
     pixelsColorsIndexes = np.take(hudImg, z)
     g = (pixelsColorsIndexes == lifeBarFlattenedImg).all(1)
     possibleCreatures = np.nonzero(g)[0]
-    hasNoCreatures = possibleCreatures.size == 0
-    if hasNoCreatures:
+    hasNoCreaturesBars = possibleCreatures.size == 0
+    if hasNoCreaturesBars:
         return np.array([])
-    creatures = np.take(blackPixelsIndexes, possibleCreatures)
-    creatures = np.array(
-        list(map(lambda i: [i % hudWidth, i // hudWidth], creatures)))
-    return creatures
+    creaturesBars = np.take(blackPixelsIndexes, possibleCreatures)
+    creaturesBars = np.array(
+        list(map(lambda i: [i % hudWidth, i // hudWidth], creaturesBars)))
+    return creaturesBars
 
 
 def getSlotFromCoordinate(currentCoordinate, coordinate):
@@ -141,17 +137,32 @@ def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
     return creaturesDict[creatureSlot]
 
 
+creatureType = np.dtype([
+    ('name', np.str_, 64),
+    ('healthPercentage', np.uint8),
+    ('isBeingAttacked', np.bool_),
+    ('slot', np.uint8, (2,)),
+    ('windowCoordinate', np.uint32, (2,))
+])
+
+
+def cleanCreatureName(creatureName):
+    creatureName = np.where(creatureName == 29, 0, creatureName)
+    creatureName = np.where(creatureName == 91, 0, creatureName)
+    creatureName = np.where(creatureName == 113, 0, creatureName)
+    creatureName = np.where(creatureName == 152, 0, creatureName)
+    creatureName = np.where(creatureName == 170, 0, creatureName)
+    creatureName = np.where(creatureName == 192, 0, creatureName)
+    creatureName = np.where(creatureName != 0, 255, creatureName)
+    return creatureName
+
+
+# TODO: after each loop, remove bar when creatureDidMatch
+# TODO: use matrix calculations instead of for loops
 def getCreatures(screenshot, battleListCreatures):
     hudCoordinates = getCoordinates(screenshot)
     hudImg = getImgByCoordinates(screenshot, hudCoordinates)
     creaturesBars = getCreaturesBars(hudImg.flatten())
-    creatureType = np.dtype([
-        ('name', np.str_, 64),
-        ('healthPercentage', np.uint8),
-        ('isBeingAttacked', np.bool_),
-        ('slot', np.uint8, (2,)),
-        ('windowCoordinate', np.uint32, (2,))
-    ])
     creatures = np.array([], dtype=creatureType)
     hasNoCreaturesBars = len(creaturesBars) == 0
     if hasNoCreaturesBars:
@@ -159,41 +170,56 @@ def getCreatures(screenshot, battleListCreatures):
     hasNoBattleListCreatures = len(battleListCreatures) == 0
     if hasNoBattleListCreatures:
         return creatures
-    hasUniqueMonster = len(battleListCreatures) == 1
-    if hasUniqueMonster:
-        firstBattleListCreature = battleListCreatures[0]
-        creature = makeCreature(firstBattleListCreature['name'], creaturesBars[0], hudCoordinates)
-        creaturesToAppend = np.array([creature], dtype=creatureType)
-        creatures = np.append(creatures, creaturesToAppend)
-        return creatures
-    possibleMonsters = {}
+    possibleCreatures = {}
     for battleListCreature in battleListCreatures:
-        alreadyInPossibleMonsters = battleListCreature['name'] in possibleMonsters
-        if alreadyInPossibleMonsters:
-            continue
-        possibleMonsters[battleListCreature['name']] = creaturesNamesHashes[battleListCreature['name']]
-    for creatureBar in creaturesBars:
-        (x, y) = creatureBar
-        creatureMess = hudImg[y - 13: y - 13 + 11, x: x + 27]
-        creatureMess = np.where(creatureMess == 29, 0, creatureMess)
-        creatureMess = np.where(creatureMess == 91, 0, creatureMess)
-        creatureMess = np.where(creatureMess == 113, 0, creatureMess)
-        creatureMess = np.where(creatureMess == 152, 0, creatureMess)
-        creatureMess = np.where(creatureMess == 170, 0, creatureMess)
-        creatureMess = np.where(creatureMess == 192, 0, creatureMess)
-        creatureMess = np.where(creatureMess != 0, 255, creatureMess)
-        creatureMessFlattened = creatureMess.flatten()
-        for creatureName in possibleMonsters:
-            creatureHashFlattened = creaturesNamesHashes[creatureName].flatten()
-            creatureBlackPixelsIndexes = np.nonzero(
-                creatureHashFlattened == 0)[0]
-            blackPixels = np.take(creatureMessFlattened,
-                                  creatureBlackPixelsIndexes)
-            creatureDidMatch = np.all(blackPixels == 0)
+        if battleListCreature['name'] != 'Unknown':
+            possibleCreatures[battleListCreature['name']] = creaturesNamesHashes[battleListCreature['name']]
+    for creatureName in possibleCreatures:
+        _, creatureNameWidth  = possibleCreatures[creatureName].shape
+        for creatureBar in creaturesBars:
+            (creatureBarStartingX, creatureBarStartingY) = creatureBar
+            creatureNameImgHalfWidth = math.floor(creatureNameWidth / 2)
+            leftDiff = max(creatureNameImgHalfWidth - 13, 0)
+            gapLeft = 0 if creatureBarStartingX > leftDiff else leftDiff - creatureBarStartingX
+            gapInnerLeft = 0 if creatureNameWidth > 27  else math.ceil((27 - creatureNameWidth) / 2)
+            rightDiff = max(creatureNameWidth - creatureNameImgHalfWidth - 14, 0)
+            gapRight = 0 if hudSize[0] > (creatureBarStartingX + 27 + rightDiff) else creatureBarStartingX + 27 + rightDiff - hudSize[0]  
+            gapInnerRight = 0 if creatureNameWidth > 27 else math.floor((27 - creatureNameWidth) / 2)
+            startingX = creatureBarStartingX - creatureNameImgHalfWidth + 13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight
+            endingX = creatureBarStartingX + creatureNameImgHalfWidth + 13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight
+            creatureMess = hudImg[creatureBarStartingY - 13: creatureBarStartingY - 13 + 11, startingX:endingX]
+            if creatureMess.shape[1] < creaturesNamesHashes[creatureName].shape[1]:
+                creatureMess = hudImg[creatureBarStartingY - 13: creatureBarStartingY - 13 + 11, startingX:endingX+1]
+            creatureMess = cleanCreatureName(creatureMess)
+            creatureDidMatch = utils.hasMatrixInsideOther(creatureMess, creaturesNamesHashes[creatureName])
             if creatureDidMatch:
                 creature = makeCreature(creatureName, creatureBar, hudCoordinates)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
+                continue
+            creatureMess2 = hudImg[creatureBarStartingY - 13: creatureBarStartingY - 13 + 11, startingX+1:endingX+1]
+            creatureNameHash = creaturesNamesHashes[creatureName].copy()
+            if creatureMess2.shape[1] < creatureNameHash.shape[1]:
+                creatureNameHash = creatureNameHash[:, 0:creatureNameHash.shape[1] - 1]
+            creatureMess2 = cleanCreatureName(creatureMess2)
+            creatureDidMatch = utils.hasMatrixInsideOther(creatureMess2, creatureNameHash)
+            if creatureDidMatch:
+                creature = makeCreature(creatureName, creatureBar, hudCoordinates)
+                creaturesToAppend = np.array([creature], dtype=creatureType)
+                creatures = np.append(creatures, creaturesToAppend)
+                continue
+            creatureMess3 = hudImg[creatureBarStartingY - 13: creatureBarStartingY - 13 + 11, startingX:endingX-1]
+            creatureMess3 = cleanCreatureName(creatureMess3)
+            creatureNameHash2 = creaturesNamesHashes[creatureName].copy()
+            creatureNameHash2 = creatureNameHash2[:, 1:creatureNameHash2.shape[1]]
+            if creatureMess3.shape[1] != creatureNameHash2.shape:
+                continue
+            creatureDidMatch = utils.hasMatrixInsideOther(creatureMess3, creatureNameHash2)
+            if creatureDidMatch:
+                creature = makeCreature(creatureName, creatureBar, hudCoordinates)
+                creaturesToAppend = np.array([creature], dtype=creatureType)
+                creatures = np.append(creatures, creaturesToAppend)
+                continue
     return creatures
 
 
@@ -207,6 +233,7 @@ def getRightSidebarArrows(screenshot):
     return utils.locate(screenshot, rightHud)
 
 
+# TODO: cache it
 def getCoordinates(screenshot):
     leftSidebarArrows = getLeftSidebarArrows(screenshot)
     rightSidebarArrows = getRightSidebarArrows(screenshot)
@@ -228,3 +255,15 @@ def getCoordinates(screenshot):
 def getImgByCoordinates(screenshot, coordinates):
     return screenshot[coordinates[1]:coordinates[1] +
                       352, coordinates[0]:coordinates[0] + 480]
+
+
+def getNearestCreaturesCount(creatures):
+    hudwalkableFloorsSqmsCreatures = np.zeros((11, 15))
+    for creature in creatures:
+        hudwalkableFloorsSqmsCreatures[creature['slot'][1], creature['slot'][0]] = 1
+    mcDonalds = hudwalkableFloorsSqmsCreatures[
+        [4, 4, 4, 5, 5, 6, 6, 6],
+        [6, 7, 8, 6, 8, 6, 7, 8]
+    ]
+    nearestCreaturesCount = np.sum(mcDonalds)
+    return nearestCreaturesCount
