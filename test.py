@@ -1,6 +1,7 @@
-from time import time
-from actionBar import actionBar
+from time import sleep, time
 from battleList import battleList
+from hud import hud
+from radar import radar
 from utils import utils
 import pygetwindow as gw
 
@@ -22,18 +23,20 @@ def getWindow():
 
 
 def main():
-    # loop_time = time()
+    loop_time = time()
     window = getWindow()
     while True:
         screenshot = utils.getScreenshot(window)
-        number = actionBar.getSlotCount(screenshot)
-        print(number)
-        # print(number)
+        battleListCreatures = battleList.getCreatures(screenshot)
+        hudCreatures = hud.getCreatures(screenshot, battleListCreatures)
+        print('hudCreatures', hudCreatures)
+        # break
         # timef = (time() - loop_time)
         # timef = timef if timef else 1
         # fps = 1 / timef
         # print('FPS {}'.format(fps))
         # loop_time = time()
+        
 
 if __name__ == '__main__':
     main()

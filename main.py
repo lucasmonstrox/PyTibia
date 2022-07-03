@@ -11,7 +11,10 @@ import rx
 import time
 import pygetwindow as gw
 import multiprocessing
-
+from scipy.sparse import csr_matrix
+from scipy.sparse.csgraph import dijkstra
+import sys
+np.set_printoptions(threshold=sys.maxsize)
 
 waypointType = np.dtype([
     ('type', np.str_, 64),
@@ -52,6 +55,10 @@ waypoints = np.array([
     ('floor', (32982, 32715, 6), 0),
     ('ramp', (32982, 32717, 7), 0),
     ('floor', (32953, 32769, 7), 0),
+    
+    ('floor', (32953, 32785, 7), 0),
+    ('floor', (32959, 32785, 7), 0),
+    
     ('floor', (33004, 32750, 7), 0),
     ('ramp', (33006, 32750, 6), 0),
     ('floor', (33015, 32749, 6), 0),
@@ -79,16 +86,22 @@ waypoints = np.array([
     # ('floor', (33005, 32783, 7)),
 ], dtype=waypointType)
 waypointIndex = None
+shouldIgnoreTargetAndGoToNextWaypoint = False
 shouldRetrySameWaypoint = True
 window = None
+targetIsEnabled = False
 
 
 def goToWaypoint(screenshot, waypoint, currentPlayerCoordinate):
+    global shouldIgnoreTargetAndGoToNextWaypoint
+    print('setting shouldIgnoreTargetAndGoToNextWaypoint to false')
+    shouldIgnoreTargetAndGoToNextWaypoint = False
     isFloorWaypoint = waypoint['type'] == 'floor'
     if isFloorWaypoint:
         radar.goToCoordinate(screenshot, currentPlayerCoordinate, waypoint['coordinate'])
         return
     isRampWaypoint = waypoint['type'] == 'ramp'
+    print('aeeeeeeeeeee')
     if isRampWaypoint:
         (currentPlayerCoordinateX, currentPlayerCoordinateY, _) = currentPlayerCoordinate
         (waypointCoordinateX, waypointCoordinateY, _) = waypoint['coordinate']
@@ -111,7 +124,7 @@ def goToWaypoint(screenshot, waypoint, currentPlayerCoordinate):
 
 
 def handleCavebot(screenshot, playerCoordinate, battleListCreatures):
-    global shouldRetrySameWaypoint
+    global shouldIgnoreTargetAndGoToNextWaypoint, shouldRetrySameWaypoint
     shouldRetrySameWaypoint = True
     hudCreatures = hud.getCreatures(screenshot, battleListCreatures)
     hasNoHudCreatures = len(hudCreatures) == 0
@@ -122,6 +135,7 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures):
     hasNoClosestCreature = closestCreature == None
     if hasNoClosestCreature:
         print('has no closest creature')
+        shouldIgnoreTargetAndGoToNextWaypoint = True
         return
     hasOnlyOneCreature = len(hudCreatures) == 1
     if hasOnlyOneCreature:
@@ -142,11 +156,47 @@ def handleWaypoints(result):
     isCloseToCoordinate = radar.isCloseToCoordinate(
             coordinate, waypoints[waypointIndex]['coordinate'],
             distanceTolerance=currentWaypoint['tolerance'])
+    # print(isCloseToCoordinate)
+    # print('aeeeeee')
     if isCloseToCoordinate:
         waypointIndex = 0 if waypointIndex == len(
             waypoints) - 1 else waypointIndex + 1
         shouldRetrySameWaypoint = False
         player.stop(0.5)
+        # Verificar se tem caminho
+        # 1. Pegar a distancia entre x0 e x1
+        # (radarCoordinateX, radarCoordinateY, floorLevel) = coordinate
+        # print('radarCoordinateX', radarCoordinateX)
+        # print('radarCoordinateY', radarCoordinateY)
+        # (pixelCoordinateX, pixelCoordinateY) = utils.getPixelFromCoordinate(coordinate)
+        # print('pixelCoordinateX', pixelCoordinateX)
+        # print('pixelCoordinateY', pixelCoordinateY)
+        # print(radar.config.walkableFloorsSqms[floorLevel, y-22:y+22, x-7-15:x+8+15])
+        # bolas = radar.config.walkableFloorsSqms[floorLevel][pixelCoordinateY-22:pixelCoordinateY+23, pixelCoordinateX-22:pixelCoordinateX+23]
+        # bolas = np.where(bolas == 1, 255, 0)
+        # bolas = np.array(bolas, dtype=np.uint8)
+        # bolas[22][23] = 133
+        # utils.saveImg(bolas, 'bolas.png')
+        # adjacencyMatrix = utils.getAdjacencyMatrix(bolas)
+        # sqmsGraph = csr_matrix(adjacencyMatrix)
+        # print(sqmsGraph)
+        # sqmsGraphWeights = dijkstra(sqmsGraph, directed=True, indices=1014, unweighted=False)
+        # print('sqmsGraphWeights', sqmsGraphWeights)
+        # print(sqmsGraphWeights.reshape(45, 45))
+        # print('weight', sqmsGraphWeights[1019])
+        # creaturesIndexes = np.nonzero(bolas.flatten() == 1)[0]
+        # creaturesWeights = np.take(sqmsGraphWeights, creaturesIndexes)
+        # fa = utils.loadImgAsArray('hud/images/monsters/Abyssador.png')
+        # print(fa)
+        # bolas = np.array(bolas, dtype=np.uint8)
+        # utils.saveImg(fa, 'fa.png')
+        # print(bolas)
+        # utils.saveImg(bolas, 'bolas.png')
+        # abs(waypoints[waypointIndex]['coordinate'][0] - coordinate[0])
+        # Pegar a distancia enter y0 e y1
+        # Gerar um retangulo a partir de radar.config.walkableFloorsSqms[playerCoordinate[2]]
+        # Mesclar a hud no retangulo
+        # return
         goToWaypoint(screenshot, waypoints[waypointIndex], coordinate)
         return
     if shouldRetrySameWaypoint:
@@ -208,7 +258,20 @@ def handleWindow(_):
     return window
 
 
+def handleSpell(screenshot, battleListCreatures):
+    hudCreatures = hud.getCreatures(screenshot, battleListCreatures)
+    nearestCreaturesCount = hud.getNearestCreaturesCount(hudCreatures)
+    shouldSpell = nearestCreaturesCount > 1
+    if shouldSpell:
+        utils.press('F3')
+
+
+def shouldExecuteWaypoint(battleListCreatures, shouldIgnoreTargetAndGoToNextWaypoint):
+        return battleListCreatures is not None and len(battleListCreatures) == 0 or shouldIgnoreTargetAndGoToNextWaypoint == True
+
+
 def main():
+    global shouldIgnoreTargetAndGoToNextWaypoint
     optimal_thread_count = multiprocessing.cpu_count()
     threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
     thirteenFps = 0.0667
@@ -221,27 +284,30 @@ def main():
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: [screenshot, radar.getCoordinate(screenshot)]),
     )
-    coordinatesObserver.subscribe(lambda result: print(result[1]))
     battlelistObserver = coordinatesObserver.pipe(
         operators.map(lambda result: [result[0], result[1], battleList.getCreatures(result[0])]),
     )
     cavebotObserver = battlelistObserver.pipe(
-        operators.filter(lambda result: len(result[2]) > 0 and not battleList.isAttackingCreature(result[2])),
+        operators.filter(lambda result: result != None and len(result[2]) > 0 and not battleList.isAttackingCreature(result[2]) and shouldIgnoreTargetAndGoToNextWaypoint == False),
         operators.subscribe_on(threadPoolScheduler)
     )
     cavebotObserver.subscribe(
         lambda result: handleCavebot(result[0], result[1], result[2])
     )
     waypointObserver = battlelistObserver.pipe(
-        operators.filter(lambda result: len(result[2]) == 0),
+        operators.filter(lambda result: shouldExecuteWaypoint(result[2], shouldIgnoreTargetAndGoToNextWaypoint)),
         operators.subscribe_on(threadPoolScheduler)
     )
     waypointObserver.subscribe(lambda result: handleWaypoints(result))
-    # healingObserver = fpsWithScreenshot.pipe(
-    #     operators.map(lambda screenshot: (screenshot, player.getHealthPercentage(screenshot))),
-    #     operators.map(lambda result: (result[1], player.getManaPercentage(result[0]))),
-    #     operators.subscribe_on(threadPoolScheduler)
-    # )
+    spellObserver = battlelistObserver.pipe(
+        operators.subscribe_on(threadPoolScheduler)
+    )
+    # spellObserver.subscribe(lambda result: handleSpell(result[0], result[2]))
+    healingObserver = fpsWithScreenshot.pipe(
+        operators.map(lambda screenshot: (screenshot, player.getHealthPercentage(screenshot))),
+        operators.map(lambda result: (result[1], player.getManaPercentage(result[0]))),
+        operators.subscribe_on(threadPoolScheduler)
+    )
     # healingObserver.subscribe(lambda result: healing.healingObserver(result[0], result[1]))
     input("Press Enter key to exit...")
 
