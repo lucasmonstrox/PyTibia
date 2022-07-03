@@ -66,9 +66,9 @@ python test.py
 
 # 👷 Authors
 
-- [**lucasmonstro**](https://www.linkedin.com/in/lucasmonstro/) - Owner & Developer
-- [**augustocrmattos**](https://www.linkedin.com/in/augustocrmattos/) - Developer
-- [**GuizinhoYT**](https://github.com/GuizinhoYT) - Tester
+- lucasmonstro [**github**](http://github.com/lucasmonstro) [**linkedin**](https://www.linkedin.com/in/lucasmonstro/) - Owner & Developer
+- augustocrmattos [**github**](http://github.com/augustocrmattos) [**linkedin**](https://www.linkedin.com/in/augustocrmattos/) - Developer
+- GuizinhoYT [**github**](http://github.com/GuizinhoYT) [**linkedin**](https://www.linkedin.com/in/guilherme-gra%C3%A7a-3953231a2/) - Tester
 
 See also the list of [contributors](../../graphs/contributors) who participated
 in this project
