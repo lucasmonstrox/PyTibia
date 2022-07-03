@@ -30,7 +30,7 @@
   - Potion :heavy_check_mark:
 - HUD:
   - Getting coordinates(playable area) :heavy_check_mark:
-  - Getting Monsters :warning: (needs improvement)
+  - Getting Monsters :heavy_check_mark:
 - Radar:
   - Floor level :heavy_check_mark:
   - Tracking coordinates :heavy_check_mark:
@@ -39,6 +39,9 @@
   - Detect trade container :warning:
   - Scroll until icon is detected :warning:
   - Buy necessary quantity of icon :warning:
+- Spell:
+  - Apply exori when there are a certain number of monsters around :heavy_check_mark:
+  - Getting spells cooldowns :warning:
 - Status:
   - Getting Life :heavy_check_mark:
   - Getting Mana :heavy_check_mark:
