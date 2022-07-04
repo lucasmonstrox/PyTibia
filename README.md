@@ -13,8 +13,9 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
 - ActionBar:
   - Counting slots :heavy_check_mark:
   - Getting cooldowns for knight:
-    - exori :warning:
-    - exori min :warning:
+    - attack :heavy_check_mark:
+    - exori :heavy_check_mark:
+    - exori mas :heavy_check_mark:
     - exori gran :heavy_check_mark:
 - BattleList:
   - [Getting monsters](battleList/docs/README.md) :heavy_check_mark:
