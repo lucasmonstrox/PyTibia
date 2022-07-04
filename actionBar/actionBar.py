@@ -1,12 +1,7 @@
 from utils import utils
-import pygetwindow as gw
 import numpy as np
 
 f2SlotImg = utils.loadImgAsArray('hud/images/slots/f2.png')
-attackCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/attack.png')
-exoriCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/exori.png')
-exoriGranCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/exoriGran.png')
-exoriMasCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/exoriMas.png')
 numbersAsArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numbersAsImg = [
     utils.loadImgAsArray('actionBar/images/slotDigits/0.png'),
@@ -68,17 +63,5 @@ def getSlotCount(screenshot):
     return number
 
 
-def hasAttackCooldown(screenshot):
-    return utils.locate(screenshot, attackCooldownImg)
 
-
-def hasExoriCooldown(screenshot):
-    return utils.locate(screenshot, exoriCooldownImg)
-
-
-def hasExoriGranCooldown(screenshot):
-    return utils.locate(screenshot, exoriGranCooldownImg)
-
-
-def hasExoriMasCooldown(screenshot):
     return utils.locate(screenshot, exoriMasCooldownImg)
