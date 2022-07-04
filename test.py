@@ -1,5 +1,5 @@
 from time import sleep, time
-from battleList import battleList
+import actionBar.cooldown
 from hud import hud
 from radar import radar
 from utils import utils
@@ -27,15 +27,15 @@ def main():
     window = getWindow()
     while True:
         screenshot = utils.getScreenshot(window)
-        battleListCreatures = battleList.getCreatures(screenshot)
-        hudCreatures = hud.getCreatures(screenshot, battleListCreatures)
-        print('hudCreatures', hudCreatures)
-        # break
-        # timef = (time() - loop_time)
-        # timef = timef if timef else 1
-        # fps = 1 / timef
-        # print('FPS {}'.format(fps))
-        # loop_time = time()
+        print(actionBar.cooldown.hasAttackCooldown(screenshot))
+        print(actionBar.cooldown.hasExoriCooldown(screenshot))
+        print(actionBar.cooldown.hasExoriGranCooldown(screenshot))
+        print(actionBar.cooldown.hasExoriMasCooldown(screenshot))
+        timef = (time() - loop_time)
+        timef = timef if timef else 1
+        fps = 1 / timef
+        print('FPS {}'.format(fps))
+        loop_time = time()
         
 
 if __name__ == '__main__':

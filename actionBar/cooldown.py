@@ -1,4 +1,6 @@
 from utils import utils
+import actionBar.core
+
 
 attackCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/attack.png')
 exoriCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/exori.png')
@@ -6,17 +8,38 @@ exoriGranCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/exoriGra
 exoriMasCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/exoriMas.png')
 
 
+def getCooldownsImg(screenshot):
+    (x0, y0, _, _) = actionBar.core.getLeftSideArrowsPos(screenshot)
+    (x1, _, _, _) = actionBar.core.getRightSideArrowsPos(screenshot)
+    cooldownsImg = screenshot[y0+37:y0+37+22, x0:x1]
+    return cooldownsImg
+
+
+def hasCooldownByImg(screenshot, cooldownImg):
+    listOfCooldownsImg = getCooldownsImg(screenshot)
+    cooldownImgPos = utils.locate(listOfCooldownsImg, cooldownImg)
+    cooldownImgIsntPresent = cooldownImgPos is None
+    if cooldownImgIsntPresent:
+        return False
+    (x, _, width, _) = cooldownImgPos
+    percentBar = listOfCooldownsImg[20:21, x:x+width]
+    firstPixel = percentBar[0][0]
+    whitePixelColor = 255
+    hasCooldown = firstPixel == whitePixelColor
+    return hasCooldown
+
+
 def hasAttackCooldown(screenshot):
-    return utils.locate(screenshot, attackCooldownImg) is not None
+    return hasCooldownByImg(screenshot, attackCooldownImg)
 
 
 def hasExoriCooldown(screenshot):
-    return utils.locate(screenshot, exoriCooldownImg) is not None
+    return hasCooldownByImg(screenshot, exoriCooldownImg)
 
 
 def hasExoriGranCooldown(screenshot):
-    return utils.locate(screenshot, exoriGranCooldownImg) is not None
+    return hasCooldownByImg(screenshot, exoriGranCooldownImg)
 
 
 def hasExoriMasCooldown(screenshot):
-    return utils.locate(screenshot, exoriMasCooldownImg) is not None
+    return hasCooldownByImg(screenshot, exoriMasCooldownImg)
