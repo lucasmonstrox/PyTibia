@@ -1,4 +1,4 @@
-from actionBar.actionBar import hasExoriGranCooldown
+from actionBar import cooldown
 from battleList import battleList
 from hud import hud
 from player import player
@@ -11,9 +11,8 @@ import rx
 import time
 import pygetwindow as gw
 import multiprocessing
-from scipy.sparse import csr_matrix
-from scipy.sparse.csgraph import dijkstra
 import sys
+
 np.set_printoptions(threshold=sys.maxsize)
 
 waypointType = np.dtype([
@@ -273,9 +272,18 @@ def handleSpell(screenshot, hudCreatures):
     hasNoNearestCreatures = nearestCreaturesCount == 0
     if hasNoNearestCreatures:
         return
-    if hasExoriGranCooldown(screenshot):
+    hasNoExoriGranCooldown = not cooldown.hasExoriGranCooldown(screenshot)
+    if hasNoExoriGranCooldown:
+        utils.press('F5')
         return
-    utils.press('F3')
+    hasNoExoriCooldown = not cooldown.hasExoriCooldown(screenshot)
+    if hasNoExoriCooldown:
+        utils.press('F3')
+        return
+    hasNoExoriMasCooldown = not cooldown.hasExoriMasCooldown(screenshot)
+    if hasNoExoriMasCooldown:
+        utils.press('F4')
+        return
 
 
 def shouldExecuteWaypoint(battleListCreatures, shouldIgnoreTargetAndGoToNextWaypoint):
