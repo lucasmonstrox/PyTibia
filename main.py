@@ -1,3 +1,4 @@
+from actionBar.actionBar import hasExoriGranCooldown
 from battleList import battleList
 from hud import hud
 from player import player
@@ -85,12 +86,21 @@ waypointType = np.dtype([
 #     # ('floor', (33005, 32783, 7)),
 # ], dtype=waypointType)
 
+# waypoints = np.array([
+#     ('floor', (33871, 31457, 7), 0),
+#     ('floor', (33875, 31441, 7), 0),
+#     ('floor', (33850, 31457, 7), 0),
+#     ('floor', (33828, 31473, 7), 0),
+#     ('floor', (33842, 31500, 7), 0),
+# ], dtype=waypointType)
+
 waypoints = np.array([
-    ('floor', (33871, 31457, 7), 0),
-    ('floor', (33875, 31441, 7), 0),
-    ('floor', (33850, 31457, 7), 0),
-    ('floor', (33828, 31473, 7), 0),
-    ('floor', (33842, 31500, 7), 0),
+    ('floor', (33538, 32475, 7), 0),
+    ('floor', (33530, 32470, 7), 0),
+    ('floor', (33509, 32480, 7), 0),
+    ('floor', (33526, 32452, 7), 0),
+    ('floor', (33550, 32445, 7), 0),
+    ('floor', (33571, 32456, 7), 0),
 ], dtype=waypointType)
 waypointIndex = None
 shouldIgnoreTargetAndGoToNextWaypoint = False
@@ -130,10 +140,9 @@ def goToWaypoint(screenshot, waypoint, currentPlayerCoordinate):
             return
 
 
-def handleCavebot(screenshot, playerCoordinate, battleListCreatures):
+def handleCavebot(screenshot, playerCoordinate, battleListCreatures, hudCreatures):
     global shouldIgnoreTargetAndGoToNextWaypoint, shouldRetrySameWaypoint
     shouldRetrySameWaypoint = True
-    hudCreatures = hud.getCreatures(screenshot, battleListCreatures)
     hasNoHudCreatures = len(hudCreatures) == 0
     if hasNoHudCreatures:
         print('has no hud creatures')
@@ -149,10 +158,8 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures):
     time.sleep(0.25)
 
 
-def handleWaypoints(result):
+def handleWaypoints(screenshot, coordinate):
     global shouldRetrySameWaypoint, waypointIndex
-    screenshot = result[0]
-    coordinate = result[1]
     if waypointIndex == None:
         waypointIndex = radar.getWaypointIndexFromClosestCoordinate(coordinate, waypoints)
     currentWaypoint = waypoints[waypointIndex]
@@ -213,7 +220,7 @@ def handleWaypoints(result):
 
 def handleHealing(healthPercentage, manaPercentage):
     percentageToHealWithManaPotion = 65
-    percentageToHealWithPotion = 50
+    percentageToHealWithPotion = 70
     percentageToHealWithSpell = 75
     spellHotkey = 'f3'
     manaPotionHotkey = 'f2'
@@ -261,14 +268,14 @@ def handleWindow(_):
     return window
 
 
-def handleSpell(screenshot, battleListCreatures):
-    hudCreatures = hud.getCreatures(screenshot, battleListCreatures)
+def handleSpell(screenshot, hudCreatures):
     nearestCreaturesCount = hud.getNearestCreaturesCount(hudCreatures)
-    print('nearestCreaturesCount', nearestCreaturesCount)
-    shouldSpell = nearestCreaturesCount > 1
-    print('shouldSpell', shouldSpell)
-    if shouldSpell:
-        utils.press('F3')
+    hasNoNearestCreatures = nearestCreaturesCount == 0
+    if hasNoNearestCreatures:
+        return
+    if hasExoriGranCooldown(screenshot):
+        return
+    utils.press('F3')
 
 
 def shouldExecuteWaypoint(battleListCreatures, shouldIgnoreTargetAndGoToNextWaypoint):
@@ -292,22 +299,25 @@ def main():
     battlelistObserver = coordinatesObserver.pipe(
         operators.map(lambda result: [result[0], result[1], battleList.getCreatures(result[0])]),
     )
-    cavebotObserver = battlelistObserver.pipe(
-        operators.filter(lambda result: result[2] != None and len(result[2]) > 0 and not battleList.isAttackingCreature(result[2]) and shouldIgnoreTargetAndGoToNextWaypoint == False),
+    hudCreaturesObserver = battlelistObserver.pipe(
+        operators.map(lambda result: [result[0], result[1], result[2], hud.getCreatures(result[0], result[2])]),
+    )
+    cavebotObserver = hudCreaturesObserver.pipe(
+        operators.filter(lambda result: result[2] != None and len(result[3]) > 0 and not battleList.isAttackingCreature(result[2]) and shouldIgnoreTargetAndGoToNextWaypoint == False),
         operators.subscribe_on(threadPoolScheduler)
     )
     cavebotObserver.subscribe(
-        lambda result: handleCavebot(result[0], result[1], result[2])
+        lambda result: handleCavebot(result[0], result[1], result[2], result[3])
     )
-    waypointObserver = battlelistObserver.pipe(
+    waypointObserver = hudCreaturesObserver.pipe(
         operators.filter(lambda result: shouldExecuteWaypoint(result[2], shouldIgnoreTargetAndGoToNextWaypoint)),
         operators.subscribe_on(threadPoolScheduler)
     )
-    waypointObserver.subscribe(lambda result: handleWaypoints(result))
-    spellObserver = battlelistObserver.pipe(
+    waypointObserver.subscribe(lambda result: handleWaypoints(result[0], result[1]))
+    spellObserver = hudCreaturesObserver.pipe(
         operators.subscribe_on(threadPoolScheduler)
     )
-    spellObserver.subscribe(lambda result: handleSpell(result[0], result[2]))
+    spellObserver.subscribe(lambda result: handleSpell(result[0], result[3]))
     healingObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: (screenshot, player.getHealthPercentage(screenshot))),
         operators.map(lambda result: (result[1], player.getManaPercentage(result[0]))),

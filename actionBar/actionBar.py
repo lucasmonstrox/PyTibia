@@ -3,6 +3,7 @@ import pygetwindow as gw
 import numpy as np
 
 f2Img = utils.loadImgAsArray('hud/images/slots/f2.png')
+exoriGranImg = utils.loadImgAsArray('actionBar/images/cooldowns/exoriGran.png')
 numbersAsArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numbersAsImg = [
     utils.loadImgAsArray('actionBar/images/slotDigits/0.png'),
@@ -62,3 +63,7 @@ def getSlotCount(screenshot):
     digits = np.array([(10 ** digitIndex) * digit for (digitIndex, digit) in enumerate(digits)])
     number = sum(digits)
     return number
+
+
+def hasExoriGranCooldown(screenshot):
+    return utils.locate(screenshot, exoriGranImg)
