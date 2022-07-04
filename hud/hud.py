@@ -258,7 +258,7 @@ def getImgByCoordinates(screenshot, coordinates):
 
 
 def getNearestCreaturesCount(creatures):
-    hudwalkableFloorsSqmsCreatures = np.zeros((11, 15))
+    hudwalkableFloorsSqmsCreatures = np.zeros((11, 15), dtype=np.uint)
     for creature in creatures:
         hudwalkableFloorsSqmsCreatures[creature['slot'][1], creature['slot'][0]] = 1
     mcDonalds = hudwalkableFloorsSqmsCreatures[
