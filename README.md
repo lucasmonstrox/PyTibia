@@ -20,6 +20,7 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
   - Attacking closest creature :heavy_check_mark:
   - Ignoring non target monsters :heavy_check_mark:
   - Resume coordinate :heavy_check_mark:
+  - Retarget to another creature when current target is non attackable :warning:
 - Chat:
   - Check if Server Log is selected :warning:
   - Talk to NPC's to trade :warning:
