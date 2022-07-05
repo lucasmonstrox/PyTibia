@@ -2,7 +2,7 @@ from utils import utils
 from wiki import creatures
 import numpy as np
 
-# creatures.creatures = ['A Greedy Eye']
+# creatures.creatures = ['Armadile']
 
 messLetters = ['t', 'T', 'r', 'R', 'f', 'F', 'L']
 
@@ -18,23 +18,22 @@ for monster in creatures.creatures:
         letterAsArray = utils.loadImgAsArray(letterFullPath).copy()
         letterAsArray[np.nonzero(letterAsArray == 0)] = 1
         letterAsArray[np.nonzero(letterAsArray == 255)] = 0
-        # print(letter)
+        # print('letter', letter)
         if index > 0:
             previousLetter = monster[index - 1]
-            previousLetterIsMessLetter = (previousLetter == 't' or previousLetter == 'T' or previousLetter == 'r' or previousLetter == 'R' or previousLetter == 'f' or previousLetter == 'F' or previousLetter == 'L')
-            letterIsMessLetter = (letter == 't' or letter == 'T' or letter == 'f' or letter == 'F')
+            previousLetterIsMessLetter = (previousLetter == 't' or previousLetter == 'T' or previousLetter == 'r' or previousLetter == 'R' or previousLetter == 'f' or previousLetter == 'L')
+            letterIsMessLetter = (letter == 't' or letter == 'T' or letter == 'f')
+            # print('previousLetterIsMessLetter', previousLetterIsMessLetter)
+            # print('letterIsMessLetter', letterIsMessLetter)
             if previousLetterIsMessLetter or letterIsMessLetter:
                 size = 2 if previousLetterIsMessLetter and letterIsMessLetter else 1
+                # print('size', size)
                 ultimaFileiraDaImagem = monsterLetters[:, monsterLetters.shape[1] - size:monsterLetters.shape[1]]
                 primeiraFileiraDaProximaLetra = letterAsArray[:, 0:size]
-                # if size == 2:
-                #     utils.saveImg(np.array(np.where(ultimaFileiraDaImagem == 1, 0, 255), dtype=np.uint8), 'ultimaFileiraDaImagem.png')
-                #     utils.saveImg(np.array(np.where(primeiraFileiraDaProximaLetra == 1, 0, 255), dtype=np.uint8), 'primeiraFileiraDaProximaLetra.png')
-                # utils.saveImg(primeiraFileiraDaProximaLetra, 'primeiraFileiraDaProximaLetra.png')
                 somaDasDuas = np.add(ultimaFileiraDaImagem, primeiraFileiraDaProximaLetra)
                 monsterLetters = monsterLetters[:, 0:monsterLetters.shape[1] - size]
                 monsterLetters = np.hstack((monsterLetters, somaDasDuas))
-                restoDaProximaLetra = letterAsArray[:, size:letterAsArray.shape[0] - 1]
+                restoDaProximaLetra = letterAsArray[:, size:letterAsArray.shape[1]]
                 monsterLetters = np.hstack((monsterLetters, restoDaProximaLetra))
             else:
                 monsterLetters = np.hstack((monsterLetters, letterAsArray)) 
