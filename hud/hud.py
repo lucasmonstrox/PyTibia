@@ -21,8 +21,14 @@ for monster in creatures.creatures:
     creaturesNamesHashes[monster] = utils.loadImgAsArray('hud/images/monsters/{}.png'.format(monster))
 leftHud = utils.loadImgAsArray('hud/images/leftHud.png')
 rightHud = utils.loadImgAsArray('hud/images/rightHud.png')
-
 hudSize = (480, 352)
+creatureType = np.dtype([
+    ('name', np.str_, 64),
+    ('healthPercentage', np.uint8),
+    ('isBeingAttacked', np.bool_),
+    ('slot', np.uint8, (2,)),
+    ('windowCoordinate', np.uint32, (2,))
+])
 
 
 def moveToSlot(slot, hudPos):
@@ -135,15 +141,6 @@ def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
         return None
     creatureSlot = (shortestCreatureIndex % 15, shortestCreatureIndex // 15)
     return creaturesDict[creatureSlot]
-
-
-creatureType = np.dtype([
-    ('name', np.str_, 64),
-    ('healthPercentage', np.uint8),
-    ('isBeingAttacked', np.bool_),
-    ('slot', np.uint8, (2,)),
-    ('windowCoordinate', np.uint32, (2,))
-])
 
 
 def cleanCreatureName(creatureName):
@@ -267,3 +264,14 @@ def getNearestCreaturesCount(creatures):
     ]
     nearestCreaturesCount = np.sum(mcDonalds)
     return nearestCreaturesCount
+
+
+def hasTargetToCreatureByIndex(hudwalkableFloorsSqms, index):
+    adjacencyMatrix = utils.getAdjacencyMatrix(hudwalkableFloorsSqms)
+    graph = csr_matrix(adjacencyMatrix)
+    graphWeights = dijkstra(graph, directed=True, indices=82, unweighted=False)
+    graphWeights = graphWeights.reshape(11, 15)
+    mcDonalds = graphWeights[index[0], index[1]]
+    hasTarget = mcDonalds != np.inf
+    print(hasTarget)
+    return hasTarget

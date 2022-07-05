@@ -7,27 +7,18 @@ from utils import utils
 import pyautogui
 
 
-accessoriesEquipedImg = np.array(cv2.imread('radar/images/radar-tools.png'))
+accessoriesEquipedImg = utils.loadImgAsArray('radar/images/radar-tools.png')
 hpImg = utils.loadImgAsArray('player/images/heart.png')
 manaImg = utils.loadImgAsArray('player/images/mana.png')
-bleedingImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/bleeding.png'), cv2.COLOR_RGB2GRAY))
-cursedImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/cursed.png'), cv2.COLOR_RGB2GRAY))
-burningImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/burning.png'), cv2.COLOR_RGB2GRAY))
-fightImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/fight.png'), cv2.COLOR_RGB2GRAY))
-hungryImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/hungry.png'), cv2.COLOR_RGB2GRAY))
-poisonedImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/poisoned.png'), cv2.COLOR_RGB2GRAY))
-pzImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/pz.png'), cv2.COLOR_RGB2GRAY))
-restingAreaImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/resting-area.png'), cv2.COLOR_RGB2GRAY))
-stopImg = np.array(cv2.cvtColor(cv2.imread(
-    'player/images/stop.png'), cv2.COLOR_RGB2GRAY))
+bleedingImg = utils.loadImgAsArray('player/images/bleeding.png')
+cursedImg = utils.loadImgAsArray('player/images/cursed.png')
+burningImg = utils.loadImgAsArray('player/images/burning.png')
+fightImg = utils.loadImgAsArray('player/images/fight.png')
+hungryImg = utils.loadImgAsArray('player/images/hungry.png')
+poisonedImg = utils.loadImgAsArray('player/images/poisoned.png')
+pzImg = utils.loadImgAsArray('player/images/pz.png')
+restingAreaImg = utils.loadImgAsArray('player/images/resting-area.png')
+stopImg = utils.loadImgAsArray('player/images/stop.png')
 
 hpBarAllowedPixelsColors = np.array([79, 118, 121, 110, 62])
 hpBarSize=94
@@ -101,7 +92,7 @@ def getStopPos(screenshot):
 
 
 def getSpecialConditionsContainer(screenshot):
-    (left, top, width, height) = getStopPos(screenshot)
+    (left, top, _, _) = getStopPos(screenshot)
     container = screenshot[top:top+12, left-118:left-118+107]
     return container
 
@@ -132,10 +123,8 @@ def isCursed(screenshot):
 
 def isHungry(screenshot):
     container = getSpecialConditionsContainer(screenshot)
-    match = cv2.matchTemplate(container, hungryImg, cv2.TM_CCOEFF_NORMED)
-    res = cv2.minMaxLoc(match)
-    isHungry = res[1] >= 0.9
-    return isHungry
+    hungry = utils.locate(hungryImg, container) is not None
+    return hungry
 
 
 def isInFight(screenshot):
@@ -216,17 +205,17 @@ def goToCoordinate(currentCoordinate, destinationCoordinate):
             continue
 
 
-def goToCoordinate(coordinate):
-    (radarCenterX, radarCenterY) = radar.getCenterBounds()
-    playerCoordinate = getCoordinate()
-    (playerCoordinatePixelY, playerCoordinatePixelX) = utils.getPixelFromCoordinate(
-        playerCoordinate)
-    (destinationCoordinatePixelY,
-     destinationCoordinatePixelX) = utils.getPixelFromCoordinate(coordinate)
-    x = destinationCoordinatePixelX - playerCoordinatePixelX + radarCenterX
-    y = destinationCoordinatePixelY - playerCoordinatePixelY + radarCenterY
-    pyautogui.moveTo(x, y)
-    pyautogui.click()
+# def goToCoordinate(coordinate):
+#     (radarCenterX, radarCenterY) = radar.getCenterBounds()
+#     playerCoordinate = getCoordinate()
+#     (playerCoordinatePixelY, playerCoordinatePixelX) = utils.getPixelFromCoordinate(
+#         playerCoordinate)
+#     (destinationCoordinatePixelY,
+#      destinationCoordinatePixelX) = utils.getPixelFromCoordinate(coordinate)
+#     x = destinationCoordinatePixelX - playerCoordinatePixelX + radarCenterX
+#     y = destinationCoordinatePixelY - playerCoordinatePixelY + radarCenterY
+#     pyautogui.moveTo(x, y)
+#     pyautogui.click()
 
 
 def enableFollowingAttack():
