@@ -32,6 +32,7 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
   - Talk to NPC's to trade :warning:
 - Equipment:
   - Count cap :warning:
+  - Auto ring :warning:
 - Loot:
   - Get dead monsters by player :warning:
     - Parse server logs message to get loot notification :warning:
