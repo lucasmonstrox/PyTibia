@@ -77,7 +77,7 @@ python test.py
 - [**GuizinhoYT**](http://github.com/GuizinhoYT)([**linkedin**](https://www.linkedin.com/in/guilherme-gra%C3%A7a-3953231a2/)) - Tester
 
 See also the list of [contributors](../../graphs/contributors) who participated
-in this project
+in this project.
 
 # ❤️ Development inspiration
 
