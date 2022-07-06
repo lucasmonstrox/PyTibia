@@ -13,7 +13,7 @@ import pygetwindow as gw
 import multiprocessing
 import sys
 
-np.set_printoptions(threshold=sys.maxsize)
+# np.set_printoptions(threshold=sys.maxsize)
 
 waypointType = np.dtype([
     ('type', np.str_, 64),
@@ -146,6 +146,20 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures, hudCreature
     if hasNoHudCreatures:
         print('has no hud creatures')
         return
+    # if battleList.isAttackingCreature(battleListCreatures):
+    #     # obter a matriz do mapa
+    #     # obter as coordenadas das creatures
+    #     # marcar as coordenadas das creatures com 0
+    #     # marcar a coordenada do target com 1
+    #     hudWalkableFloorsSqms = radar.config.walkableFloorsSqms[playerCoordinate[2]]
+    #     hudwalkableFloorsSqms = hudWalkableFloorsSqms[y-5:y+6, x-7:x+8]
+    #     for creature in hudCreatures:
+    #         hudwalkableFloorsSqms[creature['slot'][1], creature['slot'][0]] = 0
+    #     # get closest creature index
+    #     creatureIndex = [10, 6]
+    #     hasTargetToCreatureByIndex = hud.hasTargetToCreatureByIndex(hudwalkableFloorsSqms, creatureIndex)
+    #     print(hasTargetToCreatureByIndex)
+    #     return
     closestCreature = hud.getClosestCreature(hudCreatures, playerCoordinate, radar.config.walkableFloorsSqms[playerCoordinate[2]])
     hasNoClosestCreature = closestCreature == None
     if hasNoClosestCreature:
@@ -290,6 +304,11 @@ def shouldExecuteWaypoint(battleListCreatures, shouldIgnoreTargetAndGoToNextWayp
         return battleListCreatures is not None and len(battleListCreatures) == 0 or shouldIgnoreTargetAndGoToNextWaypoint == True
 
 
+def handleHungry():
+    print('tenho fome')
+    pass
+
+
 def main():
     global shouldIgnoreTargetAndGoToNextWaypoint
     optimal_thread_count = multiprocessing.cpu_count()
@@ -310,28 +329,38 @@ def main():
     hudCreaturesObserver = battlelistObserver.pipe(
         operators.map(lambda result: [result[0], result[1], result[2], hud.getCreatures(result[0], result[2])]),
     )
+    
     cavebotObserver = hudCreaturesObserver.pipe(
-        operators.filter(lambda result: result[2] != None and len(result[3]) > 0 and not battleList.isAttackingCreature(result[2]) and shouldIgnoreTargetAndGoToNextWaypoint == False),
+        operators.filter(lambda result: result[2] != None and len(result[3]) > 0 and shouldIgnoreTargetAndGoToNextWaypoint == False),
         operators.subscribe_on(threadPoolScheduler)
     )
     cavebotObserver.subscribe(
         lambda result: handleCavebot(result[0], result[1], result[2], result[3])
     )
+    
     waypointObserver = hudCreaturesObserver.pipe(
         operators.filter(lambda result: shouldExecuteWaypoint(result[2], shouldIgnoreTargetAndGoToNextWaypoint)),
         operators.subscribe_on(threadPoolScheduler)
     )
     waypointObserver.subscribe(lambda result: handleWaypoints(result[0], result[1]))
+    
     spellObserver = hudCreaturesObserver.pipe(
         operators.subscribe_on(threadPoolScheduler)
     )
     spellObserver.subscribe(lambda result: handleSpell(result[0], result[3]))
+    
     healingObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: (screenshot, player.getHealthPercentage(screenshot))),
         operators.map(lambda result: (result[1], player.getManaPercentage(result[0]))),
         operators.subscribe_on(threadPoolScheduler)
     )
     healingObserver.subscribe(lambda result: handleHealing(result[0], result[1]))
+    
+    hungryObserver = battlelistObserver.pipe(
+        operators.filter(lambda result: player.isHungry(result[0]) and not battleList.isAttackingCreature(result[2])),
+        operators.subscribe_on(threadPoolScheduler)
+    )
+    hungryObserver.subscribe(lambda _: handleHungry())
     input("Press Enter key to exit...")
 
 
