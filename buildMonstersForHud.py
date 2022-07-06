@@ -18,16 +18,12 @@ for monster in creatures.creatures:
         letterAsArray = utils.loadImgAsArray(letterFullPath).copy()
         letterAsArray[np.nonzero(letterAsArray == 0)] = 1
         letterAsArray[np.nonzero(letterAsArray == 255)] = 0
-        # print('letter', letter)
         if index > 0:
             previousLetter = monster[index - 1]
             previousLetterIsMessLetter = (previousLetter == 't' or previousLetter == 'T' or previousLetter == 'r' or previousLetter == 'R' or previousLetter == 'f' or previousLetter == 'L')
-            letterIsMessLetter = (letter == 't' or letter == 'T' or letter == 'f')
-            # print('previousLetterIsMessLetter', previousLetterIsMessLetter)
-            # print('letterIsMessLetter', letterIsMessLetter)
+            letterIsMessLetter = (letter == 't' or letter == 'T' or letter == 'f' or letter == 'J')
             if previousLetterIsMessLetter or letterIsMessLetter:
                 size = 2 if previousLetterIsMessLetter and letterIsMessLetter else 1
-                # print('size', size)
                 ultimaFileiraDaImagem = monsterLetters[:, monsterLetters.shape[1] - size:monsterLetters.shape[1]]
                 primeiraFileiraDaProximaLetra = letterAsArray[:, 0:size]
                 somaDasDuas = np.add(ultimaFileiraDaImagem, primeiraFileiraDaProximaLetra)
