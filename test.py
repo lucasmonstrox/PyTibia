@@ -1,7 +1,6 @@
 from time import sleep, time
 import battleList.core
 import hud.creatures
-from player import player
 from radar import radar
 from utils import utils
 import pygetwindow as gw

@@ -1,7 +1,7 @@
 from actionBar import cooldown
 import battleList.core
 import hud.creatures
-from player import player
+import player.core
 from radar import radar
 from rx import operators
 from rx.scheduler import ThreadPoolScheduler
@@ -185,7 +185,7 @@ def handleWaypoints(screenshot, coordinate):
         waypointIndex = 0 if waypointIndex == len(
             waypoints) - 1 else waypointIndex + 1
         shouldRetrySameWaypoint = False
-        player.stop(0.5)
+        player.core.stop(0.5)
         # Verificar se tem caminho
         # 1. Pegar a distancia entre x0 e x1
         # (radarCoordinateX, radarCoordinateY, floorLevel) = coordinate
@@ -224,7 +224,7 @@ def handleWaypoints(screenshot, coordinate):
         return
     if shouldRetrySameWaypoint:
         shouldRetrySameWaypoint = False
-        player.stop(0.5)
+        player.core.stop(0.5)
         if(currentWaypoint['type'] == 'ramp'):
             waypointIndex = waypointIndex + 1
             currentWaypoint = waypoints[waypointIndex]
@@ -350,14 +350,14 @@ def main():
     spellObserver.subscribe(lambda result: handleSpell(result[0], result[3]))
     
     healingObserver = fpsWithScreenshot.pipe(
-        operators.map(lambda screenshot: (screenshot, player.getHealthPercentage(screenshot))),
-        operators.map(lambda result: (result[1], player.getManaPercentage(result[0]))),
+        operators.map(lambda screenshot: (screenshot, player.core.getHealthPercentage(screenshot))),
+        operators.map(lambda result: (result[1], player.core.getManaPercentage(result[0]))),
         operators.subscribe_on(threadPoolScheduler)
     )
     healingObserver.subscribe(lambda result: handleHealing(result[0], result[1]))
     
     hungryObserver = battlelistObserver.pipe(
-        operators.filter(lambda result: player.isHungry(result[0]) and not battleList.core.isAttackingCreature(result[2])),
+        operators.filter(lambda result: player.core.isHungry(result[0]) and not battleList.core.isAttackingCreature(result[2])),
         operators.subscribe_on(threadPoolScheduler)
     )
     hungryObserver.subscribe(lambda _: handleHungry())
