@@ -1,7 +1,7 @@
 import math
 import numpy as np
 import hud.core
-import utils.core
+import utils.core, utils.matrix
 from wiki import creatures
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
@@ -131,7 +131,7 @@ def getCreatures(screenshot, battleListCreatures):
             if creatureNameImg.shape[1] != creatureWithDirtNameImg.shape[1]:
                 creatureWithDirtNameImg = hudImg[creatureBarStartingY - 13: creatureBarStartingY - 13 + 11, startingX:endingX+1]
             creatureWithDirtNameImg = cleanCreatureName(creatureWithDirtNameImg)
-            creatureDidMatch = utils.core.hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
                 creature = makeCreature(creatureName, creatureBar, hudCoordinates)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
@@ -142,7 +142,7 @@ def getCreatures(screenshot, battleListCreatures):
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
                 creatureNameImg2 = creatureNameImg2[:, 0:creatureNameImg2.shape[1] - 1]
             creatureWithDirtNameImg2 = cleanCreatureName(creatureWithDirtNameImg2)
-            creatureDidMatch = utils.core.hasMatrixInsideOther(creatureWithDirtNameImg2, creatureNameImg2)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg2, creatureNameImg2)
             if creatureDidMatch:
                 creature = makeCreature(creatureName, creatureBar, hudCoordinates)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
@@ -154,7 +154,7 @@ def getCreatures(screenshot, battleListCreatures):
             creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
             if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
                 creatureNameImg3 = creatureNameImg3[:, 0:creatureNameImg3.shape[1] - 1]
-            creatureDidMatch = utils.core.hasMatrixInsideOther(creatureWithDirtNameImg3, creatureNameImg3)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg3, creatureNameImg3)
             if creatureDidMatch:
                 creature = makeCreature(creatureName, creatureBar, hudCoordinates)
                 creaturesToAppend = np.array([creature], dtype=creatureType)

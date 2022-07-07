@@ -1,4 +1,4 @@
-import utils.core
+import utils.core, utils.matrix
 import numpy as np
 
 f2SlotImg = utils.core.loadImgAsArray('hud/images/slots/f2.png')
@@ -27,7 +27,7 @@ def getNumberFromDigitSlot(digitIndex, digits):
     x0 = digitIndex * digitWidth
     x1 = x0 + digitWidth
     digitImg = digits[:, x0:x1]
-    result = np.array([utils.core.hasMatrixInsideOther(digitImg, numberAsImg) for numberAsImg in numbersAsImg])
+    result = np.array([utils.matrix.hasMatrixInsideOther(digitImg, numberAsImg) for numberAsImg in numbersAsImg])
     digit = np.nonzero(result == True)
     cannotGetNumber = len(digit[0]) == 0
     if cannotGetNumber:
