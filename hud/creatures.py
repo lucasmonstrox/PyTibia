@@ -1,10 +1,10 @@
 import math
 import numpy as np
+from scipy.sparse import csr_matrix
+from scipy.sparse.csgraph import dijkstra
 import hud.core
 import utils.core, utils.image, utils.matrix
 from wiki import creatures
-from scipy.sparse import csr_matrix
-from scipy.sparse.csgraph import dijkstra
 
 
 lifeBarBlackPixelsMapper = np.array([
@@ -13,7 +13,6 @@ lifeBarBlackPixelsMapper = np.array([
     960, 986,
     1440, 1441, 1442, 1443, 1444, 1445, 1446, 1447, 1448, 1449, 1450, 1451, 1452, 1453, 1454, 1455, 1456, 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466
 ])
-x = np.arange(lifeBarBlackPixelsMapper.size)
 lifeBarFlattenedImg = np.zeros(lifeBarBlackPixelsMapper.size)
 hudWidth = 480
 creaturesNamesHashes = {}
@@ -175,6 +174,16 @@ def getNearestCreaturesCount(creatures):
     return nearestCreaturesCount
 
 
+def hasTargetToCreatureByIndex(hudwalkableFloorsSqms, index):
+    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudwalkableFloorsSqms)
+    graph = csr_matrix(adjacencyMatrix)
+    graphWeights = dijkstra(graph, directed=True, indices=82, unweighted=False)
+    graphWeights = graphWeights.reshape(11, 15)
+    creatureGraphValue = graphWeights[index[0], index[1]]
+    hasTarget = creatureGraphValue != np.inf
+    return hasTarget
+
+
 def makeCreature(creatureName, coordinate, hudCoordinates):
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinates
     (x, y) = coordinate
@@ -189,14 +198,5 @@ def makeCreature(creatureName, coordinate, hudCoordinates):
     isBeingAttacked = False
     slot = (xSlot, ySlot)
     windowCoordinate = (hudCoordinateX + xCoordinate, hudCoordinateY + yCoordinate)
-    return (creatureName, healthPercentage, isBeingAttacked, slot, windowCoordinate)
-
-
-def hasTargetToCreatureByIndex(hudwalkableFloorsSqms, index):
-    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudwalkableFloorsSqms)
-    graph = csr_matrix(adjacencyMatrix)
-    graphWeights = dijkstra(graph, directed=True, indices=82, unweighted=False)
-    graphWeights = graphWeights.reshape(11, 15)
-    creatureGraphValue = graphWeights[index[0], index[1]]
-    hasTarget = creatureGraphValue != np.inf
-    return hasTarget
+    creature = (creatureName, healthPercentage, isBeingAttacked, slot, windowCoordinate)
+    return return
