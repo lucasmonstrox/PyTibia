@@ -2,7 +2,7 @@
 import math
 import numpy as np
 import pyautogui
-import utils.core
+import utils.core, utils.image
 from wiki.creatures import creatures
 
 config = {
@@ -86,7 +86,7 @@ def getCreatureFromSlot(content, slot):
     isBeingAttacked = np.all(np.logical_or(
         upperCreatureBorder == 76, upperCreatureBorder == 166))
     # TODO: apply it once when parsing content
-    slotImg = utils.core.graysToBlack(slotImg)
+    slotImg = utils.image.graysToBlack(slotImg)
     creatureNameImg = getCreatureNameImg(slotImg)
     creatureNameImg = np.ravel(creatureNameImg)
     creatureHash = utils.core.hashit(creatureNameImg)

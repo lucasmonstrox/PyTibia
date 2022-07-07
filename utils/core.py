@@ -60,10 +60,6 @@ def getSquareMeterSize():
     return 51.455
 
 
-def graysToBlack(arr):
-    return np.where(np.logical_and(arr >= 50, arr <= 100), 0, arr)
-
-
 def hashit(arr):
     return xxhash.xxh64(np.ascontiguousarray(arr), seed=20220605).intdigest()
 
