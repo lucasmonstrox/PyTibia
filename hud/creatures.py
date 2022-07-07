@@ -73,7 +73,7 @@ def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
     for creature in creatures:
         hudwalkableFloorsSqmsCreatures[creature['slot'][1], creature['slot'][0]] = 1
         creaturesDict[(creature['slot'][0], creature['slot'][1])] = creature
-    adjacencyMatrix = utils.core.getAdjacencyMatrix(hudwalkableFloorsSqms)
+    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudwalkableFloorsSqms)
     sqmsGraph = csr_matrix(adjacencyMatrix)
     sqmsGraphWeights = dijkstra(sqmsGraph, directed=True, indices=82, unweighted=False)
     creaturesIndexes = np.nonzero(hudwalkableFloorsSqmsCreatures.flatten() == 1)[0]
@@ -193,7 +193,7 @@ def makeCreature(creatureName, coordinate, hudCoordinates):
 
 
 def hasTargetToCreatureByIndex(hudwalkableFloorsSqms, index):
-    adjacencyMatrix = utils.core.getAdjacencyMatrix(hudwalkableFloorsSqms)
+    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudwalkableFloorsSqms)
     graph = csr_matrix(adjacencyMatrix)
     graphWeights = dijkstra(graph, directed=True, indices=82, unweighted=False)
     graphWeights = graphWeights.reshape(11, 15)
