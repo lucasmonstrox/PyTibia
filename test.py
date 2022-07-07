@@ -1,5 +1,5 @@
 from time import sleep, time
-from battleList import battleList
+import battleList.core
 import hud.creatures
 from player import player
 from radar import radar
@@ -29,7 +29,7 @@ def main():
     window = getWindow()
     while True:
         screenshot = utils.getScreenshot(window)
-        battleListCreatures = battleList.getCreatures(screenshot)
+        battleListCreatures = battleList.core.getCreatures(screenshot)
         hudCreatures = hud.creatures.getCreatures(screenshot, battleListCreatures)
         print(hudCreatures)
         break

@@ -1,5 +1,5 @@
 from actionBar import cooldown
-from battleList import battleList
+import battleList.core
 import hud.creatures
 from player import player
 from radar import radar
@@ -324,7 +324,7 @@ def main():
         operators.map(lambda screenshot: [screenshot, radar.getCoordinate(screenshot)]),
     )
     battlelistObserver = coordinatesObserver.pipe(
-        operators.map(lambda result: [result[0], result[1], battleList.getCreatures(result[0])]),
+        operators.map(lambda result: [result[0], result[1], battleList.core.getCreatures(result[0])]),
     )
     hudCreaturesObserver = battlelistObserver.pipe(
         operators.map(lambda result: [result[0], result[1], result[2], hud.creatures.getCreatures(result[0], result[2])]),
@@ -357,7 +357,7 @@ def main():
     healingObserver.subscribe(lambda result: handleHealing(result[0], result[1]))
     
     hungryObserver = battlelistObserver.pipe(
-        operators.filter(lambda result: player.isHungry(result[0]) and not battleList.isAttackingCreature(result[2])),
+        operators.filter(lambda result: player.isHungry(result[0]) and not battleList.core.isAttackingCreature(result[2])),
         operators.subscribe_on(threadPoolScheduler)
     )
     hungryObserver.subscribe(lambda _: handleHungry())
