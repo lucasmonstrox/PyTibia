@@ -2,7 +2,7 @@ from actionBar import cooldown
 import battleList.core
 import hud.creatures
 import player.core
-from radar import radar
+import radar.core
 from rx import operators
 from rx.scheduler import ThreadPoolScheduler
 from utils import utils
@@ -114,7 +114,7 @@ def goToWaypoint(screenshot, waypoint, currentPlayerCoordinate):
     shouldIgnoreTargetAndGoToNextWaypoint = False
     isFloorWaypoint = waypoint['type'] == 'floor'
     if isFloorWaypoint:
-        radar.goToCoordinate(screenshot, currentPlayerCoordinate, waypoint['coordinate'])
+        radar.core.goToCoordinate(screenshot, currentPlayerCoordinate, waypoint['coordinate'])
         return
     isRampWaypoint = waypoint['type'] == 'ramp'
     print('aeeeeeeeeeee')
@@ -160,7 +160,7 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures, hudCreature
     #     hasTargetToCreatureByIndex = hud.creatures.hasTargetToCreatureByIndex(hudwalkableFloorsSqms, creatureIndex)
     #     print(hasTargetToCreatureByIndex)
     #     return
-    closestCreature = hud.creatures.getClosestCreature(hudCreatures, playerCoordinate, radar.config.walkableFloorsSqms[playerCoordinate[2]])
+    closestCreature = hud.creatures.getClosestCreature(hudCreatures, playerCoordinate, radar.core.config.walkableFloorsSqms[playerCoordinate[2]])
     hasNoClosestCreature = closestCreature == None
     if hasNoClosestCreature:
         print('has no closest creature')
@@ -174,9 +174,9 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures, hudCreature
 def handleWaypoints(screenshot, coordinate):
     global shouldRetrySameWaypoint, waypointIndex
     if waypointIndex == None:
-        waypointIndex = radar.getWaypointIndexFromClosestCoordinate(coordinate, waypoints)
+        waypointIndex = radar.core.getWaypointIndexFromClosestCoordinate(coordinate, waypoints)
     currentWaypoint = waypoints[waypointIndex]
-    isCloseToCoordinate = radar.isCloseToCoordinate(
+    isCloseToCoordinate = radar.core.isCloseToCoordinate(
             coordinate, waypoints[waypointIndex]['coordinate'],
             distanceTolerance=currentWaypoint['tolerance'])
     # print(isCloseToCoordinate)
@@ -321,7 +321,7 @@ def main():
         operators.map(lambda window: utils.getScreenshot(window)),
     )
     coordinatesObserver = fpsWithScreenshot.pipe(
-        operators.map(lambda screenshot: [screenshot, radar.getCoordinate(screenshot)]),
+        operators.map(lambda screenshot: [screenshot, radar.core.getCoordinate(screenshot)]),
     )
     battlelistObserver = coordinatesObserver.pipe(
         operators.map(lambda result: [result[0], result[1], battleList.core.getCreatures(result[0])]),

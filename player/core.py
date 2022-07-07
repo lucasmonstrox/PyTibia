@@ -1,7 +1,5 @@
 import cv2
 import numpy as np
-from radar import radar
-import skimage
 from time import sleep
 from utils import utils
 import pyautogui
@@ -165,57 +163,6 @@ def getPlayerWindowCoordinate():
     # TODO: detect game window automatically
     playerWindowCoordinateY = 90 + (539 / 2)
     return (playerWindowCoordinateX, playerWindowCoordinateY)
-
-
-def goToCoordinate(currentCoordinate, destinationCoordinate):
-    # currentCoordinate = getCoordinate()
-    currentPixelCoordinate = utils.getPixelFromCoordinate(currentCoordinate)
-    destinationPixelCoordinate = utils.getPixelFromCoordinate(
-        destinationCoordinate)
-    currentFloor = radar.getFloorLevel()
-    paths, cost = skimage.graph.route_through_array(
-        radar.floorsAsBoolean[currentFloor], start=currentPixelCoordinate, end=destinationPixelCoordinate, fully_connected=False)
-    pathsLength = len(paths)
-    for index, currentPosition in enumerate(paths):
-        isLastPosition = index + 1 == pathsLength
-        if isLastPosition:
-            break
-        nextPosition = paths[index + 1]
-        nextPositionX, nextPositionY = nextPosition
-        currentPositionX, currentPositionY = currentPosition
-        shouldMoveUp = currentPositionX > nextPositionX
-        if shouldMoveUp:
-            pyautogui.press('up')
-            sleep(0.25)
-            continue
-        shouldMoveDown = currentPositionX < nextPositionX
-        if shouldMoveDown:
-            pyautogui.press('down')
-            sleep(0.25)
-            continue
-        shouldMoveLeft = currentPositionY > nextPositionY
-        if shouldMoveLeft:
-            pyautogui.press('left')
-            sleep(0.25)
-            continue
-        shouldMoveRight = currentPositionY < nextPositionY
-        if shouldMoveRight:
-            pyautogui.press('right')
-            sleep(0.25)
-            continue
-
-
-# def goToCoordinate(coordinate):
-#     (radarCenterX, radarCenterY) = radar.getCenterBounds()
-#     playerCoordinate = getCoordinate()
-#     (playerCoordinatePixelY, playerCoordinatePixelX) = utils.getPixelFromCoordinate(
-#         playerCoordinate)
-#     (destinationCoordinatePixelY,
-#      destinationCoordinatePixelX) = utils.getPixelFromCoordinate(coordinate)
-#     x = destinationCoordinatePixelX - playerCoordinatePixelX + radarCenterX
-#     y = destinationCoordinatePixelY - playerCoordinatePixelY + radarCenterY
-#     pyautogui.moveTo(x, y)
-#     pyautogui.click()
 
 
 def enableFollowingAttack():

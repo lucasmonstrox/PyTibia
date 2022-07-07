@@ -1,7 +1,6 @@
 from time import sleep, time
 import battleList.core
 import hud.creatures
-from radar import radar
 from utils import utils
 import pygetwindow as gw
 import numpy as np
