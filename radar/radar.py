@@ -15,13 +15,13 @@ def getCoordinate(screenshot, previousCoordinate=None):
     cannotGetRadarToolsPos = radarToolsPos is None
     if cannotGetRadarToolsPos:
         return None
-    radarImg = getRadarImage(screenshot, radarToolsPos)
-    # radarImgHash = utils.hashitHex(radarImg)
-    # shouldGetByCachedImageHash = radarImgHash in config.coordinates
-    # if shouldGetByCachedImageHash:
-    #     return config.coordinates[radarImgHash]
-    shouldGetByPreviousCoordinateArea = previousCoordinate is not None
-    if shouldGetByPreviousCoordinateArea:
+    radarImg = getRadarImg(screenshot, radarToolsPos)
+    radarHashedImg = utils.hashitHex(radarImg)
+    shouldGetCoordinateByCachedRadarHashedImg = radarHashedImg in config.coordinates
+    if shouldGetCoordinateByCachedRadarHashedImg:
+        return config.coordinates[radarHashedImg]
+    shouldGetCoordinateByPreviousCoordinateArea = previousCoordinate is not None
+    if shouldGetCoordinateByPreviousCoordinateArea:
         (previousCoordinateXPixel, previousCoordinateYPixel) = utils.getPixelFromCoordinate(previousCoordinate)
         paddingSize = 20
         yStart = previousCoordinateYPixel - (config.dimensions["halfHeight"] + paddingSize)
@@ -36,9 +36,8 @@ def getCoordinate(screenshot, previousCoordinate=None):
             currentCoordinateYPixel = previousCoordinateYPixel - paddingSize + areaFoundImg[1]
             (currentCoordinateX, currentCoordinateY) = utils.getCoordinateFromPixel((currentCoordinateXPixel, currentCoordinateYPixel))
             return (currentCoordinateX, currentCoordinateY, floorLevel)
-    # config.floorsConfidence[floorLevel]
     imgCoordinate = utils.locate(
-        config.floorsImgs[floorLevel], radarImg, confidence=0.75)
+        config.floorsImgs[floorLevel], radarImg, confidence=config.floorsConfidence[floorLevel])
     cannotGetImgCoordinate = imgCoordinate is None
     if cannotGetImgCoordinate:
         return None
@@ -67,7 +66,7 @@ def getFloorLevel(screenshot):
     return floorLevel
 
 
-def getRadarImage(screenshot, radarToolsPos):
+def getRadarImg(screenshot, radarToolsPos):
     radarToolsPosX = radarToolsPos[0]
     radarToolsPosY = radarToolsPos[1]
     x0 = radarToolsPosX - config.dimensions['width'] - 11

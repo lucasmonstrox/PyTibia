@@ -122,7 +122,7 @@ def getCreatures(screenshot, battleListCreatures):
             gapLeft = 0 if creatureBarStartingX > leftDiff else leftDiff - creatureBarStartingX
             gapInnerLeft = 0 if creatureNameWidth > 27  else math.ceil((27 - creatureNameWidth) / 2)
             rightDiff = max(creatureNameWidth - creatureNameImgHalfWidth - 14, 0)
-            gapRight = 0 if hud.core.hudSize[0] > (creatureBarStartingX + 27 + rightDiff) else creatureBarStartingX + 27 + rightDiff - hudSize[0]  
+            gapRight = 0 if hud.core.hudSize[0] > (creatureBarStartingX + 27 + rightDiff) else creatureBarStartingX + 27 + rightDiff - hud.core.hudSize[0]  
             gapInnerRight = 0 if creatureNameWidth > 27 else math.floor((27 - creatureNameWidth) / 2)
             startingX = max(0, creatureBarStartingX - creatureNameImgHalfWidth + 13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
             endingX = min(480, creatureBarStartingX + creatureNameImgHalfWidth + 13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
