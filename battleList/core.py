@@ -2,13 +2,13 @@
 import math
 import numpy as np
 import pyautogui
-from utils import utils
+import utils.core
 from wiki.creatures import creatures
 
 config = {
     "container": {
-        "topImg": utils.loadImgAsArray('battleList/images/battleList.png'),
-        "bottomImg": utils.loadImgAsArray('battleList/images/endOfContainer.png'),
+        "topImg": utils.core.loadImgAsArray('battleList/images/battleList.png'),
+        "bottomImg": utils.core.loadImgAsArray('battleList/images/endOfContainer.png'),
         "width": 156
     },
     "creatures": {
@@ -24,9 +24,9 @@ config = {
 
 
 for creatureName in creatures:
-    creatureImg = utils.loadImgAsArray(
+    creatureImg = utils.core.loadImgAsArray(
         'battleList/images/monsters/{}.png'.format(creatureName))
-    creatureHash = utils.hashit(creatureImg)
+    creatureHash = utils.core.hashit(creatureImg)
     config["creatures"]["hashes"][creatureHash] = {
         "name": creatureName,
         "hash": creatureHash,
@@ -41,14 +41,14 @@ def attackSlot(screenshot, slot):
     pyautogui.click(x, y)
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getContainerBottom(img):
-    return utils.locate(img, config["container"]["bottomImg"])
+    return utils.core.locate(img, config["container"]["bottomImg"])
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getContainerTop(img):
-    return utils.locate(img, config["container"]["topImg"])
+    return utils.core.locate(img, config["container"]["topImg"])
 
 
 def getContent(screenshot):
@@ -86,10 +86,10 @@ def getCreatureFromSlot(content, slot):
     isBeingAttacked = np.all(np.logical_or(
         upperCreatureBorder == 76, upperCreatureBorder == 166))
     # TODO: apply it once when parsing content
-    slotImg = utils.graysToBlack(slotImg)
+    slotImg = utils.core.graysToBlack(slotImg)
     creatureNameImg = getCreatureNameImg(slotImg)
     creatureNameImg = np.ravel(creatureNameImg)
-    creatureHash = utils.hashit(creatureNameImg)
+    creatureHash = utils.core.hashit(creatureNameImg)
     unknownCreature = not creatureHash in config["creatures"]["hashes"]
     creatureName = "Unknown" if unknownCreature else config[
         "creatures"]["hashes"][creatureHash]["name"]

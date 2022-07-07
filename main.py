@@ -3,16 +3,15 @@ import battleList.core
 import hud.creatures
 import player.core
 import radar.core
+import utils.core
 from rx import operators
 from rx.scheduler import ThreadPoolScheduler
-from utils import utils
 import numpy as np
 import rx
 import time
 import pygetwindow as gw
 import multiprocessing
-import sys
-
+# import sys
 # np.set_printoptions(threshold=sys.maxsize)
 
 waypointType = np.dtype([
@@ -117,25 +116,24 @@ def goToWaypoint(screenshot, waypoint, currentPlayerCoordinate):
         radar.core.goToCoordinate(screenshot, currentPlayerCoordinate, waypoint['coordinate'])
         return
     isRampWaypoint = waypoint['type'] == 'ramp'
-    print('aeeeeeeeeeee')
     if isRampWaypoint:
         (currentPlayerCoordinateX, currentPlayerCoordinateY, _) = currentPlayerCoordinate
         (waypointCoordinateX, waypointCoordinateY, _) = waypoint['coordinate']
         xDifference = currentPlayerCoordinateX - waypointCoordinateX
         shouldWalkToLeft = xDifference > 0
         if shouldWalkToLeft:
-            utils.press('left')
+            utils.core.press('left')
             return
         shouldWalkToRight = xDifference < 0
         if shouldWalkToRight:
-            utils.press('right')
+            utils.core.press('right')
             return
         yDifference = currentPlayerCoordinateY - waypointCoordinateY
         if yDifference < 0:
-            utils.press('down')
+            utils.core.press('down')
             return
         if yDifference > 0:
-            utils.press('up')
+            utils.core.press('up')
             return
 
 
@@ -167,7 +165,7 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures, hudCreature
         shouldIgnoreTargetAndGoToNextWaypoint = True
         return
     (x, y) = closestCreature['windowCoordinate']
-    utils.rightClick(x, y)
+    utils.core.rightClick(x, y)
     time.sleep(0.25)
 
 
@@ -241,13 +239,13 @@ def handleHealing(healthPercentage, manaPercentage):
     shouldHealWithHealthPotion = healthPercentage < percentageToHealWithPotion
     if shouldHealWithHealthPotion:
         print('healing with health potion...')
-        utils.press(healthPotionHotkey)
+        utils.core.press(healthPotionHotkey)
         time.sleep(0.25)
         return
     shouldHealWithMana = manaPercentage < percentageToHealWithManaPotion
     if shouldHealWithMana:
         print('healing with mana potion...')
-        utils.press(manaPotionHotkey)
+        utils.core.press(manaPotionHotkey)
         time.sleep(0.25)
         return
     # shouldHealWithSpell = healthPercentage < percentageToHealWithSpell or manaPercentage > 90
@@ -288,15 +286,15 @@ def handleSpell(screenshot, hudCreatures):
         return
     hasNoExoriGranCooldown = not cooldown.hasExoriGranCooldown(screenshot)
     if hasNoExoriGranCooldown:
-        utils.press('F5')
+        utils.core.press('F5')
         return
     hasNoExoriCooldown = not cooldown.hasExoriCooldown(screenshot)
     if hasNoExoriCooldown:
-        utils.press('F3')
+        utils.core.press('F3')
         return
     hasNoExoriMasCooldown = not cooldown.hasExoriMasCooldown(screenshot)
     if hasNoExoriMasCooldown:
-        utils.press('F4')
+        utils.core.press('F4')
         return
 
 
@@ -318,7 +316,7 @@ def main():
     fpsWithScreenshot = fpsObserver.pipe(
         operators.map(handleWindow),
         operators.filter(lambda window: window is not None),
-        operators.map(lambda window: utils.getScreenshot(window)),
+        operators.map(lambda window: utils.core.getScreenshot(window)),
     )
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: [screenshot, radar.core.getCoordinate(screenshot)]),

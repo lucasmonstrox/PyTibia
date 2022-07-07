@@ -1,12 +1,8 @@
-from utils import utils
+import utils.core
 from wiki import creatures
 import numpy as np
 
-# creatures.creatures = ['Armadile']
-
 messLetters = ['t', 'T', 'r', 'R', 'f', 'F', 'L']
-
-# (previousLetter == 't' or previousLetter == 'T' or previousLetter == 'r' or previousLetter == 'R' or previousLetter == 'f' or previousLetter == 'F' or previousLetter == 'L') or (letter == 't' or letter == 'T' or letter == 'f' or letter == 'F')
 
 for monster in creatures.creatures:
     monsterLetters = np.zeros((11, 0), dtype=np.uint8)
@@ -15,7 +11,7 @@ for monster in creatures.creatures:
         letter = letter if letter != '.' else 'dot'
         letterBasePath = 'hud/images/letters/uppercase' if letter.isupper() else 'hud/images/letters/lowercase'
         letterFullPath = '{0}/{1}.png'.format(letterBasePath, letter)
-        letterAsArray = utils.loadImgAsArray(letterFullPath).copy()
+        letterAsArray = core.loadImgAsArray(letterFullPath).copy()
         letterAsArray[np.nonzero(letterAsArray == 0)] = 1
         letterAsArray[np.nonzero(letterAsArray == 255)] = 0
         if index > 0:
@@ -35,9 +31,7 @@ for monster in creatures.creatures:
                 monsterLetters = np.hstack((monsterLetters, letterAsArray)) 
         else:
             monsterLetters = np.hstack((monsterLetters, letterAsArray))
-    # break
     monsterLetters[np.nonzero(monsterLetters == 0)] = 255
     monsterLetters[np.nonzero(monsterLetters == 1)] = 0
     monsterLetters[np.nonzero(monsterLetters == 2)] = 0
-    utils.saveImg(monsterLetters, 'hud/images/monsters/{}.png'.format(monster))
-    # break
+    utils.core.saveImg(monsterLetters, 'hud/images/monsters/{}.png'.format(monster))

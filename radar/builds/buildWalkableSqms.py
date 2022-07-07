@@ -1,10 +1,10 @@
 import numpy as np
-from utils import utils
+import utils.core
 
 walkableFloorsSqms = np.ndarray(shape=(16, 2048, 2560), dtype=np.uint)
 
 for floor in config["floors"]:
-    floorImg = utils.loadImgAsArray('radar/images/floor-{}.png'.format(floor))
+    floorImg = utils.core.loadImgAsArray('radar/images/floor-{}.png'.format(floor))
     floorSqms = np.where(
         np.isin(floorImg, nonWalkablePixelsColors),
         0,

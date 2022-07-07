@@ -1,22 +1,14 @@
-from utils import utils
+import utils.core
 
-leftSideArrowsImg = utils.loadImgAsArray('actionBar/images/leftSideArrows.png')
-utils.saveImg(leftSideArrowsImg, 'actionBar/images/leftSideArrows.png')
-rightSideArrowsImg = utils.loadImgAsArray('actionBar/images/rightSideArrowsImg.png')
-utils.saveImg(rightSideArrowsImg, 'actionBar/images/rightSideArrowsImg.png')
+leftSideArrowsImg = utils.core.loadImgAsArray('actionBar/images/leftSideArrows.png')
+rightSideArrowsImg = utils.core.loadImgAsArray('actionBar/images/rightSideArrowsImg.png')
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getLeftSideArrowsPos(screenshot):
-    return utils.locate(screenshot, leftSideArrowsImg)
+    return utils.core.locate(screenshot, leftSideArrowsImg)
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getRightSideArrowsPos(screenshot):
-    return utils.locate(screenshot, rightSideArrowsImg)
-
-
-@utils.cacheObjectPos
-def getActionBarImg(screenshot):
-    leftSideArrowsPos = getLeftSideArrowsPos(screenshot)
-    rightSideArrowsPos = getRightSideArrowsPos(screenshot)
+    return utils.core.locate(screenshot, rightSideArrowsImg)

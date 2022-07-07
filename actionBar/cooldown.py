@@ -1,11 +1,11 @@
-from utils import utils
+import utils.core
 import actionBar.core
 
 
-attackCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/attack.png')
-exoriCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/exori.png')
-exoriGranCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/exoriGran.png')
-exoriMasCooldownImg = utils.loadImgAsArray('actionBar/images/cooldowns/exoriMas.png')
+attackCooldownImg = utils.core.loadImgAsArray('actionBar/images/cooldowns/attack.png')
+exoriCooldownImg = utils.core.loadImgAsArray('actionBar/images/cooldowns/exori.png')
+exoriGranCooldownImg = utils.core.loadImgAsArray('actionBar/images/cooldowns/exoriGran.png')
+exoriMasCooldownImg = utils.core.loadImgAsArray('actionBar/images/cooldowns/exoriMas.png')
 
 
 def getCooldownsImg(screenshot):
@@ -17,7 +17,7 @@ def getCooldownsImg(screenshot):
 
 def hasCooldownByImg(screenshot, cooldownImg):
     listOfCooldownsImg = getCooldownsImg(screenshot)
-    cooldownImgPos = utils.locate(listOfCooldownsImg, cooldownImg)
+    cooldownImgPos = utils.core.locate(listOfCooldownsImg, cooldownImg)
     cooldownImgIsntPresent = cooldownImgPos is None
     if cooldownImgIsntPresent:
         return False

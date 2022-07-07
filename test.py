@@ -1,9 +1,8 @@
 from time import sleep, time
 import battleList.core
 import hud.creatures
-from utils import utils
+import utils.core
 import pygetwindow as gw
-import numpy as np
 
 
 def getWindow():
@@ -26,7 +25,7 @@ def main():
     # loop_time = time()
     window = getWindow()
     while True:
-        screenshot = utils.getScreenshot(window)
+        screenshot = utils.core.getScreenshot(window)
         battleListCreatures = battleList.core.getCreatures(screenshot)
         hudCreatures = hud.creatures.getCreatures(screenshot, battleListCreatures)
         print(hudCreatures)

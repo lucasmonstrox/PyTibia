@@ -1,22 +1,22 @@
 import cv2
 import numpy as np
 from time import sleep
-from utils import utils
 import pyautogui
+import utils.core
 
 
-accessoriesEquipedImg = utils.loadImgAsArray('radar/images/radar-tools.png')
-hpImg = utils.loadImgAsArray('player/images/heart.png')
-manaImg = utils.loadImgAsArray('player/images/mana.png')
-bleedingImg = utils.loadImgAsArray('player/images/bleeding.png')
-cursedImg = utils.loadImgAsArray('player/images/cursed.png')
-burningImg = utils.loadImgAsArray('player/images/burning.png')
-fightImg = utils.loadImgAsArray('player/images/fight.png')
-hungryImg = utils.loadImgAsArray('player/images/hungry.png')
-poisonedImg = utils.loadImgAsArray('player/images/poisoned.png')
-pzImg = utils.loadImgAsArray('player/images/pz.png')
-restingAreaImg = utils.loadImgAsArray('player/images/resting-area.png')
-stopImg = utils.loadImgAsArray('player/images/stop.png')
+accessoriesEquipedImg = utils.core.loadImgAsArray('radar/images/radar-tools.png')
+hpImg = utils.core.loadImgAsArray('player/images/heart.png')
+manaImg = utils.core.loadImgAsArray('player/images/mana.png')
+bleedingImg = utils.core.loadImgAsArray('player/images/bleeding.png')
+cursedImg = utils.core.loadImgAsArray('player/images/cursed.png')
+burningImg = utils.core.loadImgAsArray('player/images/burning.png')
+fightImg = utils.core.loadImgAsArray('player/images/fight.png')
+hungryImg = utils.core.loadImgAsArray('player/images/hungry.png')
+poisonedImg = utils.core.loadImgAsArray('player/images/poisoned.png')
+pzImg = utils.core.loadImgAsArray('player/images/pz.png')
+restingAreaImg = utils.core.loadImgAsArray('player/images/resting-area.png')
+stopImg = utils.core.loadImgAsArray('player/images/stop.png')
 
 hpBarAllowedPixelsColors = np.array([79, 118, 121, 110, 62])
 hpBarSize=94
@@ -32,9 +32,9 @@ def getFilledBarPercentage(bar, size=100, allowedPixelsColors=[]):
     return percent
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getHeartPos(screenshot):
-    return utils.locate(screenshot, hpImg)
+    return utils.core.locate(screenshot, hpImg)
 
 
 def getHealthPercentage(screenshot):
@@ -58,9 +58,9 @@ def getHealthBar(screenshot, heartPos):
     return bar
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getManaPos(screenshot):
-    return utils.locate(screenshot, manaImg)
+    return utils.core.locate(screenshot, manaImg)
 
 
 def getManaPercentage(screenshot):
@@ -84,9 +84,9 @@ def getManaBar(screenshot, heartPos):
     return bar
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getStopPos(screenshot):
-    return utils.locate(screenshot, stopImg)
+    return utils.core.locate(screenshot, stopImg)
 
 
 def getSpecialConditionsContainer(screenshot):
@@ -121,7 +121,7 @@ def isCursed(screenshot):
 
 def isHungry(screenshot):
     container = getSpecialConditionsContainer(screenshot)
-    hungry = utils.locate(hungryImg, container) is not None
+    hungry = utils.core.locate(hungryImg, container) is not None
     return hungry
 
 
@@ -177,7 +177,7 @@ def enableFollowingAttack():
 def hasAccessoriesEquiped(screenshot):
     screenshotLen = len(screenshot)
     screenshot = screenshot[:, screenshotLen-200:screenshotLen]
-    pos = utils.locate(accessoriesEquipedImg, screenshot)
+    pos = utils.core.locate(accessoriesEquipedImg, screenshot)
     hasAccessoriesEquiped = pos == None
     return hasAccessoriesEquiped
 

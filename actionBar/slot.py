@@ -1,19 +1,19 @@
-from utils import utils
+import utils.core
 import numpy as np
 
-f2SlotImg = utils.loadImgAsArray('hud/images/slots/f2.png')
+f2SlotImg = utils.core.loadImgAsArray('hud/images/slots/f2.png')
 numbersAsArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numbersAsImg = [
-    utils.loadImgAsArray('actionBar/images/slotDigits/0.png'),
-    utils.loadImgAsArray('actionBar/images/slotDigits/1.png'),
-    utils.loadImgAsArray('actionBar/images/slotDigits/2.png'),
-    utils.loadImgAsArray('actionBar/images/slotDigits/3.png'),
-    utils.loadImgAsArray('actionBar/images/slotDigits/4.png'),
-    utils.loadImgAsArray('actionBar/images/slotDigits/5.png'),
-    utils.loadImgAsArray('actionBar/images/slotDigits/6.png'),
-    utils.loadImgAsArray('actionBar/images/slotDigits/7.png'),
-    utils.loadImgAsArray('actionBar/images/slotDigits/8.png'),
-    utils.loadImgAsArray('actionBar/images/slotDigits/9.png'),
+    utils.core.loadImgAsArray('actionBar/images/slotDigits/0.png'),
+    utils.core.loadImgAsArray('actionBar/images/slotDigits/1.png'),
+    utils.core.loadImgAsArray('actionBar/images/slotDigits/2.png'),
+    utils.core.loadImgAsArray('actionBar/images/slotDigits/3.png'),
+    utils.core.loadImgAsArray('actionBar/images/slotDigits/4.png'),
+    utils.core.loadImgAsArray('actionBar/images/slotDigits/5.png'),
+    utils.core.loadImgAsArray('actionBar/images/slotDigits/6.png'),
+    utils.core.loadImgAsArray('actionBar/images/slotDigits/7.png'),
+    utils.core.loadImgAsArray('actionBar/images/slotDigits/8.png'),
+    utils.core.loadImgAsArray('actionBar/images/slotDigits/9.png'),
 ]
 
 
@@ -27,7 +27,7 @@ def getNumberFromDigitSlot(digitIndex, digits):
     x0 = digitIndex * digitWidth
     x1 = x0 + digitWidth
     digitImg = digits[:, x0:x1]
-    result = np.array([utils.hasMatrixInsideOther(digitImg, numberAsImg) for numberAsImg in numbersAsImg])
+    result = np.array([utils.core.hasMatrixInsideOther(digitImg, numberAsImg) for numberAsImg in numbersAsImg])
     digit = np.nonzero(result == True)
     cannotGetNumber = len(digit[0]) == 0
     if cannotGetNumber:
@@ -36,9 +36,9 @@ def getNumberFromDigitSlot(digitIndex, digits):
     return number
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getSlotPos(screenshot):
-    return utils.locate(screenshot, f2SlotImg)
+    return utils.core.locate(screenshot, f2SlotImg)
 
 
 def getSlotCount(screenshot):
@@ -61,7 +61,3 @@ def getSlotCount(screenshot):
     digits = np.array([(10 ** digitIndex) * digit for (digitIndex, digit) in enumerate(digits)])
     number = sum(digits)
     return number
-
-
-
-    return utils.locate(screenshot, exoriMasCooldownImg)

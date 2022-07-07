@@ -1,7 +1,7 @@
 import math
 import numpy as np
 import hud.core
-from utils import utils
+import utils.core
 from wiki import creatures
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
@@ -18,7 +18,7 @@ lifeBarFlattenedImg = np.zeros(lifeBarBlackPixelsMapper.size)
 hudWidth = 480
 creaturesNamesHashes = {}
 for monster in creatures.creatures:
-    creaturesNamesHashes[monster] = utils.loadImgAsArray('hud/images/monsters/{}.png'.format(monster))
+    creaturesNamesHashes[monster] = utils.core.loadImgAsArray('hud/images/monsters/{}.png'.format(monster))
 creatureType = np.dtype([
     ('name', np.str_, 64),
     ('healthPercentage', np.uint8),
@@ -66,14 +66,14 @@ def getCreaturesBars(hudImg):
 
 
 def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
-    (x, y) = utils.getPixelFromCoordinate(coordinate)
+    (x, y) = utils.core.getPixelFromCoordinate(coordinate)
     hudwalkableFloorsSqms = walkableFloorsSqms[y-5:y+6, x-7:x+8]
     hudwalkableFloorsSqmsCreatures = np.zeros((11, 15))
     creaturesDict = {}
     for creature in creatures:
         hudwalkableFloorsSqmsCreatures[creature['slot'][1], creature['slot'][0]] = 1
         creaturesDict[(creature['slot'][0], creature['slot'][1])] = creature
-    adjacencyMatrix = utils.getAdjacencyMatrix(hudwalkableFloorsSqms)
+    adjacencyMatrix = utils.core.getAdjacencyMatrix(hudwalkableFloorsSqms)
     sqmsGraph = csr_matrix(adjacencyMatrix)
     sqmsGraphWeights = dijkstra(sqmsGraph, directed=True, indices=82, unweighted=False)
     creaturesIndexes = np.nonzero(hudwalkableFloorsSqmsCreatures.flatten() == 1)[0]
@@ -131,7 +131,7 @@ def getCreatures(screenshot, battleListCreatures):
             if creatureNameImg.shape[1] != creatureWithDirtNameImg.shape[1]:
                 creatureWithDirtNameImg = hudImg[creatureBarStartingY - 13: creatureBarStartingY - 13 + 11, startingX:endingX+1]
             creatureWithDirtNameImg = cleanCreatureName(creatureWithDirtNameImg)
-            creatureDidMatch = utils.hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg)
+            creatureDidMatch = utils.core.hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
                 creature = makeCreature(creatureName, creatureBar, hudCoordinates)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
@@ -142,7 +142,7 @@ def getCreatures(screenshot, battleListCreatures):
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
                 creatureNameImg2 = creatureNameImg2[:, 0:creatureNameImg2.shape[1] - 1]
             creatureWithDirtNameImg2 = cleanCreatureName(creatureWithDirtNameImg2)
-            creatureDidMatch = utils.hasMatrixInsideOther(creatureWithDirtNameImg2, creatureNameImg2)
+            creatureDidMatch = utils.core.hasMatrixInsideOther(creatureWithDirtNameImg2, creatureNameImg2)
             if creatureDidMatch:
                 creature = makeCreature(creatureName, creatureBar, hudCoordinates)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
@@ -154,7 +154,7 @@ def getCreatures(screenshot, battleListCreatures):
             creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
             if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
                 creatureNameImg3 = creatureNameImg3[:, 0:creatureNameImg3.shape[1] - 1]
-            creatureDidMatch = utils.hasMatrixInsideOther(creatureWithDirtNameImg3, creatureNameImg3)
+            creatureDidMatch = utils.core.hasMatrixInsideOther(creatureWithDirtNameImg3, creatureNameImg3)
             if creatureDidMatch:
                 creature = makeCreature(creatureName, creatureBar, hudCoordinates)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
@@ -193,7 +193,7 @@ def makeCreature(creatureName, coordinate, hudCoordinates):
 
 
 def hasTargetToCreatureByIndex(hudwalkableFloorsSqms, index):
-    adjacencyMatrix = utils.getAdjacencyMatrix(hudwalkableFloorsSqms)
+    adjacencyMatrix = utils.core.getAdjacencyMatrix(hudwalkableFloorsSqms)
     graph = csr_matrix(adjacencyMatrix)
     graphWeights = dijkstra(graph, directed=True, indices=82, unweighted=False)
     graphWeights = graphWeights.reshape(11, 15)

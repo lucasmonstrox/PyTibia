@@ -1,10 +1,10 @@
 import numpy as np
-from utils import utils
+import utils.core
 
 
 hudWidth = 480
-leftHudImg = utils.loadImgAsArray('hud/images/leftHud.png')
-rightHudImg = utils.loadImgAsArray('hud/images/rightHud.png')
+leftHudImg = utils.core.loadImgAsArray('hud/images/leftHud.png')
+rightHudImg = utils.core.loadImgAsArray('hud/images/rightHud.png')
 hudSize = (480, 352)
 
 
@@ -32,14 +32,14 @@ def getImgByCoordinates(screenshot, coordinates):
                       352, coordinates[0]:coordinates[0] + 480]
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getLeftSidebarArrows(screenshot):
-    return utils.locate(screenshot, leftHudImg)
+    return utils.core.locate(screenshot, leftHudImg)
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getRightSidebarArrows(screenshot):
-    return utils.locate(screenshot, rightHudImg)
+    return utils.core.locate(screenshot, rightHudImg)
 
 
 def getSlotFromCoordinate(currentCoordinate, coordinate):
