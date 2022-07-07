@@ -1,6 +1,6 @@
 from time import sleep, time
 from battleList import battleList
-from hud import hud
+import hud.creatures
 from player import player
 from radar import radar
 from utils import utils
@@ -30,9 +30,9 @@ def main():
     while True:
         screenshot = utils.getScreenshot(window)
         battleListCreatures = battleList.getCreatures(screenshot)
-        hudCreatures = hud.getCreatures(screenshot, battleListCreatures)
+        hudCreatures = hud.creatures.getCreatures(screenshot, battleListCreatures)
         print(hudCreatures)
-        # break
+        break
         # timef = (time() - loop_time)
         # timef = timef if timef else 1
         # fps = 1 / timef

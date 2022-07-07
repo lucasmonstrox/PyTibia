@@ -1,6 +1,6 @@
 from actionBar import cooldown
 from battleList import battleList
-from hud import hud
+import hud.creatures
 from player import player
 from radar import radar
 from rx import operators
@@ -20,70 +20,70 @@ waypointType = np.dtype([
     ('coordinate', np.uint32, (3,)),
     ('tolerance', np.uint8)
 ])
-# waypoints = np.array([
-#     ('floor', (33085, 32788, 7), 0),
-#     ('ramp', (33085, 32786, 6), 0),
-#     ('floor', (33085, 32785, 6), 0),
-#     ('ramp', (33085, 32783, 7), 0),
-#     ('floor', (33038, 32810, 7), 0),
-#     ('ramp', (33038, 32808, 6), 0),
-#     ('floor', (33033, 32801, 6), 0),
-#     ('ramp', (33033, 32799, 5), 0),
-#     ('floor', (33032, 32779, 5), 0),
-#     ('ramp', (33032, 32777, 4), 0),
-#     ('floor', (33032, 32786, 4), 0),
-#     ('ramp', (33032, 32788, 3), 0),
-#     ('floor', (33031, 32788, 3), 0),
-#     ('ramp', (33029, 32788, 2), 0),
-#     ('floor', (33029, 32781, 2), 0),
-#     ('ramp', (33029, 32779, 1), 0),
-#     ('floor', (33029, 32776, 1), 0),
-#     ('ramp', (33029, 32774, 0), 0),
-#     ('floor', (33030, 32756, 0), 0),
-#     ('ramp', (33032, 32756, 1), 0),
-#     ('floor', (33021, 32746, 1), 0),
-#     ('ramp', (33019, 32746, 2), 0),
-#     ('floor', (33016, 32745, 2), 0),
-#     ('ramp', (33016, 32743, 3), 0),
-#     ('floor', (33010, 32727, 3), 0),
-#     ('ramp', (33010, 32725, 4), 0),
-#     ('floor', (32999, 32703, 4), 0),
-#     ('ramp', (32999, 32705, 5), 0),
-#     ('floor', (32998, 32709, 5), 0),
-#     ('ramp', (32998, 32711, 6), 0),
-#     ('floor', (32982, 32715, 6), 0),
-#     ('ramp', (32982, 32717, 7), 0),
-#     ('floor', (32953, 32769, 7), 0),
+waypoints = np.array([
+    ('floor', (33085, 32788, 7), 0),
+    ('ramp', (33085, 32786, 6), 0),
+    ('floor', (33085, 32785, 6), 0),
+    ('ramp', (33085, 32783, 7), 0),
+    ('floor', (33038, 32810, 7), 0),
+    ('ramp', (33038, 32808, 6), 0),
+    ('floor', (33033, 32801, 6), 0),
+    ('ramp', (33033, 32799, 5), 0),
+    ('floor', (33032, 32779, 5), 0),
+    ('ramp', (33032, 32777, 4), 0),
+    ('floor', (33032, 32786, 4), 0),
+    ('ramp', (33032, 32788, 3), 0),
+    ('floor', (33031, 32788, 3), 0),
+    ('ramp', (33029, 32788, 2), 0),
+    ('floor', (33029, 32781, 2), 0),
+    ('ramp', (33029, 32779, 1), 0),
+    ('floor', (33029, 32776, 1), 0),
+    ('ramp', (33029, 32774, 0), 0),
+    ('floor', (33030, 32756, 0), 0),
+    ('ramp', (33032, 32756, 1), 0),
+    ('floor', (33021, 32746, 1), 0),
+    ('ramp', (33019, 32746, 2), 0),
+    ('floor', (33016, 32745, 2), 0),
+    ('ramp', (33016, 32743, 3), 0),
+    ('floor', (33010, 32727, 3), 0),
+    ('ramp', (33010, 32725, 4), 0),
+    ('floor', (32999, 32703, 4), 0),
+    ('ramp', (32999, 32705, 5), 0),
+    ('floor', (32998, 32709, 5), 0),
+    ('ramp', (32998, 32711, 6), 0),
+    ('floor', (32982, 32715, 6), 0),
+    ('ramp', (32982, 32717, 7), 0),
+    ('floor', (32953, 32769, 7), 0),
     
-#     ('floor', (32953, 32785, 7), 0),
-#     ('floor', (32959, 32785, 7), 0),
+    ('floor', (32953, 32785, 7), 0),
+    ('floor', (32959, 32785, 7), 0),
     
-#     ('floor', (33004, 32750, 7), 0),
-#     ('ramp', (33006, 32750, 6), 0),
-#     ('floor', (33015, 32749, 6), 0),
-#     ('ramp', (33015, 32751, 5), 0),
-#     ('ramp', (33015, 32753, 4), 0),
-#     ('floor', (33009, 32770, 4), 0),
-#     ('ramp', (33009, 32772, 5), 0),
-#     ('floor', (33004, 32765, 5), 0),
-#     ('ramp', (33004, 32767, 6), 0),
-#     ('floor', (33004, 32770, 6), 0),
-#     ('ramp', (33004, 32772, 7), 0),
-#     ('floor', (33004, 32772, 7), 10),
-#     ('floor', (32994, 32815, 7), 10),
-#     ('floor', (33003, 32831, 7), 10),
-#     ('floor', (32975, 32802, 7), 10),
-#     ('floor', (32957, 32824, 7), 10),
-#     ('floor', (32978, 32832, 7), 10),
-#     ('floor', (32981, 32857, 7), 10),
-#     ('floor', (32961, 32861, 7), 10),
-#     ('floor', (32958, 32834, 7), 10),
-#     ('floor', (32987, 32799, 7), 10),
-#     # ('floor', (32981, 32795, 7)),
-#     # ('floor', (32962, 32814, 7)),
-#     # ('floor', (32996, 32805, 7)),
-#     # ('floor', (33005, 32783, 7)),
-# ], dtype=waypointType)
+    ('floor', (33004, 32750, 7), 0),
+    ('ramp', (33006, 32750, 6), 0),
+    ('floor', (33015, 32749, 6), 0),
+    ('ramp', (33015, 32751, 5), 0),
+    ('ramp', (33015, 32753, 4), 0),
+    ('floor', (33009, 32770, 4), 0),
+    ('ramp', (33009, 32772, 5), 0),
+    ('floor', (33004, 32765, 5), 0),
+    ('ramp', (33004, 32767, 6), 0),
+    ('floor', (33004, 32770, 6), 0),
+    ('ramp', (33004, 32772, 7), 0),
+    ('floor', (33004, 32772, 7), 10),
+    ('floor', (32994, 32815, 7), 10),
+    ('floor', (33003, 32831, 7), 10),
+    ('floor', (32975, 32802, 7), 10),
+    ('floor', (32957, 32824, 7), 10),
+    ('floor', (32978, 32832, 7), 10),
+    ('floor', (32981, 32857, 7), 10),
+    ('floor', (32961, 32861, 7), 10),
+    ('floor', (32958, 32834, 7), 10),
+    ('floor', (32987, 32799, 7), 10),
+    # ('floor', (32981, 32795, 7)),
+    # ('floor', (32962, 32814, 7)),
+    # ('floor', (32996, 32805, 7)),
+    # ('floor', (33005, 32783, 7)),
+], dtype=waypointType)
 
 # waypoints = np.array([
 #     ('floor', (33871, 31457, 7), 0),
@@ -93,14 +93,14 @@ waypointType = np.dtype([
 #     ('floor', (33842, 31500, 7), 0),
 # ], dtype=waypointType)
 
-waypoints = np.array([
-    ('floor', (33538, 32475, 7), 0),
-    ('floor', (33530, 32470, 7), 0),
-    ('floor', (33509, 32480, 7), 0),
-    ('floor', (33526, 32452, 7), 0),
-    ('floor', (33550, 32445, 7), 0),
-    ('floor', (33571, 32456, 7), 0),
-], dtype=waypointType)
+# waypoints = np.array([
+#     ('floor', (33538, 32475, 7), 0),
+#     ('floor', (33530, 32470, 7), 0),
+#     ('floor', (33509, 32480, 7), 0),
+#     ('floor', (33526, 32452, 7), 0),
+#     ('floor', (33550, 32445, 7), 0),
+#     ('floor', (33571, 32456, 7), 0),
+# ], dtype=waypointType)
 waypointIndex = None
 shouldIgnoreTargetAndGoToNextWaypoint = False
 shouldRetrySameWaypoint = True
@@ -157,10 +157,10 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures, hudCreature
     #         hudwalkableFloorsSqms[creature['slot'][1], creature['slot'][0]] = 0
     #     # get closest creature index
     #     creatureIndex = [10, 6]
-    #     hasTargetToCreatureByIndex = hud.hasTargetToCreatureByIndex(hudwalkableFloorsSqms, creatureIndex)
+    #     hasTargetToCreatureByIndex = hud.creatures.hasTargetToCreatureByIndex(hudwalkableFloorsSqms, creatureIndex)
     #     print(hasTargetToCreatureByIndex)
     #     return
-    closestCreature = hud.getClosestCreature(hudCreatures, playerCoordinate, radar.config.walkableFloorsSqms[playerCoordinate[2]])
+    closestCreature = hud.creatures.getClosestCreature(hudCreatures, playerCoordinate, radar.config.walkableFloorsSqms[playerCoordinate[2]])
     hasNoClosestCreature = closestCreature == None
     if hasNoClosestCreature:
         print('has no closest creature')
@@ -282,7 +282,7 @@ def handleWindow(_):
 
 
 def handleSpell(screenshot, hudCreatures):
-    nearestCreaturesCount = hud.getNearestCreaturesCount(hudCreatures)
+    nearestCreaturesCount = hud.creatures.getNearestCreaturesCount(hudCreatures)
     hasNoNearestCreatures = nearestCreaturesCount == 0
     if hasNoNearestCreatures:
         return
@@ -327,7 +327,7 @@ def main():
         operators.map(lambda result: [result[0], result[1], battleList.getCreatures(result[0])]),
     )
     hudCreaturesObserver = battlelistObserver.pipe(
-        operators.map(lambda result: [result[0], result[1], result[2], hud.getCreatures(result[0], result[2])]),
+        operators.map(lambda result: [result[0], result[1], result[2], hud.creatures.getCreatures(result[0], result[2])]),
     )
     
     cavebotObserver = hudCreaturesObserver.pipe(
