@@ -197,7 +197,7 @@ def handleWaypoints(screenshot, coordinate):
         # bolas = np.where(bolas == 1, 255, 0)
         # bolas = np.array(bolas, dtype=np.uint8)
         # bolas[22][23] = 133
-        # utils.saveImg(bolas, 'bolas.png')
+        # utils.image.saveFromArray(bolas, 'bolas.png')
         # adjacencyMatrix = utils.getAdjacencyMatrix(bolas)
         # sqmsGraph = csr_matrix(adjacencyMatrix)
         # print(sqmsGraph)
@@ -210,9 +210,9 @@ def handleWaypoints(screenshot, coordinate):
         # fa = utils.image.loadAsArray('hud/images/monsters/Abyssador.png')
         # print(fa)
         # bolas = np.array(bolas, dtype=np.uint8)
-        # utils.saveImg(fa, 'fa.png')
+        # utils.image.saveFromArray(fa, 'fa.png')
         # print(bolas)
-        # utils.saveImg(bolas, 'bolas.png')
+        # utils.image.saveFromArray(bolas, 'bolas.png')
         # abs(waypoints[waypointIndex]['coordinate'][0] - coordinate[0])
         # Pegar a distancia enter y0 e y1
         # Gerar um retangulo a partir de radar.config.walkableFloorsSqms[playerCoordinate[2]]

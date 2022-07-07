@@ -94,8 +94,3 @@ def press(key):
 
 def rightClick(x, y):
     pyautogui.rightClick(x, y)
-
-
-def saveImg(arr, name):
-    im = Image.fromarray(arr)
-    im.save(name)
