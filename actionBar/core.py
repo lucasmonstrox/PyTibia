@@ -1,7 +1,7 @@
-import utils.core
+import utils.core, utils.image
 
-leftSideArrowsImg = utils.core.loadImgAsArray('actionBar/images/leftSideArrows.png')
-rightSideArrowsImg = utils.core.loadImgAsArray('actionBar/images/rightSideArrowsImg.png')
+leftSideArrowsImg = utils.image.loadAsArray('actionBar/images/leftSideArrows.png')
+rightSideArrowsImg = utils.image.loadAsArray('actionBar/images/rightSideArrowsImg.png')
 
 
 @utils.core.cacheObjectPos

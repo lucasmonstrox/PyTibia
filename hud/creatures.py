@@ -1,7 +1,7 @@
 import math
 import numpy as np
 import hud.core
-import utils.core, utils.matrix
+import utils.core, utils.image, utils.matrix
 from wiki import creatures
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
@@ -18,7 +18,7 @@ lifeBarFlattenedImg = np.zeros(lifeBarBlackPixelsMapper.size)
 hudWidth = 480
 creaturesNamesHashes = {}
 for monster in creatures.creatures:
-    creaturesNamesHashes[monster] = utils.core.loadImgAsArray('hud/images/monsters/{}.png'.format(monster))
+    creaturesNamesHashes[monster] = utils.image.loadAsArray('hud/images/monsters/{}.png'.format(monster))
 creatureType = np.dtype([
     ('name', np.str_, 64),
     ('healthPercentage', np.uint8),

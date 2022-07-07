@@ -1,6 +1,6 @@
 import numpy as np
 import radar.core
-import utils.core
+import utils.core, utils.image
 
 floorLevel = 7
 didFound = False
@@ -10,7 +10,7 @@ coordinatesAsArray = np.array([], dtype=coordinateType)
 startingXCoordinate = 31744
 startingYCoordinate = 30976
 
-pixels = utils.core.loadImgAsArray('radar/images/floor-7.png')
+pixels = utils.image.loadAsArray('radar/images/floor-7.png')
 for y, rowPixels in enumerate(pixels):
     for x, pixelColor in enumerate(rowPixels):
         isNonWalkablePixel = np.isin(pixelColor, radar.core.nonWalkablePixelsColors)

@@ -1,11 +1,11 @@
-import utils.core
 import actionBar.core
+import utils.core, utils.image
 
 
-attackCooldownImg = utils.core.loadImgAsArray('actionBar/images/cooldowns/attack.png')
-exoriCooldownImg = utils.core.loadImgAsArray('actionBar/images/cooldowns/exori.png')
-exoriGranCooldownImg = utils.core.loadImgAsArray('actionBar/images/cooldowns/exoriGran.png')
-exoriMasCooldownImg = utils.core.loadImgAsArray('actionBar/images/cooldowns/exoriMas.png')
+attackCooldownImg = utils.image.loadAsArray('actionBar/images/cooldowns/attack.png')
+exoriCooldownImg = utils.image.loadAsArray('actionBar/images/cooldowns/exori.png')
+exoriGranCooldownImg = utils.image.loadAsArray('actionBar/images/cooldowns/exoriGran.png')
+exoriMasCooldownImg = utils.image.loadAsArray('actionBar/images/cooldowns/exoriMas.png')
 
 
 def getCooldownsImg(screenshot):

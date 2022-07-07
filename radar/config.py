@@ -1,5 +1,5 @@
 import numpy as np
-import utils.core
+import utils.core, utils.image
 
 coordinates = {}
 
@@ -18,26 +18,26 @@ floorsConfidence = [0.85, 0.85, 0.9, 0.95, 0.95, 0.95,
 # floorsImgs = np.load('radar/npys/floorsImgs.npy', allow_pickle=True)
 
 floorsImgs = [
-    utils.core.loadImgAsArray('radar/images/floor-0.png'),
-    utils.core.loadImgAsArray('radar/images/floor-1.png'),
-    utils.core.loadImgAsArray('radar/images/floor-2.png'),
-    utils.core.loadImgAsArray('radar/images/floor-3.png'),
-    utils.core.loadImgAsArray('radar/images/floor-4.png'),
-    utils.core.loadImgAsArray('radar/images/floor-5.png'),
-    utils.core.loadImgAsArray('radar/images/floor-6.png'),
-    utils.core.loadImgAsArray('radar/images/floor-7.png'),
-    utils.core.loadImgAsArray('radar/images/floor-8.png'),
-    utils.core.loadImgAsArray('radar/images/floor-9.png'),
-    utils.core.loadImgAsArray('radar/images/floor-10.png'),
-    utils.core.loadImgAsArray('radar/images/floor-11.png'),
-    utils.core.loadImgAsArray('radar/images/floor-12.png'),
-    utils.core.loadImgAsArray('radar/images/floor-13.png'),
-    utils.core.loadImgAsArray('radar/images/floor-14.png'),
-    utils.core.loadImgAsArray('radar/images/floor-15.png')
+    utils.image.loadAsArray('radar/images/floor-0.png'),
+    utils.image.loadAsArray('radar/images/floor-1.png'),
+    utils.image.loadAsArray('radar/images/floor-2.png'),
+    utils.image.loadAsArray('radar/images/floor-3.png'),
+    utils.image.loadAsArray('radar/images/floor-4.png'),
+    utils.image.loadAsArray('radar/images/floor-5.png'),
+    utils.image.loadAsArray('radar/images/floor-6.png'),
+    utils.image.loadAsArray('radar/images/floor-7.png'),
+    utils.image.loadAsArray('radar/images/floor-8.png'),
+    utils.image.loadAsArray('radar/images/floor-9.png'),
+    utils.image.loadAsArray('radar/images/floor-10.png'),
+    utils.image.loadAsArray('radar/images/floor-11.png'),
+    utils.image.loadAsArray('radar/images/floor-12.png'),
+    utils.image.loadAsArray('radar/images/floor-13.png'),
+    utils.image.loadAsArray('radar/images/floor-14.png'),
+    utils.image.loadAsArray('radar/images/floor-15.png')
 ]
 
 images = {
-    "tools": utils.core.loadImgAsArray('radar/images/radar-tools.png')
+    "tools": utils.image.loadAsArray('radar/images/radar-tools.png')
 }
 
 floorsLevelsImgs = np.load('radar/npys/floorsLevelsImgs.npy')

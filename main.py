@@ -3,7 +3,7 @@ import battleList.core
 import hud.creatures
 import player.core
 import radar.core
-import utils.core
+import utils.core, utils.image
 from rx import operators
 from rx.scheduler import ThreadPoolScheduler
 import numpy as np
@@ -207,7 +207,7 @@ def handleWaypoints(screenshot, coordinate):
         # print('weight', sqmsGraphWeights[1019])
         # creaturesIndexes = np.nonzero(bolas.flatten() == 1)[0]
         # creaturesWeights = np.take(sqmsGraphWeights, creaturesIndexes)
-        # fa = utils.loadImgAsArray('hud/images/monsters/Abyssador.png')
+        # fa = utils.image.loadAsArray('hud/images/monsters/Abyssador.png')
         # print(fa)
         # bolas = np.array(bolas, dtype=np.uint8)
         # utils.saveImg(fa, 'fa.png')

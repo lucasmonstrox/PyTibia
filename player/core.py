@@ -2,21 +2,21 @@ import cv2
 import numpy as np
 from time import sleep
 import pyautogui
-import utils.core
+import utils.core, utils.image
 
 
-accessoriesEquipedImg = utils.core.loadImgAsArray('radar/images/radar-tools.png')
-hpImg = utils.core.loadImgAsArray('player/images/heart.png')
-manaImg = utils.core.loadImgAsArray('player/images/mana.png')
-bleedingImg = utils.core.loadImgAsArray('player/images/bleeding.png')
-cursedImg = utils.core.loadImgAsArray('player/images/cursed.png')
-burningImg = utils.core.loadImgAsArray('player/images/burning.png')
-fightImg = utils.core.loadImgAsArray('player/images/fight.png')
-hungryImg = utils.core.loadImgAsArray('player/images/hungry.png')
-poisonedImg = utils.core.loadImgAsArray('player/images/poisoned.png')
-pzImg = utils.core.loadImgAsArray('player/images/pz.png')
-restingAreaImg = utils.core.loadImgAsArray('player/images/resting-area.png')
-stopImg = utils.core.loadImgAsArray('player/images/stop.png')
+accessoriesEquipedImg = utils.image.loadAsArray('radar/images/radar-tools.png')
+hpImg = utils.image.loadAsArray('player/images/heart.png')
+manaImg = utils.image.loadAsArray('player/images/mana.png')
+bleedingImg = utils.image.loadAsArray('player/images/bleeding.png')
+cursedImg = utils.image.loadAsArray('player/images/cursed.png')
+burningImg = utils.image.loadAsArray('player/images/burning.png')
+fightImg = utils.image.loadAsArray('player/images/fight.png')
+hungryImg = utils.image.loadAsArray('player/images/hungry.png')
+poisonedImg = utils.image.loadAsArray('player/images/poisoned.png')
+pzImg = utils.image.loadAsArray('player/images/pz.png')
+restingAreaImg = utils.image.loadAsArray('player/images/resting-area.png')
+stopImg = utils.image.loadAsArray('player/images/stop.png')
 
 hpBarAllowedPixelsColors = np.array([79, 118, 121, 110, 62])
 hpBarSize=94

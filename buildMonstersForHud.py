@@ -1,4 +1,4 @@
-import utils.core
+import utils.core, utils.image
 from wiki import creatures
 import numpy as np
 
@@ -11,7 +11,7 @@ for monster in creatures.creatures:
         letter = letter if letter != '.' else 'dot'
         letterBasePath = 'hud/images/letters/uppercase' if letter.isupper() else 'hud/images/letters/lowercase'
         letterFullPath = '{0}/{1}.png'.format(letterBasePath, letter)
-        letterAsArray = core.loadImgAsArray(letterFullPath).copy()
+        letterAsArray = utils.image.loadAsArray(letterFullPath).copy()
         letterAsArray[np.nonzero(letterAsArray == 0)] = 1
         letterAsArray[np.nonzero(letterAsArray == 255)] = 0
         if index > 0:

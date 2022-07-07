@@ -68,14 +68,6 @@ def hashitHex(arr):
     return xxhash.xxh64(np.ascontiguousarray(arr), seed=20220605).hexdigest()
 
 
-def loadImg(path):
-    return cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-
-
-def loadImgAsArray(path):
-    return np.array(loadImg(path))
-
-
 def locate(compareImg, img, confidence=0.85):
     match = cv2.matchTemplate(compareImg, img, cv2.TM_CCOEFF_NORMED)
     res = cv2.minMaxLoc(match)

@@ -7,8 +7,8 @@ from wiki.creatures import creatures
 
 config = {
     "container": {
-        "topImg": utils.core.loadImgAsArray('battleList/images/battleList.png'),
-        "bottomImg": utils.core.loadImgAsArray('battleList/images/endOfContainer.png'),
+        "topImg": utils.image.loadAsArray('battleList/images/battleList.png'),
+        "bottomImg": utils.image.loadAsArray('battleList/images/endOfContainer.png'),
         "width": 156
     },
     "creatures": {
@@ -24,7 +24,7 @@ config = {
 
 
 for creatureName in creatures:
-    creatureImg = utils.core.loadImgAsArray(
+    creatureImg = utils.image.loadAsArray(
         'battleList/images/monsters/{}.png'.format(creatureName))
     creatureHash = utils.core.hashit(creatureImg)
     config["creatures"]["hashes"][creatureHash] = {
@@ -86,7 +86,7 @@ def getCreatureFromSlot(content, slot):
     isBeingAttacked = np.all(np.logical_or(
         upperCreatureBorder == 76, upperCreatureBorder == 166))
     # TODO: apply it once when parsing content
-    slotImg = utils.image.graysToBlack(slotImg)
+    slotImg = utils.image.convertGraysToBlack(slotImg)
     creatureNameImg = getCreatureNameImg(slotImg)
     creatureNameImg = np.ravel(creatureNameImg)
     creatureHash = utils.core.hashit(creatureNameImg)

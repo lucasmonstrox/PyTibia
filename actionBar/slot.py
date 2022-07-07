@@ -1,19 +1,19 @@
-import utils.core, utils.matrix
+import utils.core, utils.image, utils.matrix
 import numpy as np
 
-f2SlotImg = utils.core.loadImgAsArray('hud/images/slots/f2.png')
+f2SlotImg = utils.image.loadAsArray('hud/images/slots/f2.png')
 numbersAsArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numbersAsImg = [
-    utils.core.loadImgAsArray('actionBar/images/slotDigits/0.png'),
-    utils.core.loadImgAsArray('actionBar/images/slotDigits/1.png'),
-    utils.core.loadImgAsArray('actionBar/images/slotDigits/2.png'),
-    utils.core.loadImgAsArray('actionBar/images/slotDigits/3.png'),
-    utils.core.loadImgAsArray('actionBar/images/slotDigits/4.png'),
-    utils.core.loadImgAsArray('actionBar/images/slotDigits/5.png'),
-    utils.core.loadImgAsArray('actionBar/images/slotDigits/6.png'),
-    utils.core.loadImgAsArray('actionBar/images/slotDigits/7.png'),
-    utils.core.loadImgAsArray('actionBar/images/slotDigits/8.png'),
-    utils.core.loadImgAsArray('actionBar/images/slotDigits/9.png'),
+    utils.image.loadAsArray('actionBar/images/slotDigits/0.png'),
+    utils.image.loadAsArray('actionBar/images/slotDigits/1.png'),
+    utils.image.loadAsArray('actionBar/images/slotDigits/2.png'),
+    utils.image.loadAsArray('actionBar/images/slotDigits/3.png'),
+    utils.image.loadAsArray('actionBar/images/slotDigits/4.png'),
+    utils.image.loadAsArray('actionBar/images/slotDigits/5.png'),
+    utils.image.loadAsArray('actionBar/images/slotDigits/6.png'),
+    utils.image.loadAsArray('actionBar/images/slotDigits/7.png'),
+    utils.image.loadAsArray('actionBar/images/slotDigits/8.png'),
+    utils.image.loadAsArray('actionBar/images/slotDigits/9.png'),
 ]
 
 

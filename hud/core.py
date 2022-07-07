@@ -1,10 +1,10 @@
 import numpy as np
-import utils.core
+import utils.core, utils.image
 
 
 hudWidth = 480
-leftHudImg = utils.core.loadImgAsArray('hud/images/leftHud.png')
-rightHudImg = utils.core.loadImgAsArray('hud/images/rightHud.png')
+leftHudImg = utils.image.loadAsArray('hud/images/leftHud.png')
+rightHudImg = utils.image.loadAsArray('hud/images/rightHud.png')
 hudSize = (480, 352)
 
 
