@@ -199,4 +199,4 @@ def makeCreature(creatureName, coordinate, hudCoordinates):
     slot = (xSlot, ySlot)
     windowCoordinate = (hudCoordinateX + xCoordinate, hudCoordinateY + yCoordinate)
     creature = (creatureName, healthPercentage, isBeingAttacked, slot, windowCoordinate)
-    return return
+    return creature
