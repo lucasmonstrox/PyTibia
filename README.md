@@ -1,34 +1,60 @@
 # 📝 Description
 
-> Tibia Bot api using python and gpu to get unlocked fps
+> Fastest Tibia PixelBot developed in python to get unlocked fps.
 
-# 🗺️ Features Status
+This bot memorizes and applies cache to detect images and thus avoid excessive cpu/gpu usage.
 
+This bot is all based on matrix calculation, applies parallelism and also pre-processing, as it is the only way to have maximum performance.
+
+This bot also uses data structure, arrays, path finding(djkistra), among other important things to have smart gameplay.
+
+# 🗺️ MVP Features Status
+
+- ActionBar:
+  - Counting slots :heavy_check_mark:
+  - Getting cooldowns for knight:
+    - attack :heavy_check_mark:
+    - exori :heavy_check_mark:
+    - exori mas :heavy_check_mark:
+    - exori gran :heavy_check_mark:
 - BattleList:
   - [Getting monsters](battleList/docs/README.md) :heavy_check_mark:
   - [Checking if monster is being attacked](battleList/docs/README.md) :heavy_check_mark:
-  - Attack creature by slot :heavy_check_mark:
   - Is attacking any creature :heavy_check_mark:
 - Cavebot:
   - Attacking closest creature :heavy_check_mark:
   - Ignoring non target monsters :heavy_check_mark:
+  - Resume coordinate :heavy_check_mark:
+  - Retarget to another creature when current target is non attackable :warning:
+  - Start attacking creature with less life :warning:
+- Chat:
+  - Check if Server Log is selected :warning:
+  - Talk to NPC's to trade :warning:
 - Equipment:
   - Count cap :warning:
+  - Auto ring :warning:
 - Loot:
   - Get dead monsters by player :warning:
+    - Parse server logs message to get loot notification :warning:
   - Collect loot :warning:
+    - When hunting, go to dead monster to collect :warning:
+    - Detect container full :warning:
 - Healing:
-  - Count potions :warning:
   - Spell :heavy_check_mark:
   - Potion :heavy_check_mark:
 - HUD:
   - Getting coordinates(playable area) :heavy_check_mark:
   - Getting Monsters :heavy_check_mark:
-  - Getting NPC's :warning:
-  - Getting Players :warning:
 - Radar:
   - Floor level :heavy_check_mark:
   - Tracking coordinates :heavy_check_mark:
+- Refill:
+  - Deposit items in depot :warning:
+  - Detect trade container :warning:
+  - Scroll until icon is detected :warning:
+  - Buy necessary quantity of icon :warning:
+- Spell:
+  - Apply exori when there are a certain number of monsters around :heavy_check_mark:
 - Status:
   - Getting Life :heavy_check_mark:
   - Getting Mana :heavy_check_mark:
@@ -47,16 +73,17 @@ python test.py
 
 # 👷 Authors
 
-- [**Lucas Silva**](https://github.com/lucasmonstro) joao.galiano.silva@gmail.com -
-  Developer
+- [**lucasmonstro**](http://github.com/lucasmonstro)([**linkedin**](https://www.linkedin.com/in/lucasmonstro/)) - Owner & Developer
+- [**augustocrmattos**](http://github.com/augustocrmattos)([**linkedin**](https://www.linkedin.com/in/augustocrmattos/)) - Developer
+- [**GuizinhoYT**](http://github.com/GuizinhoYT)([**linkedin**](https://www.linkedin.com/in/guilherme-gra%C3%A7a-3953231a2/)) - Tester
+- [**lelec0**](https://github.com/lelec0)([**linkedin**](https://www.linkedin.com/in/max-miranda/)) - Developer
 
 See also the list of [contributors](../../graphs/contributors) who participated
-in this project
+in this project.
 
 # ❤️ Development inspiration
 
-A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa) the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12).  
-I started the bot in his honor as it was my inspiration to create the fastest tibia pixel bot using GPU, parallelism and precomputation.
+A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa), the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12). I started this bot to learn python and especially overcome [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12) slowdowns.
 
 # 📝 License
 

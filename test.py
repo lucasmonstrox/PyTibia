@@ -1,6 +1,7 @@
-from time import time
-from chat import chat
-from utils import utils
+from time import sleep, time
+import battleList.core
+import hud.creatures
+import utils.core
 import pygetwindow as gw
 
 
@@ -21,19 +22,21 @@ def getWindow():
 
 
 def main():
-    loop_time = time()
+    # loop_time = time()
     window = getWindow()
     while True:
-        screenshot = utils.getScreenshot(window)
-        #print(chat.selectServerLogTab(screenshot))
-        text = chat.readMessagesFromActiveChatTab(screenshot)
-        lootText = chat.searchInActiveChatTab(text, ['Loot of'])
+        screenshot = utils.core.getScreenshot(window)
+        battleListCreatures = battleList.core.getCreatures(screenshot)
+        hudCreatures = hud.creatures.getCreatures(screenshot, battleListCreatures)
+        print(hudCreatures)
         break
         # timef = (time() - loop_time)
         # timef = timef if timef else 1
         # fps = 1 / timef
         # print('FPS {}'.format(fps))
         # loop_time = time()
+
+
 
 if __name__ == '__main__':
     main()

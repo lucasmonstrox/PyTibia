@@ -1,6 +1,6 @@
 import numpy as np
-from radar import radar
-from utils import utils
+import radar.core
+import utils.core, utils.image
 
 floorLevel = 7
 didFound = False
@@ -10,10 +10,10 @@ coordinatesAsArray = np.array([], dtype=coordinateType)
 startingXCoordinate = 31744
 startingYCoordinate = 30976
 
-pixels = utils.loadImgAsArray('radar/images/floor-7.png')
+pixels = utils.image.loadAsArray('radar/images/floor-7.png')
 for y, rowPixels in enumerate(pixels):
     for x, pixelColor in enumerate(rowPixels):
-        isNonWalkablePixel = np.isin(pixelColor, radar.nonWalkablePixelsColors)
+        isNonWalkablePixel = np.isin(pixelColor, radar.core.nonWalkablePixelsColors)
         if isNonWalkablePixel:
             continue
         coordinate = (startingXCoordinate + x, startingYCoordinate + y, floorLevel)
@@ -55,7 +55,7 @@ for y, rowPixels in enumerate(pixels):
         coordinateScreenshot[57, 53] = crossPixelColor
         coordinateScreenshot[57, 54] = crossPixelColor
 
-        coordinateHash = utils.hashitHex(coordinateScreenshot)
+        coordinateHash = utils.core.hashitHex(coordinateScreenshot)
         coordinatesToAppend = np.array([(coordinateHash, coordinate)], dtype=coordinateType)
         coordinatesAsArray = np.append(coordinatesAsArray, coordinatesToAppend)
 
