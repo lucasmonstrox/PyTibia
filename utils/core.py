@@ -19,7 +19,7 @@ def cacheObjectPos(func):
 
     def inner(screenshot):
         nonlocal lastX, lastY, lastW, lastH, lastImgHash
-        if(lastX != None and lastY != None and lastW != None and lastH != None):
+        if lastX != None and lastY != None and lastW != None and lastH != None:
             copiedImg = np.ascontiguousarray(screenshot[lastY:lastY +
                                                         lastH, lastX:lastX + lastW])
             copiedImgHash = hashit(copiedImg)
@@ -49,12 +49,12 @@ def getCenterOfBounds(bounds):
 
 def getCoordinateFromPixel(pixel):
     x, y = pixel
-    return (x + 31744, y + 30976)
+    return x + 31744, y + 30976
 
 
 def getPixelFromCoordinate(coordinate):
     x, y, _ = coordinate
-    return (x - 31744, y - 30976)
+    return x - 31744, y - 30976
 
 
 def getSquareMeterSize():
@@ -107,12 +107,9 @@ def rightClick(x, y):
     pyautogui.rightClick(x, y)
 
 
-def saveImg(arr, name):
-    im = Image.fromarray(arr)
-    im.save(name)
-
 def cropImg(img, x, y, width, height):
     return img[y:y+height, x:x+width]
+
 
 def randomCoord(x,y,width,height):
     x = random.randrange(x, x+width)
