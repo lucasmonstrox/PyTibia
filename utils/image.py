@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from PIL.Image import Image
 
 
 def convertGraysToBlack(arr):
@@ -8,3 +9,12 @@ def convertGraysToBlack(arr):
 
 def loadAsArray(path):
     return np.array(cv2.imread(path, cv2.IMREAD_GRAYSCALE))
+
+
+def save(arr, name):
+    im = Image.fromarray(arr)
+    im.save(name)
+
+
+def crop(img, x, y, width, height):
+    return img[y:y + height, x:x + width]

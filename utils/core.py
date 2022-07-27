@@ -1,10 +1,11 @@
+import random
+import time
 import d3dshot
 import cv2
 import numpy as np
 from PIL import Image
 import pyautogui
 import xxhash
-
 
 d3 = d3dshot.create(capture_output='numpy')
 
@@ -18,7 +19,7 @@ def cacheObjectPos(func):
 
     def inner(screenshot):
         nonlocal lastX, lastY, lastW, lastH, lastImgHash
-        if(lastX != None and lastY != None and lastW != None and lastH != None):
+        if lastX != None and lastY != None and lastW != None and lastH != None:
             copiedImg = np.ascontiguousarray(screenshot[lastY:lastY +
                                                         lastH, lastX:lastX + lastW])
             copiedImgHash = hashit(copiedImg)
@@ -48,12 +49,12 @@ def getCenterOfBounds(bounds):
 
 def getCoordinateFromPixel(pixel):
     x, y = pixel
-    return (x + 31744, y + 30976)
+    return x + 31744, y + 30976
 
 
 def getPixelFromCoordinate(coordinate):
     x, y, _ = coordinate
-    return (x - 31744, y - 30976)
+    return x - 31744, y - 30976
 
 
 def getSquareMeterSize():
@@ -92,5 +93,22 @@ def press(key):
     pyautogui.press(key)
 
 
+def typeKeyboard(phrase):
+
+    words = list(phrase)
+    for word in words:
+        time.sleep(random.randrange(70, 190)/1000)
+        press(word)
+    time.sleep(random.randrange(70, 190) / 1000)
+    press('enter')
+
+
 def rightClick(x, y):
     pyautogui.rightClick(x, y)
+
+
+def randomCoord(x,y,width,height):
+    x = random.randrange(x, x+width)
+    y = random.randrange(y, y+height)
+
+    return (x,y)
