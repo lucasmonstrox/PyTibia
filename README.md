@@ -28,8 +28,8 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
   - Retarget to another creature when current target is non attackable :warning:
   - Start attacking creature with less life :warning:
 - Chat:
-  - Check if Server Log is selected :warning:
-  - Talk to NPC's to trade :warning:
+  - Check if Server Log is selected :heavy_check_mark:
+  - Talk to NPC's to trade :heavy_check_mark:
 - Equipment:
   - Count cap :warning:
   - Auto ring :warning:
