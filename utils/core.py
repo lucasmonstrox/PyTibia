@@ -8,7 +8,7 @@ import pytesseract
 import xxhash
 
 d3 = d3dshot.create(capture_output='numpy')
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
+
 
 def cacheObjectPos(func):
     lastX = None
@@ -19,7 +19,7 @@ def cacheObjectPos(func):
 
     def inner(screenshot):
         nonlocal lastX, lastY, lastW, lastH, lastImgHash
-        if lastX != None and lastY != None and lastW != None and lastH != None:
+        if(lastX != None and lastY != None and lastW != None and lastH != None):
             copiedImg = np.ascontiguousarray(screenshot[lastY:lastY +
                                                         lastH, lastX:lastX + lastW])
             copiedImgHash = hashit(copiedImg)
