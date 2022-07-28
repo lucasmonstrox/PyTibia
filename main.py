@@ -12,6 +12,7 @@ import rx
 import time
 import pygetwindow as gw
 import multiprocessing
+
 # import sys
 # np.set_printoptions(threshold=sys.maxsize)
 
@@ -54,10 +55,10 @@ waypoints = np.array([
     ('floor', (32982, 32715, 6), 0),
     ('ramp', (32982, 32717, 7), 0),
     ('floor', (32953, 32769, 7), 0),
-    
+
     ('floor', (32953, 32785, 7), 0),
     ('floor', (32959, 32785, 7), 0),
-    
+
     ('floor', (33004, 32750, 7), 0),
     ('ramp', (33006, 32750, 6), 0),
     ('floor', (33015, 32749, 6), 0),
@@ -224,7 +225,7 @@ def handleWaypoints(screenshot, coordinate):
     if shouldRetrySameWaypoint:
         shouldRetrySameWaypoint = False
         player.core.stop(0.5)
-        if(currentWaypoint['type'] == 'ramp'):
+        if (currentWaypoint['type'] == 'ramp'):
             waypointIndex = waypointIndex + 1
             currentWaypoint = waypoints[waypointIndex]
         goToWaypoint(screenshot, currentWaypoint, coordinate)
@@ -300,12 +301,36 @@ def handleSpell(screenshot, hudCreatures):
 
 
 def shouldExecuteWaypoint(battleListCreatures, shouldIgnoreTargetAndGoToNextWaypoint):
-        return battleListCreatures is not None and len(battleListCreatures) == 0 or shouldIgnoreTargetAndGoToNextWaypoint == True
+    return battleListCreatures is not None and len(
+        battleListCreatures) == 0 or shouldIgnoreTargetAndGoToNextWaypoint == True
 
 
-def handleHungry():
-    print('tenho fome')
-    pass
+def handleHungry(screenshot):
+    if player.core.hasSpecialCondition(screenshot, 'hungry'):
+        utils.core.press('F12')
+    return
+
+
+def handleHaste(screenshot):
+    if not player.core.hasSpecialCondition(screenshot, 'haste'):
+        hasNoSupportCooldown = not cooldown.hasSupportCooldown(screenshot)
+        hasNoHasteCooldown = not cooldown.hasHasteCooldown(screenshot)
+        if not hasNoSupportCooldown and not hasNoHasteCooldown:
+            utils.core.press('F9')
+    return
+
+
+def handleRing(screenshot):
+    if not player.core.isEquipmentEquipped(screenshot, 'ring'):
+        utils.core.press('F10')
+
+    return
+
+
+def handleNecklace(screenshot):
+    if not player.core.isEquipmentEquipped(screenshot, 'necklace'):
+        utils.core.press('F11')
+    return
 
 
 def main():
@@ -326,11 +351,14 @@ def main():
         operators.map(lambda result: [result[0], result[1], battleList.core.getCreatures(result[0])]),
     )
     hudCreaturesObserver = battlelistObserver.pipe(
-        operators.map(lambda result: [result[0], result[1], result[2], hud.creatures.getCreatures(result[0], result[2])]),
+        operators.map(
+            lambda result: [result[0], result[1], result[2], hud.creatures.getCreatures(result[0], result[2])]),
     )
     
     cavebotObserver = hudCreaturesObserver.pipe(
-        operators.filter(lambda result: result[2] != None and len(result[3]) > 0 and shouldIgnoreTargetAndGoToNextWaypoint == False),
+        operators.filter(
+            lambda result: result[2] is not None and len(
+                result[3]) > 0 and shouldIgnoreTargetAndGoToNextWaypoint is False),
         operators.subscribe_on(threadPoolScheduler)
     )
     cavebotObserver.subscribe(
@@ -354,14 +382,33 @@ def main():
         operators.subscribe_on(threadPoolScheduler)
     )
     healingObserver.subscribe(lambda result: handleHealing(result[0], result[1]))
-    
-    hungryObserver = battlelistObserver.pipe(
-        operators.filter(lambda result: player.core.isHungry(result[0]) and not battleList.core.isAttackingCreature(result[2])),
+
+    hungryObserver = fpsWithScreenshot.pipe(
+        operators.map(lambda screenshot: (screenshot, player.core.hasSpecialCondition(screenshot, 'hungry'))),
         operators.subscribe_on(threadPoolScheduler)
     )
-    hungryObserver.subscribe(lambda _: handleHungry())
-    input("Press Enter key to exit...")
+    hungryObserver.subscribe(lambda result: handleHungry(result[0]))
 
+    hasteObserver = fpsWithScreenshot.pipe(
+        operators.map(lambda screenshot: (screenshot, player.core.hasSpecialCondition(screenshot, 'haste'))),
+        operators.subscribe_on(threadPoolScheduler)
+    )
+    hasteObserver.subscribe(lambda result: handleHaste(result[0]))
+
+    ringObserver = fpsWithScreenshot.pipe(
+        operators.map(lambda screenshot: (screenshot, player.core.isEquipmentEquipped(screenshot, 'ring'))),
+        operators.subscribe_on(threadPoolScheduler)
+    )
+    ringObserver.subscribe(lambda result: handleRing(result[0]))
+
+    necklaceObserver = fpsWithScreenshot.pipe(
+        operators.map(lambda screenshot: (screenshot, player.core.isEquipmentEquipped(screenshot, 'necklace'))),
+        operators.subscribe_on(threadPoolScheduler)
+    )
+    necklaceObserver.subscribe(lambda result: handleNecklace(result[0]))
+
+
+input("Press Enter key to exit...")
 
 if __name__ == '__main__':
     main()
