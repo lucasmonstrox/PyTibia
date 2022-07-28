@@ -32,7 +32,8 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
   - Talk to NPC's to trade :heavy_check_mark:
 - Equipment:
   - Count cap :heavy_check_mark:
-  - Auto ring :warning:
+  - Auto ring :heavy_check_mark:
+  - Auto necklace: :heavy_check_mark:
 - Loot:
   - Get dead monsters by player :warning:
     - Parse server logs message to get loot notification :heavy_check_mark:
