@@ -3,6 +3,8 @@ import numpy as np
 import pytesseract
 from PIL.Image import Image
 
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
+
 
 def convertGraysToBlack(arr):
     return np.where(np.logical_and(arr >= 50, arr <= 100), 0, arr)
