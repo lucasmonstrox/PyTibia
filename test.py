@@ -29,10 +29,6 @@ def main():
     # loop_time = time()
     window = getWindow()
 
-    screensgot = utils.core.getScreenshot(window)
-    gray = cv2.cvtColor(screensgot, cv2.COLOR_BGR2GRAY)
-    cv2.imwrite('fotopb.png', gray)
-
     while True:
         screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
         battleListCreatures = battleList.core.getCreatures(screenshot)

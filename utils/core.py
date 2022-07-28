@@ -8,7 +8,7 @@ import pytesseract
 import xxhash
 
 d3 = d3dshot.create(capture_output='numpy')
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
+
 
 def cacheObjectPos(func):
     lastX = None
