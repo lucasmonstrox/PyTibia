@@ -1,3 +1,4 @@
+import utils.mouse
 from actionBar import cooldown
 import battleList.core
 import hud.creatures
@@ -165,7 +166,7 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures, hudCreature
         shouldIgnoreTargetAndGoToNextWaypoint = True
         return
     (x, y) = closestCreature['windowCoordinate']
-    utils.core.rightClick(x, y)
+    utils.mouse.rightClick(x, y)
     time.sleep(0.25)
 
 
@@ -316,7 +317,7 @@ def main():
     fpsWithScreenshot = fpsObserver.pipe(
         operators.map(handleWindow),
         operators.filter(lambda window: window is not None),
-        operators.map(lambda window: utils.core.getScreenshot(window)),
+        operators.map(lambda window: utils.image.RGBtoGray(utils.core.getScreenshot(window))),
     )
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: [screenshot, radar.core.getCoordinate(screenshot)]),

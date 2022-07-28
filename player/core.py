@@ -92,7 +92,7 @@ def getStopPos(screenshot):
 def getCap(screenshot):
     (x, y, w, h) = getStopPos(screenshot)
     capImg = utils.image.convertGraysToBlack(utils.image.crop(screenshot, x - 44, y - 14, 32, 15))
-    capValue = utils.core.imageToString(capImg, "6 -c tessedit_char_whitelist=0123456789")
+    capValue = utils.image.toString(capImg, "6 -c tessedit_char_whitelist=0123456789")
     return capValue
 
 

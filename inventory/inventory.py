@@ -1,6 +1,7 @@
 import time
 import pyautogui
 import utils.image, utils.core
+import utils.mouse
 
 backpackBarImg = utils.image.loadAsArray('inventory/images/backpackBar.png')
 jewelledBackpackBarImg = utils.image.loadAsArray('inventory/images/jewelledBackpackBar.png')
@@ -25,70 +26,70 @@ jewelledBpItems = [
 ]
 
 itemsImgs = [
-    ('great-health-potion', utils.image.loadColored('inventory/images/items/great-health-potion.png')),
-    ('great-mana-potion', utils.image.loadColored('inventory/images/items/great-mana-potion.png')),
-    ('great-spirit-potion', utils.image.loadColored('inventory/images/items/great-spirit-potion.png')),
-    ('health-potion', utils.image.loadColored('inventory/images/items/health-potion.png')),
-    ('mana-potion', utils.image.loadColored('inventory/images/items/mana-potion.png')),
-    ('strong-health-potion', utils.image.loadColored('inventory/images/items/strong-health-potion.png')),
-    ('strong-mana-potion', utils.image.loadColored('inventory/images/items/strong-mana-potion.png')),
-    ('ultimate-health-potion', utils.image.loadColored('inventory/images/items/ultimate-health-potion-1.png')),
-    ('ultimate-health-potion', utils.image.loadColored('inventory/images/items/ultimate-health-potion-2.png')),
-    ('ultimate-health-potion', utils.image.loadColored('inventory/images/items/ultimate-health-potion-3.png')),
-    ('ultimate-health-potion', utils.image.loadColored('inventory/images/items/ultimate-health-potion-4.png')),
-    ('ultimate-health-potion', utils.image.loadColored('inventory/images/items/ultimate-health-potion-5.png')),
-    ('ultimate-health-potion', utils.image.loadColored('inventory/images/items/ultimate-health-potion-6.png')),
-    ('ultimate-health-potion', utils.image.loadColored('inventory/images/items/ultimate-health-potion-7.png')),
-    ('ultimate-mana-potion', utils.image.loadColored('inventory/images/items/ultimate-mana-potion-1.png')),
-    ('ultimate-mana-potion', utils.image.loadColored('inventory/images/items/ultimate-mana-potion-2.png')),
-    ('ultimate-mana-potion', utils.image.loadColored('inventory/images/items/ultimate-mana-potion-3.png')),
-    ('ultimate-mana-potion', utils.image.loadColored('inventory/images/items/ultimate-mana-potion-4.png')),
-    ('ultimate-mana-potion', utils.image.loadColored('inventory/images/items/ultimate-mana-potion-5.png')),
-    ('ultimate-mana-potion', utils.image.loadColored('inventory/images/items/ultimate-mana-potion-6.png')),
-    ('ultimate-spirit-potion', utils.image.loadColored('inventory/images/items/ultimate-spirit-potion-1.png')),
-    ('ultimate-spirit-potion', utils.image.loadColored('inventory/images/items/ultimate-spirit-potion-2.png')),
-    ('ultimate-spirit-potion', utils.image.loadColored('inventory/images/items/ultimate-spirit-potion-3.png')),
-    ('ultimate-spirit-potion', utils.image.loadColored('inventory/images/items/ultimate-spirit-potion-4.png')),
-    ('ultimate-spirit-potion', utils.image.loadColored('inventory/images/items/ultimate-spirit-potion-5.png')),
-    ('ultimate-spirit-potion', utils.image.loadColored('inventory/images/items/ultimate-spirit-potion-6.png')),
-    ('ultimate-spirit-potion', utils.image.loadColored('inventory/images/items/ultimate-spirit-potion-7.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-1.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-2.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-3.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-4.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-5.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-6.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-7.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-8.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-9.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-10.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-11.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-12.png')),
-    ('supreme-health-potion', utils.image.loadColored('inventory/images/items/supreme-health-potion-13.png')),
-    ('brown-backpack', utils.image.loadColored('inventory/images/items/brown-backpack.png')),
-    ('blue-backpack', utils.image.loadColored('inventory/images/items/blue-backpack.png')),
-    ('orange-backpack', utils.image.loadColored('inventory/images/items/orange-backpack.png')),
-    ('jewelled-backpack', utils.image.loadColored('inventory/images/items/jewelled-backpack.png')),
-    ('shopping-bag', utils.image.loadColored('inventory/images/items/shopping-bag.png')),
-    ('depot-chest-1', utils.image.loadColored('inventory/images/items/depot-chest-1.png')),
-    ('depot-chest-2', utils.image.loadColored('inventory/images/items/depot-chest-2.png')),
-    ('depot-chest-3', utils.image.loadColored('inventory/images/items/depot-chest-3.png')),
-    ('depot-chest-4', utils.image.loadColored('inventory/images/items/depot-chest-4.png')),
-    ('depot-chest-5', utils.image.loadColored('inventory/images/items/depot-chest-5.png')),
-    ('depot-chest-6', utils.image.loadColored('inventory/images/items/depot-chest-6.png')),
-    ('depot-chest-7', utils.image.loadColored('inventory/images/items/depot-chest-7.png')),
-    ('depot-chest-8', utils.image.loadColored('inventory/images/items/depot-chest-8.png')),
-    ('depot-chest-9', utils.image.loadColored('inventory/images/items/depot-chest-9.png')),
-    ('depot-chest-10', utils.image.loadColored('inventory/images/items/depot-chest-10.png')),
-    ('depot-chest-11', utils.image.loadColored('inventory/images/items/depot-chest-11.png')),
-    ('depot-chest-12', utils.image.loadColored('inventory/images/items/depot-chest-12.png')),
-    ('depot-chest-13', utils.image.loadColored('inventory/images/items/depot-chest-13.png')),
-    ('depot-chest-14', utils.image.loadColored('inventory/images/items/depot-chest-14.png')),
-    ('depot-chest-15', utils.image.loadColored('inventory/images/items/depot-chest-15.png')),
-    ('depot-chest-16', utils.image.loadColored('inventory/images/items/depot-chest-16.png')),
-    ('depot-chest-17', utils.image.loadColored('inventory/images/items/depot-chest-17.png')),
-    ('depot-chest-18', utils.image.loadColored('inventory/images/items/depot-chest-18.png')),
-    ('empty', utils.image.loadColored('inventory/images/items/empty.png')),
+    ('great-health-potion', utils.image.load('inventory/images/items/great-health-potion.png')),
+    ('great-mana-potion', utils.image.load('inventory/images/items/great-mana-potion.png')),
+    ('great-spirit-potion', utils.image.load('inventory/images/items/great-spirit-potion.png')),
+    ('health-potion', utils.image.load('inventory/images/items/health-potion.png')),
+    ('mana-potion', utils.image.load('inventory/images/items/mana-potion.png')),
+    ('strong-health-potion', utils.image.load('inventory/images/items/strong-health-potion.png')),
+    ('strong-mana-potion', utils.image.load('inventory/images/items/strong-mana-potion.png')),
+    ('ultimate-health-potion', utils.image.load('inventory/images/items/ultimate-health-potion-1.png')),
+    ('ultimate-health-potion', utils.image.load('inventory/images/items/ultimate-health-potion-2.png')),
+    ('ultimate-health-potion', utils.image.load('inventory/images/items/ultimate-health-potion-3.png')),
+    ('ultimate-health-potion', utils.image.load('inventory/images/items/ultimate-health-potion-4.png')),
+    ('ultimate-health-potion', utils.image.load('inventory/images/items/ultimate-health-potion-5.png')),
+    ('ultimate-health-potion', utils.image.load('inventory/images/items/ultimate-health-potion-6.png')),
+    ('ultimate-health-potion', utils.image.load('inventory/images/items/ultimate-health-potion-7.png')),
+    ('ultimate-mana-potion', utils.image.load('inventory/images/items/ultimate-mana-potion-1.png')),
+    ('ultimate-mana-potion', utils.image.load('inventory/images/items/ultimate-mana-potion-2.png')),
+    ('ultimate-mana-potion', utils.image.load('inventory/images/items/ultimate-mana-potion-3.png')),
+    ('ultimate-mana-potion', utils.image.load('inventory/images/items/ultimate-mana-potion-4.png')),
+    ('ultimate-mana-potion', utils.image.load('inventory/images/items/ultimate-mana-potion-5.png')),
+    ('ultimate-mana-potion', utils.image.load('inventory/images/items/ultimate-mana-potion-6.png')),
+    ('ultimate-spirit-potion', utils.image.load('inventory/images/items/ultimate-spirit-potion-1.png')),
+    ('ultimate-spirit-potion', utils.image.load('inventory/images/items/ultimate-spirit-potion-2.png')),
+    ('ultimate-spirit-potion', utils.image.load('inventory/images/items/ultimate-spirit-potion-3.png')),
+    ('ultimate-spirit-potion', utils.image.load('inventory/images/items/ultimate-spirit-potion-4.png')),
+    ('ultimate-spirit-potion', utils.image.load('inventory/images/items/ultimate-spirit-potion-5.png')),
+    ('ultimate-spirit-potion', utils.image.load('inventory/images/items/ultimate-spirit-potion-6.png')),
+    ('ultimate-spirit-potion', utils.image.load('inventory/images/items/ultimate-spirit-potion-7.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-1.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-2.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-3.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-4.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-5.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-6.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-7.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-8.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-9.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-10.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-11.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-12.png')),
+    ('supreme-health-potion', utils.image.load('inventory/images/items/supreme-health-potion-13.png')),
+    ('brown-backpack', utils.image.load('inventory/images/items/brown-backpack.png')),
+    ('blue-backpack', utils.image.load('inventory/images/items/blue-backpack.png')),
+    ('orange-backpack', utils.image.load('inventory/images/items/orange-backpack.png')),
+    ('jewelled-backpack', utils.image.load('inventory/images/items/jewelled-backpack.png')),
+    ('shopping-bag', utils.image.load('inventory/images/items/shopping-bag.png')),
+    ('depot-chest-1', utils.image.load('inventory/images/items/depot-chest-1.png')),
+    ('depot-chest-2', utils.image.load('inventory/images/items/depot-chest-2.png')),
+    ('depot-chest-3', utils.image.load('inventory/images/items/depot-chest-3.png')),
+    ('depot-chest-4', utils.image.load('inventory/images/items/depot-chest-4.png')),
+    ('depot-chest-5', utils.image.load('inventory/images/items/depot-chest-5.png')),
+    ('depot-chest-6', utils.image.load('inventory/images/items/depot-chest-6.png')),
+    ('depot-chest-7', utils.image.load('inventory/images/items/depot-chest-7.png')),
+    ('depot-chest-8', utils.image.load('inventory/images/items/depot-chest-8.png')),
+    ('depot-chest-9', utils.image.load('inventory/images/items/depot-chest-9.png')),
+    ('depot-chest-10', utils.image.load('inventory/images/items/depot-chest-10.png')),
+    ('depot-chest-11', utils.image.load('inventory/images/items/depot-chest-11.png')),
+    ('depot-chest-12', utils.image.load('inventory/images/items/depot-chest-12.png')),
+    ('depot-chest-13', utils.image.load('inventory/images/items/depot-chest-13.png')),
+    ('depot-chest-14', utils.image.load('inventory/images/items/depot-chest-14.png')),
+    ('depot-chest-15', utils.image.load('inventory/images/items/depot-chest-15.png')),
+    ('depot-chest-16', utils.image.load('inventory/images/items/depot-chest-16.png')),
+    ('depot-chest-17', utils.image.load('inventory/images/items/depot-chest-17.png')),
+    ('depot-chest-18', utils.image.load('inventory/images/items/depot-chest-18.png')),
+    ('empty', utils.image.load('inventory/images/items/empty.png')),
 ]
 
 
@@ -103,7 +104,7 @@ def getWindowBottomPos(screenshot, topPos):
 
 
 def adjustAndGetWindowPos(window, img, squares):
-    screenshot = utils.core.getScreenshot(window)
+    screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
     (x0, y0, w0, h0) = getWindowTopPos(screenshot, img)
     (x1, y1, w1, h1) = getWindowBottomPos(screenshot, (x0, y0, w0, h0))
 
@@ -112,8 +113,8 @@ def adjustAndGetWindowPos(window, img, squares):
         incompleteLine = 1
     maxWindowSize = 14 + (36 * ((squares // 4) + incompleteLine)) + 12
     if (y1 - y0) < maxWindowSize:
-        utils.core.mouseDrag(x0 + 70, y1, x0 + 70, y1 + (maxWindowSize - (y1 - y0)))
-        screenshot = utils.core.getScreenshot(window)
+        utils.mouse.mouseDrag(x0 + 70, y1, x0 + 70, y1 + (maxWindowSize - (y1 - y0)))
+        screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
         (x1, y1, w1, h1) = getWindowBottomPos(screenshot, (x0, y0, w0, h0))
         return x0, y0, w0, y1 - y0
     return x0, y0, w0, y1 - y0
@@ -127,11 +128,11 @@ def isWindowOpen(screenshot, windowBar):
 
 
 def openMainBackpack(window, squares):
-    screenshot = utils.core.getScreenshot(window)
+    screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
     (x, y, w, h) = utils.core.locate(screenshot, mainBackpackImg)
     if isWindowOpen(screenshot, backpackBarImg) is False:
         (xBp, yBp) = utils.core.randomCoord(x + 3, y + 18, w - 3, h - 25)
-        utils.core.rightClick(xBp, yBp)
+        utils.mouse.rightClick(xBp, yBp)
         time.sleep(1)
     backpackPos = adjustAndGetWindowPos(window, backpackBarImg, squares)
     backpackMap = mapWindowSquares(window, backpackPos, squares)
@@ -139,7 +140,7 @@ def openMainBackpack(window, squares):
 
 
 def mapWindowSquares(window, windowPos, squares):
-    screenshot = utils.core.getColoredScreenshot(window)
+    screenshot = utils.core.getScreenshot(window)
     (x, y, w, h) = windowPos
     containerMap = []
     (borX, borY) = (11, 20)
@@ -165,10 +166,10 @@ def mapWindowSquares(window, windowPos, squares):
 
 
 def openDepot(window):
-    screenshot = utils.core.getScreenshot(window)
+    screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
     (x, y, w, h) = utils.core.locate(screenshot, lockerBarImg)
     (xLck, yLck) = utils.core.randomCoord(x + 11, y + 20, 28, 28)
-    utils.core.rightClick(xLck, yLck)
+    utils.mouse.rightClick(xLck, yLck)
     time.sleep(1)
     DepotPos = adjustAndGetWindowPos(window, depotBarImg, 18)
     DepotMap = mapWindowSquares(window, DepotPos, 18)
@@ -187,7 +188,7 @@ def moveItem(fromContainerMap, toContainerMap, slotIndex):
 
     fromPos = utils.core.randomCoord(fromContainerMap[slotIndex][1], fromContainerMap[slotIndex][2], 28, 28)
     toPos = utils.core.randomCoord(toContainerMap[0][1], toContainerMap[0][2], 28, 28)
-    utils.core.mouseDrag(fromPos[0], fromPos[1], toPos[0], toPos[1])
+    utils.mouse.mouseDrag(fromPos[0], fromPos[1], toPos[0], toPos[1])
 
     for i in reversed(range(1, len(toContainerMap))):
         toContainerMap[i] = (toContainerMap[i - 1][0], toContainerMap[i][1], toContainerMap[i][2])
