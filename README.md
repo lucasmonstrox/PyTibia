@@ -31,14 +31,14 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
   - Check if Server Log is selected :heavy_check_mark:
   - Talk to NPC's to trade :heavy_check_mark:
 - Equipment:
-  - Count cap :warning:
+  - Count cap :heavy_check_mark:
   - Auto ring :warning:
 - Loot:
   - Get dead monsters by player :warning:
-    - Parse server logs message to get loot notification :warning:
+    - Parse server logs message to get loot notification :heavy_check_mark:
   - Collect loot :warning:
     - When hunting, go to dead monster to collect :warning:
-    - Detect container full :warning:
+    - Detect container full :heavy_check_mark:
 - Healing:
   - Spell :heavy_check_mark:
   - Potion :heavy_check_mark:
@@ -49,10 +49,10 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
   - Floor level :heavy_check_mark:
   - Tracking coordinates :heavy_check_mark:
 - Refill:
-  - Deposit items in depot :warning:
-  - Detect trade container :warning:
-  - Scroll until icon is detected :warning:
-  - Buy necessary quantity of icon :warning:
+  - Deposit items in depot :heavy_check_mark:
+  - Detect trade container :heavy_check_mark:
+  - Scroll until icon is detected :heavy_check_mark:
+  - Buy necessary quantity of icon :heavy_check_mark:
 - Spell:
   - Apply exori when there are a certain number of monsters around :heavy_check_mark:
 - Status:
