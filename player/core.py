@@ -146,7 +146,6 @@ def setFightStatus(screenshot, statusName):
         'holding-attack': holdingAttackImg,
         'following-attack': followingAttackImg
     }
-
     statusImg = fightStatusList.get(statusName, None)
     pos = utils.core.locate(container, statusImg)
     if pos is None:
@@ -161,11 +160,9 @@ def getReadyForPvpContainer(screenshot):
 
 
 def setReadyForPvp(screenshot, condition):
-
     (pvpBtn, left, top) = getReadyForPvpContainer(screenshot)
     pos = utils.core.locate(pvpBtn, readyForPvpImg, 0.5)
     actualStatus = pos is not None
-
     if condition != actualStatus:
         print('Changing PVP status to: ' + str(condition))
         pyautogui.click(left + 10, top + 10)
