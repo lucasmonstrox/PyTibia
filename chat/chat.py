@@ -5,24 +5,20 @@ import utils.core, utils.image
 import pytesseract
 from pytesseract import Output
 
-chatMenuImg = utils.loadImgAsArray('chat/images/chatMenu.png')
-chatOnImg = utils.loadImgAsArray('chat/images/chatOn.png')
-chatOnImgTemp = utils.loadImgAsArray('chat/images/chatOnTemp.png')
-chatOffImg = utils.loadImgAsArray('chat/images/chatOff.png')
+chatMenuImg = utils.image.loadAsArray('chat/images/chatMenu.png')
+chatOnImg = utils.image.loadAsArray('chat/images/chatOn.png')
+chatOnImgTemp = utils.image.loadAsArray('chat/images/chatOnTemp.png')
+chatOffImg = utils.image.loadAsArray('chat/images/chatOff.png')
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
 
 
 def readMessagesFromActiveChatTab(screenshot):
     (x, y, width, height) = getChatMessagesContainerPos(screenshot)
     chatMessagesContainer = utils.image.crop(screenshot, x, y, width, height)
-    chatMessagesContainer = utils.graysToBlack(chatMessagesContainer)
-    messages = pytesseract.image_to_string(chatMessagesContainer, lang=None, config='--oem 3 --psm 6').splitlines()
+    chatMessagesContainer = utils.image.convertGraysToBlack(chatMessagesContainer)
+    messages = utils.core.imageToString(chatMessagesContainer, "6").splitlines()
     messages = list(filter(None, messages))
     return messages
-
-
-def onTextMatch(pos, patterns):
-    print("At pos %s found pattern: %s" % (pos, patterns))
 
 
 def getLootMessages(activeChatText):
@@ -43,21 +39,21 @@ def searchInActiveChatTab(activeChatText, patterns):
     return processedChatText
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getChatMenuPos(screenshot):
-    return utils.locate(screenshot, chatMenuImg)
+    return utils.core.locate(screenshot, chatMenuImg)
 
 
-@utils.cacheObjectPos
+@utils.core.cacheObjectPos
 def getChatOffPos(screenshot):
-    return utils.locate(screenshot, chatOffImg, confidence=0.985)
+    return utils.core.locate(screenshot, chatOffImg, confidence=0.985)
 
 
 def getChatStatus(screenshot):
     chatOffPos = getChatOffPos(screenshot)
     if chatOffPos:
         return chatOffPos, False
-    chatOnPos = utils.locate(screenshot, chatOnImgTemp, confidence=0.9)
+    chatOnPos = utils.core.locate(screenshot, chatOnImgTemp, confidence=0.9)
     return chatOnPos, True
 
 
@@ -65,13 +61,13 @@ def enableChatOn(screenshot):
     (_, chatIsOn) = getChatStatus(screenshot)
     chatIsNotOn = chatIsOn is False
     if chatIsNotOn:
-        utils.press('enter')
+        utils.core.press('enter')
 
 
 def enableChatOff(screenshot):
     (_, chatIsOn) = getChatStatus(screenshot)
     if chatIsOn:
-        utils.press('enter')
+        utils.core.press('enter')
 
 
 def getChatsTabs(screenshot):
@@ -90,8 +86,8 @@ def getChatMessagesContainerPos(screenshot):
 def getServerLogTabPos(screenshot):
     chatCoordinates = getChatsTabs(screenshot)
     chatsBar = utils.image.crop(screenshot, chatCoordinates[0], chatCoordinates[1], chatCoordinates[2], chatCoordinates[3])
-    chatsBar = utils.graysToBlack(chatsBar)
-    d = pytesseract.image_to_data(chatsBar, output_type=Output.DICT)
+    chatsBar = utils.image.convertGraysToBlack(chatsBar)
+    d = utils.core.imageToTextData(chatsBar)
     n_boxes = len(d['level'])
     for i in range(n_boxes - 1):
         if d['text'][i] == 'Server' and d['text'][i + 1] == 'Log':
@@ -105,10 +101,10 @@ def getServerLogTabPos(screenshot):
 
 def selectServerLogTab(screenshot):
     clickCoord = getServerLogTabPos(screenshot)
-    clickCoord = utils.randomCoord(clickCoord[0], clickCoord[1], clickCoord[2], clickCoord[3])
+    clickCoord = utils.core.randomCoord(clickCoord[0], clickCoord[1], clickCoord[2], clickCoord[3])
     pyautogui.click(clickCoord[0], clickCoord[1])
 
 
 def sendMessage(screenshot, phrase):
     enableChatOn(screenshot)
-    utils.typeKeyboard(phrase)
+    utils.core.typeKeyboard(phrase)

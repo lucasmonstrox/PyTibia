@@ -89,6 +89,13 @@ def getStopPos(screenshot):
     return utils.core.locate(screenshot, stopImg)
 
 
+def getCap(screenshot):
+    (x, y, w, h) = getStopPos(screenshot)
+    capImg = utils.image.convertGraysToBlack(utils.image.crop(screenshot, x - 44, y - 14, 32, 15))
+    capValue = utils.core.imageToString(capImg, "6 -c tessedit_char_whitelist=0123456789")
+    return capValue
+
+
 def getSpecialConditionsContainer(screenshot):
     (left, top, _, _) = getStopPos(screenshot)
     container = screenshot[top:top+12, left-118:left-118+107]

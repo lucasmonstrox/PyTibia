@@ -18,3 +18,13 @@ def save(arr, name):
 
 def crop(img, x, y, width, height):
     return img[y:y + height, x:x + width]
+
+
+def loadColored(path):
+    image = cv2.imread(path)
+    return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+
+def filterColorRange(image, upperBound, lowerBound):
+    imagemask = cv2.inRange(image, np.array(lowerBound), np.array(upperBound))
+    return imagemask

@@ -3,12 +3,12 @@ import time
 import d3dshot
 import cv2
 import numpy as np
-from PIL import Image
+import pytesseract
 import pyautogui
 import xxhash
 
 d3 = d3dshot.create(capture_output='numpy')
-
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
 
 def cacheObjectPos(func):
     lastX = None
@@ -79,13 +79,19 @@ def locate(compareImg, img, confidence=0.85):
     (x, y) = res[3]
     width = len(img[0])
     height = len(img)
-    return (x, y, width, height)
+    return x, y, width, height
 
 
 def getScreenshot(window):
     region = (window.top, window.left, window.width - 15, window.height)
     screenshot = d3.screenshot(region=region)
     screenshot = cv2.cvtColor(screenshot, cv2.COLOR_RGB2GRAY)
+    return screenshot
+
+
+def getColoredScreenshot(window):
+    region = (window.top, window.left, window.width - 15, window.height)
+    screenshot = d3.screenshot(region=region)
     return screenshot
 
 
@@ -112,3 +118,28 @@ def randomCoord(x,y,width,height):
     y = random.randrange(y, y+height)
 
     return (x,y)
+
+
+def mouseMove(x, y):
+    pyautogui.moveTo(x, y)
+
+
+def mouseScroll(scrolls):
+    pyautogui.vscroll(scrolls)
+
+
+def mouseDrag(x1, y1, x2, y2):
+    pyautogui.moveTo(x1, y1)
+    pyautogui.mouseDown()
+    pyautogui.moveTo(x2, y2, 0.5)
+    pyautogui.mouseUp()
+
+
+def imageToString(screenshot, param):
+    paramStr = '--oem 3 --psm ' + param
+    messages = pytesseract.image_to_string(screenshot, lang=None, config=paramStr)
+    return messages
+
+
+def imageToTextData(image):
+    return pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT)
