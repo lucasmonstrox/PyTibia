@@ -16,7 +16,7 @@ def readMessagesFromActiveChatTab(screenshot):
     (x, y, width, height) = getChatMessagesContainerPos(screenshot)
     chatMessagesContainer = utils.image.crop(screenshot, x, y, width, height)
     chatMessagesContainer = utils.image.convertGraysToBlack(chatMessagesContainer)
-    messages = utils.core.imageToString(chatMessagesContainer, "6").splitlines()
+    messages = utils.image.toString(chatMessagesContainer, "6").splitlines()
     messages = list(filter(None, messages))
     return messages
 
@@ -87,7 +87,7 @@ def getServerLogTabPos(screenshot):
     chatCoordinates = getChatsTabs(screenshot)
     chatsBar = utils.image.crop(screenshot, chatCoordinates[0], chatCoordinates[1], chatCoordinates[2], chatCoordinates[3])
     chatsBar = utils.image.convertGraysToBlack(chatsBar)
-    d = utils.core.imageToTextData(chatsBar)
+    d = utils.image.toTextData(chatsBar)
     n_boxes = len(d['level'])
     for i in range(n_boxes - 1):
         if d['text'][i] == 'Server' and d['text'][i + 1] == 'Log':

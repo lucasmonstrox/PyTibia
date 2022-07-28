@@ -2,6 +2,7 @@ import random
 import pyautogui
 import utils.image
 import utils.core
+import utils.mouse
 
 npcTradeBarImg = utils.image.loadAsArray('refill/images/npcTradeBar.png')
 npcTradeBottomImg = utils.image.loadAsArray('refill/images/npcTradeBottom.png')
@@ -39,13 +40,13 @@ def getTradeBottomPos(screenshot):
 
 
 def adjustAndGetTradeScreenPos(window):
-    screenshot = utils.core.getScreenshot(window)
+    screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
     (x0, y0, w0, h0) = getTradeTopPos(screenshot)
     (x1, y1, w1, h1) = getTradeBottomPos(screenshot)
 
     if (y1 - y0) < 190:
-        utils.core.mouseDrag(x0 + 70, y1, x0 + 70, y1 + (190 - (y1 - y0)))
-        screenshot = utils.core.getScreenshot(window)
+        utils.mouse.mouseDrag(x0 + 70, y1, x0 + 70, y1 + (190 - (y1 - y0)))
+        screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
         (x0, y0, w0, h0) = getTradeTopPos(screenshot)
         (x1, y1, w1, h1) = getTradeBottomPos(screenshot)
         return x0, y0, w0, y1 - y0
@@ -54,14 +55,14 @@ def adjustAndGetTradeScreenPos(window):
 
 
 def findItem(window, itemName, tradePos):
-    screenshot = utils.core.getScreenshot(window)
+    screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
     (x, y, w, h) = tradePos
-    utils.core.mouseMove(x + 165, y + 75)
+    utils.mouse.mouseMove(x + 165, y + 75)
     tradeScreen = utils.image.crop(screenshot, x, y, w, h)
     itemPos = utils.core.locate(tradeScreen, itemsImgs[itemName], 0.98)
     while itemPos is None:
-        utils.core.mouseScroll(-random.randrange(170, 200))
-        screenshot = utils.core.getScreenshot(window)
+        utils.mouse.mouseScroll(-random.randrange(170, 200))
+        screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
         tradeScreen = utils.image.crop(screenshot, x, y, w, h)
         itemPos = utils.core.locate(tradeScreen, itemsImgs[itemName])
 
@@ -70,19 +71,19 @@ def findItem(window, itemName, tradePos):
 
 def adjustQuantityBar(window, tradePos, quantity):
     (x, y, w, h) = tradePos
-    screenshot = utils.core.getScreenshot(window)
+    screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
     amountImg = utils.image.convertGraysToBlack(utils.image.crop(screenshot, x + 90, y + h - 51, 34, 14))
-    amount = utils.core.imageToString(amountImg, "6 -c tessedit_char_whitelist=0123456789")
+    amount = utils.image.toString(amountImg, "6 -c tessedit_char_whitelist=0123456789")
     if amount == quantity:
         return
     pixels = round(quantity / 1.15)
     pyautogui.click(utils.core.randomCoord(x + 18 + pixels, y + h - 63, 1, 6))
     if quantity > 85:
         (xRest, yRest) = utils.core.randomCoord(x + 18 + pixels, y + h - 63 - 15, 5, 5)
-        utils.core.mouseMove(xRest, yRest)
-    screenshot = utils.core.getScreenshot(window)
+        utils.mouse.mouseMove(xRest, yRest)
+    screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
     amountImg = utils.image.convertGraysToBlack(utils.image.crop(screenshot, x + 90, y + h - 51, 34, 14))
-    amount = int(utils.core.imageToString(amountImg, "6 -c tessedit_char_whitelist=0123456789 -c "
+    amount = int(utils.image.toString(amountImg, "6 -c tessedit_char_whitelist=0123456789 -c "
                                                 "tessedit_char_blacklist"
                                                 "=ABCDEFGHIJKLMNOPQRZTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%¨&*()Ç{"
                                                 "}<>?/"))
@@ -114,7 +115,7 @@ def buyOneItem(window, item, tradePos):
 
     if remainingPurchase != 0:
         (xRest, yRest) = utils.core.randomCoord(x + 128, y + h + 15, 7, 10)
-        utils.core.mouseMove(xRest, yRest)
+        utils.mouse.mouseMove(xRest, yRest)
         adjustQuantityBar(window, tradePos, remainingPurchase)
         pyautogui.click(utils.core.randomCoord(x + 128, y + h - 25, 39, 16))
 
