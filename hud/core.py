@@ -1,8 +1,8 @@
 import numpy as np
 import utils.core, utils.image
+import utils.core
+import utils.image
 
-
-hudWidth = 480
 leftHudImg = utils.image.loadAsArray('hud/images/leftHud.png')
 rightHudImg = utils.image.loadAsArray('hud/images/rightHud.png')
 hudSize = (480, 352)
@@ -12,7 +12,8 @@ hudSize = (480, 352)
 def getCoordinates(screenshot):
     leftSidebarArrows = getLeftSidebarArrows(screenshot)
     rightSidebarArrows = getRightSidebarArrows(screenshot)
-    (hudWidth, hudHeight) = (480, 352)
+    global hudSize
+    (hudWidth, hudHeight) = hudSize
     hudCenter = (
         (rightSidebarArrows[0] - leftSidebarArrows[0]) // 2) + leftSidebarArrows[0]
     hudLeftPos = hudCenter - (hudWidth // 2) - 1
@@ -23,13 +24,15 @@ def getCoordinates(screenshot):
     if isHudDetected:
         x = hudLeftPos + 1
         y = leftSidebarArrows[1] + 5
-        bbox = (x, y, 480, 352)
+        bbox = (x, y, hudWidth, hudHeight)
         return bbox
 
 
 def getImgByCoordinates(screenshot, coordinates):
+    global hudSize
+    (hudWidth, hudHeight) = hudSize
     return screenshot[coordinates[1]:coordinates[1] +
-                      352, coordinates[0]:coordinates[0] + 480]
+                      hudHeight, coordinates[0]:coordinates[0] + hudWidth]
 
 
 @utils.core.cacheObjectPos
@@ -57,4 +60,6 @@ def getSlotFromCoordinate(currentCoordinate, coordinate):
         return None
     hudCoordinateX = 7 + diffX
     hudCoordinateY = 5 + diffY
-    return (hudCoordinateX, hudCoordinateY)
+    return hudCoordinateX, hudCoordinateY
+
+

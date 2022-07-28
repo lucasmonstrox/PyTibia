@@ -1,10 +1,10 @@
 import random
 import time
+from time import sleep
 import d3dshot
 import cv2
 import numpy as np
 import pyautogui
-import pytesseract
 import xxhash
 
 d3 = d3dshot.create(capture_output='numpy')
@@ -88,8 +88,11 @@ def getScreenshot(window):
     return screenshot
 
 
-def press(key):
-    pyautogui.press(key)
+def press(key, delay=150):
+    #pyautogui.press(key)
+    pyautogui.keyDown(key)
+    sleep(delay/1000)
+    pyautogui.keyUp(key)
 
 
 def typeKeyboard(phrase):
