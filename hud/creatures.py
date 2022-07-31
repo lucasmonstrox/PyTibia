@@ -65,34 +65,32 @@ def getCreaturesBars(hudImg):
 
 
 def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
+    hasNoCreatures = len(creatures) == 0
+    if hasNoCreatures:
+        return None
     (x, y) = utils.core.getPixelFromCoordinate(coordinate)
     hudwalkableFloorsSqms = walkableFloorsSqms[y-5:y+6, x-7:x+8]
     hudwalkableFloorsSqmsCreatures = np.zeros((11, 15))
-    creaturesDict = {}
-    for creature in creatures:
-        hudwalkableFloorsSqmsCreatures[creature['slot'][1], creature['slot'][0]] = 1
-        creaturesDict[(creature['slot'][0], creature['slot'][1])] = creature
+    creaturesSlots = creatures['slot'][:, [1, 0]]
+    hudwalkableFloorsSqmsCreatures[creaturesSlots[:, 0], creaturesSlots[:, 1]] = 1
     adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudwalkableFloorsSqms)
     sqmsGraph = csr_matrix(adjacencyMatrix)
-    sqmsGraphWeights = dijkstra(sqmsGraph, directed=True, indices=82, unweighted=False)
+    playerHudIndex = 82
+    sqmsGraphWeights = dijkstra(sqmsGraph, directed=True, indices=playerHudIndex, unweighted=False)
     creaturesIndexes = np.nonzero(hudwalkableFloorsSqmsCreatures.flatten() == 1)[0]
-    creaturesWeights = np.take(sqmsGraphWeights, creaturesIndexes)
-    i = 0
-    shortestDistance = 999999
-    shortestCreatureIndex = None
-    for creatureWeight in creaturesWeights:
-        creatureIndex = creaturesIndexes[i]
-        creatureWeight = creaturesWeights[i]
-        i += 1
-        if creatureWeight == np.inf:
-            continue
-        if creatureWeight < shortestDistance:
-            shortestDistance = creatureWeight
-            shortestCreatureIndex = creatureIndex
-    if shortestCreatureIndex is None:
+    creaturesGraphWeights = np.take(sqmsGraphWeights, creaturesIndexes)
+    nonTargetCreaturesIndexes = np.where(creaturesGraphWeights == np.inf)[0]
+    creaturesIndexes = np.delete(creaturesIndexes, nonTargetCreaturesIndexes)
+    creaturesGraphWeights = np.delete(creaturesGraphWeights, nonTargetCreaturesIndexes)
+    hasOnlyNonTargetCreatures = len(creaturesGraphWeights) == 0
+    if hasOnlyNonTargetCreatures:
         return None
-    creatureSlot = (shortestCreatureIndex % 15, shortestCreatureIndex // 15)
-    return creaturesDict[creatureSlot]
+    creaturesDistances = np.where(creaturesGraphWeights == np.amin(creaturesGraphWeights))[0]
+    closestCreatureHudIndex = creaturesIndexes[np.random.choice(creaturesDistances)]
+    creatureSlot = [closestCreatureHudIndex % 15, closestCreatureHudIndex // 15]
+    closestCreatureIndex = np.where((creatures['slot'] == creatureSlot).all(axis=1))[0][0]
+    closestCreature = creatures[closestCreatureIndex]
+    return closestCreature
 
 
 # TODO: after each loop, remove bar when creatureDidMatch
