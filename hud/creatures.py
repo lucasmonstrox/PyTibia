@@ -166,7 +166,7 @@ def getNearestCreaturesCount(creatures):
     hudWalkableFloorsSqmsCreatures = np.zeros((11, 15), dtype=np.uint)
     xySlots = creatures['slot'][:, [1, 0]]
     hudWalkableFloorsSqmsCreatures[xySlots[:, 0], xySlots[:, 1]] = 1
-    indicesOfNearestCreatures= hudWalkableFloorsSqmsCreatures[
+    indicesOfNearestCreatures = hudWalkableFloorsSqmsCreatures[
         [4, 4, 4, 5, 5, 6, 6, 6],
         [6, 7, 8, 6, 8, 6, 7, 8]
     ]
