@@ -21,7 +21,7 @@ config = {
         "gap": 2
     },
 }
-
+creatureType = np.dtype([('name', np.str_, 64), ('isBeingAttacked', np.bool_), ('life', np.int8)])
 
 for creatureName in creatures:
     creatureImg = utils.image.loadAsArray(
@@ -106,7 +106,6 @@ def getCreatures(screenshot):
         raise None
     content = unhighlightName(content)
     filledSlots = getFilledSlots(content)
-    creatureType = np.dtype([('name', np.str_, 64), ('isBeingAttacked', np.bool_), ('life', np.int8)])
     creatures = np.array([getCreatureFromSlot(content, creature)
                          for creature in np.arange(filledSlots)], dtype=creatureType)
     return creatures
