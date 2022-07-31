@@ -4,7 +4,7 @@ from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 import hud.core
 import utils.core, utils.image, utils.matrix
-from wiki import creatures
+import wiki.creatures
 
 
 lifeBarBlackPixelsMapper = np.array([
@@ -16,7 +16,7 @@ lifeBarBlackPixelsMapper = np.array([
 lifeBarFlattenedImg = np.zeros(lifeBarBlackPixelsMapper.size)
 hudWidth = 480
 creaturesNamesHashes = {}
-for monster in creatures.creatures:
+for monster in wiki.creatures.creatures:
     creaturesNamesHashes[monster] = utils.image.loadAsArray('hud/images/monsters/{}.png'.format(monster))
 creatureType = np.dtype([
     ('name', np.str_, 64),
