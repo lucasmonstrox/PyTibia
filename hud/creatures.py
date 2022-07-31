@@ -163,14 +163,14 @@ def getCreatures(screenshot, battleListCreatures):
 
 
 def getNearestCreaturesCount(creatures):
-    hudwalkableFloorsSqmsCreatures = np.zeros((11, 15), dtype=np.uint)
-    for creature in creatures:
-        hudwalkableFloorsSqmsCreatures[creature['slot'][1], creature['slot'][0]] = 1
-    mcDonalds = hudwalkableFloorsSqmsCreatures[
+    hudWalkableFloorsSqmsCreatures = np.zeros((11, 15), dtype=np.uint)
+    xySlots = creatures['slot'][:, [1, 0]]
+    hudWalkableFloorsSqmsCreatures[xySlots[:, 0], xySlots[:, 1]] = 1
+    indicesOfNearestCreatures= hudWalkableFloorsSqmsCreatures[
         [4, 4, 4, 5, 5, 6, 6, 6],
         [6, 7, 8, 6, 8, 6, 7, 8]
     ]
-    nearestCreaturesCount = np.sum(mcDonalds)
+    nearestCreaturesCount = np.sum(indicesOfNearestCreatures)
     return nearestCreaturesCount
 
 
