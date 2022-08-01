@@ -1,8 +1,7 @@
 
 import math
 import numpy as np
-import pyautogui
-import utils.core, utils.image
+import utils.core, utils.image, utils.mouse
 from wiki.creatures import creatures
 
 config = {
@@ -38,7 +37,7 @@ def attackSlot(screenshot, slot):
     pos = getContainerTop(screenshot)
     x = pos[0] + 20
     y = pos[1] + 13 + (slot * 22) + 22 // 2
-    pyautogui.click(x, y)
+    utils.mouse.leftClick(x, y)
 
 
 @utils.core.cacheObjectPos
