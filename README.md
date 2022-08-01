@@ -75,6 +75,7 @@ python test.py
 
 - Add python typings
 - Add way to make unit tests
+- Add way to make e2e tests into the tibia client
 
 # 👷 Authors
 
