@@ -21,7 +21,7 @@ config = {
         "gap": 2
     },
 }
-creatureType = np.dtype([('name', np.str_, 64), ('isBeingAttacked', np.bool_), ('life', np.int8)])
+creatureType = np.dtype([('name', np.str_, 64), ('isBeingAttacked', np.bool_)])
 
 for creatureName in creatures:
     creatureImg = utils.image.loadAsArray(
@@ -66,7 +66,6 @@ def getContent(screenshot):
 
 
 def getCreatureNameImg(slotImg):
-    # TODO: improve clean code
     return slotImg[3:11 + 3, 23:23 + 131]
 
 
@@ -79,21 +78,20 @@ def getCreatureSlotImg(content, slot):
     return slotImg
 
 
-# TODO: get creature life
 def getCreatureFromSlot(content, slot):
     slotImg = getCreatureSlotImg(content, slot)
     upperCreatureBorder = slotImg[0:1, 0:19].flatten()
     isBeingAttacked = np.all(np.logical_or(
         upperCreatureBorder == 76, upperCreatureBorder == 166))
-    # TODO: apply it once when parsing content
-    slotImg = utils.image.convertGraysToBlack(slotImg)
     creatureNameImg = getCreatureNameImg(slotImg)
+    creatureNameImg = utils.image.convertGraysToBlack(creatureNameImg)
     creatureNameImg = np.ravel(creatureNameImg)
     creatureHash = utils.core.hashit(creatureNameImg)
     unknownCreature = not creatureHash in config["creatures"]["hashes"]
-    creatureName = "Unknown" if unknownCreature else config[
-        "creatures"]["hashes"][creatureHash]["name"]
-    return (creatureName, isBeingAttacked, 100)
+    if unknownCreature:
+        return ("Unknown", isBeingAttacked)
+    creatureName = config["creatures"]["hashes"][creatureHash]["name"]
+    return (creatureName, isBeingAttacked)
 
 
 def getCreatures(screenshot):
