@@ -73,8 +73,8 @@ python test.py
 
 # ✅ TODO
 
-[ ] Add python typings  
-[ ] Add way to make unit tests
+- Add python typings
+- Add way to make unit tests
 
 # 👷 Authors
 
