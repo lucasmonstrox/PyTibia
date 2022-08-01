@@ -1,97 +1,67 @@
-
 import math
 import numpy as np
+from battleList import config, types
 import utils.core, utils.image, utils.mouse
-from wiki.creatures import creatures
-
-config = {
-    "container": {
-        "topImg": utils.image.loadAsArray('battleList/images/battleList.png'),
-        "bottomImg": utils.image.loadAsArray('battleList/images/endOfContainer.png'),
-        "width": 156
-    },
-    "creatures": {
-        "namePixelColor": 192,
-        "highlightedNamePixelColor": 247,
-        "hashes": {}
-    },
-    "slot": {
-        "height": 20,
-        "gap": 2
-    },
-}
-creatureType = np.dtype([('name', np.str_, 64), ('isBeingAttacked', np.bool_)])
-
-for creatureName in creatures:
-    creatureImg = utils.image.loadAsArray(
-        'battleList/images/monsters/{}.png'.format(creatureName))
-    creatureHash = utils.core.hashit(creatureImg)
-    config["creatures"]["hashes"][creatureHash] = {
-        "name": creatureName,
-        "hash": creatureHash,
-        "info": creatures[creatureName]
-    }
 
 
 def attackSlot(screenshot, slot):
-    pos = getContainerTop(screenshot)
+    pos = getContainerTopBarPos(screenshot)
     x = pos[0] + 20
     y = pos[1] + 13 + (slot * 22) + 22 // 2
     utils.mouse.leftClick(x, y)
 
 
 @utils.core.cacheObjectPos
-def getContainerBottom(img):
-    return utils.core.locate(img, config["container"]["bottomImg"])
+def getContainerBottomBarPos(img):
+    return utils.core.locate(img, config.container["bottomBarImg"])
 
 
 @utils.core.cacheObjectPos
-def getContainerTop(img):
-    return utils.core.locate(img, config["container"]["topImg"])
+def getContainerTopBarPos(img):
+    return utils.core.locate(img, config.container['topBarImg'])
 
 
 def getContent(screenshot):
-    containerTop = getContainerTop(screenshot)
-    cannotGetContainerTop = containerTop is None
-    if cannotGetContainerTop:
+    containerTopBarPos = getContainerTopBarPos(screenshot)
+    cannotGetContainerTopBarPos = containerTopBarPos is None
+    if cannotGetContainerTopBarPos:
         return None
-    (contentLeft, contentTop, _, contentHeight) = containerTop
+    (contentLeft, contentTop, _, contentHeight) = containerTopBarPos
     startingY = contentTop + contentHeight
-    endingX = contentLeft + config["container"]["width"]
+    endingX = contentLeft + config.container["width"]
     content = screenshot[startingY:, contentLeft:endingX]
-    containerBottom = getContainerBottom(content)
-    cannotGetContainerBottom = containerBottom is None
-    if cannotGetContainerBottom:
+    containerBottomBarPos = getContainerBottomBarPos(content)
+    cannotGetContainerBottomBarPos = containerBottomBarPos is None
+    if cannotGetContainerBottomBarPos:
         return None
-    content = content[:containerBottom[1] - 11, :]
+    content = content[:containerBottomBarPos[1] - 11, :]
     return content
 
 
 def getCreatureNameImg(slotImg):
-    return slotImg[3:11 + 3, 23:23 + 131]
+    creatureNameImg = slotImg[3:11 + 3, 23:23 + 131]
+    creatureNameImg = utils.image.convertGraysToBlack(creatureNameImg)
+    return creatureNameImg
 
 
 def getCreatureSlotImg(content, slot):
     isFirstSlot = slot == 0
     startingY = 0 if isFirstSlot else slot * \
-        (config["slot"]["height"] + config["slot"]["gap"])
-    finishingY = startingY + config["slot"]["height"]
+        (config.slot["height"] + config.slot["gap"])
+    finishingY = startingY + config.slot["height"]
     slotImg = content[startingY:finishingY, :]
     return slotImg
 
 
 def getCreatureFromSlot(content, slot):
     slotImg = getCreatureSlotImg(content, slot)
-    upperCreatureBorder = slotImg[0:1, 0:19].flatten()
-    isBeingAttacked = np.all(np.logical_or(
-        upperCreatureBorder == 76, upperCreatureBorder == 166))
+    isBeingAttacked = isCreatureBeingAttacked(slotImg)
     creatureNameImg = getCreatureNameImg(slotImg)
-    creatureNameImg = utils.image.convertGraysToBlack(creatureNameImg)
-    creatureHash = utils.core.hashit(creatureNameImg)
-    unknownCreature = not creatureHash in config["creatures"]["hashes"]
+    creatureNameImgHash = utils.core.hashit(creatureNameImg)
+    unknownCreature = not creatureNameImgHash in config.creatures["nameImgHashes"]
     if unknownCreature:
         return ("Unknown", isBeingAttacked)
-    creatureName = config["creatures"]["hashes"][creatureHash]["name"]
+    creatureName = config.creatures["nameImgHashes"][creatureNameImgHash]
     return (creatureName, isBeingAttacked)
 
 
@@ -100,21 +70,21 @@ def getCreatures(screenshot):
     cannotGetContent = content is None
     if cannotGetContent:
         return None
-    contentIsTooSmall = content.shape[0] < config["slot"]["height"]
+    contentIsTooSmall = content.shape[0] < config.slot["height"]
     if contentIsTooSmall:
         raise None
     content = unhighlightName(content)
-    filledSlots = getFilledSlots(content)
+    slotsCount = getSlotsCount(content)
     creatures = np.array([getCreatureFromSlot(content, creature)
-                         for creature in np.arange(filledSlots)], dtype=creatureType)
+                         for creature in np.arange(slotsCount)], dtype=types.creatureType)
     return creatures
 
 
-def getFilledSlots(content):
+def getSlotsCount(content):
     content = np.ravel(content[:, 23:24])
     possibleCreatureNames = np.nonzero(
         np.where(
-            content == config["creatures"]["namePixelColor"],
+            content == config.creatures["namePixelColor"],
             True,
             False
         )
@@ -124,17 +94,24 @@ def getFilledSlots(content):
         return 0
     lastCreatureIndex = possibleCreatureNames[len(possibleCreatureNames) - 1]
     filledSlots = math.ceil(
-        lastCreatureIndex / (config["slot"]["height"] + config["slot"]["gap"]))
+        lastCreatureIndex / (config.slot["height"] + config.slot["gap"]))
     return filledSlots
 
 
-def isAttackingCreature(creatures):
+def isCreatureBeingAttacked(slotImg):
+    upperCreatureBorder = slotImg[0:1, 0:19].flatten()
+    isBeingAttacked = np.all(np.logical_or(
+        upperCreatureBorder == 76, upperCreatureBorder == 166))
+    return isBeingAttacked
+
+
+def isAttackingSomeCreature(creatures):
     return np.any(creatures['isBeingAttacked'] == True)
 
 
 def unhighlightName(creatureNameImg):
     return np.where(
-        creatureNameImg == config["creatures"]["highlightedNamePixelColor"],
-        config["creatures"]["namePixelColor"],
+        creatureNameImg == config.creatures["highlightedNamePixelColor"],
+        config.creatures["namePixelColor"],
         creatureNameImg
     )

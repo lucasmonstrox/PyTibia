@@ -145,7 +145,7 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures, hudCreature
     if hasNoHudCreatures:
         print('has no hud creatures')
         return
-    # if battleList.isAttackingCreature(battleListCreatures):
+    # if battleList.isAttackingSomeCreature(battleListCreatures):
     #     # obter a matriz do mapa
     #     # obter as coordenadas das creatures
     #     # marcar as coordenadas das creatures com 0

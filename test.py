@@ -33,7 +33,7 @@ def main():
         screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
         battleListCreatures = battleList.core.getCreatures(screenshot)
         hudCreatures = hud.creatures.getCreatures(screenshot, battleListCreatures)
-        print(hudCreatures)
+        print(battleListCreatures)
         break
         # timef = (time() - loop_time)
         # timef = timef if timef else 1
