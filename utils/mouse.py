@@ -3,6 +3,10 @@ import pyautogui
 from hud.core import getCoordinates
 
 
+def leftClick(x, y):
+    pyautogui.leftClick(x, y)
+
+
 def rightClick(x, y):
     pyautogui.rightClick(x, y)
 
