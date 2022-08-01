@@ -61,6 +61,9 @@ def getContent(screenshot):
     endingX = contentLeft + config["container"]["width"]
     content = screenshot[startingY:, contentLeft:endingX]
     containerBottom = getContainerBottom(content)
+    cannotGetContainerBottom = containerBottom is None
+    if cannotGetContainerBottom:
+        return None
     content = content[:containerBottom[1] - 11, :]
     return content
 
@@ -85,7 +88,6 @@ def getCreatureFromSlot(content, slot):
         upperCreatureBorder == 76, upperCreatureBorder == 166))
     creatureNameImg = getCreatureNameImg(slotImg)
     creatureNameImg = utils.image.convertGraysToBlack(creatureNameImg)
-    creatureNameImg = np.ravel(creatureNameImg)
     creatureHash = utils.core.hashit(creatureNameImg)
     unknownCreature = not creatureHash in config["creatures"]["hashes"]
     if unknownCreature:
