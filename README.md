@@ -71,6 +71,11 @@ python main.py
 python test.py
 ```
 
+# ✅ TODO
+
+[ ] Add python typings  
+[ ] Add way to make unit tests
+
 # 👷 Authors
 
 - [**lucasmonstro**](http://github.com/lucasmonstro)([**linkedin**](https://www.linkedin.com/in/lucasmonstro/)) - Owner & Developer
