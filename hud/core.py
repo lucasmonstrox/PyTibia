@@ -9,7 +9,7 @@ hudSize = (480, 352)
 
 
 # TODO: cache it
-def getCoordinates(screenshot):
+def getCoordinate(screenshot):
     leftSidebarArrows = getLeftSidebarArrows(screenshot)
     rightSidebarArrows = getRightSidebarArrows(screenshot)
     global hudSize
@@ -28,7 +28,7 @@ def getCoordinates(screenshot):
         return bbox
 
 
-def getImgByCoordinates(screenshot, coordinates):
+def getImgByCoordinate(screenshot, coordinates):
     global hudSize
     (hudWidth, hudHeight) = hudSize
     return screenshot[coordinates[1]:coordinates[1] +

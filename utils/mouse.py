@@ -1,6 +1,6 @@
 from time import sleep
 import pyautogui
-from hud.core import getCoordinates
+from hud.core import getCoordinate
 
 
 def leftClick(x, y):
@@ -27,7 +27,7 @@ def mouseDrag(x1, y1, x2, y2):
 
 
 def clickOnHud(screenshot, currentCoordinate, clickCoordinate):
-    (hudX, hudY, hudW, hudH) = getCoordinates(screenshot)
+    (hudX, hudY, hudW, hudH) = getCoordinate(screenshot)
     (x1, y1, z1) = currentCoordinate
     (x2, y2, z2) = clickCoordinate
     if abs(x1-x2) > 7 or abs(y1-y2) > 5 or z1 != z2:
