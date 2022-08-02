@@ -50,5 +50,5 @@ def toString(screenshot, param):
     return messages
 
 
-def toTextData(image):
-    return pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT)
+def toTextData(image, param):
+    return pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT, config=param)
