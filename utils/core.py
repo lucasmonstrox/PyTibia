@@ -82,6 +82,15 @@ def locate(compareImg, img, confidence=0.85):
     return x, y, width, height
 
 
+def locateMultiple(compareImg, img, confidence=0.85):
+    match = cv2.matchTemplate(compareImg, img, cv2.TM_CCOEFF_NORMED)
+    loc = np.where(match >= confidence)
+    resultList = []
+    for pt in zip(*loc[::-1]):
+        resultList.append((pt[0], pt[1], len(compareImg[0]), len(compareImg)))
+    return resultList
+
+
 def getScreenshot(window):
     region = (window.top, window.left, window.width - 15, window.height)
     screenshot = d3.screenshot(region=region)
