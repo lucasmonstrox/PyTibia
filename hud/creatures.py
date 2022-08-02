@@ -59,9 +59,10 @@ def getCreaturesBars(hudImg):
     if hasNoCreaturesBars:
         return np.array([])
     creaturesBars = np.take(blackPixelsIndexes, possibleCreatures)
-    creaturesBars = np.array(
-        list(map(lambda i: [i % hudWidth, i // hudWidth], creaturesBars)))
-    return creaturesBars
+    creaturesBarsX = creaturesBars % hudWidth
+    creaturesBarsY = creaturesBars // hudWidth
+    creaturesBarsXY = np.column_stack((creaturesBarsX, creaturesBarsY))
+    return creaturesBarsXY
 
 
 def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
