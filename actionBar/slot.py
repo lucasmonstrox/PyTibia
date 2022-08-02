@@ -58,6 +58,9 @@ def getSlotCount(screenshot):
     if hasNoCount:
         return 0
     digits = digits[::-1]
-    digits = np.array([(10 ** digitIndex) * digit for (digitIndex, digit) in enumerate(digits)])
-    number = sum(digits)
+    numberOfDigits = len(digits)
+    sequentialVector = np.arange(numberOfDigits)
+    vectorOf10 = np.full(numberOfDigits, 10)
+    result = np.power(vectorOf10, sequentialVector)
+    number = np.sum(digits * result)
     return number
