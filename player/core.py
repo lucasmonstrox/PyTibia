@@ -1,7 +1,7 @@
-import cv2
 import numpy as np
-from time import sleep
 import pyautogui
+from time import sleep
+import radar.core
 import utils.core, utils.image
 
 accessoriesEquippedImg = utils.image.loadAsArray('radar/images/radar-tools.png')
@@ -39,7 +39,7 @@ inventoryHiddenImg = utils.image.loadAsArray('player/images/inventory-hidden.png
 logoutBlockImg = utils.image.loadAsArray('player/images/logout-block.png')
 readyForPvpImg = utils.image.loadAsArray('player/images/ready-for-pvp.png')
 slowedImg = utils.image.loadAsArray('player/images/slowed.png')
-storeImg = utils.image.loadAsArray('player/images/store.png')
+# storeImg = utils.image.loadAsArray('player/images/store.png')
 
 hpBarAllowedPixelsColors = np.array([79, 118, 121, 110, 62])
 hpBarSize=94
@@ -147,7 +147,6 @@ def setFightStatus(screenshot, statusName):
     statusImg = fightStatusList.get(statusName, None)
     pos = utils.core.locate(container, statusImg)
     if pos is None:
-        print('Enabling fight status: ' + statusName)
         pyautogui.click(x + 10, y + 10)
 
 
@@ -164,7 +163,6 @@ def setReadyForPvp(screenshot, condition):
     actualStatus = pos is not None
 
     if condition != actualStatus:
-        print('Changing PVP status to: ' + str(condition))
         pyautogui.click(left + 10, top + 10)
 
 
@@ -238,19 +236,18 @@ def hasSpecialCondition(screenshot, condition):
     return cond
 
 
-def setInventoryVisible(screenshot, condition):
-    pos = utils.core.locate(screenshot, storeImg)
-    inventoryVisible = pos is not None
-    if inventoryVisible == condition:
-        return
-    print('Changing show inventory status to: ' + str(condition))
-    if pos is None:
-        (left, top, _, _) = radar.core.getRadarToolsPos(screenshot)
-        left -= 118
-        top += 64
-        pyautogui.click(x=left + 6, y=top + 6)
-    else:
-        pyautogui.click(x=pos[0] - 74, y=pos[1] + 6)
+# def setInventoryVisible(screenshot, condition):
+#     pos = utils.core.locate(screenshot, storeImg)
+#     inventoryVisible = pos is not None
+#     if inventoryVisible == condition:
+#         return
+#     if pos is None:
+#         (left, top, _, _) = radar.core.getRadarToolsPos(screenshot)
+#         left -= 118
+#         top += 64
+#         pyautogui.click(x=left + 6, y=top + 6)
+#     else:
+#         pyautogui.click(x=pos[0] - 74, y=pos[1] + 6)
 
 
 def stop(seconds=1):
