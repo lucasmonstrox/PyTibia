@@ -90,7 +90,7 @@ def locateMultiple(compareImg, img, confidence=0.85):
     return resultList
 
 
-def getScreenshot(window):
+def getScreenshot():
     mssInstance = mss.mss()
     screenshot = mssInstance.grab(mssInstance.monitors[0])
     screenshot = np.array(screenshot)

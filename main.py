@@ -1,6 +1,7 @@
 import multiprocessing
 import numpy as np
-from rx import operators
+import pyautogui
+from rx import interval, operators
 from rx.scheduler import ThreadPoolScheduler
 import rx
 import time
@@ -110,7 +111,6 @@ targetIsEnabled = False
 
 def goToWaypoint(screenshot, waypoint, currentPlayerCoordinate):
     global shouldIgnoreTargetAndGoToNextWaypoint
-    print('setting shouldIgnoreTargetAndGoToNextWaypoint to false')
     shouldIgnoreTargetAndGoToNextWaypoint = False
     isFloorWaypoint = waypoint['type'] == 'floor'
     if isFloorWaypoint:
@@ -123,18 +123,22 @@ def goToWaypoint(screenshot, waypoint, currentPlayerCoordinate):
         xDifference = currentPlayerCoordinateX - waypointCoordinateX
         shouldWalkToLeft = xDifference > 0
         if shouldWalkToLeft:
-            utils.core.press('left')
+            pyautogui.press('left')
+            time.sleep(0.25)
             return
         shouldWalkToRight = xDifference < 0
         if shouldWalkToRight:
-            utils.core.press('right')
+            pyautogui.press('right')
+            time.sleep(0.25)
             return
         yDifference = currentPlayerCoordinateY - waypointCoordinateY
         if yDifference < 0:
-            utils.core.press('down')
+            pyautogui.press('down')
+            time.sleep(0.25)
             return
         if yDifference > 0:
-            utils.core.press('up')
+            pyautogui.press('up')
+            time.sleep(0.25)
             return
 
 
@@ -164,20 +168,23 @@ def handleWaypoints(screenshot, coordinate):
     isCloseToCoordinate = radar.core.isCloseToCoordinate(
             coordinate, waypoints[waypointIndex]['coordinate'],
             distanceTolerance=currentWaypoint['tolerance'])
+    print('isCloseToCoordinate', isCloseToCoordinate)
     if isCloseToCoordinate:
         waypointIndex = 0 if waypointIndex == len(
             waypoints) - 1 else waypointIndex + 1
         shouldRetrySameWaypoint = False
-        player.core.stop(0.5)
+        player.core.stop(1)
         goToWaypoint(screenshot, waypoints[waypointIndex], coordinate)
         return
     if shouldRetrySameWaypoint:
+        print('retrying same waypoint')
         shouldRetrySameWaypoint = False
-        player.core.stop(0.5)
+        player.core.stop(1)
         if(currentWaypoint['type'] == 'ramp'):
             waypointIndex = waypointIndex + 1
             currentWaypoint = waypoints[waypointIndex]
         goToWaypoint(screenshot, currentWaypoint, coordinate)
+        return
 
 
 def handleHealing(healthPercentage, manaPercentage):
@@ -266,12 +273,13 @@ def main():
     optimal_thread_count = multiprocessing.cpu_count()
     threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
     thirteenFps = 0.0667
-    fpsObserver = rx.interval(thirteenFps)
+    fpsObserver = interval(thirteenFps)
     fpsWithScreenshot = fpsObserver.pipe(
         operators.map(handleWindow),
         operators.filter(lambda window: window is not None),
-        operators.map(lambda window: utils.image.RGBtoGray(utils.core.getScreenshot(window))),
+        operators.map(lambda window: utils.image.RGBtoGray(utils.core.getScreenshot())),
     )
+    fpsWithScreenshot.subscribe(lambda screenshot: screenshot)
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: [screenshot, radar.core.getCoordinate(screenshot)]),
     )
@@ -281,13 +289,17 @@ def main():
     hudCreaturesObserver = battlelistObserver.pipe(
         operators.map(lambda result: [result[0], result[1], result[2], hud.creatures.getCreatures(result[0], result[2], radarCoordinate=result[1])]),
     )
-    def cenas(result):
-        a = result[2] is not None 
-        b = len(result[3]) > 0
-        c = shouldIgnoreTargetAndGoToNextWaypoint == False
-        return a and b and c
+    def shouldExecuteCavebot(result):
+        battleListCreatures = result[2]
+        hudCreatures = result[3]
+        hasBattleListCreatures = not battleListCreatures is None 
+        hasHudCreatures = len(hudCreatures) > 0
+        isntAttackingSomeCreature = not battleList.core.isAttackingSomeCreature(battleListCreatures)
+        notIgnoringTarget = shouldIgnoreTargetAndGoToNextWaypoint == False
+        shouldExecuteCavebot = hasBattleListCreatures and hasHudCreatures and  isntAttackingSomeCreature and notIgnoringTarget
+        return shouldExecuteCavebot
     cavebotObserver = hudCreaturesObserver.pipe(
-        operators.filter(cenas),
+        operators.filter(shouldExecuteCavebot),
         operators.subscribe_on(threadPoolScheduler)
     )
     cavebotObserver.subscribe(
