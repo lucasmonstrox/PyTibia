@@ -1,13 +1,11 @@
-import random
-import time
-from time import sleep
-import d3dshot
 import cv2
 import numpy as np
 import pyautogui
+import random
+import time
+from time import sleep
 import xxhash
-
-d3 = d3dshot.create(capture_output='numpy')
+import mss
 
 
 def cacheObjectPos(func):
@@ -93,19 +91,19 @@ def locateMultiple(compareImg, img, confidence=0.85):
 
 def getScreenshot(window):
     region = (window.top, window.left, window.width - 15, window.height)
-    screenshot = d3.screenshot(region=region)
+    screenshot = mss.mss().grab(region)
+    screenshot = np.array(screenshot)
+    screenshot = cv2.cvtColor(screenshot, cv2.COLOR_BGR2RGB)
     return screenshot
 
 
 def press(key, delay=150):
-    #pyautogui.press(key)
     pyautogui.keyDown(key)
     sleep(delay/1000)
     pyautogui.keyUp(key)
 
 
 def typeKeyboard(phrase):
-
     words = list(phrase)
     for word in words:
         time.sleep(random.randrange(70, 190)/1000)
@@ -117,7 +115,6 @@ def typeKeyboard(phrase):
 def randomCoord(x, y, width, height):
     x = random.randrange(x, x+width)
     y = random.randrange(y, y+height)
-
     return (x,y)
 
 
