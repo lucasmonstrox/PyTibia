@@ -23,6 +23,7 @@ creatureType = np.dtype([
     ('healthPercentage', np.uint8),
     ('isBeingAttacked', np.bool_),
     ('slot', np.uint8, (2,)),
+    ('gameCoordinate', np.uint16, (3,)),
     ('windowCoordinate', np.uint32, (2,))
 ])
 
@@ -96,7 +97,7 @@ def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
 
 # TODO: after each loop, remove bar when creatureDidMatch
 # TODO: use matrix calculations instead of for loops
-def getCreatures(screenshot, battleListCreatures):
+def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
     hudCoordinate = hud.core.getCoordinate(screenshot)
     hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     creaturesBars = getCreaturesBars(hudImg.flatten())
@@ -131,7 +132,7 @@ def getCreatures(screenshot, battleListCreatures):
             creatureWithDirtNameImg = cleanCreatureName(creatureWithDirtNameImg)
             creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
-                creature = makeCreature(creatureName, creatureBar, hudCoordinate, hudImg=hudImg)
+                creature = makeCreature(creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 continue
@@ -142,7 +143,7 @@ def getCreatures(screenshot, battleListCreatures):
             creatureWithDirtNameImg2 = cleanCreatureName(creatureWithDirtNameImg2)
             creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg2, creatureNameImg2)
             if creatureDidMatch:
-                creature = makeCreature(creatureName, creatureBar, hudCoordinate, hudImg=hudImg)
+                creature = makeCreature(creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 continue
@@ -154,7 +155,7 @@ def getCreatures(screenshot, battleListCreatures):
                 creatureNameImg3 = creatureNameImg3[:, 0:creatureNameImg3.shape[1] - 1]
             creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg3, creatureNameImg3)
             if creatureDidMatch:
-                creature = makeCreature(creatureName, creatureBar, hudCoordinate, hudImg=hudImg)
+                creature = makeCreature(creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 continue
@@ -173,17 +174,21 @@ def getNearestCreaturesCount(creatures):
     return nearestCreaturesCount
 
 
-def hasTargetToCreatureByIndex(hudwalkableFloorsSqms, index):
-    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudwalkableFloorsSqms)
+def hasTargetToCreatureByIndex(hudWalkableFloorsSqms, hudCreaturesSlots, index):
+    creaturesSlots = hudCreaturesSlots[:, [1, 0]]
+    hudWalkableFloorsSqms[creaturesSlots[:, 0], creaturesSlots[:, 1]] = 0
+    hudWalkableFloorsSqms[index[1], index[0]] = 1
+    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudWalkableFloorsSqms)
     graph = csr_matrix(adjacencyMatrix)
-    graphWeights = dijkstra(graph, directed=True, indices=82, unweighted=False)
+    playerHudIndex = 82
+    graphWeights = dijkstra(graph, directed=True, indices=playerHudIndex, unweighted=False)
     graphWeights = graphWeights.reshape(11, 15)
-    creatureGraphValue = graphWeights[index[0], index[1]]
+    creatureGraphValue = graphWeights[index[1], index[0]]
     hasTarget = creatureGraphValue != np.inf
     return hasTarget
 
 
-def makeCreature(creatureName, coordinate, hudCoordinate, hudImg=None):
+def makeCreature(creatureName, coordinate, hudCoordinate, hudImg=None, radarCoordinate=None):
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
     (x, y) = coordinate
     extraY = 0 if y <= 27 else 15
@@ -194,9 +199,12 @@ def makeCreature(creatureName, coordinate, hudCoordinate, hudImg=None):
     ySlot = 0 if y <= 27 else round(yCoordinate / 32)
     ySlot = 10 if ySlot > 10 else ySlot
     healthPercentage = 100
-    slot = (xSlot, ySlot)
-    windowCoordinate = (hudCoordinateX + xCoordinate, hudCoordinateY + yCoordinate)
     borderedCreatureImg = hudImg[y+5:y+5+32, x-3:x-3+32]
     isBeingAttacked = np.sum(np.where(np.logical_or(borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0)) > 10
-    creature = (creatureName, healthPercentage, isBeingAttacked, slot, windowCoordinate)
+    slot = (xSlot, ySlot)
+    gameCoordinateX = radarCoordinate[0] - 7 + xSlot
+    gameCoordinateY = radarCoordinate[1] - 5 + ySlot
+    gameCoordinate = (gameCoordinateX, gameCoordinateY, radarCoordinate[2])
+    windowCoordinate = (hudCoordinateX + xCoordinate, hudCoordinateY + yCoordinate)
+    creature = (creatureName, healthPercentage, isBeingAttacked, slot, gameCoordinate, windowCoordinate)
     return creature
