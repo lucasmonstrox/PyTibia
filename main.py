@@ -1,16 +1,16 @@
-import utils.mouse
+import multiprocessing
+import numpy as np
+from rx import operators
+from rx.scheduler import ThreadPoolScheduler
+import rx
+import time
 from actionBar import cooldown
 import battleList.core
 import hud.creatures
 import player.core
 import radar.core
-import utils.core, utils.image, utils.window
-from rx import operators
-from rx.scheduler import ThreadPoolScheduler
-import numpy as np
-import rx
-import time
-import multiprocessing
+import utils.core, utils.image, utils.mouse, utils.window
+
 # import sys
 # np.set_printoptions(threshold=sys.maxsize)
 
@@ -100,6 +100,7 @@ waypoints = np.array([
 #     ('floor', (33550, 32445, 7), 0),
 #     ('floor', (33571, 32456, 7), 0),
 # ], dtype=waypointType)
+
 waypointIndex = None
 shouldIgnoreTargetAndGoToNextWaypoint = False
 shouldRetrySameWaypoint = True
@@ -144,20 +145,6 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures, hudCreature
     if hasNoHudCreatures:
         print('has no hud creatures')
         return
-    # if battleList.isAttackingSomeCreature(battleListCreatures):
-    #     # obter a matriz do mapa
-    #     # obter as coordenadas das creatures
-    #     # marcar as coordenadas das creatures com 0
-    #     # marcar a coordenada do target com 1
-    #     hudWalkableFloorsSqms = radar.config.walkableFloorsSqms[playerCoordinate[2]]
-    #     hudwalkableFloorsSqms = hudWalkableFloorsSqms[y-5:y+6, x-7:x+8]
-    #     for creature in hudCreatures:
-    #         hudwalkableFloorsSqms[creature['slot'][1], creature['slot'][0]] = 0
-    #     # get closest creature index
-    #     creatureIndex = [10, 6]
-    #     hasTargetToCreatureByIndex = hud.creatures.hasTargetToCreatureByIndex(hudwalkableFloorsSqms, creatureIndex)
-    #     print(hasTargetToCreatureByIndex)
-    #     return
     closestCreature = hud.creatures.getClosestCreature(hudCreatures, playerCoordinate, radar.core.config.walkableFloorsSqms[playerCoordinate[2]])
     hasNoClosestCreature = closestCreature == None
     if hasNoClosestCreature:
@@ -177,47 +164,11 @@ def handleWaypoints(screenshot, coordinate):
     isCloseToCoordinate = radar.core.isCloseToCoordinate(
             coordinate, waypoints[waypointIndex]['coordinate'],
             distanceTolerance=currentWaypoint['tolerance'])
-    # print(isCloseToCoordinate)
-    # print('aeeeeee')
     if isCloseToCoordinate:
         waypointIndex = 0 if waypointIndex == len(
             waypoints) - 1 else waypointIndex + 1
         shouldRetrySameWaypoint = False
         player.core.stop(0.5)
-        # Verificar se tem caminho
-        # 1. Pegar a distancia entre x0 e x1
-        # (radarCoordinateX, radarCoordinateY, floorLevel) = coordinate
-        # print('radarCoordinateX', radarCoordinateX)
-        # print('radarCoordinateY', radarCoordinateY)
-        # (pixelCoordinateX, pixelCoordinateY) = utils.getPixelFromCoordinate(coordinate)
-        # print('pixelCoordinateX', pixelCoordinateX)
-        # print('pixelCoordinateY', pixelCoordinateY)
-        # print(radar.config.walkableFloorsSqms[floorLevel, y-22:y+22, x-7-15:x+8+15])
-        # bolas = radar.config.walkableFloorsSqms[floorLevel][pixelCoordinateY-22:pixelCoordinateY+23, pixelCoordinateX-22:pixelCoordinateX+23]
-        # bolas = np.where(bolas == 1, 255, 0)
-        # bolas = np.array(bolas, dtype=np.uint8)
-        # bolas[22][23] = 133
-        # utils.image.saveFromArray(bolas, 'bolas.png')
-        # adjacencyMatrix = utils.getAdjacencyMatrix(bolas)
-        # sqmsGraph = csr_matrix(adjacencyMatrix)
-        # print(sqmsGraph)
-        # sqmsGraphWeights = dijkstra(sqmsGraph, directed=True, indices=1014, unweighted=False)
-        # print('sqmsGraphWeights', sqmsGraphWeights)
-        # print(sqmsGraphWeights.reshape(45, 45))
-        # print('weight', sqmsGraphWeights[1019])
-        # creaturesIndexes = np.nonzero(bolas.flatten() == 1)[0]
-        # creaturesWeights = np.take(sqmsGraphWeights, creaturesIndexes)
-        # fa = utils.image.loadAsArray('hud/images/monsters/Abyssador.png')
-        # print(fa)
-        # bolas = np.array(bolas, dtype=np.uint8)
-        # utils.image.saveFromArray(fa, 'fa.png')
-        # print(bolas)
-        # utils.image.saveFromArray(bolas, 'bolas.png')
-        # abs(waypoints[waypointIndex]['coordinate'][0] - coordinate[0])
-        # Pegar a distancia enter y0 e y1
-        # Gerar um retangulo a partir de radar.config.walkableFloorsSqms[playerCoordinate[2]]
-        # Mesclar a hud no retangulo
-        # return
         goToWaypoint(screenshot, waypoints[waypointIndex], coordinate)
         return
     if shouldRetrySameWaypoint:
@@ -283,14 +234,13 @@ def handleSpell(screenshot, hudCreatures):
 
 
 def shouldExecuteWaypoint(battleListCreatures, shouldIgnoreTargetAndGoToNextWaypoint):
-    return battleListCreatures is not None and len(
-        battleListCreatures) == 0 or shouldIgnoreTargetAndGoToNextWaypoint == True
+    shouldExecuteWaypoint = battleListCreatures is not None and len(battleListCreatures) == 0 or shouldIgnoreTargetAndGoToNextWaypoint
+    return shouldExecuteWaypoint
 
 
 def handleHungry(screenshot):
     if player.core.hasSpecialCondition(screenshot, 'hungry'):
         utils.core.press('F12')
-    return
 
 
 def handleHaste(screenshot):
@@ -299,20 +249,16 @@ def handleHaste(screenshot):
         hasNoHasteCooldown = not cooldown.hasHasteCooldown(screenshot)
         if not hasNoSupportCooldown and not hasNoHasteCooldown:
             utils.core.press('F9')
-    return
 
 
 def handleRing(screenshot):
     if not player.core.isEquipmentEquipped(screenshot, 'ring'):
         utils.core.press('F10')
 
-    return
-
 
 def handleNecklace(screenshot):
     if not player.core.isEquipmentEquipped(screenshot, 'necklace'):
         utils.core.press('F11')
-    return
 
 
 def main():
@@ -335,8 +281,13 @@ def main():
     hudCreaturesObserver = battlelistObserver.pipe(
         operators.map(lambda result: [result[0], result[1], result[2], hud.creatures.getCreatures(result[0], result[2], radarCoordinate=result[1])]),
     )
+    def cenas(result):
+        a = result[2] is not None 
+        b = len(result[3]) > 0
+        c = shouldIgnoreTargetAndGoToNextWaypoint == False
+        return a and b and c
     cavebotObserver = hudCreaturesObserver.pipe(
-        operators.filter(lambda result: result[2] != None and len(result[3]) > 0 and shouldIgnoreTargetAndGoToNextWaypoint == False),
+        operators.filter(cenas),
         operators.subscribe_on(threadPoolScheduler)
     )
     cavebotObserver.subscribe(
@@ -347,39 +298,39 @@ def main():
         operators.subscribe_on(threadPoolScheduler)
     )
     waypointObserver.subscribe(lambda result: handleWaypoints(result[0], result[1]))
-    spellObserver = hudCreaturesObserver.pipe(
-        operators.subscribe_on(threadPoolScheduler)
-    )
-    spellObserver.subscribe(lambda result: handleSpell(result[0], result[3]))
-    healingObserver = fpsWithScreenshot.pipe(
-        operators.map(lambda screenshot: (screenshot, player.core.getHealthPercentage(screenshot))),
-        operators.map(lambda result: (result[1], player.core.getManaPercentage(result[0]))),
-        operators.subscribe_on(threadPoolScheduler)
-    )
-    healingObserver.subscribe(lambda result: handleHealing(result[0], result[1]))
-    hungryObserver = fpsWithScreenshot.pipe(
-        operators.map(lambda screenshot: (screenshot, player.core.hasSpecialCondition(screenshot, 'hungry'))),
-        operators.subscribe_on(threadPoolScheduler)
-    )
-    hungryObserver.subscribe(lambda result: handleHungry(result[0]))
-    hasteObserver = fpsWithScreenshot.pipe(
-        operators.map(lambda screenshot: (screenshot, player.core.hasSpecialCondition(screenshot, 'haste'))),
-        operators.subscribe_on(threadPoolScheduler)
-    )
-    hasteObserver.subscribe(lambda result: handleHaste(result[0]))
-    ringObserver = fpsWithScreenshot.pipe(
-        operators.map(lambda screenshot: (screenshot, player.core.isEquipmentEquipped(screenshot, 'ring'))),
-        operators.subscribe_on(threadPoolScheduler)
-    )
-    ringObserver.subscribe(lambda result: handleRing(result[0]))
-    necklaceObserver = fpsWithScreenshot.pipe(
-        operators.map(lambda screenshot: (screenshot, player.core.isEquipmentEquipped(screenshot, 'necklace'))),
-        operators.subscribe_on(threadPoolScheduler)
-    )
-    necklaceObserver.subscribe(lambda result: handleNecklace(result[0]))
-
-
-input("Press Enter key to exit...")
+    # spellObserver = hudCreaturesObserver.pipe(
+    #     operators.subscribe_on(threadPoolScheduler)
+    # )
+    # spellObserver.subscribe(lambda result: handleSpell(result[0], result[3]))
+    # healingObserver = fpsWithScreenshot.pipe(
+    #     operators.map(lambda screenshot: (screenshot, player.core.getHealthPercentage(screenshot))),
+    #     operators.map(lambda result: (result[1], player.core.getManaPercentage(result[0]))),
+    #     operators.subscribe_on(threadPoolScheduler)
+    # )
+    # healingObserver.subscribe(lambda result: handleHealing(result[0], result[1]))
+    # hungryObserver = fpsWithScreenshot.pipe(
+    #     operators.map(lambda screenshot: (screenshot, player.core.hasSpecialCondition(screenshot, 'hungry'))),
+    #     operators.subscribe_on(threadPoolScheduler)
+    # )
+    # hungryObserver.subscribe(lambda result: handleHungry(result[0]))
+    # hasteObserver = fpsWithScreenshot.pipe(
+    #     operators.map(lambda screenshot: (screenshot, player.core.hasSpecialCondition(screenshot, 'haste'))),
+    #     operators.subscribe_on(threadPoolScheduler)
+    # )
+    # hasteObserver.subscribe(lambda result: handleHaste(result[0]))
+    # ringObserver = fpsWithScreenshot.pipe(
+    #     operators.map(lambda screenshot: (screenshot, player.core.isEquipmentEquipped(screenshot, 'ring'))),
+    #     operators.subscribe_on(threadPoolScheduler)
+    # )
+    # ringObserver.subscribe(lambda result: handleRing(result[0]))
+    # necklaceObserver = fpsWithScreenshot.pipe(
+    #     operators.map(lambda screenshot: (screenshot, player.core.isEquipmentEquipped(screenshot, 'necklace'))),
+    #     operators.subscribe_on(threadPoolScheduler)
+    # )
+    # necklaceObserver.subscribe(lambda result: handleNecklace(result[0]))
+    while True:
+        time.sleep(10)
+        continue
 
 
 if __name__ == '__main__':
