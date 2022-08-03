@@ -1,11 +1,12 @@
 import cv2
+import mss
 import numpy as np
 import pyautogui
 import random
 import time
 from time import sleep
 import xxhash
-import mss
+
 
 
 def cacheObjectPos(func):
@@ -90,8 +91,8 @@ def locateMultiple(compareImg, img, confidence=0.85):
 
 
 def getScreenshot(window):
-    region = (window.top, window.left, window.width - 15, window.height)
-    screenshot = mss.mss().grab(region)
+    mssInstance = mss.mss()
+    screenshot = mssInstance.grab(mssInstance.monitors[0])
     screenshot = np.array(screenshot)
     screenshot = cv2.cvtColor(screenshot, cv2.COLOR_BGR2RGB)
     return screenshot
