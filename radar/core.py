@@ -1,7 +1,7 @@
 import numpy as np
 import pyautogui
 from radar import config, types
-import utils.core
+import utils.core, utils.image, utils.mouse
 from scipy.spatial import distance
 from time import sleep
 
@@ -95,18 +95,16 @@ def getWaypointIndexFromClosestCoordinate(coordinate, waypoints):
     return sortedWaypoints[0]['index']
 
 
-def goToCoordinate(screenshot, playerCoordinate, coordinate):
+def goToCoordinate(screenshot, currentRadarCoordinate, nextRadarCoordinate):
     (radarToolsPosX, radarToolsPosY, _, _) = getRadarToolsPos(screenshot)
     x0 = radarToolsPosX - config.dimensions['width'] - 11
     y0 = radarToolsPosY - 50
     radarCenterX = x0 + config.dimensions['halfWidth']
     radarCenterY = y0 + config.dimensions['halfHeight']
-    (playerPixelCoordinateX, playerPixelCoordinateY) = utils.core.getPixelFromCoordinate(
-        playerCoordinate)
-    (destinationPixelCoordinateX,
-     destinationPixelCoordinateY) = utils.core.getPixelFromCoordinate(coordinate)
-    x = destinationPixelCoordinateX - playerPixelCoordinateX + radarCenterX
-    y = destinationPixelCoordinateY - playerPixelCoordinateY + radarCenterY
+    xdiff = nextRadarCoordinate[0] - currentRadarCoordinate[0]
+    ydiff = nextRadarCoordinate[1] - currentRadarCoordinate[1]
+    x = xdiff + radarCenterX
+    y = ydiff + radarCenterY
     pyautogui.click(x, y)
     sleep(0.25)
 
