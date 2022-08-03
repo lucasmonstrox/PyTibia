@@ -4,13 +4,12 @@ import battleList.core
 import hud.creatures
 import player.core
 import radar.core
-import utils.core, utils.image
+import utils.core, utils.image, utils.window
 from rx import operators
 from rx.scheduler import ThreadPoolScheduler
 import numpy as np
 import rx
 import time
-import pygetwindow as gw
 import multiprocessing
 # import sys
 # np.set_printoptions(threshold=sys.maxsize)
@@ -256,27 +255,11 @@ def handleHealing(healthPercentage, manaPercentage):
     #     time.sleep(0.25)
 
 
-def getWindow():
-    targetWindowTitle = None
-    allTitles = gw.getAllTitles()
-    for title in allTitles:
-        if title.startswith('Tibia -'):
-            targetWindowTitle = title
-    hasNoTargetWindowTitle = targetWindowTitle == None
-    if hasNoTargetWindowTitle:
-        return None
-    windowTitles = gw.getWindowsWithTitle(targetWindowTitle)
-    hasNoWindowsMatchingTitles = len(windowTitles) == 0
-    if hasNoWindowsMatchingTitles:
-        return None
-    return windowTitles[0]
-
-
 def handleWindow(_):
     global window
     windowIsEmpty = window is None
     if windowIsEmpty:
-        window = getWindow()
+        window = utils.window.getWindow()
     return window
 
 
@@ -350,9 +333,8 @@ def main():
         operators.map(lambda result: [result[0], result[1], battleList.core.getCreatures(result[0])]),
     )
     hudCreaturesObserver = battlelistObserver.pipe(
-        operators.map(lambda result: [result[0], result[1], result[2], hud.creatures.getCreatures(result[0], result[2])]),
+        operators.map(lambda result: [result[0], result[1], result[2], hud.creatures.getCreatures(result[0], result[2], radarCoordinate=result[1])]),
     )
-    
     cavebotObserver = hudCreaturesObserver.pipe(
         operators.filter(lambda result: result[2] != None and len(result[3]) > 0 and shouldIgnoreTargetAndGoToNextWaypoint == False),
         operators.subscribe_on(threadPoolScheduler)
@@ -360,43 +342,36 @@ def main():
     cavebotObserver.subscribe(
         lambda result: handleCavebot(result[0], result[1], result[2], result[3])
     )
-    
     waypointObserver = hudCreaturesObserver.pipe(
         operators.filter(lambda result: shouldExecuteWaypoint(result[2], shouldIgnoreTargetAndGoToNextWaypoint)),
         operators.subscribe_on(threadPoolScheduler)
     )
     waypointObserver.subscribe(lambda result: handleWaypoints(result[0], result[1]))
-    
     spellObserver = hudCreaturesObserver.pipe(
         operators.subscribe_on(threadPoolScheduler)
     )
     spellObserver.subscribe(lambda result: handleSpell(result[0], result[3]))
-    
     healingObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: (screenshot, player.core.getHealthPercentage(screenshot))),
         operators.map(lambda result: (result[1], player.core.getManaPercentage(result[0]))),
         operators.subscribe_on(threadPoolScheduler)
     )
     healingObserver.subscribe(lambda result: handleHealing(result[0], result[1]))
-
     hungryObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: (screenshot, player.core.hasSpecialCondition(screenshot, 'hungry'))),
         operators.subscribe_on(threadPoolScheduler)
     )
     hungryObserver.subscribe(lambda result: handleHungry(result[0]))
-
     hasteObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: (screenshot, player.core.hasSpecialCondition(screenshot, 'haste'))),
         operators.subscribe_on(threadPoolScheduler)
     )
     hasteObserver.subscribe(lambda result: handleHaste(result[0]))
-
     ringObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: (screenshot, player.core.isEquipmentEquipped(screenshot, 'ring'))),
         operators.subscribe_on(threadPoolScheduler)
     )
     ringObserver.subscribe(lambda result: handleRing(result[0]))
-
     necklaceObserver = fpsWithScreenshot.pipe(
         operators.map(lambda screenshot: (screenshot, player.core.isEquipmentEquipped(screenshot, 'necklace'))),
         operators.subscribe_on(threadPoolScheduler)
