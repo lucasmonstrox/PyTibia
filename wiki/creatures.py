@@ -107,7 +107,6 @@ creatures = {
     "Bonny Bunny": {"exp": 0, "hp": 200},
     "Bony Sea Devil": {"exp": 19470, "hp": 24000},
     "Boogey": {"exp": 475, "hp": 930},
-    "Boogy": {"exp": 950, "hp": 1300},
     "Bound Astral Power": {"exp": None, "hp": None},
     "Bovinus": {"exp": 60, "hp": 150},
     "Brachiodemon": {"exp": 14080, "hp": 25000},
