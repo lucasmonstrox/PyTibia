@@ -1,11 +1,10 @@
 ahocorapy~=1.6.1
-d3dshot~=0.1.5
+mss~=6.1.0
 numpy~=1.23.0
 opencv-python~=4.6.0.66
 Pillow~=9.1.1
 pyautogui~=0.9.53
 pygetwindow~=0.0.9
-pytesseract~=0.3.9
 rx~=3.2.0
 scipy~=1.8.1
 xxhash~=3.0.0
