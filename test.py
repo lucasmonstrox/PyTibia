@@ -1,11 +1,14 @@
 import numpy as np
+import cv2
 from time import sleep, time
+import actionBar.slot
 import battleList.core
 from chat import chat
 import hud.creatures
 import radar.config, radar.core
 import utils.core, utils.image, utils.window
 import utils.window
+from PIL import Image, ImageOps
 
 
 def main():
@@ -14,7 +17,17 @@ def main():
     beingAttackedCreature = None
     # corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
     while True:
-        screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
+        screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
+        slotCount = actionBar.slot.getSlotCount(screenshot)
+        print(slotCount)
+        # for digit in np.arange(10):
+        # digit = 4
+        # number = Image.open('actionBar/images/slotDigits/{}.png'.format(digit))
+        # number = ImageOps.grayscale(number)
+        # newNumber = np.array(number.copy(), dtype=np.uint8)
+        # newNumber = np.where(newNumber == 0, 0, 255)
+        # newNumber = np.array(newNumber, dtype=np.uint8)
+        # utils.image.save(newNumber, 'actionBar/images/slotDigits/{}.png'.format(digit))
         # utils.image.save(screenshot, 'screenshot.png')
         # radarCoordinate = radar.core.getCoordinate(screenshot)
         # battleListCreatures = battleList.core.getCreatures(screenshot)
@@ -25,7 +38,7 @@ def main():
         #     beingAttackedCreature =  hudCreatures[hudCreatures['isBeingAttacked'] == True][0]
         #     hasTargetToCreatureByIndex = hud.creatures.hasTargetToCreatureByIndex(walkableFloorsSqms, hudCreatures['slot'], beingAttackedCreature['slot'])
         #     print('hasTargetToCreatureByIndex', hasTargetToCreatureByIndex)
-        break
+        # break
         # beingAttackedIndexes = np.where(hudCreatures['isBeingAttacked'] == True)[0]
         # hasCreatureBeingAttacked = len(beingAttackedIndexes) > 0
         # if chat.hasNewLoot(screenshot) and beingAttackedCreature:

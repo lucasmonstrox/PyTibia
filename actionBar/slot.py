@@ -48,8 +48,7 @@ def getSlotCount(screenshot):
     y0 = y + 22
     y1 = y0 + 8
     digits = screenshot[y0:y1, x0:x1]
-    digits = digits[:,6:30]
-    digits = np.where(digits <= 30, 0, digits)
+    digits = digits[:, 6:30]
     digits = np.where(digits != 0, 255, digits)
     numberOfDigits = 4
     digits = np.array([getNumberFromDigitSlot(digitIndex, digits) for digitIndex in np.arange(numberOfDigits)])
