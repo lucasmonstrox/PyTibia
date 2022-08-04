@@ -84,15 +84,20 @@ def getRadarToolsPos(screenshot):
 
 
 def getWaypointIndexFromClosestCoordinate(coordinate, waypoints):
-    (_, _, floorLevel) = coordinate
+    (x, y, floorLevel) = coordinate
     waypointsIndexes = np.nonzero(waypoints['coordinate'][:, 2] == floorLevel)[0]
     hasNoWaypointsIndexes = len(waypointsIndexes) == 0
     if hasNoWaypointsIndexes:
         return
-    possibleWaypoints = np.array([(waypointIndex, distance.euclidean(waypoints[waypointIndex]['coordinate'], coordinate))
-                                for waypointIndex in waypointsIndexes], dtype=types.waypointDistanceType)
-    sortedWaypoints = np.sort(possibleWaypoints, order='distance')
-    return sortedWaypoints[0]['index']
+    coordinates = waypoints[waypointsIndexes]['coordinate'][:, :-1]
+    currentCoordinate = [x, y]
+    currentCoordinates = np.broadcast_to(currentCoordinate, (len(coordinates), 2))
+    absolute = np.absolute(coordinates - currentCoordinates)
+    power = absolute**2
+    sum = np.sum(power, axis=1)
+    sqrt = np.sqrt(sum)
+    lowestIndex = np.argmin(sqrt)
+    return lowestIndex
 
 
 def goToCoordinate(screenshot, currentRadarCoordinate, nextRadarCoordinate):
