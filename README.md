@@ -34,8 +34,10 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
   - Count cap :heavy_check_mark:
   - Auto ring :heavy_check_mark:
 - Loot:
-  - Get dead monsters by player :warning:
+  - Get dead monsters by player
     - Parse server logs message to get loot notification :heavy_check_mark:
+    - Get dead monster by target :heavy_check_mark:
+    - Get dead monster by exori :heavy_check_mark:
   - Collect loot :warning:
     - When hunting, go to dead monster to collect :warning:
     - Detect container full :heavy_check_mark:
