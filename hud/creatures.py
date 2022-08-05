@@ -162,6 +162,35 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
     return creatures
 
 
+def getDifferntCreaturesBySlots(previousHudCreatures, currentHudCreatures, slots):
+    previousHudCreaturesBySlots = np.array(
+        [], dtype=hud.creatures.creatureType)
+    currentHudCreaturesBySlots = np.array(
+        [], dtype=hud.creatures.creatureType)
+    differentCreatures = np.array([], dtype=hud.creatures.creatureType)
+    for previousHudCreature in previousHudCreatures:
+        if np.isin(previousHudCreature['slot'], slots).all():
+            previousHudCreaturesBySlots = np.append(
+                previousHudCreaturesBySlots, [previousHudCreature])
+    for currentHudCreature in currentHudCreatures:
+        if np.isin(currentHudCreature['slot'], slots).all():
+            currentHudCreaturesBySlots = np.append(
+                currentHudCreaturesBySlots, [currentHudCreature])
+    for previousHudCreature in previousHudCreaturesBySlots:
+        creatureDoesNotExists = True
+        for currentHudCreature in currentHudCreatures:
+            previousHudCreatureHash = utils.core.hashitHex(
+                previousHudCreature)
+            currentHudCreatureHash = utils.core.hashitHex(
+                currentHudCreature)
+            if previousHudCreatureHash == currentHudCreatureHash:
+                creatureDoesNotExists = False
+                break
+        if creatureDoesNotExists:
+            differentCreatures = np.append(differentCreatures, [previousHudCreature])
+    return differentCreatures
+
+
 def getNearestCreaturesCount(creatures):
     hudWalkableFloorsSqmsCreatures = np.zeros((11, 15), dtype=np.uint)
     xySlots = creatures['slot'][:, [1, 0]]
