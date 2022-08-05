@@ -48,45 +48,24 @@ def main():
                     lastClickedTarget = None
                     break
                 creatureIndex += 1
-        print('hasNewLoot', hasNewLoot)
         hasExoriCooldown = actionBar.cooldown.hasExoriCooldown(screenshot)
-        print('hasExoriCooldown', hasExoriCooldown)
         if hasNewLoot and hasExoriCooldown:
-            targetSlots = np.array([
-                [4, 6],
-                [4, 7],
-                [4, 8],
-                [5, 6],
-                [5, 8],
-                [6, 6],
-                [6, 7],
-                [6, 8],
-            ])
-            previousHudCreaturesBySlots = np.array(
-                [], dtype=hud.creatures.creatureType)
-            currentHudCreaturesBySlots = np.array(
-                [], dtype=hud.creatures.creatureType)
-            diff = np.array([], dtype=hud.creatures.creatureType)
-            for previousHudCreature in previousHudCreatures:
-                if np.isin(previousHudCreature['slot'], targetSlots).all():
-                    previousHudCreaturesBySlots = np.append(
-                        previousHudCreaturesBySlots, [previousHudCreature])
-            for currentHudCreature in currentHudCreatures:
-                if np.isin(currentHudCreature['slot'], targetSlots).all():
-                    currentHudCreaturesBySlots = np.append(
-                        currentHudCreaturesBySlots, [currentHudCreature])
-            for previousHudCreature in previousHudCreaturesBySlots:
-                creatureDoesNotExists = True
-                for currentHudCreature in currentHudCreatures:
-                    previousHudCreatureHash = utils.core.hashitHex(
-                        previousHudCreature)
-                    currentHudCreatureHash = utils.core.hashitHex(
-                        currentHudCreature)
-                    if previousHudCreatureHash == currentHudCreatureHash:
-                        creatureDoesNotExists = False
-                        break
-                if creatureDoesNotExists:
-                    diff = np.append(diff, [previousHudCreature])
+            differentCreatures = hud.creatures.getDifferntCreaturesBySlots(
+                previousHudCreatures,
+                currentHudCreatures,
+                np.array([
+                    [4, 6],
+                    [4, 7],
+                    [4, 8],
+                    [5, 6],
+                    [5, 8],
+                    [6, 6],
+                    [6, 7],
+                    [6, 8],
+                ])
+            )
+            corpsesToLoot = np.append(corpsesToLoot, differentCreatures)
+            print('differentCreatures', differentCreatures)
         if hasCreatureBeingAttacked:
             beingAttackedCreature = currentHudCreatures[beingAttackedIndexes[0]]
         else:
