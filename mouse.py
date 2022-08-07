@@ -17,6 +17,9 @@ import utils.window
 import datetime
 from typing import cast
 
+pyautogui.FAILSAFE = False
+pyautogui.PAUSE = 0
+
 
 def switch_map(mapper):
     mapper_ = mapper or cast(of)
@@ -27,32 +30,51 @@ def switch_map(mapper):
 
 
 def main():
+    x = np.arange(320, 740)
+    y = np.arange(120, 540)
+    z = np.column_stack((x, y))
+    # pyautogui.moveTo(320, 740, duration=3)
+    # pyautogui.moveTo(1040, 120, duration=3)
     pixelSequence = Subject()
-    mousePoint = pixelSequence.pipe(
-        switch_map(lambda items: timer(0, 0.9).pipe(
+
+    def test(items):
+        print('aew')
+        return timer(0, 0.005).pipe(
             operators.map(lambda i: items[i]),
-            operators.take(3)
-        )),
+            operators.take(len(items))
+        )
+
+    mousePoint = pixelSequence.pipe(
+        switch_map(test),
     )
+
     mousePoint.subscribe(
-        lambda res: print("Mouse set to: {}".format(res)),
+        lambda res: pyautogui.moveTo(res[0], res[1]),
         lambda err: print('err', err),
         lambda: print('complete'),
     )
-    pixelSequence.on_next([
-        [0, 1],
-        [10, 11],
-        [20, 21],
-        [30, 31],
-        [40, 41],
-    ])
+
+    x1 = np.arange(10, 610)
+    y1 = np.arange(210, 810)
+    z1 = np.column_stack((x1, y1))
+    # a = np.arange(320, 321)
+    # pixelSequence.on_next([
+    #     [0, 1],
+    #     [10, 11],
+    #     [20, 21],
+    #     [30, 31],
+    #     [40, 41],
+    # ])
+    pixelSequence.on_next(z)
+    time.sleep(1)
+    pixelSequence.on_next(z1)
     while True:
-        time.sleep(2)
-        pixelSequence.on_next([
-            [100, 50],
-            [200, 50],
-            [300, 50],
-        ])
+
+        #     pixelSequence.on_next([
+        #         [100, 50],
+        #         [200, 50],
+        #         [300, 50],
+        #     ])
         continue
 
 
