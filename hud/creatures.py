@@ -1,9 +1,12 @@
 import math
+from re import A
 import numpy as np
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 import hud.core
-import utils.core, utils.image, utils.matrix
+import utils.core
+import utils.image
+import utils.matrix
 import wiki.creatures
 
 
@@ -17,7 +20,8 @@ lifeBarFlattenedImg = np.zeros(lifeBarBlackPixelsMapper.size)
 hudWidth = 480
 creaturesNamesHashes = {}
 for monster in wiki.creatures.creatures:
-    creaturesNamesHashes[monster] = utils.image.loadAsArray('hud/images/monsters/{}.png'.format(monster))
+    creaturesNamesHashes[monster] = utils.image.loadAsArray(
+        'hud/images/monsters/{}.png'.format(monster))
 creatureType = np.dtype([
     ('name', np.str_, 64),
     ('healthPercentage', np.uint8),
@@ -39,9 +43,10 @@ def cleanCreatureName(creatureName):
     return creatureName
 
 
-# TODO: group pixels by 27 black pixels, it means a possible life bar
 def getCreaturesBars(hudImg):
-    blackPixelsIndexes = np.nonzero(hudImg == 0)[0]
+    # TODO: improve clean code
+    flattenedHudImg = hudImg.flatten()
+    blackPixelsIndexes = np.nonzero(flattenedHudImg == 0)[0]
     maxBlackPixelIndex = 168960 - 1468
     allowedBlackPixelsIndexes = np.nonzero(
         blackPixelsIndexes < maxBlackPixelIndex)[0]
@@ -49,10 +54,21 @@ def getCreaturesBars(hudImg):
     noBlackPixels = blackPixelsIndexes.size == 0
     if noBlackPixels:
         return np.array([])
-    x = np.broadcast_to(
+    blackPixelsIndexesDiff = np.diff(blackPixelsIndexes)
+    blackPixelsIndexesDiff = np.where(blackPixelsIndexesDiff == 1, 1, 0)
+    cumulativeOfBlackPixelsIndexesDiff = np.cumsum(blackPixelsIndexesDiff)
+    corr = np.diff(np.hstack(
+        ((0,), cumulativeOfBlackPixelsIndexesDiff[blackPixelsIndexesDiff == 0])))
+    a2 = blackPixelsIndexesDiff.copy()
+    a2[blackPixelsIndexesDiff == 0] -= corr
+    f = a2.cumsum()
+    h = np.where(f == 26)[0]
+    h = h - 25
+    blackPixelsIndexes = np.take(blackPixelsIndexes, h)
+    blackPixelsIndexes2d = np.broadcast_to(
         blackPixelsIndexes, (lifeBarBlackPixelsMapper.size, blackPixelsIndexes.size))
-    x = np.transpose(x)
-    z = np.add(x, lifeBarBlackPixelsMapper)
+    blackPixelsIndexes2d = np.transpose(blackPixelsIndexes2d)
+    z = np.add(blackPixelsIndexes2d, lifeBarBlackPixelsMapper)
     pixelsColorsIndexes = np.take(hudImg, z)
     g = (pixelsColorsIndexes == lifeBarFlattenedImg).all(1)
     possibleCreatures = np.nonzero(g)[0]
@@ -74,23 +90,31 @@ def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
     hudwalkableFloorsSqms = walkableFloorsSqms[y-5:y+6, x-7:x+8]
     hudwalkableFloorsSqmsCreatures = np.zeros((11, 15))
     creaturesSlots = creatures['slot'][:, [1, 0]]
-    hudwalkableFloorsSqmsCreatures[creaturesSlots[:, 0], creaturesSlots[:, 1]] = 1
+    hudwalkableFloorsSqmsCreatures[creaturesSlots[:,
+                                                  0], creaturesSlots[:, 1]] = 1
     adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudwalkableFloorsSqms)
     sqmsGraph = csr_matrix(adjacencyMatrix)
     playerHudIndex = 82
-    sqmsGraphWeights = dijkstra(sqmsGraph, directed=True, indices=playerHudIndex, unweighted=False)
-    creaturesIndexes = np.nonzero(hudwalkableFloorsSqmsCreatures.flatten() == 1)[0]
+    sqmsGraphWeights = dijkstra(
+        sqmsGraph, directed=True, indices=playerHudIndex, unweighted=False)
+    creaturesIndexes = np.nonzero(
+        hudwalkableFloorsSqmsCreatures.flatten() == 1)[0]
     creaturesGraphWeights = np.take(sqmsGraphWeights, creaturesIndexes)
     nonTargetCreaturesIndexes = np.where(creaturesGraphWeights == np.inf)[0]
     creaturesIndexes = np.delete(creaturesIndexes, nonTargetCreaturesIndexes)
-    creaturesGraphWeights = np.delete(creaturesGraphWeights, nonTargetCreaturesIndexes)
+    creaturesGraphWeights = np.delete(
+        creaturesGraphWeights, nonTargetCreaturesIndexes)
     hasOnlyNonTargetCreatures = len(creaturesGraphWeights) == 0
     if hasOnlyNonTargetCreatures:
         return None
-    creaturesDistances = np.where(creaturesGraphWeights == np.amin(creaturesGraphWeights))[0]
-    closestCreatureHudIndex = creaturesIndexes[np.random.choice(creaturesDistances)]
-    creatureSlot = [closestCreatureHudIndex % 15, closestCreatureHudIndex // 15]
-    closestCreatureIndex = np.where((creatures['slot'] == creatureSlot).all(axis=1))[0][0]
+    creaturesDistances = np.where(
+        creaturesGraphWeights == np.amin(creaturesGraphWeights))[0]
+    closestCreatureHudIndex = creaturesIndexes[np.random.choice(
+        creaturesDistances)]
+    creatureSlot = [closestCreatureHudIndex %
+                    15, closestCreatureHudIndex // 15]
+    closestCreatureIndex = np.where(
+        (creatures['slot'] == creatureSlot).all(axis=1))[0][0]
     closestCreature = creatures[closestCreatureIndex]
     return closestCreature
 
@@ -111,51 +135,73 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
     possibleCreatures = {}
     for battleListCreature in battleListCreatures:
         if battleListCreature['name'] != 'Unknown':
-            possibleCreatures[battleListCreature['name']] = creaturesNamesHashes[battleListCreature['name']]
+            possibleCreatures[battleListCreature['name']
+                              ] = creaturesNamesHashes[battleListCreature['name']]
     for creatureName in possibleCreatures:
-        _, creatureNameWidth  = possibleCreatures[creatureName].shape
+        _, creatureNameWidth = possibleCreatures[creatureName].shape
         for creatureBar in creaturesBars:
             (creatureBarStartingX, creatureBarStartingY) = creatureBar
             creatureNameImgHalfWidth = math.floor(creatureNameWidth / 2)
             leftDiff = max(creatureNameImgHalfWidth - 13, 0)
             gapLeft = 0 if creatureBarStartingX > leftDiff else leftDiff - creatureBarStartingX
-            gapInnerLeft = 0 if creatureNameWidth > 27  else math.ceil((27 - creatureNameWidth) / 2)
-            rightDiff = max(creatureNameWidth - creatureNameImgHalfWidth - 14, 0)
-            gapRight = 0 if hud.core.hudSize[0] > (creatureBarStartingX + 27 + rightDiff) else creatureBarStartingX + 27 + rightDiff - hud.core.hudSize[0]  
-            gapInnerRight = 0 if creatureNameWidth > 27 else math.floor((27 - creatureNameWidth) / 2)
-            startingX = max(0, creatureBarStartingX - creatureNameImgHalfWidth + 13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
-            endingX = min(480, creatureBarStartingX + creatureNameImgHalfWidth + 13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
+            gapInnerLeft = 0 if creatureNameWidth > 27 else math.ceil(
+                (27 - creatureNameWidth) / 2)
+            rightDiff = max(creatureNameWidth -
+                            creatureNameImgHalfWidth - 14, 0)
+            gapRight = 0 if hud.core.hudSize[0] > (
+                creatureBarStartingX + 27 + rightDiff) else creatureBarStartingX + 27 + rightDiff - hud.core.hudSize[0]
+            gapInnerRight = 0 if creatureNameWidth > 27 else math.floor(
+                (27 - creatureNameWidth) / 2)
+            startingX = max(0, creatureBarStartingX - creatureNameImgHalfWidth +
+                            13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
+            endingX = min(480, creatureBarStartingX + creatureNameImgHalfWidth +
+                          13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
             creatureNameImg = creaturesNamesHashes[creatureName].copy()
-            creatureWithDirtNameImg = hudImg[creatureBarStartingY - 13: creatureBarStartingY - 13 + 11, startingX:endingX]
+            creatureWithDirtNameImg = hudImg[creatureBarStartingY -
+                                             13: creatureBarStartingY - 13 + 11, startingX:endingX]
             if creatureNameImg.shape[1] != creatureWithDirtNameImg.shape[1]:
-                creatureWithDirtNameImg = hudImg[creatureBarStartingY - 13: creatureBarStartingY - 13 + 11, startingX:endingX+1]
-            creatureWithDirtNameImg = cleanCreatureName(creatureWithDirtNameImg)
-            creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg)
+                creatureWithDirtNameImg = hudImg[creatureBarStartingY -
+                                                 13: creatureBarStartingY - 13 + 11, startingX:endingX+1]
+            creatureWithDirtNameImg = cleanCreatureName(
+                creatureWithDirtNameImg)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
+                creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
-                creature = makeCreature(creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
+                creature = makeCreature(
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 continue
             creatureNameImg2 = creaturesNamesHashes[creatureName].copy()
-            creatureWithDirtNameImg2 = hudImg[creatureBarStartingY - 13: creatureBarStartingY - 13 + 11, startingX+1:endingX+1]
+            creatureWithDirtNameImg2 = hudImg[creatureBarStartingY -
+                                              13: creatureBarStartingY - 13 + 11, startingX+1:endingX+1]
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
-                creatureNameImg2 = creatureNameImg2[:, 0:creatureNameImg2.shape[1] - 1]
-            creatureWithDirtNameImg2 = cleanCreatureName(creatureWithDirtNameImg2)
-            creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg2, creatureNameImg2)
+                creatureNameImg2 = creatureNameImg2[:,
+                                                    0:creatureNameImg2.shape[1] - 1]
+            creatureWithDirtNameImg2 = cleanCreatureName(
+                creatureWithDirtNameImg2)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
+                creatureWithDirtNameImg2, creatureNameImg2)
             if creatureDidMatch:
-                creature = makeCreature(creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
+                creature = makeCreature(
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 continue
-            creatureWithDirtNameImg3 = hudImg[creatureBarStartingY - 13: creatureBarStartingY - 13 + 11, startingX:endingX-1]
-            creatureWithDirtNameImg3 = cleanCreatureName(creatureWithDirtNameImg3)
+            creatureWithDirtNameImg3 = hudImg[creatureBarStartingY -
+                                              13: creatureBarStartingY - 13 + 11, startingX:endingX-1]
+            creatureWithDirtNameImg3 = cleanCreatureName(
+                creatureWithDirtNameImg3)
             creatureNameImg3 = creaturesNamesHashes[creatureName].copy()
             creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
             if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
-                creatureNameImg3 = creatureNameImg3[:, 0:creatureNameImg3.shape[1] - 1]
-            creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg3, creatureNameImg3)
+                creatureNameImg3 = creatureNameImg3[:,
+                                                    0:creatureNameImg3.shape[1] - 1]
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
+                creatureWithDirtNameImg3, creatureNameImg3)
             if creatureDidMatch:
-                creature = makeCreature(creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
+                creature = makeCreature(
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 continue
@@ -187,7 +233,8 @@ def getDifferntCreaturesBySlots(previousHudCreatures, currentHudCreatures, slots
                 creatureDoesNotExists = False
                 break
         if creatureDoesNotExists:
-            differentCreatures = np.append(differentCreatures, [previousHudCreature])
+            differentCreatures = np.append(
+                differentCreatures, [previousHudCreature])
     return differentCreatures
 
 
@@ -210,7 +257,8 @@ def hasTargetToCreatureByIndex(hudWalkableFloorsSqms, hudCreaturesSlots, index):
     adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudWalkableFloorsSqms)
     graph = csr_matrix(adjacencyMatrix)
     playerHudIndex = 82
-    graphWeights = dijkstra(graph, directed=True, indices=playerHudIndex, unweighted=False)
+    graphWeights = dijkstra(graph, directed=True,
+                            indices=playerHudIndex, unweighted=False)
     graphWeights = graphWeights.reshape(11, 15)
     creatureGraphValue = graphWeights[index[1], index[0]]
     hasTarget = creatureGraphValue != np.inf
@@ -229,11 +277,14 @@ def makeCreature(creatureName, coordinate, hudCoordinate, hudImg=None, radarCoor
     ySlot = 10 if ySlot > 10 else ySlot
     healthPercentage = 100
     borderedCreatureImg = hudImg[y+5:y+5+32, x-3:x-3+32]
-    isBeingAttacked = np.sum(np.where(np.logical_or(borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0)) > 10
+    isBeingAttacked = np.sum(np.where(np.logical_or(
+        borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0)) > 10
     slot = (xSlot, ySlot)
     gameCoordinateX = radarCoordinate[0] - 7 + xSlot
     gameCoordinateY = radarCoordinate[1] - 5 + ySlot
     gameCoordinate = (gameCoordinateX, gameCoordinateY, radarCoordinate[2])
-    windowCoordinate = (hudCoordinateX + xCoordinate, hudCoordinateY + yCoordinate)
-    creature = (creatureName, healthPercentage, isBeingAttacked, slot, gameCoordinate, windowCoordinate)
+    windowCoordinate = (hudCoordinateX + xCoordinate,
+                        hudCoordinateY + yCoordinate)
+    creature = (creatureName, healthPercentage, isBeingAttacked,
+                slot, gameCoordinate, windowCoordinate)
     return creature
