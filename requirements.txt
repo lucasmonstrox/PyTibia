@@ -1,6 +1,6 @@
 ahocorapy~=1.6.1
 mss~=6.1.0
-numpy~=1.23.0
+numpy~=1.21.0
 opencv-python~=4.6.0.66
 Pillow~=9.1.1
 pyautogui~=0.9.53
