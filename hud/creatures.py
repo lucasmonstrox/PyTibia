@@ -120,7 +120,7 @@ def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
     return closestCreature
 
 
-def getCreatures(screenshot, battleListCreatures, radarCoordinate=None, creaturesBars=None,hudCoordinate=None, hudImg=None):
+def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
     hudCoordinate = hud.core.getCoordinate(screenshot)
     hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     creaturesBars = getCreaturesBars(hudImg.flatten())
