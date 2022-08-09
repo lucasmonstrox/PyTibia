@@ -8,6 +8,7 @@ import utils.core
 import utils.image
 import utils.matrix
 import wiki.creatures
+from time import time
 
 
 lifeBarBlackPixelsMapper = np.array([
@@ -119,9 +120,7 @@ def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
     return closestCreature
 
 
-# TODO: after each loop, remove bar when creatureDidMatch
-# TODO: use matrix calculations instead of for loops
-def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
+def getCreatures(screenshot, battleListCreatures, radarCoordinate=None, creaturesBars=None,hudCoordinate=None, hudImg=None):
     hudCoordinate = hud.core.getCoordinate(screenshot)
     hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     creaturesBars = getCreaturesBars(hudImg.flatten())
@@ -137,9 +136,15 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
         if battleListCreature['name'] != 'Unknown':
             possibleCreatures[battleListCreature['name']
                               ] = creaturesNamesHashes[battleListCreature['name']]
-    for creatureName in possibleCreatures:
+    resolvedCreaturesBars = []
+    creaturesCountByType = np.unique(battleListCreatures, return_counts=True)
+    for creatureIndex, creatureName in enumerate(possibleCreatures):
         _, creatureNameWidth = possibleCreatures[creatureName].shape
         for creatureBar in creaturesBars:
+            creatureBarIsResolved = np.isin(
+                creatureBar, resolvedCreaturesBars).all()
+            if creatureBarIsResolved:
+                continue
             (creatureBarStartingX, creatureBarStartingY) = creatureBar
             creatureNameImgHalfWidth = math.floor(creatureNameWidth / 2)
             leftDiff = max(creatureNameImgHalfWidth - 13, 0)
@@ -171,6 +176,10 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                     creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
+                resolvedCreaturesBars.append(creatureBar)
+                creaturesCountByType[1][creatureIndex] -= 1
+                if creaturesCountByType[1][creatureIndex] <= 0:
+                    break
                 continue
             creatureNameImg2 = creaturesNamesHashes[creatureName].copy()
             creatureWithDirtNameImg2 = hudImg[creatureBarStartingY -
@@ -187,6 +196,10 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                     creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
+                resolvedCreaturesBars.append(creatureBar)
+                creaturesCountByType[1][creatureIndex] -= 1
+                if creaturesCountByType[1][creatureIndex] <= 0:
+                    break
                 continue
             creatureWithDirtNameImg3 = hudImg[creatureBarStartingY -
                                               13: creatureBarStartingY - 13 + 11, startingX:endingX-1]
@@ -204,6 +217,10 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                     creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
+                resolvedCreaturesBars.append(creatureBar)
+                creaturesCountByType[1][creatureIndex] -= 1
+                if creaturesCountByType[1][creatureIndex] <= 0:
+                    break
                 continue
     return creatures
 
