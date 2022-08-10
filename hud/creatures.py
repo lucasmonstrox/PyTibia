@@ -40,7 +40,6 @@ def cleanCreatureName(creatureName):
     creatureName = np.where(creatureName == 152, 0, creatureName)
     creatureName = np.where(creatureName == 170, 0, creatureName)
     creatureName = np.where(creatureName == 192, 0, creatureName)
-    creatureName = np.where(creatureName != 0, 255, creatureName)
     return creatureName
 
 
