@@ -98,7 +98,6 @@ def getScreenshot():
         camera.start(target_fps=60, video_mode=True)
     screenshot = camera.get_latest_frame()
     screenshot = np.array(screenshot)
-    screenshot = cv2.cvtColor(screenshot, cv2.COLOR_BGR2RGB)
     return screenshot
 
 
