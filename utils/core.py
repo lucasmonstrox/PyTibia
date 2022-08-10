@@ -1,12 +1,14 @@
 import cv2
-import mss
 import numpy as np
 import pyautogui
 import random
 import time
 from time import sleep
 import xxhash
+import dxcam
 
+
+camera = dxcam.create()
 
 
 def cacheObjectPos(func):
@@ -20,7 +22,7 @@ def cacheObjectPos(func):
         nonlocal lastX, lastY, lastW, lastH, lastImgHash
         if lastX != None and lastY != None and lastW != None and lastH != None:
             copiedImg = np.ascontiguousarray(screenshot[lastY:lastY +
-                                                        lastH, lastX:lastX + lastW])
+                                                              lastH, lastX:lastX + lastW])
             copiedImgHash = hashit(copiedImg)
             if copiedImgHash == lastImgHash:
                 return (lastX, lastY, lastW, lastH)
@@ -37,6 +39,7 @@ def cacheObjectPos(func):
             screenshot[lastY:lastY + lastH, lastX:lastX + lastW])
         lastImgHash = hashit(lastImg)
         return (x, y, w, h)
+
     return inner
 
 
@@ -91,31 +94,35 @@ def locateMultiple(compareImg, img, confidence=0.85):
 
 
 def getScreenshot():
-    mssInstance = mss.mss()
-    screenshot = mssInstance.grab(mssInstance.monitors[0])
+    if not camera.is_capturing:
+        camera.start(target_fps=60, video_mode=True)
+    screenshot = camera.get_latest_frame()
     screenshot = np.array(screenshot)
     screenshot = cv2.cvtColor(screenshot, cv2.COLOR_BGR2RGB)
     return screenshot
 
 
+def stopScreenshotCamera():
+    camera.stop()
+    camera.release()
+
+
 def press(key, delay=150):
     pyautogui.keyDown(key)
-    sleep(delay/1000)
+    sleep(delay / 1000)
     pyautogui.keyUp(key)
 
 
 def typeKeyboard(phrase):
     words = list(phrase)
     for word in words:
-        time.sleep(random.randrange(70, 190)/1000)
+        time.sleep(random.randrange(70, 190) / 1000)
         press(word)
     time.sleep(random.randrange(70, 190) / 1000)
     press('enter')
 
 
 def randomCoord(x, y, width, height):
-    x = random.randrange(x, x+width)
-    y = random.randrange(y, y+height)
-    return (x,y)
-
-
+    x = random.randrange(x, x + width)
+    y = random.randrange(y, y + height)
+    return (x, y)
