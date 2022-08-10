@@ -141,32 +141,34 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
     for creatureIndex, creatureName in enumerate(possibleCreatures):
         _, creatureNameWidth = possibleCreatures[creatureName].shape
         for creatureBar in creaturesBars:
-            creatureBarIsResolved = np.isin(
-                creatureBar, resolvedCreaturesBars).all()
+            creatureBarIsResolved = len(resolvedCreaturesBars) > 0 and (
+                creatureBar == resolvedCreaturesBars).all(axis=1).any()
             if creatureBarIsResolved:
                 continue
-            (creatureBarStartingX, creatureBarStartingY) = creatureBar
+            (creatureBarX, creatureBarY) = creatureBar
+            creatureBarY0 = creatureBarY - 13
+            creatureBarY1 = creatureBarY0 + 11
             creatureNameImgHalfWidth = math.floor(creatureNameWidth / 2)
             leftDiff = max(creatureNameImgHalfWidth - 13, 0)
-            gapLeft = 0 if creatureBarStartingX > leftDiff else leftDiff - creatureBarStartingX
+            gapLeft = 0 if creatureBarX > leftDiff else leftDiff - creatureBarX
             gapInnerLeft = 0 if creatureNameWidth > 27 else math.ceil(
                 (27 - creatureNameWidth) / 2)
             rightDiff = max(creatureNameWidth -
                             creatureNameImgHalfWidth - 14, 0)
             gapRight = 0 if hud.core.hudSize[0] > (
-                creatureBarStartingX + 27 + rightDiff) else creatureBarStartingX + 27 + rightDiff - hud.core.hudSize[0]
+                creatureBarX + 27 + rightDiff) else creatureBarX + 27 + rightDiff - hud.core.hudSize[0]
             gapInnerRight = 0 if creatureNameWidth > 27 else math.floor(
                 (27 - creatureNameWidth) / 2)
-            startingX = max(0, creatureBarStartingX - creatureNameImgHalfWidth +
+            startingX = max(0, creatureBarX - creatureNameImgHalfWidth +
                             13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
-            endingX = min(480, creatureBarStartingX + creatureNameImgHalfWidth +
+            endingX = min(480, creatureBarX + creatureNameImgHalfWidth +
                           13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
             creatureNameImg = creaturesNamesHashes[creatureName].copy()
-            creatureWithDirtNameImg = hudImg[creatureBarStartingY -
-                                             13: creatureBarStartingY - 13 + 11, startingX:endingX]
+            creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1,
+                                             startingX:endingX]
             if creatureNameImg.shape[1] != creatureWithDirtNameImg.shape[1]:
-                creatureWithDirtNameImg = hudImg[creatureBarStartingY -
-                                                 13: creatureBarStartingY - 13 + 11, startingX:endingX+1]
+                creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1,
+                                                 startingX:endingX+1]
             creatureWithDirtNameImg = cleanCreatureName(
                 creatureWithDirtNameImg)
             creatureDidMatch = utils.matrix.hasMatrixInsideOther(
@@ -182,8 +184,8 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                     break
                 continue
             creatureNameImg2 = creaturesNamesHashes[creatureName].copy()
-            creatureWithDirtNameImg2 = hudImg[creatureBarStartingY -
-                                              13: creatureBarStartingY - 13 + 11, startingX+1:endingX+1]
+            creatureWithDirtNameImg2 = hudImg[creatureBarY0:creatureBarY1,
+                                              startingX+1:endingX+1]
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
                 creatureNameImg2 = creatureNameImg2[:,
                                                     0:creatureNameImg2.shape[1] - 1]
@@ -201,8 +203,8 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                 if creaturesCountByType[1][creatureIndex] <= 0:
                     break
                 continue
-            creatureWithDirtNameImg3 = hudImg[creatureBarStartingY -
-                                              13: creatureBarStartingY - 13 + 11, startingX:endingX-1]
+            creatureWithDirtNameImg3 = hudImg[creatureBarY0:creatureBarY1,
+                                              startingX:endingX - 1]
             creatureWithDirtNameImg3 = cleanCreatureName(
                 creatureWithDirtNameImg3)
             creatureNameImg3 = creaturesNamesHashes[creatureName].copy()

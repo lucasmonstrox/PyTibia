@@ -28,9 +28,9 @@ def main():
     while True:
         loop_time = time()
         hudCreatures = hud.creatures.getCreatures(
-            screenshot, battleListCreatures, radarCoordinate=radarCoordinate, hudCoordinate=hudCoordinate, hudImg=hudImg, creaturesBars=creaturesBars)
+            screenshot, battleListCreatures, radarCoordinate=radarCoordinate)
         print(hudCreatures)
-        # break
+        break
         timef = (time() - loop_time)
         timef = timef if timef else 1
         fps = 1 / timef
