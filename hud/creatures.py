@@ -43,6 +43,43 @@ def cleanCreatureName(creatureName):
     return creatureName
 
 
+def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
+    hasNoCreatures = len(creatures) == 0
+    if hasNoCreatures:
+        return None
+    (x, y) = utils.core.getPixelFromCoordinate(coordinate)
+    hudwalkableFloorsSqms = walkableFloorsSqms[y-5:y+6, x-7:x+8]
+    hudwalkableFloorsSqmsCreatures = np.zeros((11, 15))
+    creaturesSlots = creatures['slot'][:, [1, 0]]
+    hudwalkableFloorsSqmsCreatures[creaturesSlots[:,
+                                                  0], creaturesSlots[:, 1]] = 1
+    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudwalkableFloorsSqms)
+    sqmsGraph = csr_matrix(adjacencyMatrix)
+    playerHudIndex = 82
+    sqmsGraphWeights = dijkstra(
+        sqmsGraph, directed=True, indices=playerHudIndex, unweighted=False)
+    creaturesIndexes = np.nonzero(
+        hudwalkableFloorsSqmsCreatures.flatten() == 1)[0]
+    creaturesGraphWeights = np.take(sqmsGraphWeights, creaturesIndexes)
+    nonTargetCreaturesIndexes = np.where(creaturesGraphWeights == np.inf)[0]
+    creaturesIndexes = np.delete(creaturesIndexes, nonTargetCreaturesIndexes)
+    creaturesGraphWeights = np.delete(
+        creaturesGraphWeights, nonTargetCreaturesIndexes)
+    hasOnlyNonTargetCreatures = len(creaturesGraphWeights) == 0
+    if hasOnlyNonTargetCreatures:
+        return None
+    creaturesDistances = np.where(
+        creaturesGraphWeights == np.amin(creaturesGraphWeights))[0]
+    closestCreatureHudIndex = creaturesIndexes[np.random.choice(
+        creaturesDistances)]
+    creatureSlot = [closestCreatureHudIndex %
+                    15, closestCreatureHudIndex // 15]
+    closestCreatureIndex = np.where(
+        (creatures['slot'] == creatureSlot).all(axis=1))[0][0]
+    closestCreature = creatures[closestCreatureIndex]
+    return closestCreature
+
+
 def getCreaturesBars(hudImg):
     # TODO: improve clean code
     flattenedHudImg = hudImg.flatten()
@@ -82,47 +119,13 @@ def getCreaturesBars(hudImg):
     return creaturesBarsXY
 
 
-def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
-    hasNoCreatures = len(creatures) == 0
-    if hasNoCreatures:
-        return None
-    (x, y) = utils.core.getPixelFromCoordinate(coordinate)
-    hudwalkableFloorsSqms = walkableFloorsSqms[y-5:y+6, x-7:x+8]
-    hudwalkableFloorsSqmsCreatures = np.zeros((11, 15))
-    creaturesSlots = creatures['slot'][:, [1, 0]]
-    hudwalkableFloorsSqmsCreatures[creaturesSlots[:,
-                                                  0], creaturesSlots[:, 1]] = 1
-    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudwalkableFloorsSqms)
-    sqmsGraph = csr_matrix(adjacencyMatrix)
-    playerHudIndex = 82
-    sqmsGraphWeights = dijkstra(
-        sqmsGraph, directed=True, indices=playerHudIndex, unweighted=False)
-    creaturesIndexes = np.nonzero(
-        hudwalkableFloorsSqmsCreatures.flatten() == 1)[0]
-    creaturesGraphWeights = np.take(sqmsGraphWeights, creaturesIndexes)
-    nonTargetCreaturesIndexes = np.where(creaturesGraphWeights == np.inf)[0]
-    creaturesIndexes = np.delete(creaturesIndexes, nonTargetCreaturesIndexes)
-    creaturesGraphWeights = np.delete(
-        creaturesGraphWeights, nonTargetCreaturesIndexes)
-    hasOnlyNonTargetCreatures = len(creaturesGraphWeights) == 0
-    if hasOnlyNonTargetCreatures:
-        return None
-    creaturesDistances = np.where(
-        creaturesGraphWeights == np.amin(creaturesGraphWeights))[0]
-    closestCreatureHudIndex = creaturesIndexes[np.random.choice(
-        creaturesDistances)]
-    creatureSlot = [closestCreatureHudIndex %
-                    15, closestCreatureHudIndex // 15]
-    closestCreatureIndex = np.where(
-        (creatures['slot'] == creatureSlot).all(axis=1))[0][0]
-    closestCreature = creatures[closestCreatureIndex]
-    return closestCreature
-
-
-def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
-    hudCoordinate = hud.core.getCoordinate(screenshot)
-    hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
-    creaturesBars = getCreaturesBars(hudImg.flatten())
+def getCreatures(screenshot, battleListCreatures, radarCoordinate=None, hudCoordinate=None, creaturesBars=None, hudImg=None):
+    if hudCoordinate is None:
+        hudCoordinate = hud.core.getCoordinate(screenshot)
+    if hudImg is None:
+        hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
+    if creaturesBars is None:
+        creaturesBars = getCreaturesBars(hudImg.flatten())
     creatures = np.array([], dtype=creatureType)
     hasNoCreaturesBars = len(creaturesBars) == 0
     if hasNoCreaturesBars:
@@ -135,15 +138,31 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
         if battleListCreature['name'] != 'Unknown':
             possibleCreatures[battleListCreature['name']
                               ] = creaturesNamesHashes[battleListCreature['name']]
-    resolvedCreaturesBars = []
-    creaturesCountByType = np.unique(battleListCreatures, return_counts=True)
-    for creatureIndex, creatureName in enumerate(possibleCreatures):
-        _, creatureNameWidth = possibleCreatures[creatureName].shape
-        for creatureBar in creaturesBars:
-            creatureBarIsResolved = len(resolvedCreaturesBars) > 0 and (
-                creatureBar == resolvedCreaturesBars).all(axis=1).any()
-            if creatureBarIsResolved:
+    centersBars = np.broadcast_to([239, 175], (len(creaturesBars), 2))
+    absolute = np.absolute(creaturesBars - centersBars)
+    power = absolute**2
+    sum = np.sum(power, axis=1)
+    sqrt = np.sqrt(sum)
+    creaturesBarsSortedInxes = np.argsort(sqrt)
+    # TODO: if only one species, ignore computation
+    for creatureBarSortedIndex in creaturesBarsSortedInxes:
+        creatureBar = creaturesBars[creatureBarSortedIndex]
+        nonCreaturesForCurrentBar = {}
+        for battleListIndex in range(len(battleListCreatures)):
+            battleListCreature = battleListCreatures[battleListIndex]
+            creatureName = battleListCreature['name']
+            creatureTypeAlreadyTried = creatureName in nonCreaturesForCurrentBar
+            if creatureTypeAlreadyTried:
                 continue
+            # TODO: if only one species, ignore computation
+            # thereIsOnlyOneSpeciesLeft = False
+            # if thereIsOnlyOneSpeciesLeft:
+            #     creature = makeCreature(
+            #         creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
+            #     creaturesToAppend = np.array([creature], dtype=creatureType)
+            #     creatures = np.append(creatures, creaturesToAppend)
+            #     break
+            _, creatureNameWidth = creaturesNamesHashes[creatureName].shape
             (creatureBarX, creatureBarY) = creatureBar
             creatureBarY0 = creatureBarY - 13
             creatureBarY1 = creatureBarY0 + 11
@@ -167,21 +186,18 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                                              startingX:endingX]
             if creatureNameImg.shape[1] != creatureWithDirtNameImg.shape[1]:
                 creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1,
-                                                 startingX:endingX+1]
-            creatureWithDirtNameImg = cleanCreatureName(
-                creatureWithDirtNameImg)
-            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
-                creatureWithDirtNameImg, creatureNameImg)
+                                                 startingX:endingX + 1]
+            # TODO: avoid cleaning matrix, search directly by specific colours
+            creatureWithDirtNameImg = cleanCreatureName(creatureWithDirtNameImg)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
                 creature = makeCreature(
                     creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
-                resolvedCreaturesBars.append(creatureBar)
-                creaturesCountByType[1][creatureIndex] -= 1
-                if creaturesCountByType[1][creatureIndex] <= 0:
-                    break
-                continue
+                battleListCreatures = np.delete(
+                    battleListCreatures, battleListIndex)
+                break
             creatureNameImg2 = creaturesNamesHashes[creatureName].copy()
             creatureWithDirtNameImg2 = hudImg[creatureBarY0:creatureBarY1,
                                               startingX+1:endingX+1]
@@ -197,11 +213,9 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                     creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
-                resolvedCreaturesBars.append(creatureBar)
-                creaturesCountByType[1][creatureIndex] -= 1
-                if creaturesCountByType[1][creatureIndex] <= 0:
-                    break
-                continue
+                battleListCreatures = np.delete(
+                    battleListCreatures, battleListIndex)
+                break
             creatureWithDirtNameImg3 = hudImg[creatureBarY0:creatureBarY1,
                                               startingX:endingX - 1]
             creatureWithDirtNameImg3 = cleanCreatureName(
@@ -218,11 +232,10 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                     creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
-                resolvedCreaturesBars.append(creatureBar)
-                creaturesCountByType[1][creatureIndex] -= 1
-                if creaturesCountByType[1][creatureIndex] <= 0:
-                    break
-                continue
+                battleListCreatures = np.delete(
+                    battleListCreatures, battleListIndex)
+                break
+            nonCreaturesForCurrentBar[creatureName] = True
     return creatures
 
 
