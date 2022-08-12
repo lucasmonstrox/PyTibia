@@ -112,18 +112,22 @@ def getSlot12Pos(screenshot):
 
 def getSlotCount(screenshot, key):
 
-    if key == 'f1': (x, y, w, _) = getSlot1Pos(screenshot)
-    if key == 'f2': (x, y, w, _) = getSlot2Pos(screenshot)
-    if key == 'f3': (x, y, w, _) = getSlot3Pos(screenshot)
-    if key == 'f4': (x, y, w, _) = getSlot4Pos(screenshot)
-    if key == 'f5': (x, y, w, _) = getSlot5Pos(screenshot)
-    if key == 'f6': (x, y, w, _) = getSlot6Pos(screenshot)
-    if key == 'f7': (x, y, w, _) = getSlot7Pos(screenshot)
-    if key == 'f8': (x, y, w, _) = getSlot8Pos(screenshot)
-    if key == 'f9': (x, y, w, _) = getSlot9Pos(screenshot)
-    if key == 'f10': (x, y, w, _) = getSlot10Pos(screenshot)
-    if key == 'f11': (x, y, w, _) = getSlot11Pos(screenshot)
-    if key == 'f12': (x, y, w, _) = getSlot12Pos(screenshot)
+    slotPosFunc = {
+        'f1': getSlot1Pos,
+        'f2': getSlot2Pos,
+        'f3': getSlot3Pos,
+        'f4': getSlot4Pos,
+        'f5': getSlot5Pos,
+        'f6': getSlot6Pos,
+        'f7': getSlot7Pos,
+        'f8': getSlot8Pos,
+        'f9': getSlot9Pos,
+        'f10': getSlot10Pos,
+        'f11': getSlot11Pos,
+        'f12': getSlot12Pos
+    }
+
+    (x, y, w, _) = slotPosFunc[key](screenshot)
 
     x1 = x + w
     x0 = x1 - 30
