@@ -1,5 +1,5 @@
 ahocorapy~=1.6.1
-git+https://github.com/ra1nty/DXcam@main
+git+https://github.com/ra1nty/DXcam@main#egg=DXcam
 nptyping~=2.2.0
 numpy~=1.21.0
 opencv-python~=4.6.0.66
