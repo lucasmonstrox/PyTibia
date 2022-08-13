@@ -1,5 +1,6 @@
-
-import utils.core, utils.image, utils.mouse
+import utils.core
+import utils.image
+import utils.mouse
 import wiki.creatures
 
 
