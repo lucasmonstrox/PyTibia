@@ -1,4 +1,6 @@
-import utils.core, utils.image, utils.matrix
+import utils.core
+import utils.image
+import utils.matrix
 import numpy as np
 
 slotImgs = {
@@ -41,7 +43,8 @@ def getNumberFromDigitSlot(digitIndex, digits):
     x0 = digitIndex * digitWidth
     x1 = x0 + digitWidth
     digitImg = digits[:, x0:x1]
-    result = np.array([utils.matrix.hasMatrixInsideOther(digitImg, numberAsImg) for numberAsImg in numbersAsImg])
+    result = np.array([utils.matrix.hasMatrixInsideOther(
+        digitImg, numberAsImg) for numberAsImg in numbersAsImg])
     digit = np.nonzero(result == True)
     cannotGetNumber = len(digit[0]) == 0
     if cannotGetNumber:
@@ -138,7 +141,8 @@ def getSlotCount(screenshot, key):
     digits = np.where(digits <= 30, 0, digits)
     digits = np.where(digits != 0, 255, digits)
     numberOfDigits = 4
-    digits = np.array([getNumberFromDigitSlot(digitIndex, digits) for digitIndex in np.arange(numberOfDigits)])
+    digits = np.array([getNumberFromDigitSlot(digitIndex, digits)
+                      for digitIndex in np.arange(numberOfDigits)])
     digits = digits[digits != None]
     hasNoCount = len(digits) == 0
     if hasNoCount:
