@@ -27,9 +27,11 @@ def main():
     creaturesBars = hud.creatures.getCreaturesBars(hudImg.flatten())
     while True:
         loop_time = time()
-        hudCreatures = hud.creatures.getCreatures(
-            screenshot, battleListCreatures, radarCoordinate=radarCoordinate)
-        print(hudCreatures)
+        # hudCreatures = hud.creatures.getCreatures(
+        # screenshot, battleListCreatures, radarCoordinate=radarCoordinate)
+        # print(hudCreatures)
+        res = battleList.core.isAttackingSomeCreature(battleListCreatures)
+        print(res)
         break
         timef = (time() - loop_time)
         timef = timef if timef else 1
