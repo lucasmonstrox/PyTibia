@@ -1,9 +1,14 @@
 import math
+from nptyping import Int8, NDArray, Shape, Structure
 import numpy as np
+from typing import Any
 from battleList import config, types
-import utils.core, utils.image, utils.mouse
+import utils.core
+import utils.image
+import utils.mouse
 
 
+# TODO: add typings
 # TODO: add unit tests
 # TODO: improve clean code
 def attackSlot(screenshot, slot):
@@ -13,18 +18,21 @@ def attackSlot(screenshot, slot):
     utils.mouse.leftClick(x, y)
 
 
+# TODO: add typings
 # TODO: add unit tests
 @utils.core.cacheObjectPos
 def getContainerBottomBarPos(img):
     return utils.core.locate(img, config.container["bottomBarImg"])
 
 
+# TODO: add typings
 # TODO: add unit tests
 @utils.core.cacheObjectPos
 def getContainerTopBarPos(img):
     return utils.core.locate(img, config.container['topBarImg'])
 
 
+# TODO: add typings
 # TODO: add unit tests
 # TODO: improve clean code
 def getContent(screenshot):
@@ -44,6 +52,7 @@ def getContent(screenshot):
     return content
 
 
+# TODO: add typings
 # TODO: add unit tests
 # TODO: improve clean code
 def getCreatureNameImg(slotImg):
@@ -52,9 +61,7 @@ def getCreatureNameImg(slotImg):
     return creatureNameImg
 
 
-# TODO: add unit tests
-# TODO: improve clean code
-def getCreatureSlotImg(content, slot):
+def getCreatureSlotImg(content: NDArray[Any, Int8], slot: int) -> NDArray[Shape["20, 156"], Int8]:
     isFirstSlot = slot == 0
     startingY = 0 if isFirstSlot else slot * \
         (config.slot["height"] + config.slot["gap"])
@@ -63,6 +70,7 @@ def getCreatureSlotImg(content, slot):
     return slotImg
 
 
+# TODO: add typings
 # TODO: add unit tests
 def getCreatureFromSlot(content, slot):
     slotImg = getCreatureSlotImg(content, slot)
@@ -76,9 +84,11 @@ def getCreatureFromSlot(content, slot):
     return (creatureName, isBeingAttacked)
 
 
+# TODO: add typings
 # TODO: add unit tests
 def getCreatures(screenshot):
     content = getContent(screenshot)
+    utils.image.save(content, 'content.png')
     cannotGetContent = content is None
     if cannotGetContent:
         return None
@@ -92,6 +102,7 @@ def getCreatures(screenshot):
     return creatures
 
 
+# TODO: add typings
 # TODO: add unit tests
 # TODO: improve clean code
 def getFilledSlotsCount(content):
@@ -112,25 +123,26 @@ def getFilledSlotsCount(content):
     return slotsCount
 
 
-# TODO: add unit tests
-def isAttackingSomeCreature(creatures):
+def isAttackingSomeCreature(creatures: NDArray[Any, Structure["name: Str, isBeingAttacked: Bool"]]) -> bool:
     isAttackingSomeCreature = np.any(creatures['isBeingAttacked'] == True)
     return isAttackingSomeCreature
 
 
-# TODO: add unit tests
-# TODO: improve clean code
-def isCreatureBeingAttacked(slotImg):
-    upperCreatureIconBorder = slotImg[0:1, 0:19].flatten()
+def isCreatureBeingAttacked(slotImg: NDArray[Shape["20, 156"], Int8]) -> bool:
+    attackColor = 76
+    highlightedAttackColor = 166
+    upperBorderOfCreatureIcon = slotImg[0:1, 0:19].flatten()
     isCreatureBeingAttacked = np.all(np.logical_or(
-        upperCreatureIconBorder == 76, upperCreatureIconBorder == 166))
+        upperBorderOfCreatureIcon == attackColor, upperBorderOfCreatureIcon == highlightedAttackColor))
     return isCreatureBeingAttacked
 
 
+# TODO: add typings
 # TODO: add unit tests
 def unhighlightName(creatureNameImg):
-    return np.where(
+    unhighlightedName = np.where(
         creatureNameImg == config.creatures["highlightedNamePixelColor"],
         config.creatures["namePixelColor"],
         creatureNameImg
     )
+    return unhighlightedName
