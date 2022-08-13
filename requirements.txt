@@ -1,5 +1,5 @@
 ahocorapy~=1.6.1
-mss~=6.1.0
+nptyping~=2.2.0
 numpy~=1.21.0
 opencv-python~=4.6.0.66
 Pillow~=9.1.1
