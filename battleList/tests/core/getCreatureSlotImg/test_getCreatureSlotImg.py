@@ -8,13 +8,13 @@ import utils.image
 class TestGetCreatureSlotImg(unittest.TestCase):
     def test_should_asser_slots(self):
         firstSlot = utils.image.loadAsArray(
-            'battleList/tests/getCreatureSlotImg/firstSlot.png')
+            'battleList/tests/core/getCreatureSlotImg/firstSlot.png')
         secondSlot = utils.image.loadAsArray(
-            'battleList/tests/getCreatureSlotImg/secondSlot.png')
+            'battleList/tests/core/getCreatureSlotImg/secondSlot.png')
         lastSlot = utils.image.loadAsArray(
-            'battleList/tests/getCreatureSlotImg/lastSlot.png')
+            'battleList/tests/core/getCreatureSlotImg/lastSlot.png')
         content = utils.image.loadAsArray(
-            'battleList/tests/getCreatureSlotImg/content.png')
+            'battleList/tests/core/getCreatureSlotImg/content.png')
         firstSlotAfterExtraction = getCreatureSlotImg(content, 0)
         secondSlotAfterExtraction = getCreatureSlotImg(content, 1)
         lastSlotAfterExtraction = getCreatureSlotImg(content, 43)
