@@ -20,7 +20,6 @@ slot = {
 }
 
 
-# TODO: should load through .npy
 for creatureName in wiki.creatures.creatures:
     creatureNameImg = utils.image.loadAsArray(
         'battleList/images/monsters/{}.png'.format(creatureName))
