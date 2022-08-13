@@ -1,0 +1,10 @@
+name: 'Continuous Integration'
+on: [pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Unit tests
+        uses: python -m unittest
