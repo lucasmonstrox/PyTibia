@@ -12,11 +12,12 @@ def getCreatures(screenshot: UINT8_NDARRAY) -> CREATURE_LIST:
         return None
     filledSlotsCount = extractors.getFilledSlotsCount(content)
     creatures = np.array([getCreatureFromSlot(content, slotIndex)
-                         for slotIndex in np.arange(filledSlotsCount)], dtype=creatureType)
+                          for slotIndex in np.arange(filledSlotsCount)], dtype=creatureType)
     return creatures
 
 
 # TODO: add unit tests
+# TODO: everything(upper border of creature icon, creature name) can be resolved using parallel code
 def getCreatureFromSlot(content: UINT8_NDARRAY, slotIndex: int) -> CREATURE:
     slotImg = extractors.getCreatureSlotImg(content, slotIndex)
     isBeingAttacked = isCreatureBeingAttacked(slotImg)
