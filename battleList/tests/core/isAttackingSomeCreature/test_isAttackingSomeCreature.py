@@ -1,6 +1,6 @@
 import numpy as np
 from battleList.core import isAttackingSomeCreature
-from battleList.types import creatureType
+from battleList.typing import creatureType
 
 
 def test_should_return_False_when_creatures_array_is_empty():
@@ -9,7 +9,7 @@ def test_should_return_False_when_creatures_array_is_empty():
     assert result == False
 
 
-def test_should_return_False_when_there_is_no_creature_being_attacked():
+def test_should_return_False_when_there_is_no_creatures_being_attacked():
     creatures = np.array([('Rat', False)], dtype=creatureType)
     result = isAttackingSomeCreature(creatures)
     assert result == False
