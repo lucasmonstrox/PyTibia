@@ -1,11 +1,12 @@
 import numpy as np
-from battleList.core import getCreatureNameImg
+import pathlib
+from battleList.extractors import getCreatureNameImg
 import utils.image
 
 
 def test_should_get_creature_name_img():
-    slotImg = utils.image.loadAsArray(
-        'battleList/tests/core/getCreatureNameImg/slotImg.png')
+    currentPath = pathlib.Path(__file__).parent.resolve()
+    slotImg = utils.image.loadAsArray(f'{currentPath}/slotImg.png')
     ratNameImg = utils.image.loadAsArray(
         'battleList/images/monsters/Rat.png')
     creatureNameImg = getCreatureNameImg(slotImg)

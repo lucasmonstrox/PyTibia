@@ -1,10 +1,6 @@
 import cv2
 import numpy as np
-# import pytesseract
 from PIL import Image
-
-
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
 
 
 def convertGraysToBlack(arr):
@@ -43,12 +39,3 @@ def filterColorRange(image, upperBound, lowerBound):
     imagemask = cv2.inRange(image, np.array(lowerBound), np.array(upperBound))
     return imagemask
 
-
-# def toString(screenshot, param):
-#     paramStr = '--oem 3 --psm ' + param
-#     messages = pytesseract.image_to_string(screenshot, lang=None, config=paramStr)
-#     return messages
-
-
-# def toTextData(image, param):
-#     return pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT, config=param)

@@ -13,6 +13,7 @@ import utils.image
 import utils.window
 import utils.window
 from PIL import Image, ImageOps
+import pathlib
 
 
 def main():
@@ -22,6 +23,7 @@ def main():
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
     radarCoordinate = radar.core.getCoordinate(screenshot)
     battleListCreatures = battleList.core.getCreatures(screenshot)
+    print(battleListCreatures)
     hudCoordinate = hud.core.getCoordinate(screenshot)
     hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     creaturesBars = hud.creatures.getCreaturesBars(hudImg.flatten())
