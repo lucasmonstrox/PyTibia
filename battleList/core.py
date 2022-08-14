@@ -5,7 +5,6 @@ from core.typing import UINT8_NDARRAY
 import utils.core
 
 
-# TODO: add unit tests
 def getCreatures(screenshot: UINT8_NDARRAY) -> CREATURE_LIST:
     content = extractors.getContent(screenshot)
     cannotGetContent = content is None
