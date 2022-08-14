@@ -1,4 +1,4 @@
-from curses.panel import new_panel
+from os import walk
 import numpy as np
 import cv2
 from time import sleep, time
@@ -38,19 +38,19 @@ def main():
     # ])
     # r = np.take(a, [[0, 1, 2], [5, 6, 7]])
     # print(r)
-    # while True:
-    #     loop_time = time()
-    #     # hudCreatures = hud.creatures.getCreatures(
-    #     #     screenshot, battleListCreatures, radarCoordinate=radarCoordinate)
-    #     # # print(hudCreatures)
-    #     # res = battleList.core.isAttackingSomeCreature(battleListCreatures)
-    #     # print(res)
-    #     # break
-    #     battleListCreatures = battleList.core.getCreatures(screenshot)
-    #     timef = (time() - loop_time)
-    #     timef = timef if timef else 1
-    #     fps = 1 / timef
-    #     print('FPS {}'.format(fps))
+    while True:
+        loop_time = time()
+        # hudCreatures = hud.creatures.getCreatures(
+        #     screenshot, battleListCreatures, radarCoordinate=radarCoordinate)
+        # # print(hudCreatures)
+        # res = battleList.core.isAttackingSomeCreature(battleListCreatures)
+        # print(res)
+        battleListCreatures = battleList.core.getCreatures(screenshot)
+        break
+        timef = (time() - loop_time)
+        timef = timef if timef else 1
+        fps = 1 / timef
+        print('FPS {}'.format(fps))
 
 
 if __name__ == '__main__':
