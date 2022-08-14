@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from typing import Union
 import battleList.config
 import battleList.types
 import core.types
@@ -8,16 +9,16 @@ import utils.image
 
 
 @utils.core.cacheObjectPos
-def getContainerBottomBarPos(screenshot: core.types.UINT8_VECTOR) -> core.types.UINT8_VECTOR:
+def getContainerBottomBarPos(screenshot: core.types.UINT8_VECTOR) -> Union[None, core.types.UINT8_VECTOR]:
     return utils.core.locate(screenshot, battleList.config.container["bottomBarImg"])
 
 
 @utils.core.cacheObjectPos
-def getContainerTopBarPos(screenshot: core.types.UINT8_VECTOR) -> core.types.UINT8_VECTOR:
+def getContainerTopBarPos(screenshot: core.types.UINT8_VECTOR) -> Union[None, core.types.UINT8_VECTOR]:
     return utils.core.locate(screenshot, battleList.config.container['topBarImg'])
 
 
-def getContent(screenshot: core.types.UINT8_VECTOR) -> core.types.UINT8_VECTOR:
+def getContent(screenshot: core.types.UINT8_VECTOR) -> Union[None, core.types.UINT8_VECTOR]:
     containerTopBarPos = getContainerTopBarPos(screenshot)
     cannotGetContainerTopBarPos = containerTopBarPos is None
     if cannotGetContainerTopBarPos:
