@@ -1,12 +1,12 @@
 import numpy as np
 from . import config, extractors
 from battleList.typing import creatureType, CREATURE, CREATURE_LIST, SLOT_IMG
-from core.typing import UINT8_VECTOR
+from core.typing import UINT8_NDARRAY
 import utils.core
 
 
 # TODO: add unit tests
-def getCreatures(screenshot: UINT8_VECTOR) -> CREATURE_LIST:
+def getCreatures(screenshot: UINT8_NDARRAY) -> CREATURE_LIST:
     content = extractors.getContent(screenshot)
     cannotGetContent = content is None
     if cannotGetContent:
@@ -18,7 +18,7 @@ def getCreatures(screenshot: UINT8_VECTOR) -> CREATURE_LIST:
 
 
 # TODO: add unit tests
-def getCreatureFromSlot(content: UINT8_VECTOR, slotIndex: int) -> CREATURE:
+def getCreatureFromSlot(content: UINT8_NDARRAY, slotIndex: int) -> CREATURE:
     slotImg = extractors.getCreatureSlotImg(content, slotIndex)
     isBeingAttacked = isCreatureBeingAttacked(slotImg)
     creatureNameImg = extractors.getCreatureNameImg(slotImg)

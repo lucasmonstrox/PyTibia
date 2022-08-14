@@ -3,12 +3,12 @@ import numpy as np
 from typing import Union
 from . import config, locators
 from battleList.typing import CREATURE_NAME_IMG, SLOT_IMG
-from core.typing import UINT8_VECTOR
+from core.typing import UINT8_NDARRAY
 import utils.core
 import utils.image
 
 
-def getContent(screenshot: UINT8_VECTOR) -> Union[None, UINT8_VECTOR]:
+def getContent(screenshot: UINT8_NDARRAY) -> Union[None, UINT8_NDARRAY]:
     containerTopBarPos = locators.getContainerTopBarPos(screenshot)
     cannotGetContainerTopBarPos = containerTopBarPos is None
     if cannotGetContainerTopBarPos:
@@ -31,7 +31,7 @@ def getCreatureNameImg(slotImg: SLOT_IMG) -> CREATURE_NAME_IMG:
     return creatureNameImg
 
 
-def getCreatureSlotImg(content: UINT8_VECTOR, slot: int) -> SLOT_IMG:
+def getCreatureSlotImg(content: UINT8_NDARRAY, slot: int) -> SLOT_IMG:
     isFirstSlot = slot == 0
     startingY = 0 if isFirstSlot else slot * \
         (config.slot["dimensions"]["height"] + config.slot["grid"]["gap"])
@@ -40,7 +40,7 @@ def getCreatureSlotImg(content: UINT8_VECTOR, slot: int) -> SLOT_IMG:
     return slotImg
 
 
-def getFilledSlotsCount(content: UINT8_VECTOR) -> int:
+def getFilledSlotsCount(content: UINT8_NDARRAY) -> int:
     content = np.ravel(content[:, 23:24])
     contentOfBooleans = np.where(
         np.logical_or(
@@ -60,6 +60,6 @@ def getFilledSlotsCount(content: UINT8_VECTOR) -> int:
 
 
 # TODO: add unit tests
-def getUpperBorderOfCreatureIcon(slotImg: SLOT_IMG) -> UINT8_VECTOR:
+def getUpperBorderOfCreatureIcon(slotImg: SLOT_IMG) -> UINT8_NDARRAY:
     upperBorderOfCreatureIcon = slotImg[0:1, 0:19].flatten()
     return upperBorderOfCreatureIcon
