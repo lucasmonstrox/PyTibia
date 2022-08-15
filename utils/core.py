@@ -97,7 +97,7 @@ def getScreenshot():
     if not camera.is_capturing:
         camera.start(target_fps=60, video_mode=True)
     screenshot = camera.get_latest_frame()
-    screenshot = np.array(screenshot)
+    screenshot = np.array(screenshot, dtype=np.uint8)
     return screenshot
 
 
