@@ -37,6 +37,8 @@ floorsImgs = [
     utils.image.loadAsGrey('radar/images/floor-15.png')
 ]
 
+floorsPathsSqms = np.load('radar/npys/floorsPathsSqms.npy')
+
 images = {
     "tools": utils.image.loadAsGrey('radar/images/radar-tools.png')
 }

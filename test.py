@@ -29,9 +29,8 @@ def main():
     # hudCoordinate = hud.core.getCoordinate(screenshot)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     # creaturesBars = hud.creatures.getCreaturesBars(hudImg.flatten())
-    res = timeit.repeat(lambda: battleList.core.getCreatures(
-        screenshot), repeat=10, number=1)
-    print(res)
+    # res = timeit.repeat(lambda: battleList.core.getCreatures(
+    #     screenshot), repeat=10, number=1)
     # a = new_panel.array([
     #     [1, 2, 3, 4, 5],
     #     [6, 7, 8, 9, 10]
