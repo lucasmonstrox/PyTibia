@@ -8,9 +8,9 @@ currentPath = pathlib.Path(__file__).parent.resolve()
 
 
 def getImages(creatureName: str):
-    slotImg = utils.image.loadAsArray(
+    slotImg = utils.image.loadAsGrey(
         f'{currentPath}/slotsImgs/{creatureName}.png')
-    nameImg = utils.image.loadAsArray(
+    nameImg = utils.image.loadAsGrey(
         f'battleList/images/monsters/{creatureName}.png')
     creatureNameImg = getCreatureNameImg(slotImg)
     return creatureNameImg, nameImg

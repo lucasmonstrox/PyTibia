@@ -21,7 +21,7 @@ lifeBarFlattenedImg = np.zeros(lifeBarBlackPixelsMapper.size)
 hudWidth = 480
 creaturesNamesHashes = {}
 for monster in wiki.creatures.creatures:
-    creaturesNamesHashes[monster] = utils.image.loadAsArray(
+    creaturesNamesHashes[monster] = utils.image.loadAsGrey(
         'hud/images/monsters/{}.png'.format(monster))
 creatureType = np.dtype([
     ('name', np.str_, 64),
@@ -188,8 +188,10 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None, hudCoord
                 creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1,
                                                  startingX:endingX + 1]
             # TODO: avoid cleaning matrix, search directly by specific colours
-            creatureWithDirtNameImg = cleanCreatureName(creatureWithDirtNameImg)
-            creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg)
+            creatureWithDirtNameImg = cleanCreatureName(
+                creatureWithDirtNameImg)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
+                creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
                 creature = makeCreature(
                     creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)

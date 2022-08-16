@@ -1,10 +1,11 @@
 import numpy as np
-import utils.core, utils.image
+import utils.core
+import utils.image
 import utils.core
 import utils.image
 
-leftHudImg = utils.image.loadAsArray('hud/images/leftHud.png')
-rightHudImg = utils.image.loadAsArray('hud/images/rightHud.png')
+leftHudImg = utils.image.loadAsGrey('hud/images/leftHud.png')
+rightHudImg = utils.image.loadAsGrey('hud/images/rightHud.png')
 hudSize = (480, 352)
 
 
@@ -61,5 +62,3 @@ def getSlotFromCoordinate(currentCoordinate, coordinate):
     hudCoordinateX = 7 + diffX
     hudCoordinateY = 5 + diffY
     return hudCoordinateX, hudCoordinateY
-
-

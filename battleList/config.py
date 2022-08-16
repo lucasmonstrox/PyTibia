@@ -11,8 +11,8 @@ container = {
         "width": 156
     },
     "images": {
-        "topBar": utils.image.loadAsArray(f'{imagesPath}/containerTopBar.png'),
-        "bottomBar": utils.image.loadAsArray(f'{imagesPath}/containerBottomBar.png'),
+        "topBar": utils.image.loadAsGrey(f'{imagesPath}/containerTopBar.png'),
+        "bottomBar": utils.image.loadAsGrey(f'{imagesPath}/containerBottomBar.png'),
     },
 }
 creatures = {
@@ -32,7 +32,7 @@ slot = {
 
 
 for creatureName in wiki.creatures.creatures:
-    creatureNameImg = utils.image.loadAsArray(
+    creatureNameImg = utils.image.loadAsGrey(
         f'{imagesPath}/monsters/{creatureName}.png')
     creatureNameImgHash = utils.core.hashit(creatureNameImg)
     creatures["nameImgHashes"][creatureNameImgHash] = creatureName

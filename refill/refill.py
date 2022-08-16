@@ -4,24 +4,34 @@ import utils.image
 import utils.core
 import utils.mouse
 
-npcTradeBarImg = utils.image.loadAsArray('refill/images/npcTradeBar.png')
-npcTradeBottomImg = utils.image.loadAsArray('refill/images/npcTradeBottom.png')
-npcTradeDownArrowImg = utils.image.loadAsArray('refill/images/npcTradeDownArrow.png')
-npcTradeHorScrollImg = utils.image.loadAsArray('refill/images/npcTradeHorScroll.png')
-npcTradeOkImg = utils.image.loadAsArray('refill/images/npcTradeOk.png')
-npcTradeRightArrowImg = utils.image.loadAsArray('refill/images/npcTradeRightArrow.png')
+npcTradeBarImg = utils.image.loadAsGrey('refill/images/npcTradeBar.png')
+npcTradeBottomImg = utils.image.loadAsGrey('refill/images/npcTradeBottom.png')
+npcTradeDownArrowImg = utils.image.loadAsGrey(
+    'refill/images/npcTradeDownArrow.png')
+npcTradeHorScrollImg = utils.image.loadAsGrey(
+    'refill/images/npcTradeHorScroll.png')
+npcTradeOkImg = utils.image.loadAsGrey('refill/images/npcTradeOk.png')
+npcTradeRightArrowImg = utils.image.loadAsGrey(
+    'refill/images/npcTradeRightArrow.png')
 
 itemsImgs = [
-    ('great-health-potion', utils.image.loadAsArray('refill/images/items/great-health-potion.png')),
-    ('great-mana-potion', utils.image.loadAsArray('refill/images/items/great-mana-potion.png')),
-    ('great-spirit-potion', utils.image.loadAsArray('refill/images/items/great-spirit-potion.png')),
-    ('health-potion', utils.image.loadAsArray('refill/images/items/health-potion.png')),
-    ('mana-potion', utils.image.loadAsArray('refill/images/items/mana-potion.png')),
-    ('strong-health-potion', utils.image.loadAsArray('refill/images/items/strong-health-potion.png')),
-    ('strong-mana-potion', utils.image.loadAsArray('refill/images/items/strong-mana-potion.png')),
-    ('ultimate-health-potion', utils.image.loadAsArray('refill/images/items/ultimate-health-potion.png')),
-    ('ultimate-mana-potion', utils.image.loadAsArray('refill/images/items/ultimate-mana-potion.png')),
-    ('ultimate-spirit-potion', utils.image.loadAsArray('refill/images/items/ultimate-spirit-potion.png')),
+    ('great-health-potion',
+     utils.image.loadAsGrey('refill/images/items/great-health-potion.png')),
+    ('great-mana-potion', utils.image.loadAsGrey('refill/images/items/great-mana-potion.png')),
+    ('great-spirit-potion',
+     utils.image.loadAsGrey('refill/images/items/great-spirit-potion.png')),
+    ('health-potion', utils.image.loadAsGrey('refill/images/items/health-potion.png')),
+    ('mana-potion', utils.image.loadAsGrey('refill/images/items/mana-potion.png')),
+    ('strong-health-potion',
+     utils.image.loadAsGrey('refill/images/items/strong-health-potion.png')),
+    ('strong-mana-potion',
+     utils.image.loadAsGrey('refill/images/items/strong-mana-potion.png')),
+    ('ultimate-health-potion',
+     utils.image.loadAsGrey('refill/images/items/ultimate-health-potion.png')),
+    ('ultimate-mana-potion',
+     utils.image.loadAsGrey('refill/images/items/ultimate-mana-potion.png')),
+    ('ultimate-spirit-potion',
+     utils.image.loadAsGrey('refill/images/items/ultimate-spirit-potion.png')),
 ]
 
 itemsImgs = dict(itemsImgs)
@@ -35,7 +45,8 @@ def getTradeTopPos(screenshot):
 @utils.core.cacheObjectPos
 def getTradeBottomPos(screenshot):
     (x, y, w, h) = getTradeTopPos(screenshot)
-    (botX, botY, width, height) = utils.core.locate(utils.image.crop(screenshot, x, y, 174, len(screenshot) - y), npcTradeOkImg)
+    (botX, botY, width, height) = utils.core.locate(utils.image.crop(
+        screenshot, x, y, 174, len(screenshot) - y), npcTradeOkImg)
     return x, y + botY + 26, 174, 2
 
 
@@ -72,21 +83,25 @@ def findItem(window, itemName, tradePos):
 def adjustQuantityBar(window, tradePos, quantity):
     (x, y, w, h) = tradePos
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
-    amountImg = utils.image.convertGraysToBlack(utils.image.crop(screenshot, x + 90, y + h - 51, 34, 14))
-    amount = utils.image.toString(amountImg, "6 -c tessedit_char_whitelist=0123456789")
+    amountImg = utils.image.convertGraysToBlack(
+        utils.image.crop(screenshot, x + 90, y + h - 51, 34, 14))
+    amount = utils.image.toString(
+        amountImg, "6 -c tessedit_char_whitelist=0123456789")
     if amount == quantity:
         return
     pixels = round(quantity / 1.15)
     pyautogui.click(utils.core.randomCoord(x + 18 + pixels, y + h - 63, 1, 6))
     if quantity > 85:
-        (xRest, yRest) = utils.core.randomCoord(x + 18 + pixels, y + h - 63 - 15, 5, 5)
+        (xRest, yRest) = utils.core.randomCoord(
+            x + 18 + pixels, y + h - 63 - 15, 5, 5)
         utils.mouse.mouseMove(xRest, yRest)
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(window))
-    amountImg = utils.image.convertGraysToBlack(utils.image.crop(screenshot, x + 90, y + h - 51, 34, 14))
+    amountImg = utils.image.convertGraysToBlack(
+        utils.image.crop(screenshot, x + 90, y + h - 51, 34, 14))
     amount = int(utils.image.toString(amountImg, "6 -c tessedit_char_whitelist=0123456789 -c "
-                                                "tessedit_char_blacklist"
-                                                "=ABCDEFGHIJKLMNOPQRZTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%¨&*()Ç{"
-                                                "}<>?/"))
+                                      "tessedit_char_blacklist"
+                                      "=ABCDEFGHIJKLMNOPQRZTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%¨&*()Ç{"
+                                      "}<>?/"))
     if (quantity - amount) == 0:
         return
     if (quantity - amount) < 0:

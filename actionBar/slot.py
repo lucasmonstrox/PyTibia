@@ -4,32 +4,32 @@ import utils.matrix
 import numpy as np
 
 slotImgs = {
-    "f1": utils.image.loadAsArray('hud/images/slots/f1.png'),
-    "f2": utils.image.loadAsArray('hud/images/slots/f2.png'),
-    "f3": utils.image.loadAsArray('hud/images/slots/f3.png'),
-    "f4": utils.image.loadAsArray('hud/images/slots/f4.png'),
-    "f5": utils.image.loadAsArray('hud/images/slots/f5.png'),
-    "f6": utils.image.loadAsArray('hud/images/slots/f6.png'),
-    "f7": utils.image.loadAsArray('hud/images/slots/f7.png'),
-    "f8": utils.image.loadAsArray('hud/images/slots/f8.png'),
-    "f9": utils.image.loadAsArray('hud/images/slots/f9.png'),
-    "f10": utils.image.loadAsArray('hud/images/slots/f10.png'),
-    "f11": utils.image.loadAsArray('hud/images/slots/f11.png'),
-    "f12": utils.image.loadAsArray('hud/images/slots/f12.png'),
+    "f1": utils.image.loadAsGrey('hud/images/slots/f1.png'),
+    "f2": utils.image.loadAsGrey('hud/images/slots/f2.png'),
+    "f3": utils.image.loadAsGrey('hud/images/slots/f3.png'),
+    "f4": utils.image.loadAsGrey('hud/images/slots/f4.png'),
+    "f5": utils.image.loadAsGrey('hud/images/slots/f5.png'),
+    "f6": utils.image.loadAsGrey('hud/images/slots/f6.png'),
+    "f7": utils.image.loadAsGrey('hud/images/slots/f7.png'),
+    "f8": utils.image.loadAsGrey('hud/images/slots/f8.png'),
+    "f9": utils.image.loadAsGrey('hud/images/slots/f9.png'),
+    "f10": utils.image.loadAsGrey('hud/images/slots/f10.png'),
+    "f11": utils.image.loadAsGrey('hud/images/slots/f11.png'),
+    "f12": utils.image.loadAsGrey('hud/images/slots/f12.png'),
 }
 
 numbersAsArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 numbersAsImg = [
-    utils.image.loadAsArray('actionBar/images/slotDigits/0.png'),
-    utils.image.loadAsArray('actionBar/images/slotDigits/1.png'),
-    utils.image.loadAsArray('actionBar/images/slotDigits/2.png'),
-    utils.image.loadAsArray('actionBar/images/slotDigits/3.png'),
-    utils.image.loadAsArray('actionBar/images/slotDigits/4.png'),
-    utils.image.loadAsArray('actionBar/images/slotDigits/5.png'),
-    utils.image.loadAsArray('actionBar/images/slotDigits/6.png'),
-    utils.image.loadAsArray('actionBar/images/slotDigits/7.png'),
-    utils.image.loadAsArray('actionBar/images/slotDigits/8.png'),
-    utils.image.loadAsArray('actionBar/images/slotDigits/9.png'),
+    utils.image.loadAsGrey('actionBar/images/slotDigits/0.png'),
+    utils.image.loadAsGrey('actionBar/images/slotDigits/1.png'),
+    utils.image.loadAsGrey('actionBar/images/slotDigits/2.png'),
+    utils.image.loadAsGrey('actionBar/images/slotDigits/3.png'),
+    utils.image.loadAsGrey('actionBar/images/slotDigits/4.png'),
+    utils.image.loadAsGrey('actionBar/images/slotDigits/5.png'),
+    utils.image.loadAsGrey('actionBar/images/slotDigits/6.png'),
+    utils.image.loadAsGrey('actionBar/images/slotDigits/7.png'),
+    utils.image.loadAsGrey('actionBar/images/slotDigits/8.png'),
+    utils.image.loadAsGrey('actionBar/images/slotDigits/9.png'),
 ]
 
 

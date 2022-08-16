@@ -7,10 +7,10 @@ import utils.image
 # TODO: test all slots using different creatures
 def test_should_assert_creature_slots_images():
     currentPath = pathlib.Path(__file__).parent.resolve()
-    firstSlot = utils.image.loadAsArray(f'{currentPath}/firstSlot.png')
-    secondSlot = utils.image.loadAsArray(f'{currentPath}/secondSlot.png')
-    lastSlot = utils.image.loadAsArray(f'{currentPath}/lastSlot.png')
-    content = utils.image.loadAsArray(f'{currentPath}/content.png')
+    firstSlot = utils.image.loadAsGrey(f'{currentPath}/firstSlot.png')
+    secondSlot = utils.image.loadAsGrey(f'{currentPath}/secondSlot.png')
+    lastSlot = utils.image.loadAsGrey(f'{currentPath}/lastSlot.png')
+    content = utils.image.loadAsGrey(f'{currentPath}/content.png')
     firstSlotAfterExtraction = getCreatureSlotImg(content, 0)
     secondSlotAfterExtraction = getCreatureSlotImg(content, 1)
     lastSlotAfterExtraction = getCreatureSlotImg(content, 43)

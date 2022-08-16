@@ -17,8 +17,12 @@ def RGBtoGray(screenshot):
     return screenshot
 
 
-def loadAsArray(path):
+def loadAsGrey(path):
     return np.array(cv2.imread(path, cv2.IMREAD_GRAYSCALE))
+
+
+def load(path):
+    return np.array(cv2.imread(path))
 
 
 def save(arr, name):
@@ -38,4 +42,3 @@ def load(path):
 def filterColorRange(image, upperBound, lowerBound):
     imagemask = cv2.inRange(image, np.array(lowerBound), np.array(upperBound))
     return imagemask
-

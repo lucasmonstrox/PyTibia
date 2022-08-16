@@ -1,24 +1,26 @@
 from ahocorapy.keywordtree import KeywordTree
 import pyautogui
 from hud.core import getLeftSidebarArrows
-import utils.core, utils.image
+import utils.core
+import utils.image
 
 
-chatMenuImg = utils.image.loadAsArray('chat/images/chatMenu.png')
-chatOnImg = utils.image.loadAsArray('chat/images/chatOn.png')
-chatOnImgTemp = utils.image.loadAsArray('chat/images/chatOnTemp.png')
-chatOffImg = utils.image.loadAsArray('chat/images/chatOff.png')
-chatOffImg = utils.image.loadAsArray('chat/images/chatOff.png')
-lootOfTextImg = utils.image.loadAsArray('chat/images/lootOfText.png')
-nothingTextImg = utils.image.loadAsArray('chat/images/nothingText.png')
-lootImg = utils.image.loadAsArray('chat/images/loot.png')
+chatMenuImg = utils.image.loadAsGrey('chat/images/chatMenu.png')
+chatOnImg = utils.image.loadAsGrey('chat/images/chatOn.png')
+chatOnImgTemp = utils.image.loadAsGrey('chat/images/chatOnTemp.png')
+chatOffImg = utils.image.loadAsGrey('chat/images/chatOff.png')
+chatOffImg = utils.image.loadAsGrey('chat/images/chatOff.png')
+lootOfTextImg = utils.image.loadAsGrey('chat/images/lootOfText.png')
+nothingTextImg = utils.image.loadAsGrey('chat/images/nothingText.png')
+lootImg = utils.image.loadAsGrey('chat/images/loot.png')
 oldListOfLootCheck = []
 
 
 def readMessagesFromActiveChatTab(screenshot):
     (x, y, width, height) = getChatMessagesContainerPos(screenshot)
     chatMessagesContainer = utils.image.crop(screenshot, x, y, width, height)
-    chatMessagesContainer = utils.image.convertGraysToBlack(chatMessagesContainer)
+    chatMessagesContainer = utils.image.convertGraysToBlack(
+        chatMessagesContainer)
     messages = utils.image.toString(chatMessagesContainer, "6").splitlines()
     messages = list(filter(None, messages))
     return messages
@@ -34,7 +36,8 @@ def hasNewLoot(screenshot):
     if len(lootLines) - 5 <= 0:
         start = len(lootLines)
     for i in range(len(lootLines) - start, len(lootLines)):
-        listOfLootCheck.append(utils.core.hashit(utils.image.convertGraysToBlack(lootLines[i][0])))
+        listOfLootCheck.append(utils.core.hashit(
+            utils.image.convertGraysToBlack(lootLines[i][0])))
     if len(listOfLootCheck) != 0 and len(oldListOfLootCheck) == 0:
         oldListOfLootCheck = listOfLootCheck
         return True
@@ -53,7 +56,8 @@ def getLootLines(screenshot):
     linesWithLoot = []
     for line in lootLines:
         line = x, line[1] + y, w, line[3]
-        lineImg = screenshot[line[1]:line[1] + line[3], line[0]:line[0] + line[2]]
+        lineImg = screenshot[line[1]:line[1] +
+                             line[3], line[0]:line[0] + line[2]]
         nothingFound = utils.core.locate(nothingTextImg, lineImg)
         if nothingFound is None:
             linesWithLoot.append((lineImg, line))
@@ -119,12 +123,13 @@ def getChatMessagesContainerPos(screenshot):
 
 
 def getLootTabPos(screenshot):
-    return utils.core.locate(screenshot, lootImg)  
+    return utils.core.locate(screenshot, lootImg)
 
 
 def selectLootTab(screenshot):
     clickCoord = getLootTabPos(screenshot)
-    clickCoord = utils.core.randomCoord(clickCoord[0], clickCoord[1], clickCoord[2], clickCoord[3])
+    clickCoord = utils.core.randomCoord(
+        clickCoord[0], clickCoord[1], clickCoord[2], clickCoord[3])
     pyautogui.click(clickCoord[0], clickCoord[1])
 
 

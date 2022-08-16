@@ -2,50 +2,55 @@ import numpy as np
 import pyautogui
 from time import sleep
 import radar.core
-import utils.core, utils.image
+import utils.core
+import utils.image
 
-accessoriesEquippedImg = utils.image.loadAsArray('radar/images/radar-tools.png')
-hpImg = utils.image.loadAsArray('player/images/heart.png')
-manaImg = utils.image.loadAsArray('player/images/mana.png')
-bleedingImg = utils.image.loadAsArray('player/images/bleeding.png')
-cursedImg = utils.image.loadAsArray('player/images/cursed.png')
-burningImg = utils.image.loadAsArray('player/images/burning.png')
-fightImg = utils.image.loadAsArray('player/images/fight.png')
-hungryImg = utils.image.loadAsArray('player/images/hungry.png')
-poisonedImg = utils.image.loadAsArray('player/images/poisoned.png')
-pzImg = utils.image.loadAsArray('player/images/pz.png')
-restingAreaImg = utils.image.loadAsArray('player/images/resting-area.png')
-stopImg = utils.image.loadAsArray('player/images/stop.png')
-emptyArmorImg = utils.image.loadAsArray('player/images/empty-armor.png')
-emptyBeltImg = utils.image.loadAsArray('player/images/empty-arrow.png')
-emptyBackPackImg = utils.image.loadAsArray('player/images/empty-backpack.png')
-emptyBootsImg = utils.image.loadAsArray('player/images/empty-boots.png')
-emptyHelmetImg = utils.image.loadAsArray('player/images/empty-helmet.png')
-emptyLegsIms = utils.image.loadAsArray('player/images/empty-legs.png')
-emptyNecklaceImg = utils.image.loadAsArray('player/images/empty-necklace.png')
-emptyRingImg = utils.image.loadAsArray('player/images/empty-ring.png')
-emptyShieldImg = utils.image.loadAsArray('player/images/empty-shield.png')
-emptyWeaponImg = utils.image.loadAsArray('player/images/empty-weapon.png')
-followingAttackDisImg = utils.image.loadAsArray('player/images/following-attack-disabled.png')
-balancedAttackImg = utils.image.loadAsArray('player/images/balanced-attack.png')
-defensiveAttackImg = utils.image.loadAsArray('player/images/defensive-attack.png')
-fullAttackImg = utils.image.loadAsArray('player/images/full-attack.png')
-drunkImg = utils.image.loadAsArray('player/images/drunk.png')
-electrifiedImg = utils.image.loadAsArray('player/images/eletrified.png')
-followingAttackImg = utils.image.loadAsArray('player/images/following-attack.png')
-hasteImg = utils.image.loadAsArray('player/images/haste.png')
-holdingAttackImg = utils.image.loadAsArray('player/images/holding-attack.png')
-inventoryHiddenImg = utils.image.loadAsArray('player/images/inventory-hidden.png')
-logoutBlockImg = utils.image.loadAsArray('player/images/logout-block.png')
-readyForPvpImg = utils.image.loadAsArray('player/images/ready-for-pvp.png')
-slowedImg = utils.image.loadAsArray('player/images/slowed.png')
-# storeImg = utils.image.loadAsArray('player/images/store.png')
+accessoriesEquippedImg = utils.image.loadAsGrey('radar/images/radar-tools.png')
+hpImg = utils.image.loadAsGrey('player/images/heart.png')
+manaImg = utils.image.loadAsGrey('player/images/mana.png')
+bleedingImg = utils.image.loadAsGrey('player/images/bleeding.png')
+cursedImg = utils.image.loadAsGrey('player/images/cursed.png')
+burningImg = utils.image.loadAsGrey('player/images/burning.png')
+fightImg = utils.image.loadAsGrey('player/images/fight.png')
+hungryImg = utils.image.loadAsGrey('player/images/hungry.png')
+poisonedImg = utils.image.loadAsGrey('player/images/poisoned.png')
+pzImg = utils.image.loadAsGrey('player/images/pz.png')
+restingAreaImg = utils.image.loadAsGrey('player/images/resting-area.png')
+stopImg = utils.image.loadAsGrey('player/images/stop.png')
+emptyArmorImg = utils.image.loadAsGrey('player/images/empty-armor.png')
+emptyBeltImg = utils.image.loadAsGrey('player/images/empty-arrow.png')
+emptyBackPackImg = utils.image.loadAsGrey('player/images/empty-backpack.png')
+emptyBootsImg = utils.image.loadAsGrey('player/images/empty-boots.png')
+emptyHelmetImg = utils.image.loadAsGrey('player/images/empty-helmet.png')
+emptyLegsIms = utils.image.loadAsGrey('player/images/empty-legs.png')
+emptyNecklaceImg = utils.image.loadAsGrey('player/images/empty-necklace.png')
+emptyRingImg = utils.image.loadAsGrey('player/images/empty-ring.png')
+emptyShieldImg = utils.image.loadAsGrey('player/images/empty-shield.png')
+emptyWeaponImg = utils.image.loadAsGrey('player/images/empty-weapon.png')
+followingAttackDisImg = utils.image.loadAsGrey(
+    'player/images/following-attack-disabled.png')
+balancedAttackImg = utils.image.loadAsGrey('player/images/balanced-attack.png')
+defensiveAttackImg = utils.image.loadAsGrey(
+    'player/images/defensive-attack.png')
+fullAttackImg = utils.image.loadAsGrey('player/images/full-attack.png')
+drunkImg = utils.image.loadAsGrey('player/images/drunk.png')
+electrifiedImg = utils.image.loadAsGrey('player/images/eletrified.png')
+followingAttackImg = utils.image.loadAsGrey(
+    'player/images/following-attack.png')
+hasteImg = utils.image.loadAsGrey('player/images/haste.png')
+holdingAttackImg = utils.image.loadAsGrey('player/images/holding-attack.png')
+inventoryHiddenImg = utils.image.loadAsGrey(
+    'player/images/inventory-hidden.png')
+logoutBlockImg = utils.image.loadAsGrey('player/images/logout-block.png')
+readyForPvpImg = utils.image.loadAsGrey('player/images/ready-for-pvp.png')
+slowedImg = utils.image.loadAsGrey('player/images/slowed.png')
+# storeImg = utils.image.loadAsGrey('player/images/store.png')
 
 hpBarAllowedPixelsColors = np.array([79, 118, 121, 110, 62])
-hpBarSize=94
+hpBarSize = 94
 
 manaBarAllowedPixelsColors = np.array([68, 95, 97, 89, 52])
-manaBarSize=94
+manaBarSize = 94
 
 
 def getFilledBarPercentage(bar, size=100, allowedPixelsColors=[]):
@@ -66,8 +71,8 @@ def getHealthPercentage(screenshot):
     if didntGetHpPos:
         return None
     bar = getHealthBar(screenshot, heartPos)
-    percent = getFilledBarPercentage(bar, size=hpBarSize, 
-                               allowedPixelsColors=hpBarAllowedPixelsColors)
+    percent = getFilledBarPercentage(bar, size=hpBarSize,
+                                     allowedPixelsColors=hpBarAllowedPixelsColors)
     return percent
 
 
@@ -92,8 +97,8 @@ def getManaPercentage(screenshot):
     if didntGetHpPos:
         return None
     bar = getManaBar(screenshot, manaPos)
-    percent = getFilledBarPercentage(bar, size=manaBarSize, 
-                               allowedPixelsColors=manaBarAllowedPixelsColors)
+    percent = getFilledBarPercentage(bar, size=manaBarSize,
+                                     allowedPixelsColors=manaBarAllowedPixelsColors)
     return percent
 
 
@@ -114,8 +119,10 @@ def getStopPos(screenshot):
 
 def getCap(screenshot):
     (x, y, w, h) = getStopPos(screenshot)
-    capImg = utils.image.convertGraysToBlack(utils.image.crop(screenshot, x - 44, y - 14, 32, 15))
-    capValue = utils.image.toString(capImg, "6 -c tessedit_char_whitelist=0123456789")
+    capImg = utils.image.convertGraysToBlack(
+        utils.image.crop(screenshot, x - 44, y - 14, 32, 15))
+    capValue = utils.image.toString(
+        capImg, "6 -c tessedit_char_whitelist=0123456789")
     return capValue
 
 
