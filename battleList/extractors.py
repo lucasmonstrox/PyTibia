@@ -34,7 +34,6 @@ def getCreatureSlotImg(content, slot):
         (config.slot["dimensions"]["height"] + config.slot["grid"]["gap"])
     finishingY = startingY + config.slot["dimensions"]["height"]
     slotImg = content[startingY:finishingY, :]
-    utils.image.save(slotImg, "slotImg.png")
     return slotImg
 
 

@@ -119,13 +119,15 @@ def getCreaturesBars(hudImg):
     return creaturesBarsXY
 
 
-def getCreatures(screenshot, battleListCreatures, radarCoordinate=None, hudCoordinate=None, creaturesBars=None, hudImg=None):
-    if hudCoordinate is None:
-        hudCoordinate = hud.core.getCoordinate(screenshot)
-    if hudImg is None:
-        hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
-    if creaturesBars is None:
-        creaturesBars = getCreaturesBars(hudImg.flatten())
+def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
+    """
+    TODO:
+    - Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
+    - Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars
+    """
+    hudCoordinate = hud.core.getCoordinate(screenshot)
+    hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
+    creaturesBars = getCreaturesBars(hudImg)
     creatures = np.array([], dtype=creatureType)
     hasNoCreaturesBars = len(creaturesBars) == 0
     if hasNoCreaturesBars:
@@ -133,35 +135,22 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None, hudCoord
     hasNoBattleListCreatures = len(battleListCreatures) == 0
     if hasNoBattleListCreatures:
         return creatures
-    possibleCreatures = {}
-    for battleListCreature in battleListCreatures:
-        if battleListCreature['name'] != 'Unknown':
-            possibleCreatures[battleListCreature['name']
-                              ] = creaturesNamesHashes[battleListCreature['name']]
     centersBars = np.broadcast_to([239, 175], (len(creaturesBars), 2))
     absolute = np.absolute(creaturesBars - centersBars)
-    power = absolute**2
+    power = np.power(absolute, 2)
     sum = np.sum(power, axis=1)
     sqrt = np.sqrt(sum)
     creaturesBarsSortedInxes = np.argsort(sqrt)
-    # TODO: if only one species, ignore computation
     for creatureBarSortedIndex in creaturesBarsSortedInxes:
         creatureBar = creaturesBars[creatureBarSortedIndex]
         nonCreaturesForCurrentBar = {}
-        for battleListIndex in range(len(battleListCreatures)):
+        battleListCreaturesCount = len(battleListCreatures)
+        for battleListIndex in range(battleListCreaturesCount):
             battleListCreature = battleListCreatures[battleListIndex]
             creatureName = battleListCreature['name']
             creatureTypeAlreadyTried = creatureName in nonCreaturesForCurrentBar
             if creatureTypeAlreadyTried:
                 continue
-            # TODO: if only one species, ignore computation
-            # thereIsOnlyOneSpeciesLeft = False
-            # if thereIsOnlyOneSpeciesLeft:
-            #     creature = makeCreature(
-            #         creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
-            #     creaturesToAppend = np.array([creature], dtype=creatureType)
-            #     creatures = np.append(creatures, creaturesToAppend)
-            #     break
             _, creatureNameWidth = creaturesNamesHashes[creatureName].shape
             (creatureBarX, creatureBarY) = creatureBar
             creatureBarY0 = creatureBarY - 13
@@ -241,12 +230,12 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None, hudCoord
     return creatures
 
 
-def getDifferntCreaturesBySlots(previousHudCreatures, currentHudCreatures, slots):
+def getDifferentCreaturesBySlots(previousHudCreatures, currentHudCreatures, slots):
     previousHudCreaturesBySlots = np.array(
-        [], dtype=hud.creatures.creatureType)
+        [], dtype=creatureType)
     currentHudCreaturesBySlots = np.array(
-        [], dtype=hud.creatures.creatureType)
-    differentCreatures = np.array([], dtype=hud.creatures.creatureType)
+        [], dtype=creatureType)
+    differentCreatures = np.array([], dtype=creatureType)
     for previousHudCreature in previousHudCreatures:
         if np.isin(previousHudCreature['slot'], slots).all():
             previousHudCreaturesBySlots = np.append(

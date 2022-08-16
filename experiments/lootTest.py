@@ -50,7 +50,7 @@ def main():
                 creatureIndex += 1
         hasExoriCooldown = actionBar.cooldown.hasExoriCooldown(screenshot)
         if hasNewLoot and hasExoriCooldown:
-            differentCreatures = hud.creatures.getDifferntCreaturesBySlots(
+            differentCreatures = hud.creatures.getDifferentCreaturesBySlots(
                 previousHudCreatures,
                 currentHudCreatures,
                 np.array([
