@@ -1,7 +1,6 @@
 import numpy as np
 from . import config, extractors
 from battleList.typing import creatureType
-from core.typing import UINT8_NDARRAY
 import utils.core
 
 
@@ -10,7 +9,11 @@ def getCreatures(screenshot):
     cannotGetContent = content is None
     if cannotGetContent:
         return None
+    creatures = np.array([], dtype=creatureType)
     filledSlotsCount = extractors.getFilledSlotsCount(content)
+    hasNoFilledSlotsCount = filledSlotsCount == 0
+    if hasNoFilledSlotsCount:
+        return creatures
     creatures = np.array([getCreatureFromSlot(content, slotIndex)
                           for slotIndex in np.arange(filledSlotsCount)], dtype=creatureType)
     return creatures
@@ -18,7 +21,7 @@ def getCreatures(screenshot):
 
 # TODO: add unit tests
 # TODO: everything(upper border of creature icon, creature name) can be resolved using parallel code
-def getCreatureFromSlot(content: UINT8_NDARRAY, slotIndex: int):
+def getCreatureFromSlot(content, slotIndex):
     slotImg = extractors.getCreatureSlotImg(content, slotIndex)
     isBeingAttacked = isCreatureBeingAttacked(slotImg)
     creatureNameImg = extractors.getCreatureNameImg(slotImg)
@@ -30,12 +33,12 @@ def getCreatureFromSlot(content: UINT8_NDARRAY, slotIndex: int):
     return (creatureName, isBeingAttacked)
 
 
-def isAttackingSomeCreature(creatures) -> bool:
+def isAttackingSomeCreature(creatures):
     isAttackingSomeCreature = np.any(creatures['isBeingAttacked'] == True)
     return isAttackingSomeCreature
 
 
-def isCreatureBeingAttacked(slotImg) -> bool:
+def isCreatureBeingAttacked(slotImg):
     attackColor = 76
     highlightedAttackColor = 166
     upperBorderOfCreatureIcon = extractors.getUpperBorderOfCreatureIcon(
