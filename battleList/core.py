@@ -11,11 +11,13 @@ def getCreatures(screenshot):
         return None
     creatures = np.array([], dtype=creatureType)
     filledSlotsCount = extractors.getFilledSlotsCount(content)
-    hasNoFilledSlotsCount = filledSlotsCount == 0
-    if hasNoFilledSlotsCount:
+    hasNoFilledSlots = filledSlotsCount == 0
+    if hasNoFilledSlots:
         return creatures
-    creatures = np.array([getCreatureFromSlot(content, slotIndex)
-                          for slotIndex in np.arange(filledSlotsCount)], dtype=creatureType)
+    for slotIndex in np.arange(filledSlotsCount):
+        creature = np.array(getCreatureFromSlot(
+            content, slotIndex), dtype=creatureType)
+        creatures = np.append(creatures, [creature])
     return creatures
 
 
