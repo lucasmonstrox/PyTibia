@@ -61,6 +61,87 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
   - Getting Life :heavy_check_mark:
   - Getting Mana :heavy_check_mark:
 
+# ⚙ Tibia Client Settings
+
+<p align="center">
+      This SDK needs Tibia's screen to be as clean as possible, as it works by searching every pixel on the screen.
+      First of all, open the tibia menu and select the enable the option "Show Advanced Option".
+  </p><br />
+  <details>
+  <summary><strong>Menu Setup</strong></summary><br />
+    <strong>Go for Interface option and set change as image below</strong>
+    <ul>
+      <li>Disable "Use Native Mouse Cursor".</li>
+      <li>Disable "Show Big Mouse Cursor".</li>
+    </ul>
+    <p align="center">
+      <img src="/docs/images/foto1.png " alt="Image from interface"  width="600" />
+    </p><br />
+        <strong>Now you to go on Interface/HUD option and set change as image below</strong>
+    <ul>
+      <li>Disable "Show HUD for own character".</li>
+      <li>Disable "Show Costumisable Bars".</li>
+    </ul>
+    <p align="center">
+      <img src="/docs/images/foto2.png " alt="Image from HUD"  width="600" />
+    </p><br />
+    <strong>Go for Game Window option and set change as image below</strong>
+    <ul>
+      <li>Disable "Show Textual Effects".</li>
+      <li>Disable "Show Messages".</li>
+      <li>Disable "Show Private Messages".</li>
+      <li>Disable "Show Potion Sound Effects".</li>
+      <li>Disable "Show Spells Of Others".</li>
+      <li>Disable "Show Hotkey Usage Notifications".</li>
+      <li>Disable  "Show Loot Messages".</li>
+      <li>Disable  "Show Boosted Creature".</li>
+      <li>Disable  "Show Offiline Tranning Progress".</li>
+      <li>Disable  "Show Store Notifications in Combat Tranning".</li>
+      <li>Enable "Show Combat Frames".</li>
+      <li>Enable "Show PvP Frames".</li>
+      <li>Enable "Scale Using Only Integral Mutiples".</li>
+    </ul>
+    <strong> YOU NEED HAVE ATTENCTION ON THIS FEATURE, YOU NEED THIS FOR SET RIGHT RESOLUTION, WHO SDK WORK</strong>.
+    <p align="center">
+      <img src="/docs/images/foto3.png " alt="Image from Game Window"  width="600" />
+    </p><br />
+    <strong>Now you to go on Interface/Action Bars option and set change as image below</strong>
+    <ul>
+      <li>Disable "Show Coldown in Seconds".</li>
+      <li>Disable "Show Action Button Toltip".</li>
+    </ul>
+    <p align="center">
+      <img src="/docs/images/foto4.png " alt="Image from Action"  width="600" />
+    </p><br />
+  </details> 
+  <details>
+    <summary><strong>Screen Setup</strong></summary><br />
+    <p align="center">
+      <strong>This Show how you setup your screen for SDK working correct</strong>
+    </p>
+    <p align="center">
+      <img src="/docs/images/foto5.png " alt="Image from Battlelist"  width="300" />
+    </p><br />
+    <p align="center">
+      <strong>Set your BattleList to show only monsters like you see on image below.</strong>
+    </p>
+    <p align="center">
+      <img src="/docs/images/foto6.png " alt="Image from Battlelist sort"  width="300" />
+    </p><br />
+    <p align="center">
+      <strong>Set your BattleList to sort Ascending by distance.</strong>
+    </p><br />
+    <strong>Final Setup - Resolution</strong><br />
+    <ul>
+      <li>This SDK only Support 1920 x 1080 pixels.</li>
+      <li>For the next step to complete, you need to do all the menu setup before getting here.</li>
+      <li>For SDK work you need to reduce tibia original scale by one like you see on gif below.</li>
+    </ul>
+    <p align="center">
+      <img src="/docs/images/gif1.gif" alt="gif from resolution"  width="300" />
+    </p>
+  </details>
+
 # ⌨ Development
 
 ## ⚙ Running the app
