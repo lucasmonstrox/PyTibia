@@ -138,7 +138,7 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
       <li>For SDK work you need to reduce tibia original scale by one like you see on gif below.</li>
     </ul>
     <p align="center">
-      <img src="/docs/images/gif1.gif" alt="gif from resolution"  width="300" />
+      <img src="/docs/images/gif1.gif" alt="gif from resolution"  width="600" />
     </p>
   </details>
 
