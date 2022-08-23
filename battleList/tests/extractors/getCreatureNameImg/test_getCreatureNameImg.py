@@ -385,3 +385,23 @@ def test_should_assert_Battlemaster_Zunzu():
     creatureNameImg, nameImg = getImages('Battlemaster Zunzu')
     np.testing.assert_array_equal(creatureNameImg, nameImg)
 
+
+def test_should_assert_Bear():
+    creatureNameImg, nameImg = getImages('Bear')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Behemoth():
+    creatureNameImg, nameImg = getImages('Behemoth')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Berserker_Chicken():
+    creatureNameImg, nameImg = getImages('Berserker Chicken')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Betrayed_Wraith():
+    creatureNameImg, nameImg = getImages('Betrayed Wraith')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
