@@ -299,3 +299,54 @@ def test_should_assert_Axeitus_Headbanger():
 def test_should_assert_Azure_Frog():
     creatureNameImg, nameImg = getImages('Azure Frog')
     np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Baby_Dragon():
+    creatureNameImg, nameImg = getImages('Baby Dragon')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Bad_Dream():
+    creatureNameImg, nameImg = getImages('Bad Dream')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Badger():
+    creatureNameImg, nameImg = getImages('Badger')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Baleful_Bunny():
+    creatureNameImg, nameImg = getImages('Baleful Bunny')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Bandit():
+    creatureNameImg, nameImg = getImages('Bandit')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Bane_Bringer():
+    creatureNameImg, nameImg = getImages('Bane Bringer')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Banshee():
+    creatureNameImg, nameImg = getImages('Banshee')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barbaria():
+    creatureNameImg, nameImg = getImages('Barbaria')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barbarian_Bloodwalker():
+    creatureNameImg, nameImg = getImages('Barbarian Bloodwalker')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barbarian_Brutetamer():
+    creatureNameImg, nameImg = getImages('Barbarian Brutetamer')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
