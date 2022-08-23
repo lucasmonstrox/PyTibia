@@ -350,3 +350,38 @@ def test_should_assert_Barbarian_Brutetamer():
     creatureNameImg, nameImg = getImages('Barbarian Brutetamer')
     np.testing.assert_array_equal(creatureNameImg, nameImg)
 
+
+def test_should_assert_Barbarian_Headsplitter():
+    creatureNameImg, nameImg = getImages('Barbarian Headsplitter')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barbarian_Skullhunter():
+    creatureNameImg, nameImg = getImages('Barbarian Skullhunter')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barkless_Devotee():
+    creatureNameImg, nameImg = getImages('Barkless Devotee')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barkless_Fanatic():
+    creatureNameImg, nameImg = getImages('Barkless Fanatic')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Baron_Brute():
+    creatureNameImg, nameImg = getImages('Baron Brute')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Bat():
+    creatureNameImg, nameImg = getImages('Bat')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Battlemaster_Zunzu():
+    creatureNameImg, nameImg = getImages('Battlemaster Zunzu')
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
