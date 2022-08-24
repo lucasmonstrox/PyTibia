@@ -45,7 +45,33 @@ images = {
 
 floorsLevelsImgs = np.load('radar/npys/floorsLevelsImgs.npy')
 floorsLevelsImgsHashes = {}
-nonWalkablePixelsColors = [75, 1, 102, 59, 0, 106, 92]
+pixelsColorsValues = {
+    "accessPoint": 226,
+    "caveFloor": 111,
+    "caveWall": 76,
+    "commonFloorOrStreet": 1,
+    "grassOrRockyGround": 120,
+    "ice": 240,
+    "lava": 136,
+    "mountainOrStone": 102,
+    "sand": 213,
+    "snow": 255,
+    "swamp": 207,
+    "treesOrBushes": 60,
+    "wall": 106,
+    "water": 93,
+    "vacuumOrUndiscoveredArea": 0
+}
+nonWalkablePixelsColors = [
+    pixelsColorsValues['caveWall'],
+    pixelsColorsValues["lava"],
+    pixelsColorsValues['mountainOrStone'],
+    pixelsColorsValues["swamp"],
+    pixelsColorsValues['treesOrBushes'],
+    pixelsColorsValues["wall"],
+    pixelsColorsValues["water"],
+    pixelsColorsValues["vacuumOrUndiscoveredArea"],
+]
 walkableFloorsSqms = np.ndarray(shape=(16, 2048, 2560), dtype=np.uint)
 
 for floor in floors:

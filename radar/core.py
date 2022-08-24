@@ -1,9 +1,11 @@
 import numpy as np
 import pyautogui
-from radar import config, types
-import utils.core, utils.image, utils.mouse
 from scipy.spatial import distance
 from time import sleep
+from radar import config, extractors, locators
+import utils.core
+import utils.image
+import utils.mouse
 
 
 def getCoordinate(screenshot, previousCoordinate=None):
@@ -11,30 +13,38 @@ def getCoordinate(screenshot, previousCoordinate=None):
     cannotGetFloorLevel = floorLevel is None
     if cannotGetFloorLevel:
         return None
-    radarToolsPos = getRadarToolsPos(screenshot)
+    radarToolsPos = locators.getRadarToolsPos(screenshot)
     cannotGetRadarToolsPos = radarToolsPos is None
     if cannotGetRadarToolsPos:
         return None
-    radarImg = getRadarImg(screenshot, radarToolsPos)
+    radarImg = extractors.getRadarImg(screenshot, radarToolsPos)
     radarHashedImg = utils.core.hashitHex(radarImg)
     shouldGetCoordinateByCachedRadarHashedImg = radarHashedImg in config.coordinates
     if shouldGetCoordinateByCachedRadarHashedImg:
         return config.coordinates[radarHashedImg]
     shouldGetCoordinateByPreviousCoordinateArea = previousCoordinate is not None
     if shouldGetCoordinateByPreviousCoordinateArea:
-        (previousCoordinateXPixel, previousCoordinateYPixel) = utils.core.getPixelFromCoordinate(previousCoordinate)
+        (previousCoordinateXPixel, previousCoordinateYPixel) = utils.core.getPixelFromCoordinate(
+            previousCoordinate)
         paddingSize = 20
-        yStart = previousCoordinateYPixel - (config.dimensions["halfHeight"] + paddingSize)
-        yEnd = previousCoordinateYPixel + (config.dimensions["halfHeight"] + 1 + paddingSize)
-        xStart = previousCoordinateXPixel - (config.dimensions["halfWidth"] + paddingSize)
-        xEnd = previousCoordinateXPixel + (config.dimensions["halfWidth"] + paddingSize)
+        yStart = previousCoordinateYPixel - \
+            (config.dimensions["halfHeight"] + paddingSize)
+        yEnd = previousCoordinateYPixel + \
+            (config.dimensions["halfHeight"] + 1 + paddingSize)
+        xStart = previousCoordinateXPixel - \
+            (config.dimensions["halfWidth"] + paddingSize)
+        xEnd = previousCoordinateXPixel + \
+            (config.dimensions["halfWidth"] + paddingSize)
         areaImgToCompare = config.floorsImgs[floorLevel][yStart:yEnd, xStart:xEnd]
         areaFoundImg = utils.core.locate(
             areaImgToCompare, radarImg, confidence=0.9)
         if areaFoundImg:
-            currentCoordinateXPixel = previousCoordinateXPixel - paddingSize + areaFoundImg[0]
-            currentCoordinateYPixel = previousCoordinateYPixel - paddingSize + areaFoundImg[1]
-            (currentCoordinateX, currentCoordinateY) = utils.core.getCoordinateFromPixel((currentCoordinateXPixel, currentCoordinateYPixel))
+            currentCoordinateXPixel = previousCoordinateXPixel - \
+                paddingSize + areaFoundImg[0]
+            currentCoordinateYPixel = previousCoordinateYPixel - \
+                paddingSize + areaFoundImg[1]
+            (currentCoordinateX, currentCoordinateY) = utils.core.getCoordinateFromPixel(
+                (currentCoordinateXPixel, currentCoordinateYPixel))
             return (currentCoordinateX, currentCoordinateY, floorLevel)
     # config.floorsConfidence[floorLevel]
     imgCoordinate = utils.core.locate(
@@ -44,12 +54,13 @@ def getCoordinate(screenshot, previousCoordinate=None):
         return None
     xImgCoordinate = imgCoordinate[0] + config.dimensions["halfWidth"]
     yImgCoordinate = imgCoordinate[1] + config.dimensions["halfHeight"]
-    xCoordinate, yCoordinate = utils.core.getCoordinateFromPixel((xImgCoordinate, yImgCoordinate))
+    xCoordinate, yCoordinate = utils.core.getCoordinateFromPixel(
+        (xImgCoordinate, yImgCoordinate))
     return (xCoordinate, yCoordinate, floorLevel)
 
 
 def getFloorLevel(screenshot):
-    radarToolsPos = getRadarToolsPos(screenshot)
+    radarToolsPos = locators.getRadarToolsPos(screenshot)
     radarToolsPosIsEmpty = radarToolsPos is None
     if radarToolsPosIsEmpty:
         return None
@@ -67,41 +78,22 @@ def getFloorLevel(screenshot):
     return floorLevel
 
 
-def getRadarImg(screenshot, radarToolsPos):
-    radarToolsPosX = radarToolsPos[0]
-    radarToolsPosY = radarToolsPos[1]
-    x0 = radarToolsPosX - config.dimensions['width'] - 11
-    x1 = x0 + config.dimensions['width']
-    y0 = radarToolsPosY - 50
-    y1 = y0 + config.dimensions['height']
-    radarImage = screenshot[y0:y1, x0:x1]
-    return radarImage
-
-
-@utils.core.cacheObjectPos
-def getRadarToolsPos(screenshot):
-    return utils.core.locate(screenshot, config.images['tools'])
-
-
 def getWaypointIndexFromClosestCoordinate(coordinate, waypoints):
     (x, y, floorLevel) = coordinate
-    waypointsIndexes = np.nonzero(waypoints['coordinate'][:, 2] == floorLevel)[0]
-    hasNoWaypointsIndexes = len(waypointsIndexes) == 0
-    if hasNoWaypointsIndexes:
-        return
-    coordinates = waypoints[waypointsIndexes]['coordinate'][:, :-1]
+    coordinates = waypoints['coordinate'][:, :-1]
     currentCoordinate = [x, y]
-    currentCoordinates = np.broadcast_to(currentCoordinate, (len(coordinates), 2))
-    absolute = np.absolute(coordinates - currentCoordinates)
-    power = absolute**2
-    sum = np.sum(power, axis=1)
-    sqrt = np.sqrt(sum)
-    lowestIndex = np.argmin(sqrt)
+    euclideanDistances = distance.cdist(
+        coordinates, [currentCoordinate]).flatten()
+    waypointsIndexesOfCurrentFloor = np.nonzero(
+        waypoints['coordinate'][:, 2] == floorLevel)[0]
+    euclideanDistancesOfCurrentFloor = euclideanDistances[waypointsIndexesOfCurrentFloor]
+    lowestIndexOfCurrentFloor = np.argmin(euclideanDistancesOfCurrentFloor)
+    lowestIndex = waypointsIndexesOfCurrentFloor[lowestIndexOfCurrentFloor]
     return lowestIndex
 
 
 def goToCoordinate(screenshot, currentRadarCoordinate, nextRadarCoordinate):
-    (radarToolsPosX, radarToolsPosY, _, _) = getRadarToolsPos(screenshot)
+    (radarToolsPosX, radarToolsPosY, _, _) = locators.getRadarToolsPos(screenshot)
     x0 = radarToolsPosX - config.dimensions['width'] - 11
     y0 = radarToolsPosY - 50
     radarCenterX = x0 + config.dimensions['halfWidth']
