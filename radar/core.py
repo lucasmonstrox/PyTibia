@@ -88,8 +88,10 @@ def getClosestWaypointIndexFromCoordinate(coordinate, waypoints):
         waypointsCoordinatesWithoutFloor, [currentCoordinateWithoutFloor]).flatten()
     waypointsIndexesOfCurrentFloor = np.nonzero(
         waypoints['coordinate'][:, 2] == floorLevel)[0]
-    waypointsCoordinatesDistancesOfCurrentFloor = waypointsCoordinatesDistances[waypointsIndexesOfCurrentFloor]
-    lowestWaypointIndex = np.argmin(waypointsCoordinatesDistancesOfCurrentFloor)
+    waypointsCoordinatesDistancesOfCurrentFloor = waypointsCoordinatesDistances[
+        waypointsIndexesOfCurrentFloor]
+    lowestWaypointIndex = np.argmin(
+        waypointsCoordinatesDistancesOfCurrentFloor)
     lowestWaypointIndexOfCurrentFloor = waypointsIndexesOfCurrentFloor[lowestWaypointIndex]
     return lowestWaypointIndexOfCurrentFloor
 
@@ -121,10 +123,14 @@ def isCloseToCoordinate(currentCoordinate, possibleCloseCoordinate, distanceTole
     return isClose
 
 
-# TODO: add unit tests
+# TODO: 2 coordinates was tested. Is very hard too test all coordinates(16 floors * 2560 mapWidth * 2048 mapHeight = 83.886.080 pixels)
 def isCoordinateWalkable(coordinate):
-    (x, y) = utils.core.getPixelFromCoordinate(coordinate)
-    isWalkable = config.walkableFloorsSqms[y, x]
+    (_, _, floorLevel) = coordinate
+    (xOfPixel, yOfPixel) = utils.core.getPixelFromCoordinate(coordinate)
+    print('ae', xOfPixel, yOfPixel)
+    pixelValue = config.walkableFloorsSqms[floorLevel, yOfPixel, xOfPixel]
+    print('pixelValue', pixelValue)
+    isWalkable = pixelValue == 1
     return isWalkable
 
 

@@ -19,22 +19,22 @@ floorsConfidence = [0.85, 0.85, 0.9, 0.95, 0.95, 0.95,
 # floorsImgs = np.load('radar/npys/floorsImgs.npy', allow_pickle=True)
 
 floorsImgs = [
-    utils.image.loadAsGrey('radar/images/floor-0.png'),
-    utils.image.loadAsGrey('radar/images/floor-1.png'),
-    utils.image.loadAsGrey('radar/images/floor-2.png'),
-    utils.image.loadAsGrey('radar/images/floor-3.png'),
-    utils.image.loadAsGrey('radar/images/floor-4.png'),
-    utils.image.loadAsGrey('radar/images/floor-5.png'),
-    utils.image.loadAsGrey('radar/images/floor-6.png'),
-    utils.image.loadAsGrey('radar/images/floor-7.png'),
-    utils.image.loadAsGrey('radar/images/floor-8.png'),
-    utils.image.loadAsGrey('radar/images/floor-9.png'),
-    utils.image.loadAsGrey('radar/images/floor-10.png'),
-    utils.image.loadAsGrey('radar/images/floor-11.png'),
-    utils.image.loadAsGrey('radar/images/floor-12.png'),
-    utils.image.loadAsGrey('radar/images/floor-13.png'),
-    utils.image.loadAsGrey('radar/images/floor-14.png'),
-    utils.image.loadAsGrey('radar/images/floor-15.png')
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-0.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-1.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-2.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-3.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-4.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-5.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-6.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-7.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-8.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-9.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-10.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-11.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-12.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-13.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-14.png')),
+    utils.image.RGBtoGray(utils.image.load('radar/images/floor-15.png')),
 ]
 
 floorsPathsSqms = np.load('radar/npys/floorsPathsSqms.npy')
@@ -78,10 +78,9 @@ for floor in floors:
     floorHash = utils.core.hashit(floorsLevelsImgs[floor])
     floorsLevelsImgsHashes[floorHash] = floor
     walkableFloorSqms = np.where(
-        np.isin(floorsImgs[floor], nonWalkablePixelsColors), 0, 1
-    )
+        np.isin(floorsImgs[floor], nonWalkablePixelsColors), 0, 1)
     walkableFloorsSqms[floor] = walkableFloorSqms
 
-# radarImagesCoordinates = np.load('radar/npys/radarImagesCoordinates.npy', allow_pickle=True)
 
+# radarImagesCoordinates = np.load('radar/npys/radarImagesCoordinates.npy', allow_pickle=True)
 # walkableFloorsSqms = np.load('radar/npys/walkableFloorsSqms.npy')
