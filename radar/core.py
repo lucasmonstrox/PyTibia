@@ -8,6 +8,7 @@ import utils.image
 import utils.mouse
 
 
+# TODO: add unit tests
 def getCoordinate(screenshot, previousCoordinate=None):
     floorLevel = getFloorLevel(screenshot)
     cannotGetFloorLevel = floorLevel is None
@@ -59,6 +60,7 @@ def getCoordinate(screenshot, previousCoordinate=None):
     return (xCoordinate, yCoordinate, floorLevel)
 
 
+# TODO: add unit tests
 def getFloorLevel(screenshot):
     radarToolsPos = locators.getRadarToolsPos(screenshot)
     radarToolsPosIsEmpty = radarToolsPos is None
@@ -78,6 +80,7 @@ def getFloorLevel(screenshot):
     return floorLevel
 
 
+# TODO: add unit tests
 def getWaypointIndexFromClosestCoordinate(coordinate, waypoints):
     (x, y, floorLevel) = coordinate
     coordinates = waypoints['coordinate'][:, :-1]
@@ -92,6 +95,7 @@ def getWaypointIndexFromClosestCoordinate(coordinate, waypoints):
     return lowestIndex
 
 
+# TODO: add unit tests
 def goToCoordinate(screenshot, currentRadarCoordinate, nextRadarCoordinate):
     (radarToolsPosX, radarToolsPosY, _, _) = locators.getRadarToolsPos(screenshot)
     x0 = radarToolsPosX - config.dimensions['width'] - 11
@@ -108,13 +112,17 @@ def goToCoordinate(screenshot, currentRadarCoordinate, nextRadarCoordinate):
 
 def isCloseToCoordinate(currentCoordinate, possibleCloseCoordinate, distanceTolerance=10):
     (xOfCurrentCoordinate, yOfCurrentCoordinate, _) = currentCoordinate
+    XYOfCurrentCoordinate = (xOfCurrentCoordinate, yOfCurrentCoordinate)
     (xOfPossibleCloseCoordinate, yOfPossibleCloseCoordinate, _) = possibleCloseCoordinate
-    distanceOfXAxis = abs(xOfCurrentCoordinate - xOfPossibleCloseCoordinate)
-    distanceOfYAxis = abs(yOfCurrentCoordinate - yOfPossibleCloseCoordinate)
-    isClose = distanceOfXAxis <= distanceTolerance and distanceOfYAxis <= distanceTolerance
+    XYOfPossibleCloseCoordinate = (
+        xOfPossibleCloseCoordinate, yOfPossibleCloseCoordinate)
+    euclideanDistance = distance.euclidean(
+        [XYOfCurrentCoordinate], [XYOfPossibleCloseCoordinate])
+    isClose = euclideanDistance <= distanceTolerance
     return isClose
 
 
+# TODO: add unit tests
 def isCoordinateWalkable(coordinate):
     (x, y) = utils.core.getPixelFromCoordinate(coordinate)
     walkable = config.walkableFloorsSqms[y, x]
