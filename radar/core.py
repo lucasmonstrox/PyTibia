@@ -83,10 +83,10 @@ def getFloorLevel(screenshot):
 # TODO: add unit tests
 def getWaypointIndexFromClosestCoordinate(coordinate, waypoints):
     (x, y, floorLevel) = coordinate
-    coordinates = waypoints['coordinate'][:, :-1]
+    coordinatesWithoutFloor = waypoints['coordinate'][:, :-1]
     currentCoordinate = [x, y]
     euclideanDistances = distance.cdist(
-        coordinates, [currentCoordinate]).flatten()
+        coordinatesWithoutFloor, [currentCoordinate]).flatten()
     waypointsIndexesOfCurrentFloor = np.nonzero(
         waypoints['coordinate'][:, 2] == floorLevel)[0]
     euclideanDistancesOfCurrentFloor = euclideanDistances[waypointsIndexesOfCurrentFloor]
@@ -116,7 +116,7 @@ def isCloseToCoordinate(currentCoordinate, possibleCloseCoordinate, distanceTole
     (xOfPossibleCloseCoordinate, yOfPossibleCloseCoordinate, _) = possibleCloseCoordinate
     XYOfPossibleCloseCoordinate = (
         xOfPossibleCloseCoordinate, yOfPossibleCloseCoordinate)
-    euclideanDistance = distance.euclidean(
+    euclideanDistance = distance.cdist(
         [XYOfCurrentCoordinate], [XYOfPossibleCloseCoordinate])
     isClose = euclideanDistance <= distanceTolerance
     return isClose
