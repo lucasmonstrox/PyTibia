@@ -10,16 +10,15 @@ import battleList.core
 import hud.creatures
 import player.core
 import radar.core
-import utils.core, utils.image, utils.mouse, utils.window
+from radar.types import waypointType
+import utils.core
+import utils.image
+import utils.mouse
+import utils.window
 
 # import sys
 # np.set_printoptions(threshold=sys.maxsize)
 
-waypointType = np.dtype([
-    ('type', np.str_, 64),
-    ('coordinate', np.uint32, (3,)),
-    ('tolerance', np.uint8)
-])
 waypoints = np.array([
     ('floor', (33085, 32788, 7), 0),
     ('ramp', (33085, 32786, 6), 0),
@@ -54,10 +53,10 @@ waypoints = np.array([
     ('floor', (32982, 32715, 6), 0),
     ('ramp', (32982, 32717, 7), 0),
     ('floor', (32953, 32769, 7), 0),
-    
+
     ('floor', (32953, 32785, 7), 0),
     ('floor', (32959, 32785, 7), 0),
-    
+
     ('floor', (33004, 32750, 7), 0),
     ('ramp', (33006, 32750, 6), 0),
     ('floor', (33015, 32749, 6), 0),
@@ -114,11 +113,13 @@ def goToWaypoint(screenshot, waypoint, currentPlayerCoordinate):
     shouldIgnoreTargetAndGoToNextWaypoint = False
     isFloorWaypoint = waypoint['type'] == 'floor'
     if isFloorWaypoint:
-        radar.core.goToCoordinate(screenshot, currentPlayerCoordinate, waypoint['coordinate'])
+        radar.core.goToCoordinate(
+            screenshot, currentPlayerCoordinate, waypoint['coordinate'])
         return
     isRampWaypoint = waypoint['type'] == 'ramp'
     if isRampWaypoint:
-        (currentPlayerCoordinateX, currentPlayerCoordinateY, _) = currentPlayerCoordinate
+        (currentPlayerCoordinateX, currentPlayerCoordinateY,
+         _) = currentPlayerCoordinate
         (waypointCoordinateX, waypointCoordinateY, _) = waypoint['coordinate']
         xDifference = currentPlayerCoordinateX - waypointCoordinateX
         shouldWalkToLeft = xDifference > 0
@@ -149,7 +150,8 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures, hudCreature
     if hasNoHudCreatures:
         print('has no hud creatures')
         return
-    closestCreature = hud.creatures.getClosestCreature(hudCreatures, playerCoordinate, radar.core.config.walkableFloorsSqms[playerCoordinate[2]])
+    closestCreature = hud.creatures.getClosestCreature(
+        hudCreatures, playerCoordinate, radar.core.config.walkableFloorsSqms[playerCoordinate[2]])
     hasNoClosestCreature = closestCreature == None
     if hasNoClosestCreature:
         print('has no closest creature')
@@ -163,11 +165,12 @@ def handleCavebot(screenshot, playerCoordinate, battleListCreatures, hudCreature
 def handleWaypoints(screenshot, coordinate):
     global shouldRetrySameWaypoint, waypointIndex
     if waypointIndex == None:
-        waypointIndex = radar.core.getWaypointIndexFromClosestCoordinate(coordinate, waypoints)
+        waypointIndex = radar.core.getClosestWaypointIndexFromCoordinate(
+            coordinate, waypoints)
     currentWaypoint = waypoints[waypointIndex]
     isCloseToCoordinate = radar.core.isCloseToCoordinate(
-            coordinate, waypoints[waypointIndex]['coordinate'],
-            distanceTolerance=currentWaypoint['tolerance'])
+        coordinate, waypoints[waypointIndex]['coordinate'],
+        distanceTolerance=currentWaypoint['tolerance'])
     print('isCloseToCoordinate', isCloseToCoordinate)
     if isCloseToCoordinate:
         waypointIndex = 0 if waypointIndex == len(
@@ -222,7 +225,8 @@ def handleWindow(_):
 
 
 def handleSpell(screenshot, hudCreatures):
-    nearestCreaturesCount = hud.creatures.getNearestCreaturesCount(hudCreatures)
+    nearestCreaturesCount = hud.creatures.getNearestCreaturesCount(
+        hudCreatures)
     hasNoNearestCreatures = nearestCreaturesCount == 0
     if hasNoNearestCreatures:
         return
@@ -241,7 +245,8 @@ def handleSpell(screenshot, hudCreatures):
 
 
 def shouldExecuteWaypoint(battleListCreatures, shouldIgnoreTargetAndGoToNextWaypoint):
-    shouldExecuteWaypoint = battleListCreatures is not None and len(battleListCreatures) == 0 or shouldIgnoreTargetAndGoToNextWaypoint
+    shouldExecuteWaypoint = battleListCreatures is not None and len(
+        battleListCreatures) == 0 or shouldIgnoreTargetAndGoToNextWaypoint
     return shouldExecuteWaypoint
 
 
@@ -277,39 +282,48 @@ def main():
     fpsWithScreenshot = fpsObserver.pipe(
         operators.map(handleWindow),
         operators.filter(lambda window: window is not None),
-        operators.map(lambda window: utils.image.RGBtoGray(utils.core.getScreenshot())),
+        operators.map(lambda window: utils.image.RGBtoGray(
+            utils.core.getScreenshot())),
     )
     fpsWithScreenshot.subscribe(lambda screenshot: screenshot)
     coordinatesObserver = fpsWithScreenshot.pipe(
-        operators.map(lambda screenshot: [screenshot, radar.core.getCoordinate(screenshot)]),
+        operators.map(lambda screenshot: [
+                      screenshot, radar.core.getCoordinate(screenshot)]),
     )
     battlelistObserver = coordinatesObserver.pipe(
-        operators.map(lambda result: [result[0], result[1], battleList.core.getCreatures(result[0])]),
+        operators.map(lambda result: [
+                      result[0], result[1], battleList.core.getCreatures(result[0])]),
     )
     hudCreaturesObserver = battlelistObserver.pipe(
-        operators.map(lambda result: [result[0], result[1], result[2], hud.creatures.getCreatures(result[0], result[2], radarCoordinate=result[1])]),
+        operators.map(lambda result: [result[0], result[1], result[2], hud.creatures.getCreatures(
+            result[0], result[2], radarCoordinate=result[1])]),
     )
+
     def shouldExecuteCavebot(result):
         battleListCreatures = result[2]
         hudCreatures = result[3]
-        hasBattleListCreatures = not battleListCreatures is None 
+        hasBattleListCreatures = not battleListCreatures is None
         hasHudCreatures = len(hudCreatures) > 0
-        isntAttackingSomeCreature = not battleList.core.isAttackingSomeCreature(battleListCreatures)
+        isntAttackingSomeCreature = not battleList.core.isAttackingSomeCreature(
+            battleListCreatures)
         notIgnoringTarget = shouldIgnoreTargetAndGoToNextWaypoint == False
-        shouldExecuteCavebot = hasBattleListCreatures and hasHudCreatures and  isntAttackingSomeCreature and notIgnoringTarget
+        shouldExecuteCavebot = hasBattleListCreatures and hasHudCreatures and isntAttackingSomeCreature and notIgnoringTarget
         return shouldExecuteCavebot
     cavebotObserver = hudCreaturesObserver.pipe(
         operators.filter(shouldExecuteCavebot),
         operators.subscribe_on(threadPoolScheduler)
     )
     cavebotObserver.subscribe(
-        lambda result: handleCavebot(result[0], result[1], result[2], result[3])
+        lambda result: handleCavebot(
+            result[0], result[1], result[2], result[3])
     )
     waypointObserver = hudCreaturesObserver.pipe(
-        operators.filter(lambda result: shouldExecuteWaypoint(result[2], shouldIgnoreTargetAndGoToNextWaypoint)),
+        operators.filter(lambda result: shouldExecuteWaypoint(
+            result[2], shouldIgnoreTargetAndGoToNextWaypoint)),
         operators.subscribe_on(threadPoolScheduler)
     )
-    waypointObserver.subscribe(lambda result: handleWaypoints(result[0], result[1]))
+    waypointObserver.subscribe(
+        lambda result: handleWaypoints(result[0], result[1]))
     # spellObserver = hudCreaturesObserver.pipe(
     #     operators.subscribe_on(threadPoolScheduler)
     # )

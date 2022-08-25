@@ -59,7 +59,8 @@ def waypointManager(screenshot, currentPlayerCoordinate):
     global waypointIndex
 
     if waypointIndex is None:
-        waypointIndex = radar.core.getWaypointIndexFromClosestCoordinate(currentPlayerCoordinate, waypointArray)
+        waypointIndex = radar.core.getClosestWaypointIndexFromCoordinate(
+            currentPlayerCoordinate, waypointArray)
 
     if len(waypointArray) == waypointIndex:
         waypointIndex = 0
@@ -69,13 +70,15 @@ def waypointManager(screenshot, currentPlayerCoordinate):
     if isGroundWaypoint:
         status = goToNextWaypoint(screenshot, currentPlayerCoordinate)
         if status is True:
-            print(f"Reached waypoint idx:{str(waypointIndex)} {waypoint['coordinate'][0]} {waypoint['coordinate'][1]} {waypoint['coordinate'][2]}")
+            print(
+                f"Reached waypoint idx:{str(waypointIndex)} {waypoint['coordinate'][0]} {waypoint['coordinate'][1]} {waypoint['coordinate'][2]}")
             waypointIndex += 1
         return
 
     isRampWaypoint = waypoint['type'] == 'ramp'
     if isRampWaypoint:
-        (currentPlayerCoordinateX, currentPlayerCoordinateY, _) = currentPlayerCoordinate
+        (currentPlayerCoordinateX, currentPlayerCoordinateY,
+         _) = currentPlayerCoordinate
         (waypointCoordinateX, waypointCoordinateY, _) = waypoint['coordinate']
         xDifference = currentPlayerCoordinateX - waypointCoordinateX
         shouldWalkToLeft = xDifference > 0
@@ -103,13 +106,15 @@ def waypointManager(screenshot, currentPlayerCoordinate):
 
 def goToNextWaypoint(screenshot, currentPlayerCoordinate):
     global waypointIndex, waypointArray, nextWaypoint
-    walkStatus = arrowKeysWalk(screenshot, currentPlayerCoordinate, waypointArray[waypointIndex]['coordinate'])
+    walkStatus = arrowKeysWalk(
+        screenshot, currentPlayerCoordinate, waypointArray[waypointIndex]['coordinate'])
     if walkStatus is None:
         # TODO: Handle waypoint not on this floor
         print('Method to treat incorrect coordinates here')
         return None
     (hasReachedDestination, isMonsterBlocking) = walkStatus
-    newPlayerCoordinate = radar.core.getCoordinate(screenshot, currentPlayerCoordinate)
+    newPlayerCoordinate = radar.core.getCoordinate(
+        screenshot, currentPlayerCoordinate)
     if newPlayerCoordinate == currentPlayerCoordinate:
         # TODO: Handle being stuck on the same position
         print('Player is stuck')
@@ -139,15 +144,18 @@ def arrowKeysWalk(screenshot, origin, destination):
     creaturesHud = hud.creatures.getCreatures(screenshot, battleListCreatures)
 
     for creature in creaturesHud:
-        radarWalkableFloorWithMonstersSqms[creature['slot'][1] + 45, creature['slot'][0] + 43] = 1
+        radarWalkableFloorWithMonstersSqms[creature['slot']
+                                           [1] + 45, creature['slot'][0] + 43] = 1
 
     if abs(y2-y1) <= 1 and abs(x2-x1) <= 1:
         return True, False
 
-    path = utils.AStar.search(radarWalkableFloorWithMonstersSqms, 1, (50, 50), (y2 - y1 + 50, x2 - x1 + 50))
+    path = utils.AStar.search(
+        radarWalkableFloorWithMonstersSqms, 1, (50, 50), (y2 - y1 + 50, x2 - x1 + 50))
 
     if path is None:
-        path = utils.AStar.search(radarWalkableFloorSqms, 1, (50, 50), (y2 - y1 + 50, x2 - x1 + 50))
+        path = utils.AStar.search(
+            radarWalkableFloorSqms, 1, (50, 50), (y2 - y1 + 50, x2 - x1 + 50))
         if path is not None:
             return False, True
 

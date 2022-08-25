@@ -80,19 +80,18 @@ def getFloorLevel(screenshot):
     return floorLevel
 
 
-# TODO: add unit tests
-def getWaypointIndexFromClosestCoordinate(coordinate, waypoints):
-    (x, y, floorLevel) = coordinate
-    coordinatesWithoutFloor = waypoints['coordinate'][:, :-1]
-    currentCoordinate = [x, y]
-    euclideanDistances = distance.cdist(
-        coordinatesWithoutFloor, [currentCoordinate]).flatten()
+def getClosestWaypointIndexFromCoordinate(coordinate, waypoints):
+    (xOfCoordinate, yOfCoordinate, floorLevel) = coordinate
+    currentCoordinateWithoutFloor = [xOfCoordinate, yOfCoordinate]
+    waypointsCoordinatesWithoutFloor = waypoints['coordinate'][:, :-1]
+    waypointsCoordinatesDistances = distance.cdist(
+        waypointsCoordinatesWithoutFloor, [currentCoordinateWithoutFloor]).flatten()
     waypointsIndexesOfCurrentFloor = np.nonzero(
         waypoints['coordinate'][:, 2] == floorLevel)[0]
-    euclideanDistancesOfCurrentFloor = euclideanDistances[waypointsIndexesOfCurrentFloor]
-    lowestIndexOfCurrentFloor = np.argmin(euclideanDistancesOfCurrentFloor)
-    lowestIndex = waypointsIndexesOfCurrentFloor[lowestIndexOfCurrentFloor]
-    return lowestIndex
+    waypointsCoordinatesDistancesOfCurrentFloor = waypointsCoordinatesDistances[waypointsIndexesOfCurrentFloor]
+    lowestWaypointIndex = np.argmin(waypointsCoordinatesDistancesOfCurrentFloor)
+    lowestWaypointIndexOfCurrentFloor = waypointsIndexesOfCurrentFloor[lowestWaypointIndex]
+    return lowestWaypointIndexOfCurrentFloor
 
 
 # TODO: add unit tests
