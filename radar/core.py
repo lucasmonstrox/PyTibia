@@ -125,9 +125,10 @@ def isCloseToCoordinate(currentCoordinate, possibleCloseCoordinate, distanceTole
 # TODO: add unit tests
 def isCoordinateWalkable(coordinate):
     (x, y) = utils.core.getPixelFromCoordinate(coordinate)
-    walkable = config.walkableFloorsSqms[y, x]
-    return walkable
+    isWalkable = config.walkableFloorsSqms[y, x]
+    return isWalkable
 
 
 def isNonWalkablePixelColor(pixelColor):
-    return np.isin(pixelColor, config.nonWalkablePixelsColors)
+    isNonWalkable = np.isin(pixelColor, config.nonWalkablePixelsColors)
+    return isNonWalkable
