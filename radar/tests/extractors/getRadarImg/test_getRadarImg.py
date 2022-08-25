@@ -1,8 +1,8 @@
 import numpy as np
 import pathlib
 from radar.extractors import getRadarImg
-import utils.image
 import utils.core
+import utils.image
 
 
 def test_should_get_radar_img():
