@@ -7,11 +7,6 @@ def convertGraysToBlack(arr):
     return np.where(np.logical_and(arr >= 50, arr <= 100), 0, arr)
 
 
-def BGRtoGray(screenshot):
-    screenshot = cv2.cvtColor(screenshot, cv2.COLOR_RGB2GRAY)
-    return screenshot
-
-
 def RGBtoGray(screenshot):
     screenshot = cv2.cvtColor(screenshot, cv2.COLOR_RGB2GRAY)
     return screenshot
