@@ -127,9 +127,7 @@ def isCloseToCoordinate(currentCoordinate, possibleCloseCoordinate, distanceTole
 def isCoordinateWalkable(coordinate):
     (_, _, floorLevel) = coordinate
     (xOfPixel, yOfPixel) = utils.core.getPixelFromCoordinate(coordinate)
-    print('ae', xOfPixel, yOfPixel)
     pixelValue = config.walkableFloorsSqms[floorLevel, yOfPixel, xOfPixel]
-    print('pixelValue', pixelValue)
     isWalkable = pixelValue == 1
     return isWalkable
 
