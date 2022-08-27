@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from time import sleep, time
 import actionBar.core
-import actionBar.slot
+import actionBar.core
 import battleList.core
 from chat import chat
 import hud.creatures
@@ -25,7 +25,7 @@ def main():
     lastClickedTarget = None  # [6, 5]
     while True:
         screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
-        # slotCount = actionBar.slot.getSlotCount(screenshot)
+        # slotCount = actionBar.core.getSlotCount(screenshot)
         radarCoordinate = radar.core.getCoordinate(screenshot)
         battleListCreatures = battleList.core.getCreatures(screenshot)
         currentHudCreatures = hud.creatures.getCreatures(
