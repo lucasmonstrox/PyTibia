@@ -5,7 +5,7 @@ from rx import interval, operators
 from rx.scheduler import ThreadPoolScheduler
 import rx
 import time
-from actionBar import cooldown
+from actionBar import core
 import battleList.core
 import hud.creatures
 import player.core
@@ -230,15 +230,15 @@ def handleSpell(screenshot, hudCreatures):
     hasNoNearestCreatures = nearestCreaturesCount == 0
     if hasNoNearestCreatures:
         return
-    hasNoExoriGranCooldown = not cooldown.hasExoriGranCooldown(screenshot)
+    hasNoExoriGranCooldown = not core.hasExoriGranCooldown(screenshot)
     if hasNoExoriGranCooldown:
         utils.core.press('F5')
         return
-    hasNoExoriCooldown = not cooldown.hasExoriCooldown(screenshot)
+    hasNoExoriCooldown = not core.hasExoriCooldown(screenshot)
     if hasNoExoriCooldown:
         utils.core.press('F3')
         return
-    hasNoExoriMasCooldown = not cooldown.hasExoriMasCooldown(screenshot)
+    hasNoExoriMasCooldown = not core.hasExoriMasCooldown(screenshot)
     if hasNoExoriMasCooldown:
         utils.core.press('F4')
         return
@@ -257,8 +257,8 @@ def handleHungry(screenshot):
 
 def handleHaste(screenshot):
     if not player.core.hasSpecialCondition(screenshot, 'haste'):
-        hasNoSupportCooldown = not cooldown.hasSupportCooldown(screenshot)
-        hasNoHasteCooldown = not cooldown.hasHasteCooldown(screenshot)
+        hasNoSupportCooldown = not core.hasSupportCooldown(screenshot)
+        hasNoHasteCooldown = not core.hasHasteCooldown(screenshot)
         if not hasNoSupportCooldown and not hasNoHasteCooldown:
             utils.core.press('F9')
 

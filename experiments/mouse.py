@@ -5,7 +5,7 @@ from rx import create, interval, operators, timer, of, from_, pipe, from_iterabl
 from rx.scheduler import ThreadPoolScheduler
 from rx.subject import Subject
 import time
-from actionBar import cooldown
+from actionBar import core
 import battleList.core
 import hud.creatures
 import player.core

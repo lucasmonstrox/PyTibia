@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 from time import sleep, time
-import actionBar.cooldown
+import actionBar.core
 import actionBar.slot
 import battleList.core
 from chat import chat
@@ -48,7 +48,7 @@ def main():
                     lastClickedTarget = None
                     break
                 creatureIndex += 1
-        hasExoriCooldown = actionBar.cooldown.hasExoriCooldown(screenshot)
+        hasExoriCooldown = actionBar.core.hasExoriCooldown(screenshot)
         if hasNewLoot and hasExoriCooldown:
             differentCreatures = hud.creatures.getDifferentCreaturesBySlots(
                 previousHudCreatures,
