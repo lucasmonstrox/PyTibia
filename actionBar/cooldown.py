@@ -1,4 +1,4 @@
-import actionBar.locators
+import extractors
 import utils.core
 import utils.image
 
@@ -17,15 +17,8 @@ hasteCooldownImg = utils.image.loadAsGrey(
     'actionBar/images/cooldowns/haste.png')
 
 
-def getCooldownsImg(screenshot):
-    (x0, y0, _, _) = actionBar.locators.getLeftSideArrowsPos(screenshot)
-    (x1, _, _, _) = actionBar.locators.getRightSideArrowsPos(screenshot)
-    cooldownsImg = screenshot[y0+37:y0+37+22, x0:x1]
-    return cooldownsImg
-
-
 def hasCooldownByImg(screenshot, cooldownImg):
-    listOfCooldownsImg = getCooldownsImg(screenshot)
+    listOfCooldownsImg = extractors.getCooldownsImg(screenshot)
     cooldownImgPos = utils.core.locate(listOfCooldownsImg, cooldownImg)
     cooldownImgIsntPresent = cooldownImgPos is None
     if cooldownImgIsntPresent:
