@@ -2,9 +2,9 @@ import utils.core
 import utils.image
 
 
-leftSideArrowsImg = utils.image.loadAsGrey(
+leftSideArrowsImg = utils.image.loadFromRGBToGray(
     'actionBar/images/leftSideArrows.png')
-rightSideArrowsImg = utils.image.loadAsGrey(
+rightSideArrowsImg = utils.image.loadFromRGBToGray(
     'actionBar/images/rightSideArrowsImg.png')
 
 
