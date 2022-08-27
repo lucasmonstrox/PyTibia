@@ -1,20 +1,20 @@
-import extractors
+from . import extractors
 import utils.core
 import utils.image
 
 
-attackCooldownImg = utils.image.loadAsGrey(
+attackCooldownImg = utils.image.loadFromRGBToGray(
     'actionBar/images/cooldowns/attack.png')
-exoriCooldownImg = utils.image.loadAsGrey(
+exoriCooldownImg = utils.image.loadFromRGBToGray(
     'actionBar/images/cooldowns/exori.png')
-exoriGranCooldownImg = utils.image.loadAsGrey(
+exoriGranCooldownImg = utils.image.loadFromRGBToGray(
     'actionBar/images/cooldowns/exoriGran.png')
-exoriMasCooldownImg = utils.image.loadAsGrey(
+exoriMasCooldownImg = utils.image.loadFromRGBToGray(
     'actionBar/images/cooldowns/exoriMas.png')
-supportCooldownImg = utils.image.loadAsGrey(
-    'actionBar/images/cooldowns/support.png')
-hasteCooldownImg = utils.image.loadAsGrey(
+hasteCooldownImg = utils.image.loadFromRGBToGray(
     'actionBar/images/cooldowns/haste.png')
+supportCooldownImg = utils.image.loadFromRGBToGray(
+    'actionBar/images/cooldowns/support.png')
 
 
 def hasCooldownByImg(screenshot, cooldownImg):
@@ -47,9 +47,9 @@ def hasExoriMasCooldown(screenshot):
     return hasCooldownByImg(screenshot, exoriMasCooldownImg)
 
 
-def hasSupportCooldown(screenshot):
-    return hasCooldownByImg(screenshot, supportCooldownImg)
-
-
 def hasHasteCooldown(screenshot):
     return hasCooldownByImg(screenshot, hasteCooldownImg)
+
+
+def hasSupportCooldown(screenshot):
+    return hasCooldownByImg(screenshot, supportCooldownImg)
