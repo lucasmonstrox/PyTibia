@@ -12,6 +12,11 @@ def RGBtoGray(screenshot):
     return screenshot
 
 
+def loadFromRGBToGray(path):
+    img = RGBtoGray(load(path))
+    return img
+
+
 def loadAsGrey(path):
     return np.array(cv2.imread(path, cv2.IMREAD_GRAYSCALE))
 
