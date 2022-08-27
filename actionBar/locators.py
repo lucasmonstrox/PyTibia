@@ -1,6 +1,7 @@
 import utils.core
 import utils.image
 
+
 leftSideArrowsImg = utils.image.loadAsGrey(
     'actionBar/images/leftSideArrows.png')
 rightSideArrowsImg = utils.image.loadAsGrey(
