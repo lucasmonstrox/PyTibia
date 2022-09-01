@@ -1,7 +1,7 @@
 import numpy as np
 import pathlib
-from .locators import getSlot1Pos, getSlot2Pos, getSlot3Pos, getSlot4Pos, getSlot5Pos, getSlot6Pos, getSlot7Pos, getSlot8Pos, getSlot9Pos
-from .extractors import getCooldownsImg
+from actionBar.locators import getSlot1Pos, getSlot2Pos, getSlot3Pos, getSlot4Pos, getSlot5Pos, getSlot6Pos, getSlot7Pos, getSlot8Pos, getSlot9Pos
+from actionBar.extractors import getCooldownsImg
 from utils.core import locate
 from utils.image import loadAsGrey, loadFromRGBToGray
 from utils.matrix import hasMatrixInsideOther
@@ -84,12 +84,15 @@ def getSlotCount(screenshot, key):
 
 def hasCooldownByImg(screenshot, cooldownImg):
     listOfCooldownsImg = getCooldownsImg(screenshot)
+    cannotGetListOfCooldownsImg = listOfCooldownsImg is None
+    if cannotGetListOfCooldownsImg:
+        return None
     cooldownImgPos = locate(listOfCooldownsImg, cooldownImg)
-    cooldownImgIsntPresent = cooldownImgPos is None
-    if cooldownImgIsntPresent:
+    cannotGetCooldownImgPos = cooldownImgPos is None
+    if cannotGetCooldownImgPos:
         return False
     (x, _, width, _) = cooldownImgPos
-    percentBar = listOfCooldownsImg[20:21, x:x+width]
+    percentBar = listOfCooldownsImg[20:21, x:x + width]
     firstPixel = percentBar[0][0]
     whitePixelColor = 255
     hasCooldown = firstPixel == whitePixelColor
