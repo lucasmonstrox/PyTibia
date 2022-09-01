@@ -30,6 +30,7 @@ numbersAsImg = [
 ]
 
 
+# TODO: add unit tests
 def getNumberFromDigitSlot(digitIndex, digits):
     digitWidth = 6
     x0 = digitIndex * digitWidth
@@ -45,6 +46,7 @@ def getNumberFromDigitSlot(digitIndex, digits):
     return number
 
 
+# TODO: add unit tests
 def getSlotCount(screenshot, key):
     slotPosFunc = {
         '1': getSlot1Pos,
