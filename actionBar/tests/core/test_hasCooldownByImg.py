@@ -1,14 +1,12 @@
-import numpy as np
 import pathlib
 from actionBar.core import hasCooldownByImg
 from utils.image import load, RGBtoGray
 
+actionBarPath = pathlib.Path(__file__).parent.parent.parent.resolve()
 currentPath = pathlib.Path(__file__).parent.resolve()
 screenshotImg = RGBtoGray(load(f'{currentPath}/screenshot.png'))
-listOfCooldownsImg = np.array(RGBtoGray(
-    load(f'actionBar/tests/core/listOfCooldownsImg.png')))
-cooldownImg = np.array(
-    RGBtoGray(load(f'actionBar/images/cooldowns/exori.png')))
+listOfCooldownsImg = RGBtoGray(load(f'{currentPath}/listOfCooldownsImg.png'))
+cooldownImg = RGBtoGray(load(f'{actionBarPath}/images/cooldowns/exori.png'))
 
 
 def test_should_return_None_when_getCooldownsImg_return_None(mocker):

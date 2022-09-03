@@ -2,6 +2,7 @@ import pathlib
 from actionBar.core import hasExoriMasCooldown
 from utils.image import load, RGBtoGray
 
+
 currentPath = pathlib.Path(__file__).parent.resolve()
 screenshotImg = RGBtoGray(load(f'{currentPath}/screenshot.png'))
 
