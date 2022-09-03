@@ -1,9 +1,9 @@
 import numpy as np
 import pathlib
 from actionBar.locators import getSlot1Pos, getSlot2Pos, getSlot3Pos, getSlot4Pos, getSlot5Pos, getSlot6Pos, getSlot7Pos, getSlot8Pos, getSlot9Pos
-from actionBar.extractors import getCooldownsImg
-from utils.core import locate
-from utils.image import loadAsGrey, loadFromRGBToGray
+from actionBar import extractors
+from utils import core
+from utils.image import loadAsGrey, loadFromRGBToGray, save
 from utils.matrix import hasMatrixInsideOther
 
 currentPath = pathlib.Path(__file__).parent.resolve()
@@ -85,11 +85,11 @@ def getSlotCount(screenshot, key):
 
 
 def hasCooldownByImg(screenshot, cooldownImg):
-    listOfCooldownsImg = getCooldownsImg(screenshot)
+    listOfCooldownsImg = extractors.getCooldownsImg(screenshot)
     cannotGetListOfCooldownsImg = listOfCooldownsImg is None
     if cannotGetListOfCooldownsImg:
         return None
-    cooldownImgPos = locate(listOfCooldownsImg, cooldownImg)
+    cooldownImgPos = core.locate(listOfCooldownsImg, cooldownImg)
     cannotGetCooldownImgPos = cooldownImgPos is None
     if cannotGetCooldownImgPos:
         return False
