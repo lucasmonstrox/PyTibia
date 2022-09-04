@@ -6,7 +6,7 @@ from utils.image import load, RGBtoGray
 
 currentPath = pathlib.Path(__file__).parent.resolve()
 screenshotImg = RGBtoGray(load(f'{currentPath}/screenshot.png'))
-cooldownsImg = RGBtoGray(load(f'{currentPath}/cooldownsImg.png'))
+listOfCooldownsImg = RGBtoGray(load(f'{currentPath}/listOfCooldownsImg.png'))
 
 
 def test_should_return_None_when_cannot_get_left_side_arrows_pos(mocker):
@@ -33,4 +33,4 @@ def test_should_return_None_when_cannot_get_right_side_arrows_pos(mocker):
 
 def test_should_get_cooldowns_img():
     cooldownsImgAfterExtraction = getCooldownsImg(screenshotImg)
-    np.testing.assert_array_equal(cooldownsImg, cooldownsImgAfterExtraction)
+    np.testing.assert_array_equal(listOfCooldownsImg, cooldownsImgAfterExtraction)
