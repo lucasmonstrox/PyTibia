@@ -61,16 +61,29 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
   - Getting Life :heavy_check_mark:
   - Getting Mana :heavy_check_mark:
 
+# 🧰 Installation
+
+## Prerequisites
+
+- Python >=3.9.12
+- Poetry >=1.2.0
+
+Install packages before continue
+
+```bash
+poetry install
+```
+
 # ⌨ Development
 
 ## ⚙ Running the app
 
 ```bash
 # main file to track basic functions output like(is burning, has helmet equipped, etc)
-python main.py
+poetry run python main.py
 
 # to test last experiments with mess code
-python test.py
+poetry run python test.py
 ```
 
 # ✅ TODO

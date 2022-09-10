@@ -14,7 +14,6 @@ from radar.types import waypointType
 import utils.core
 import utils.image
 import utils.mouse
-import utils.window
 
 # import sys
 # np.set_printoptions(threshold=sys.maxsize)
@@ -216,14 +215,6 @@ def handleHealing(healthPercentage, manaPercentage):
     #     time.sleep(0.25)
 
 
-def handleWindow(_):
-    global window
-    windowIsEmpty = window is None
-    if windowIsEmpty:
-        window = utils.window.getWindow()
-    return window
-
-
 def handleSpell(screenshot, hudCreatures):
     nearestCreaturesCount = hud.creatures.getNearestCreaturesCount(
         hudCreatures)
@@ -280,7 +271,6 @@ def main():
     thirteenFps = 0.0667
     fpsObserver = interval(thirteenFps)
     fpsWithScreenshot = fpsObserver.pipe(
-        operators.map(handleWindow),
         operators.filter(lambda window: window is not None),
         operators.map(lambda window: utils.image.RGBtoGray(
             utils.core.getScreenshot())),

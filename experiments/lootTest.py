@@ -10,14 +10,11 @@ import radar.config
 import radar.core
 import utils.core
 import utils.image
-import utils.window
-import utils.window
 from PIL import Image, ImageOps
 
 
 def main():
     # loop_time = time()
-    window = utils.window.getWindow()
     beingAttackedCreature = None
     corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
     previousHudCreatures = np.array([])

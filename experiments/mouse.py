@@ -13,7 +13,6 @@ import radar.core
 import utils.core
 import utils.image
 import utils.mouse
-import utils.window
 import datetime
 from typing import cast
 

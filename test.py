@@ -2,7 +2,6 @@ from os import walk
 import numpy as np
 import cv2
 from time import sleep, time
-import actionBar.slot
 import battleList.core
 from chat import chat
 import hud.creatures
@@ -11,15 +10,12 @@ import radar.config
 import radar.core
 import utils.core
 import utils.image
-import utils.window
-import utils.window
 from PIL import Image, ImageOps
 import pathlib
 import timeit
 
 
 def main():
-    # window = utils.window.getWindow()
     # beingAttackedCreature = None
     # corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
