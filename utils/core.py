@@ -22,7 +22,7 @@ def cacheObjectPos(func):
         nonlocal lastX, lastY, lastW, lastH, lastImgHash
         if lastX != None and lastY != None and lastW != None and lastH != None:
             copiedImg = np.ascontiguousarray(screenshot[lastY:lastY +
-                                                              lastH, lastX:lastX + lastW])
+                                                        lastH, lastX:lastX + lastW])
             copiedImgHash = hashit(copiedImg)
             if copiedImgHash == lastImgHash:
                 return (lastX, lastY, lastW, lastH)
@@ -59,10 +59,6 @@ def getPixelFromCoordinate(coordinate):
     return x - 31744, y - 30976
 
 
-def getSquareMeterSize():
-    return 51.455
-
-
 def hashit(arr):
     return xxhash.xxh64(np.ascontiguousarray(arr), seed=20220605).intdigest()
 
@@ -95,7 +91,7 @@ def locateMultiple(compareImg, img, confidence=0.85):
 
 def getScreenshot():
     if not camera.is_capturing:
-        camera.start(target_fps=60, video_mode=True)
+        camera.start(target_fps=180, video_mode=True)
     screenshot = camera.get_latest_frame()
     screenshot = np.array(screenshot, dtype=np.uint8)
     return screenshot
