@@ -22,6 +22,7 @@ def getAdjacencyMatrix(arr):
     connections = np.add(topBottomConnections, leftRightConnections)
     connections = np.multiply(connections, repArr)
     connections = np.multiply(connections, np.rot90(repArr, k=-1))
+    connections = np.array(connections, dtype=np.uint)
     return connections
 
 
