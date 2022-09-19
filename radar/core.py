@@ -123,12 +123,14 @@ def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
         95:  np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 157, 205, 299, 543, 2096]),
         100: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 113, 135, 167, 219, 321, 592, 2382]),
         110: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 150, 187, 248, 367, 696, 3060]),
+        120: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
         125: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
         140: np.array([0, 0, 0, 0, 0, 0, 0, 111, 125, 143, 167, 201, 254, 344, 531, 1092, 6341]),
         150: np.array([0, 0, 0, 0, 0, 0, 0, 120, 135, 155, 181, 219, 278, 380, 595, 1258, 8036]),
         160: np.array([0, 0, 0, 0, 0, 0, 116, 129, 145, 167, 196, 238, 304, 419, 663, 1443, 10167]),
         200: np.array([0, 0, 0, 114, 124, 135, 149, 167, 190, 219, 261, 322, 419, 597, 998, 2444, 25761]),
         250: np.array([117, 126, 135, 146, 160, 175, 195, 220, 252, 295, 356, 446, 598, 884, 1591, 4557, 81351]),
+        255: np.array([117, 126, 135, 146, 160, 175, 195, 220, 252, 295, 356, 446, 598, 884, 1591, 4557, 81351]),
     }
     breakpoints = tilesFrictionsBreakpoints[tileFriction]
     currentSpeedBreakpoint = np.nonzero(breakpoints >= charSpeed)[0][0]
@@ -137,7 +139,7 @@ def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
 
 
 # TODO: add unit tests
-def getTileFrictionByCoordinate(coordinate):
+def getTileFrictionByRadarCoordinate(coordinate):
     xOfPixelCoordinate, yOfPixelCoordinate = utils.core.getPixelFromCoordinate(
         coordinate)
     floorLevel = coordinate[2]
