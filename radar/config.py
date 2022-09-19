@@ -63,11 +63,11 @@ pixelsColorsValues = {
     "vacuumOrUndiscoveredArea": 0
 }
 nonWalkablePixelsColors = [
-    pixelsColorsValues['caveWall'],
+    pixelsColorsValues["caveWall"],
     pixelsColorsValues["lava"],
-    pixelsColorsValues['mountainOrStone'],
+    pixelsColorsValues["mountainOrStone"],
     pixelsColorsValues["swamp"],
-    pixelsColorsValues['treesOrBushes'],
+    pixelsColorsValues["treesOrBushes"],
     pixelsColorsValues["wall"],
     pixelsColorsValues["water"],
     pixelsColorsValues["vacuumOrUndiscoveredArea"],
@@ -80,7 +80,6 @@ for floor in floors:
     walkableFloorSqms = np.where(
         np.isin(floorsImgs[floor], nonWalkablePixelsColors), 0, 1)
     walkableFloorsSqms[floor] = walkableFloorSqms
-
 
 # radarImagesCoordinates = np.load('radar/npys/radarImagesCoordinates.npy', allow_pickle=True)
 # walkableFloorsSqms = np.load('radar/npys/walkableFloorsSqms.npy')
