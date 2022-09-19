@@ -46,19 +46,33 @@ def getRightSidebarArrows(screenshot):
     return utils.core.locate(screenshot, rightHudImg)
 
 
-def getSlotFromCoordinate(currentCoordinate, coordinate):
-    diffX = coordinate[0] - currentCoordinate[0]
+def getSlotFromCoordinate(currentRadarCoordinate, coordinate):
+    diffX = coordinate[0] - currentRadarCoordinate[0]
     diffXAbs = abs(diffX)
     if diffXAbs > 7:
-        # TODO: throw an exception
-        print('diffXAbs > 7')
         return None
-    diffY = coordinate[1] - currentCoordinate[1]
+    diffY = coordinate[1] - currentRadarCoordinate[1]
     diffYAbs = abs(diffY)
     if diffYAbs > 5:
-        # TODO: throw an exception
-        print('diffYAbs > 5')
         return None
     hudCoordinateX = 7 + diffX
     hudCoordinateY = 5 + diffY
     return hudCoordinateX, hudCoordinateY
+
+
+# TODO: add unit tests
+def getSlotImg(hudImg, slot):
+    xOfSlot, yOfSlot = slot
+    slotWidth = 32
+    x = xOfSlot * slotWidth
+    y = yOfSlot * slotWidth
+    slotImg = hudImg[y:y+slotWidth, x:x+slotWidth]
+    return slotImg
+
+
+# TODO: add unit tests
+def isClosedHole(slotImg):
+    closedHoleImg = utils.image.RGBtoGray(
+        utils.image.load('hud/images/waypoint/closed-hole.png'))
+    isClosed = utils.core.locate(slotImg, closedHoleImg) is not None
+    return isClosed
