@@ -25,6 +25,10 @@ def getContent(screenshot):
 def getCreatureNameImg(slotImg):
     creatureNameImg = slotImg[3:11 + 3, 23:23 + 131]
     creatureNameImg = utils.image.convertGraysToBlack(creatureNameImg)
+    creatureNameImg = np.array(creatureNameImg, dtype=np.uint8)
+    highlightedNamePixelColorIndexes = np.nonzero(
+        creatureNameImg == config.creatures["highlightedNamePixelColor"],)
+    creatureNameImg[highlightedNamePixelColorIndexes] = config.creatures["namePixelColor"]
     return creatureNameImg
 
 
