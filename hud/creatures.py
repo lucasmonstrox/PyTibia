@@ -1,14 +1,13 @@
 import math
-from re import A
 import numpy as np
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 import hud.core
+import radar.config
 import utils.core
 import utils.image
 import utils.matrix
 import wiki.creatures
-from time import time
 
 
 lifeBarBlackPixelsMapper = np.array([
@@ -28,13 +27,14 @@ creatureType = np.dtype([
     ('healthPercentage', np.uint8),
     ('isBeingAttacked', np.bool_),
     ('slot', np.uint8, (2,)),
-    ('gameCoordinate', np.uint16, (3,)),
+    ('radarCoordinate', np.uint16, (3,)),
     ('windowCoordinate', np.uint32, (2,))
 ])
 
 
 def cleanCreatureName(creatureName):
     creatureName = np.where(creatureName == 29, 0, creatureName)
+    creatureName = np.where(creatureName == 57, 0, creatureName)
     creatureName = np.where(creatureName == 91, 0, creatureName)
     creatureName = np.where(creatureName == 113, 0, creatureName)
     creatureName = np.where(creatureName == 152, 0, creatureName)
@@ -43,23 +43,25 @@ def cleanCreatureName(creatureName):
     return creatureName
 
 
-def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
-    hasNoCreatures = len(creatures) == 0
+def getClosestCreature(hudCreatures, radarCoordinate):
+    hasNoCreatures = len(hudCreatures) == 0
     if hasNoCreatures:
         return None
-    (x, y) = utils.core.getPixelFromCoordinate(coordinate)
-    hudwalkableFloorsSqms = walkableFloorsSqms[y-5:y+6, x-7:x+8]
-    hudwalkableFloorsSqmsCreatures = np.zeros((11, 15))
-    creaturesSlots = creatures['slot'][:, [1, 0]]
-    hudwalkableFloorsSqmsCreatures[creaturesSlots[:,
-                                                  0], creaturesSlots[:, 1]] = 1
-    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudwalkableFloorsSqms)
+    floorLevel = radarCoordinate[2]
+    walkableFloorsSqms = radar.config.walkableFloorsSqms[floorLevel].copy()
+    hudWalkableFloorsSqms = getHudWalkableFloorsSqms(
+        walkableFloorsSqms, radarCoordinate)
+    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudWalkableFloorsSqms)
     sqmsGraph = csr_matrix(adjacencyMatrix)
     playerHudIndex = 82
     sqmsGraphWeights = dijkstra(
         sqmsGraph, directed=True, indices=playerHudIndex, unweighted=False)
+    creaturesSlots = hudCreatures['slot'][:, [1, 0]]
+    hudWalkableFloorsSqmsCreatures = np.zeros((11, 15))
+    hudWalkableFloorsSqmsCreatures[creaturesSlots[:,
+                                                  0], creaturesSlots[:, 1]] = 1
     creaturesIndexes = np.nonzero(
-        hudwalkableFloorsSqmsCreatures.flatten() == 1)[0]
+        hudWalkableFloorsSqmsCreatures.flatten() == 1)[0]
     creaturesGraphWeights = np.take(sqmsGraphWeights, creaturesIndexes)
     nonTargetCreaturesIndexes = np.where(creaturesGraphWeights == np.inf)[0]
     creaturesIndexes = np.delete(creaturesIndexes, nonTargetCreaturesIndexes)
@@ -75,8 +77,8 @@ def getClosestCreature(creatures, coordinate, walkableFloorsSqms):
     creatureSlot = [closestCreatureHudIndex %
                     15, closestCreatureHudIndex // 15]
     closestCreatureIndex = np.where(
-        (creatures['slot'] == creatureSlot).all(axis=1))[0][0]
-    closestCreature = creatures[closestCreatureIndex]
+        (hudCreatures['slot'] == creatureSlot).all(axis=1))[0][0]
+    closestCreature = hudCreatures[closestCreatureIndex]
     return closestCreature
 
 
@@ -260,6 +262,14 @@ def getDifferentCreaturesBySlots(previousHudCreatures, currentHudCreatures, slot
     return differentCreatures
 
 
+def getHudWalkableFloorsSqms(walkableFloorsSqms, radarCoordinate):
+    (xOfPixelCoordinate, yOfPixelCoordinate) = utils.core.getPixelFromCoordinate(
+        radarCoordinate)
+    hudWalkableFloorsSqms = walkableFloorsSqms[yOfPixelCoordinate -
+                                               5:yOfPixelCoordinate+6, xOfPixelCoordinate-7:xOfPixelCoordinate+8]
+    return hudWalkableFloorsSqms
+
+
 def getNearestCreaturesCount(creatures):
     hudWalkableFloorsSqmsCreatures = np.zeros((11, 15), dtype=np.uint)
     xySlots = creatures['slot'][:, [1, 0]]
@@ -272,18 +282,49 @@ def getNearestCreaturesCount(creatures):
     return nearestCreaturesCount
 
 
-def hasTargetToCreatureByIndex(hudWalkableFloorsSqms, hudCreaturesSlots, index):
+def getTargetCreature(hudCreatures):
+    hasNoHudCreatures = len(hudCreatures) == 0
+    if hasNoHudCreatures:
+        return
+    indexes2d = np.argwhere(hudCreatures["isBeingAttacked"] == True)
+    if len(indexes2d) == 0:
+        return
+    indexes = indexes2d[0]
+    hasNoTarget = len(indexes) == 0
+    if hasNoTarget:
+        return
+    targetCreatureIndex = indexes[0]
+    targetCreature = hudCreatures[targetCreatureIndex]
+    return targetCreature
+
+
+def hasTargetToCreatureBySlot(hudCreatures, slot, radarCoordinate):
+    hasNoHudCreatures = len(hudCreatures) == 0
+    if hasNoHudCreatures:
+        return False
+    floorLevel = hudCreatures[0]["radarCoordinate"][2]
+    walkableFloorsSqms = radar.config.walkableFloorsSqms[floorLevel].copy()
+    hudCreaturesSlots = hudCreatures["slot"]
+    hudWalkableFloorsSqms = getHudWalkableFloorsSqms(
+        walkableFloorsSqms, radarCoordinate)
     creaturesSlots = hudCreaturesSlots[:, [1, 0]]
     hudWalkableFloorsSqms[creaturesSlots[:, 0], creaturesSlots[:, 1]] = 0
-    hudWalkableFloorsSqms[index[1], index[0]] = 1
+    xOfSlot, yOfSlot = slot
+    hudWalkableFloorsSqms[yOfSlot, xOfSlot] = 1
     adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudWalkableFloorsSqms)
     graph = csr_matrix(adjacencyMatrix)
     playerHudIndex = 82
     graphWeights = dijkstra(graph, directed=True,
                             indices=playerHudIndex, unweighted=False)
     graphWeights = graphWeights.reshape(11, 15)
-    creatureGraphValue = graphWeights[index[1], index[0]]
+    creatureGraphValue = graphWeights[yOfSlot, xOfSlot]
     hasTarget = creatureGraphValue != np.inf
+    return hasTarget
+
+
+def hasTargetToCreature(hudCreatures, hudCreature, radarCoordinate):
+    hasTarget = hasTargetToCreatureBySlot(
+        hudCreatures, hudCreature["slot"], radarCoordinate)
     return hasTarget
 
 
@@ -299,14 +340,16 @@ def makeCreature(creatureName, coordinate, hudCoordinate, hudImg=None, radarCoor
     ySlot = 10 if ySlot > 10 else ySlot
     healthPercentage = 100
     borderedCreatureImg = hudImg[y+5:y+5+32, x-3:x-3+32]
-    isBeingAttacked = np.sum(np.where(np.logical_or(
-        borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0)) > 10
+    pixelsCount = np.sum(np.where(np.logical_or(
+        borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
+    # TODO: fix me
+    isBeingAttacked = pixelsCount > 50
     slot = (xSlot, ySlot)
-    gameCoordinateX = radarCoordinate[0] - 7 + xSlot
-    gameCoordinateY = radarCoordinate[1] - 5 + ySlot
-    gameCoordinate = (gameCoordinateX, gameCoordinateY, radarCoordinate[2])
+    radarCoordinateX = radarCoordinate[0] - 7 + xSlot
+    radarCoordinateY = radarCoordinate[1] - 5 + ySlot
+    radarCoordinate = (radarCoordinateX, radarCoordinateY, radarCoordinate[2])
     windowCoordinate = (hudCoordinateX + xCoordinate,
                         hudCoordinateY + yCoordinate)
     creature = (creatureName, healthPercentage, isBeingAttacked,
-                slot, gameCoordinate, windowCoordinate)
+                slot, radarCoordinate, windowCoordinate)
     return creature
