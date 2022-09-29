@@ -24,6 +24,14 @@ tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900
 tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
 
 [[package]]
+name = "autopy"
+version = "4.0.0"
+description = "A simple, cross-platform GUI automation library for Python."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "colorama"
 version = "0.4.5"
 description = "Cross-platform colored terminal text."
@@ -189,6 +197,17 @@ pyobjc-core = {version = "*", markers = "platform_system == \"Darwin\""}
 pyscreeze = ">=0.1.21"
 python3-Xlib = {version = "*", markers = "platform_system == \"Linux\" and python_version >= \"3.0\""}
 PyTweening = ">=1.0.1"
+
+[[package]]
+name = "pyee"
+version = "9.0.4"
+description = "A port of node.js's EventEmitter to python."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+typing-extensions = "*"
 
 [[package]]
 name = "PyGetWindow"
@@ -2212,7 +2231,7 @@ python-versions = ">=3.6"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9.12,<3.12"
-content-hash = "d69ea8b2833fa6a2a405853a100d81ee0d8ee93187ef5170ca899c98586b0ced"
+content-hash = "88f76f46c6409eb84449ff2343f43e994ef15e8b2a01bb788951435b4bfa1b83"
 
 [metadata.files]
 ahocorapy = [
@@ -2222,6 +2241,47 @@ ahocorapy = [
 attrs = [
     {file = "attrs-22.1.0-py2.py3-none-any.whl", hash = "sha256:86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c"},
     {file = "attrs-22.1.0.tar.gz", hash = "sha256:29adc2665447e5191d0e7c568fde78b21f9672d344281d0c6e1ab085429b22b6"},
+]
+autopy = [
+    {file = "autopy-4.0.0-cp27-cp27m-macosx_10_13_intel.whl", hash = "sha256:75ad7df585c37fa11f391dcd3565086455f924881fdaf80d8edccf05b9d72fa6"},
+    {file = "autopy-4.0.0-cp27-cp27m-manylinux1_i686.whl", hash = "sha256:2996e8c31c59994844da50fc3813098c79c1e8b426c97c9ed09f60faeb80e925"},
+    {file = "autopy-4.0.0-cp27-cp27m-manylinux1_x86_64.whl", hash = "sha256:391e20225a3c46d053f03df07653a738609117ef9a0036eb62bd503074c49540"},
+    {file = "autopy-4.0.0-cp27-cp27m-manylinux2010_i686.whl", hash = "sha256:531477fe15779f6a46d05885f93ecdb3e21fa164c4b1eaf500b09c8c3828286e"},
+    {file = "autopy-4.0.0-cp27-cp27m-manylinux2010_x86_64.whl", hash = "sha256:ed3106ed017fa6800c76d30a9c0cbc527559a616a62e83aa10e9f08365cd852a"},
+    {file = "autopy-4.0.0-cp27-cp27m-win32.whl", hash = "sha256:dc8600dfe0fae831dff138ddf54c9afbc0dc482cc1f34f4278c56eb11fb5d76d"},
+    {file = "autopy-4.0.0-cp27-cp27mu-manylinux1_i686.whl", hash = "sha256:5fa07181cbafaedf330179865f54996ea35b86d6fe299d0d5ebc145a08232a5c"},
+    {file = "autopy-4.0.0-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:1e1369b57b5dc1cc48fed3c121d14ea05a46ef14cbb7f9188e723b864acebbef"},
+    {file = "autopy-4.0.0-cp27-cp27mu-manylinux2010_i686.whl", hash = "sha256:58dcce067072dd2e9b15cb56dc15ba838c30e93f235d1ba3bf5f679e0f31cb4a"},
+    {file = "autopy-4.0.0-cp27-cp27mu-manylinux2010_x86_64.whl", hash = "sha256:c29833f79bbcf14409c07af72a74f2dc1ea572cfcdb3545a7574c21ac922869f"},
+    {file = "autopy-4.0.0-cp35-cp35m-macosx_10_13_intel.whl", hash = "sha256:7a66d3af3bd5a2869054c730b64664a2ae3d2890e8145b7b1022ebc3915b9368"},
+    {file = "autopy-4.0.0-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:b3cf1ebf7fa4f7b1594f2e707dda51a20ef93e0696c59ff160e73a632aa18055"},
+    {file = "autopy-4.0.0-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:09b4ff0f66c6f238aa2fdb8149bc5fe92619cb29f0ef4c33886546d5ad05ee36"},
+    {file = "autopy-4.0.0-cp35-cp35m-manylinux2010_i686.whl", hash = "sha256:6af1b26005d2761481692d6c2d39dda2af1bff850c92612e2c550297f791a163"},
+    {file = "autopy-4.0.0-cp35-cp35m-manylinux2010_x86_64.whl", hash = "sha256:5d0c82c68b0a89215037d43f8195d5b5ccce35bae534f637d3356f392585686a"},
+    {file = "autopy-4.0.0-cp35-cp35m-win32.whl", hash = "sha256:87c99fb12a2d271f9304cffc2320de5148677b0bd1aeda5c54f7ec89f29ed0d1"},
+    {file = "autopy-4.0.0-cp35-cp35m-win_amd64.whl", hash = "sha256:2ff259b644a8df27a2810625dfd7564eecfba8a79e0031036eac6a0491f0c014"},
+    {file = "autopy-4.0.0-cp36-cp36m-macosx_10_13_intel.whl", hash = "sha256:a4f39825a3a71048e3893a49c9902ba565ef76aaed8dfffc260db4e7071bdd9a"},
+    {file = "autopy-4.0.0-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:41f246640b848e6db49f9a25ea285442c4a8c1742d3518413a71ab12920f94cf"},
+    {file = "autopy-4.0.0-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:69312d6912381f06b62853fdd8f659902fa52a62e18513c46f8d0eae7c3f5bb2"},
+    {file = "autopy-4.0.0-cp36-cp36m-manylinux2010_i686.whl", hash = "sha256:ebef27afdb81c260146e9d42aa2952cf3cbd91389b88ff967685fba1dce24a14"},
+    {file = "autopy-4.0.0-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:818acf78fc715acdd8e7dbd4ba58abe00ade8bb71bbc40d413fbd650ab195d0e"},
+    {file = "autopy-4.0.0-cp36-cp36m-win32.whl", hash = "sha256:470cfaa6d01bd5e1ed489f199fb248dd7a2dc0c6b60dc1c6b3d07a37914678b7"},
+    {file = "autopy-4.0.0-cp36-cp36m-win_amd64.whl", hash = "sha256:f87561f9047c70b87614370be0cc550a1c138fbaacd7d5eaf2eb092eee21018b"},
+    {file = "autopy-4.0.0-cp37-cp37m-macosx_10_13_intel.whl", hash = "sha256:e631d743f5e445362a8bbdbfd095230979d4da54ad1e77b275deeab602dd3e81"},
+    {file = "autopy-4.0.0-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:5a5bb85f475b9d7305771dfdf6e35f2e4abb5c2198f8bef9f8b14928946caf25"},
+    {file = "autopy-4.0.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:4584eefd5534e84b80cdce6517d94fc93ea7c1b7fe863a3ed5a74c8fc61b8eb6"},
+    {file = "autopy-4.0.0-cp37-cp37m-manylinux2010_i686.whl", hash = "sha256:c739476056913e61415d5e2d2cff8e3e3aa9dd272bf091f7068d47cf18f3f00e"},
+    {file = "autopy-4.0.0-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:281252a0a47b691f4996ecc0f42545c1b0ec23568a8c04abba4dec6f08d29892"},
+    {file = "autopy-4.0.0-cp37-cp37m-win32.whl", hash = "sha256:eed244e42d24ecf20f90c5672fb6d859b031de567bb178c0b3e3617acd5eed59"},
+    {file = "autopy-4.0.0-cp37-cp37m-win_amd64.whl", hash = "sha256:2550e1140bef6143afe5f89004d6e3c2bb055d01178a1bd952b1c3bad20fd848"},
+    {file = "autopy-4.0.0-cp38-cp38-macosx_10_13_x86_64.whl", hash = "sha256:7825aba7adb3264707499d4950d3bface9514248f4c2552abb73c7ab91f673a4"},
+    {file = "autopy-4.0.0-cp38-cp38-manylinux1_i686.whl", hash = "sha256:5db79c63a1a913cd6026b2c093a7948f47881ad82e57befbb508b8edb566594f"},
+    {file = "autopy-4.0.0-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:6fd74465a033e7b450162a7e0e097fa8b88f1d086afe63dfd81ef6fa8e4bb9dd"},
+    {file = "autopy-4.0.0-cp38-cp38-manylinux2010_i686.whl", hash = "sha256:f7695c933a07f60f69826053a77288a6c3a3c392e72e77d3b411cc8b430a825a"},
+    {file = "autopy-4.0.0-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:5c27a6f5fc636002b4f50a6522fcfbf5f156d74e4e94907676cb55f601a2ec87"},
+    {file = "autopy-4.0.0-cp38-cp38-win32.whl", hash = "sha256:f1dcf7405028ad37df0877a19fd69af9814725f919ce2af13ba1018f948cec79"},
+    {file = "autopy-4.0.0-cp38-cp38-win_amd64.whl", hash = "sha256:a01421e7891677e3bf5a59454bf5aba76e5a2ae1435a171e64169185f1447e44"},
+    {file = "autopy-4.0.0.tar.gz", hash = "sha256:b889dc1245426aa06769d3d87df0d96904ca729d0e9441a0096aa3ae9fbae43f"},
 ]
 colorama = [
     {file = "colorama-0.4.5-py2.py3-none-any.whl", hash = "sha256:854bf444933e37f5824ae7bfc1e98d5bce2ebe4160d46b5edf346a89358e99da"},
@@ -2339,6 +2399,10 @@ py = [
 ]
 PyAutoGUI = [
     {file = "PyAutoGUI-0.9.53.tar.gz", hash = "sha256:d31de8f712218d90be7fc98091fce1a12a3e9196e0c814eb9afd73bb2ec97035"},
+]
+pyee = [
+    {file = "pyee-9.0.4-py2.py3-none-any.whl", hash = "sha256:9f066570130c554e9cc12de5a9d86f57c7ee47fece163bbdaa3e9c933cfbdfa5"},
+    {file = "pyee-9.0.4.tar.gz", hash = "sha256:2770c4928abc721f46b705e6a72b0c59480c4a69c9a83ca0b00bb994f1ea4b32"},
 ]
 PyGetWindow = [
     {file = "PyGetWindow-0.0.9.tar.gz", hash = "sha256:17894355e7d2b305cd832d717708384017c1698a90ce24f6f7fbf0242dd0a688"},

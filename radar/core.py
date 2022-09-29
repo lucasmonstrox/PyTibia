@@ -57,7 +57,7 @@ def getCoordinate(screenshot, previousCoordinate=None):
     yImgCoordinate = imgCoordinate[1] + config.dimensions["halfHeight"]
     xCoordinate, yCoordinate = utils.core.getCoordinateFromPixel(
         (xImgCoordinate, yImgCoordinate))
-    return (xCoordinate, yCoordinate, floorLevel)
+    return [xCoordinate, yCoordinate, floorLevel]
 
 
 # TODO: add unit tests
@@ -125,6 +125,9 @@ def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
         110: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 150, 187, 248, 367, 696, 3060]),
         120: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
         125: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        130: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        135: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        136: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
         140: np.array([0, 0, 0, 0, 0, 0, 0, 111, 125, 143, 167, 201, 254, 344, 531, 1092, 6341]),
         150: np.array([0, 0, 0, 0, 0, 0, 0, 120, 135, 155, 181, 219, 278, 380, 595, 1258, 8036]),
         160: np.array([0, 0, 0, 0, 0, 0, 116, 129, 145, 167, 196, 238, 304, 419, 663, 1443, 10167]),
@@ -133,7 +136,11 @@ def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
         250: np.array([117, 126, 135, 146, 160, 175, 195, 220, 252, 295, 356, 446, 598, 884, 1591, 4557, 81351]),
         255: np.array([117, 126, 135, 146, 160, 175, 195, 220, 252, 295, 356, 446, 598, 884, 1591, 4557, 81351]),
     }
-    breakpoints = tilesFrictionsBreakpoints[tileFriction]
+    # TODO: sometimes friction is not found
+    if tileFriction in tilesFrictionsBreakpoints:
+        breakpoints = tilesFrictionsBreakpoints[tileFriction]
+    else:
+        breakpoints = tilesFrictionsBreakpoints[140]
     currentSpeedBreakpoint = np.nonzero(breakpoints >= charSpeed)[0][0]
     speed = breakpointTileMovementSpeed[currentSpeedBreakpoint]
     return speed

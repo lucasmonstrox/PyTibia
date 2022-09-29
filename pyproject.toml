@@ -17,6 +17,7 @@ nptyping = "^2.2.0"
 ahocorapy = "^1.6.1"
 dxcam = {git = "https://github.com/ra1nty/DXcam.git"}
 scipy = "^1.9.1"
+pyee = "^9.0.4"
 
 
 [tool.poetry.group.test.dependencies]

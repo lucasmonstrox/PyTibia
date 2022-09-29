@@ -35,24 +35,19 @@ def main():
     # pyautogui.moveTo(320, 740, duration=3)
     # pyautogui.moveTo(1040, 120, duration=3)
     pixelSequence = Subject()
-
     def test(items):
-        print('aew')
         return timer(0, 0.005).pipe(
             operators.map(lambda i: items[i]),
             operators.take(len(items))
         )
-
     mousePoint = pixelSequence.pipe(
         switch_map(test),
     )
-
     mousePoint.subscribe(
         lambda res: pyautogui.moveTo(res[0], res[1]),
         lambda err: print('err', err),
         lambda: print('complete'),
     )
-
     x1 = np.arange(10, 610)
     y1 = np.arange(210, 810)
     z1 = np.column_stack((x1, y1))

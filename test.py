@@ -4,8 +4,8 @@ import cv2
 from time import sleep, time
 import battleList.core
 from chat import chat
-import hud.creatures
 import hud.core
+import hud.creatures
 import radar.config
 import radar.core
 import utils.core
@@ -16,15 +16,27 @@ import timeit
 
 
 def main():
+    test = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    coordinates = np.array([[1, 2]])
+    # fa = test[coordinates[-1:]]
+    # print(np.take(test, coordinates, axis=0))
     # beingAttackedCreature = None
     # corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
+    utils.image.save(screenshot, 'screenshot.png')
     # radarCoordinate = radar.core.getCoordinate(screenshot)
-    battleListCreatures = battleList.core.getCreatures(screenshot)
-    print(battleListCreatures)
+    # battleListCreatures = battleList.core.getCreatures(screenshot)
+    # print('battleListCreatures', battleListCreatures)
+    # hudCreatures = hud.creatures.getCreatures(
+    #     screenshot, battleListCreatures, radarCoordinate=radarCoordinate)
+    # closedHoleImg = utils.image.RGBtoGray(
+    #     utils.image.load('hud/images/waypoint/closed-hole.png'))
     # hudCoordinate = hud.core.getCoordinate(screenshot)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
-    # creaturesBars = hud.creatures.getCreaturesBars(hudImg.flatten())
+    # slotImg = hud.core.getSlotImg(hudImg, [7, 6])
+    # isClosedHole = utils.core.locate(slotImg, closedHoleImg)
+    # # utils.image.save(slotImg, 'slotImg.png')
+    # print('hudCreatures', hudCreatures)
     # res = timeit.repeat(lambda: battleList.core.getCreatures(
     #     screenshot), repeat=10, number=1)
     # a = new_panel.array([
