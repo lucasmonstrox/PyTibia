@@ -4,8 +4,8 @@ import cv2
 from time import sleep, time
 import battleList.core
 from chat import chat
-import hud.creatures
 import hud.core
+import hud.creatures
 import radar.config
 import radar.core
 import skills.core
@@ -17,6 +17,10 @@ import timeit
 
 
 def main():
+    test = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    coordinates = np.array([[1, 2]])
+    # fa = test[coordinates[-1:]]
+    # print(np.take(test, coordinates, axis=0))
     # beingAttackedCreature = None
     # corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())

@@ -71,8 +71,9 @@ def getSlotImg(hudImg, slot):
 
 
 # TODO: add unit tests
-def isClosedHole(slotImg):
-    closedHoleImg = utils.image.RGBtoGray(
-        utils.image.load('hud/images/waypoint/closed-hole.png'))
-    isClosed = utils.core.locate(slotImg, closedHoleImg) is not None
-    return isClosed
+def isHoleOpen(slotImg):
+    holeOpenImg = utils.image.RGBtoGray(
+        utils.image.load('hud/images/waypoint/holeOpenImg.png'))
+    holeOpenLocation = utils.core.locate(slotImg, holeOpenImg)
+    isOpen = holeOpenLocation is not None
+    return isOpen
