@@ -46,7 +46,7 @@ def getCoordinate(screenshot, previousCoordinate=None):
                 paddingSize + areaFoundImg[1]
             (currentCoordinateX, currentCoordinateY) = utils.core.getCoordinateFromPixel(
                 (currentCoordinateXPixel, currentCoordinateYPixel))
-            return (currentCoordinateX, currentCoordinateY, floorLevel)
+            return [currentCoordinateX, currentCoordinateY, floorLevel]
     # config.floorsConfidence[floorLevel]
     imgCoordinate = utils.core.locate(
         config.floorsImgs[floorLevel], radarImg, confidence=0.75)

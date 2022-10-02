@@ -135,6 +135,9 @@ def handleWaypoint(screenshot, radarCoordinate, waypointsManager):
 
 
 # TODO: add unit tests
+# TODO: if path is blocked by player, npc, or another block object, maybe reset the path
+# TODO: if char doesnt move for some time, maybe reset the path
+# TODO: reset path when paralyzed
 def handleWalkpoints(radarCoordinate, walkpointsManager, waypointsManager):
     copiedWalkpointsManager = walkpointsManager.copy()
     shouldRecalculateWalkpoints = len(
@@ -148,81 +151,97 @@ def handleWalkpoints(radarCoordinate, walkpointsManager, waypointsManager):
             copiedWalkpointsManager['points'] = np.array(
                 [waypointsManager['state']['goalCoordinate']])
         else:
-            f = abs(waypointsManager['state']['goalCoordinate'][0] -
-                    radarCoordinate[0])
-            print('f', f)
-            if f > 1:
-                copiedWalkpointsManager['points'] = generateFloorWalkpoints(
-                    radarCoordinate, waypointsManager['state']['goalCoordinate'])
+            copiedWalkpointsManager['points'] = generateFloorWalkpoints(
+                radarCoordinate, waypointsManager['state']['goalCoordinate'])
     return copiedWalkpointsManager
 
 
 # TODO: add unit tests
-# TODO: npcs are blocking char
-# TODO: blockable objects are blocking char
+def shouldWalk(walkpointsManager):
+    should = len(walkpointsManager['points']) > 0
+    return should
+
+
+# TODO: add unit tests
+# TODO: if character is walking in a non path, maybe reset the path
 def walk(radarCoordinate, walkpointsManager):
     copiedWalkpointsManager = walkpointsManager.copy()
-    charSpeed = 755
     shouldntWalk = len(copiedWalkpointsManager['points']) == 0
     if shouldntWalk:
+        if copiedWalkpointsManager['lastPressedKey'] is not None:
+            pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
+            copiedWalkpointsManager['lastPressedKey'] = None
         return copiedWalkpointsManager
-    currentTime = time.time() * 1000
-    differentTimeBeforeLastMove = currentTime - \
-        copiedWalkpointsManager['lastCrossedTime']
     nextWalkpointIndex = 0
-    tileFriction = radar.core.getTileFrictionByRadarCoordinate(
-        copiedWalkpointsManager['points'][nextWalkpointIndex])
-    # print('tileFriction', tileFriction)
-    movementSpeed = radar.core.getBreakpointTileMovementSpeed(
-        charSpeed, tileFriction)
-    didntPassedEnoughTime = differentTimeBeforeLastMove * 1.3 < movementSpeed
-    # print('movementSpeed', movementSpeed)
-    if didntPassedEnoughTime:
-        return copiedWalkpointsManager
-    copiedWalkpointsManager['lastCrossedTime'] = currentTime
     coordinateDidntChange = np.all(
         radarCoordinate == copiedWalkpointsManager['lastCoordinateVisited'])
-    copiedWalkpointsManager['coordinateDidChange'] = not coordinateDidntChange
     if coordinateDidntChange:
+        if copiedWalkpointsManager['lastCoordinateVisitedAt'] is None:
+            return copiedWalkpointsManager
+        charSpeed = 2250
+        tileFriction = radar.core.getTileFrictionByRadarCoordinate(
+            copiedWalkpointsManager['points'][nextWalkpointIndex])
+        movementSpeed = radar.core.getBreakpointTileMovementSpeed(
+            charSpeed, tileFriction)
+        currentTime = time.time()
+        timeSinceLastCoordinateVisitedAt = (currentTime -
+                                            copiedWalkpointsManager['lastCoordinateVisitedAt']) * 1000
+        movementSpeedDot3 = movementSpeed * 1.25
+        shouldResetPath = timeSinceLastCoordinateVisitedAt > movementSpeedDot3
+        if shouldResetPath:
+            copiedWalkpointsManager['lastCoordinateVisited'] = None
+            copiedWalkpointsManager['lastCoordinateVisitedAt'] = None
+            copiedWalkpointsManager['points'] = np.array([])
+            if copiedWalkpointsManager['lastPressedKey'] is not None:
+                pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
+                copiedWalkpointsManager['lastPressedKey'] = None
         return copiedWalkpointsManager
+    walkedInWrongPath = np.all(
+        np.in1d([radarCoordinate], copiedWalkpointsManager['points']))
+    print(len(copiedWalkpointsManager['points']))
+    print(copiedWalkpointsManager['points'])
+    print(walkedInWrongPath)
+    if walkedInWrongPath:
+        print(radarCoordinate)
+        # if copiedWalkpointsManager['lastPressedKey'] is not None:
+        #     pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
+        #     copiedWalkpointsManager['lastPressedKey'] = None
+        # copiedWalkpointsManager['lastCoordinateVisited'] = None
+        # copiedWalkpointsManager['points'] = np.array([])
+        # return copiedWalkpointsManager
     copiedWalkpointsManager['lastCoordinateVisited'] = radarCoordinate
+    copiedWalkpointsManager['lastCoordinateVisitedAt'] = time.time()
     nextWalkpointRadarCoordinate = copiedWalkpointsManager['points'][nextWalkpointIndex]
     direction = utils.coordinate.getDirectionBetweenRadarCoordinates(
         radarCoordinate, nextWalkpointRadarCoordinate)
     beingDeletedWalkpoint = copiedWalkpointsManager['points'][0].copy()
-    print('--------------')
-    # print(copiedWalkpointsManager['points'])
-    # print(len(copiedWalkpointsManager['points']))
-    # print('radarCoordinate', radarCoordinate)
-    # print('nextWalkpointRadarCoordinate', nextWalkpointRadarCoordinate)
     copiedWalkpointsManager['points'] = np.delete(
         copiedWalkpointsManager['points'], 0, axis=0)
     hasNoNewDirection = direction is None
     if hasNoNewDirection:
         return copiedWalkpointsManager
-    # print('lastPressedKey', copiedWalkpointsManager['lastPressedKey'])
-    print('direction', direction)
     if len(copiedWalkpointsManager['points']) > 0:
         futureDirection = utils.coordinate.getDirectionBetweenRadarCoordinates(
             beingDeletedWalkpoint, copiedWalkpointsManager['points'][0])
     else:
         futureDirection = None
-    print('futureDirection', futureDirection)
     if direction != futureDirection:
         if copiedWalkpointsManager['lastPressedKey'] is not None:
-            print('diferente soltei')
-            pyautogui.keyUp(direction)
+            pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
             copiedWalkpointsManager['lastPressedKey'] = None
         else:
-            print('diferente pressionei')
             pyautogui.press(direction)
         return copiedWalkpointsManager
-    if direction != copiedWalkpointsManager['lastPressedKey']:
-        if len(copiedWalkpointsManager['points']) > 1:
-            print('igual apertei')
-            pyautogui.keyDown(direction)
-            copiedWalkpointsManager['lastPressedKey'] = direction
-        else:
-            print('igual pressionei')
-            pyautogui.press(direction)
+    else:
+        pointsLength = len(copiedWalkpointsManager['points'])
+        if direction != copiedWalkpointsManager['lastPressedKey']:
+            if pointsLength > 2:
+                pyautogui.keyDown(direction)
+                copiedWalkpointsManager['lastPressedKey'] = direction
+            else:
+                pyautogui.press(direction)
+        elif pointsLength == 1:
+            if copiedWalkpointsManager['lastPressedKey'] is not None:
+                pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
+                copiedWalkpointsManager['lastPressedKey'] = None
     return copiedWalkpointsManager
