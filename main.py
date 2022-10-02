@@ -7,6 +7,7 @@ from rx.subject import Subject
 import time
 from typing import cast
 import battleList.core
+from chat import chat
 import gameplay.cavebot
 import gameplay.decision
 import gameplay.waypoint
@@ -31,12 +32,14 @@ pyautogui.PAUSE = 0
 # - o bot não ignora as piramides e muda de andar, ignorar coordenadas amarelas pra gerar caminho
 # - o que fazer quando tem target e de repente perde o target?
 
+cavebotManager = {
+    "status": None
+}
+lastWay = 'waypoint'
 previousCoordinate = None
 walkpointsManager = {
-    "coordinateDidChange": True,
-    "currentIndex": 0,
+    "lastCoordinateVisitedAt": time.time(),
     "lastCoordinateVisited": None,
-    "lastCrossedTime": 0,
     "lastPressedKey": None,
     "points": np.array([]),
 }
@@ -56,29 +59,27 @@ waypointsManager = {
         # ('floor', (33078, 32760, 7), 0),
         # ('shovel', (33072, 32760, 7), 0),
         # ('floor', (33072, 32760, 8), 0),
-        # ('floor', (33076, 32756, 8), 0),
-        # ('floor', (33083, 32761, 8), 0),
-        # ('floor', (33090, 32765, 8), 0),
-        # ('floor', (33096, 32762, 8), 0),
-        # ('floor', (33098, 32758, 8), 0),
-        # ('floor', (33099, 32765, 8), 0),
-        # ('floor', (33072, 32760, 8), 0),
 
-        # test 2000
-        # ('floor', (33082, 32596, 6), 0),
-        # ('floor', (33094, 32600, 6), 0),
-        # ('floor', (33092, 32618, 6), 0),
-        # ('floor', (33119, 32603, 6), 0),
+        ('floor', (33072, 32759, 8), 0),
+        ('floor', (33096, 32762, 8), 0),
+        ('floor', (33067, 32748, 8), 0),
+
+
+        # stonerefinner
+        # ('floor', (33037,31977,13), 0),
+        # ('floor', (33039,32021,13), 0),
+        # ('floor', (33078,32017,13), 0),
+        # ('floor', (33041,32041,13), 0),
+        # ('floor', (33079,32042,13), 0),
+        # ('floor', (33034,32053,13), 0),
 
         # teste em curvas
-        # ('floor', (33082, 32788, 7), 0),
+        # ('floor', (33093, 32788, 7), 0),
         # ('floor', (33088, 32788, 7), 0),
-        # ('floor', (33092, 32791, 7), 0),
-        # ('floor', (33084, 32791, 7), 0),
 
         # teste em linha reta
-        ('floor', (33089, 32789, 7), 0),
-        ('floor', (33084, 32789, 7), 0),
+        # ('floor', (33089, 32789, 7), 0),
+        # ('floor', (33084, 32789, 7), 0),
     ], dtype=waypointType),
     "state": None
 }
@@ -96,11 +97,14 @@ def shouldExecuteWaypoint(battleListCreatures):
 #         operators.switch_latest(),
 #     )
 
+beingAttackedCreature = None
+corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
+
 
 def main():
     optimal_thread_count = multiprocessing.cpu_count()
     threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
-    thirteenFps = 0.0166
+    thirteenFps = 0.00833333333
     fpsObserver = interval(thirteenFps)
     # mouseObserver = Subject()
     fpsWithScreenshot = fpsObserver.pipe(
@@ -134,6 +138,24 @@ def main():
             "hudCreatures": hud.creatures.getCreatures(result["screenshot"], result["battleListCreatures"], result["radarCoordinate"])
         })
     )
+
+    def lootObservable(result):
+        global beingAttackedCreature, corpsesToLoot
+        screenshot = result['screenshot']
+        hudCreatures = result['hudCreatures']
+        beingAttackedIndexes = np.where(
+            hudCreatures['isBeingAttacked'] == True)[0]
+        hasCreatureBeingAttacked = len(beingAttackedIndexes) > 0
+        if chat.hasNewLoot(screenshot) and beingAttackedCreature:
+            corpsesToLoot = np.append(
+                corpsesToLoot, [beingAttackedCreature], axis=0)
+        if hasCreatureBeingAttacked:
+            beingAttackedCreature = hudCreatures[beingAttackedIndexes[0]]
+        else:
+            beingAttackedCreature = None
+        # print('corpsesToLoot', corpsesToLoot)
+    # hudCreaturesObserver.subscribe(lootObservable)
+
     decisionObserver = hudCreaturesObserver.pipe(
         operators.map(lambda result: {
             "screenshot": result["screenshot"],
@@ -146,10 +168,12 @@ def main():
     # cavebotObserver = decisionObserver.pipe(
     #     operators.filter(lambda result: result['way'] == 'cavebot'),
     # )
+
     # def cavebotObservable(result):
-    #     global walkpointsManager
-    #     walkpointsManager = gameplay.cavebot.handleCavebot(
+    #     global cavebotManager, walkpointsManager
+    #     cavebotManager, walkpointsManager = gameplay.cavebot.handleCavebot(
     #         result['battleListCreatures'],
+    #         cavebotManager,
     #         result['hudCreatures'],
     #         result['radarCoordinate'],
     #         walkpointsManager
@@ -160,33 +184,38 @@ def main():
     )
 
     def waypointObservable(result):
-        global walkpointsManager, waypointsManager
+        global cavebotManager, lastWay, walkpointsManager, waypointsManager
         if waypointsManager['currentIndex'] == None:
             waypointsManager['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
                 result['radarCoordinate'], waypointsManager['points'])
-        result['way'] = 'waypoint'
-        if result['way'] == 'cavebot':
-            walkpointsManager = gameplay.cavebot.handleCavebot(
-                result['battleListCreatures'],
-                result['hudCreatures'],
-                result['radarCoordinate'],
-                walkpointsManager
-            )
-        else:
-            waypointsManager = gameplay.waypoint.handleWaypoint(
-                result['screenshot'],
-                result['radarCoordinate'],
-                waypointsManager,
-            )
-            walkpointsManager = gameplay.waypoint.handleWalkpoints(
-                result['radarCoordinate'],
-                walkpointsManager,
-                waypointsManager
-            )
+        # if result['way'] == 'cavebot':
+        #     cavebotManager, walkpointsManager = gameplay.cavebot.handleCavebot(
+        #         result['battleListCreatures'],
+        #         cavebotManager,
+        #         result['hudCreatures'],
+        #         result['radarCoordinate'],
+        #         walkpointsManager
+        #     )
+        # else:
+        # if lastWay == 'cavebot':
+        #     walkpointsManager['lastCoordinateVisited'] = None
+        #     walkpointsManager['points'] = np.array([])
+        #     walkpointsManager['state'] = None
+        waypointsManager = gameplay.waypoint.handleWaypoint(
+            result['screenshot'],
+            result['radarCoordinate'],
+            waypointsManager,
+        )
+        walkpointsManager = gameplay.waypoint.handleWalkpoints(
+            result['radarCoordinate'],
+            walkpointsManager,
+            waypointsManager
+        )
         walkpointsManager = gameplay.waypoint.walk(
             result['radarCoordinate'],
             walkpointsManager
         )
+        lastWay = result['way']
     waypointObserver.subscribe(waypointObservable)
     # mousePoint = mouseObserver.pipe(
     #     switch_map(lambda items: timer(0, 0.005).pipe(
@@ -206,3 +235,24 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# Problemas walk:
+# - (x) quando está andando e de repente fica parado, recalcular rota e reiniciar walk
+# - quando anda pra fora do caminho traçado, recalcular rota e reiniciar walk
+# - mudar o calculo path finding para o paths do tibiamaps e ignorar buracos, escadas, etc
+
+
+# Problemas cavebot:
+# - está clicando fora do target porque o boneco está em movimentação
+# - as vezes não detecta que a creature está com target e faz varias tentativas
+# - as vezes ataca, há target e não segue
+# - algumas vezes há target mas ele fica andando pra esquerda/direita ou todo torto
+# - quando clica nos edges da hud, acabando clicando nas slots bars
+
+# Coisas por detectar:
+# - detectar npcs
+# - detectar objetos bloqueante
+
+# Lógica ideal:
+# - visualizar, parar, atacar e correr atrás do bicho
