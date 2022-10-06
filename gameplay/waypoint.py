@@ -157,12 +157,6 @@ def handleWalkpoints(radarCoordinate, walkpointsManager, waypointsManager):
 
 
 # TODO: add unit tests
-def shouldWalk(walkpointsManager):
-    should = len(walkpointsManager['points']) > 0
-    return should
-
-
-# TODO: add unit tests
 # TODO: if character is walking in a non path, maybe reset the path
 def walk(radarCoordinate, walkpointsManager):
     copiedWalkpointsManager = walkpointsManager.copy()
@@ -171,6 +165,8 @@ def walk(radarCoordinate, walkpointsManager):
         if copiedWalkpointsManager['lastPressedKey'] is not None:
             pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
             copiedWalkpointsManager['lastPressedKey'] = None
+        copiedWalkpointsManager['lastCoordinateVisited'] = None
+        copiedWalkpointsManager['lastCoordinateVisitedAt'] = None
         return copiedWalkpointsManager
     nextWalkpointIndex = 0
     coordinateDidntChange = np.all(
@@ -186,7 +182,7 @@ def walk(radarCoordinate, walkpointsManager):
         currentTime = time.time()
         timeSinceLastCoordinateVisitedAt = (currentTime -
                                             copiedWalkpointsManager['lastCoordinateVisitedAt']) * 1000
-        movementSpeedDot3 = movementSpeed * 1.25
+        movementSpeedDot3 = movementSpeed * 3
         shouldResetPath = timeSinceLastCoordinateVisitedAt > movementSpeedDot3
         if shouldResetPath:
             copiedWalkpointsManager['lastCoordinateVisited'] = None
@@ -196,19 +192,6 @@ def walk(radarCoordinate, walkpointsManager):
                 pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
                 copiedWalkpointsManager['lastPressedKey'] = None
         return copiedWalkpointsManager
-    walkedInWrongPath = np.all(
-        np.in1d([radarCoordinate], copiedWalkpointsManager['points']))
-    print(len(copiedWalkpointsManager['points']))
-    print(copiedWalkpointsManager['points'])
-    print(walkedInWrongPath)
-    if walkedInWrongPath:
-        print(radarCoordinate)
-        # if copiedWalkpointsManager['lastPressedKey'] is not None:
-        #     pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
-        #     copiedWalkpointsManager['lastPressedKey'] = None
-        # copiedWalkpointsManager['lastCoordinateVisited'] = None
-        # copiedWalkpointsManager['points'] = np.array([])
-        # return copiedWalkpointsManager
     copiedWalkpointsManager['lastCoordinateVisited'] = radarCoordinate
     copiedWalkpointsManager['lastCoordinateVisitedAt'] = time.time()
     nextWalkpointRadarCoordinate = copiedWalkpointsManager['points'][nextWalkpointIndex]

@@ -58,6 +58,7 @@ def getClosestCreature(hudCreatures, radarCoordinate):
         sqmsGraph, directed=True, indices=playerHudIndex, unweighted=False)
     creaturesSlots = hudCreatures['slot'][:, [1, 0]]
     hudWalkableFloorsSqmsCreatures = np.zeros((11, 15))
+    print('creaturesSlots', creaturesSlots)
     hudWalkableFloorsSqmsCreatures[creaturesSlots[:,
                                                   0], creaturesSlots[:, 1]] = 1
     creaturesIndexes = np.nonzero(
@@ -121,14 +122,12 @@ def getCreaturesBars(hudImg):
     return creaturesBarsXY
 
 
-def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
+def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=None, displacedXPixels=0, displacedYPixels=0):
     """
     TODO:
     - Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
     - Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars
     """
-    hudCoordinate = hud.core.getCoordinate(screenshot)
-    hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     creaturesBars = getCreaturesBars(hudImg)
     creatures = np.array([], dtype=creatureType)
     hasNoCreaturesBars = len(creaturesBars) == 0
@@ -185,7 +184,7 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                 creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels, displacedYPixels=displacedYPixels)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -203,7 +202,7 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                 creatureWithDirtNameImg2, creatureNameImg2)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels, displacedYPixels=displacedYPixels)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -222,7 +221,7 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                 creatureWithDirtNameImg3, creatureNameImg3)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels, displacedYPixels=displacedYPixels)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -299,6 +298,7 @@ def getTargetCreature(hudCreatures):
 
 
 def hasTargetToCreatureBySlot(hudCreatures, slot, radarCoordinate):
+    # print('slot', slot)
     hasNoHudCreatures = len(hudCreatures) == 0
     if hasNoHudCreatures:
         return False
@@ -316,9 +316,13 @@ def hasTargetToCreatureBySlot(hudCreatures, slot, radarCoordinate):
     playerHudIndex = 82
     graphWeights = dijkstra(graph, directed=True,
                             indices=playerHudIndex, unweighted=False)
+    # print('graphWeights')
     graphWeights = graphWeights.reshape(11, 15)
+    # print(graphWeights)
     creatureGraphValue = graphWeights[yOfSlot, xOfSlot]
+    # print('creatureGraphValue', creatureGraphValue)
     hasTarget = creatureGraphValue != np.inf
+    # print('hasTarget', hasTarget)
     return hasTarget
 
 
@@ -328,13 +332,13 @@ def hasTargetToCreature(hudCreatures, hudCreature, radarCoordinate):
     return hasTarget
 
 
-def makeCreature(creatureName, coordinate, hudCoordinate, hudImg=None, radarCoordinate=None):
+def makeCreature(creatureName, barCoordinate, hudCoordinate, hudImg=None, radarCoordinate=None, displacedXPixels=0, displacedYPixels=0):
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
-    (x, y) = coordinate
-    extraY = 0 if y <= 27 else 15
-    xCoordinate = x - 3 + extraY
-    yCoordinate = y + 5 + extraY
-    xSlot = round(xCoordinate / 32)
+    (x, y) = barCoordinate
+    xCoordinate = (x - 3) - displacedXPixels
+    print('displacedYPixels', displacedYPixels)
+    yCoordinate = 0 if y <= 14 else y + 5 - displacedYPixels
+    xSlot = round((xCoordinate) / 32)
     xSlot = 14 if xSlot > 14 else xSlot
     ySlot = 0 if y <= 27 else round(yCoordinate / 32)
     ySlot = 10 if ySlot > 10 else ySlot
