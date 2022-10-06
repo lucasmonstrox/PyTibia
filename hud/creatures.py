@@ -34,7 +34,6 @@ for monster in wiki.creatures.creatures:
         'hud/images/monsters/{}.png'.format(monster))
 creatureType = np.dtype([
     ('name', np.str_, 64),
-    ('healthPercentage', np.uint8),
     ('isBeingAttacked', np.bool_),
     ('slot', np.uint8, (2,)),
     ('radarCoordinate', np.uint16, (3,)),
@@ -134,14 +133,12 @@ def getCreaturesBars(hudImg):
     return creaturesBarsXY
 
 
-def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
+def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=None, displacedXPixels=0, displacedYPixels=0):
     """
     TODO:
     - Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
     - Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars
     """
-    hudCoordinate = hud.core.getCoordinate(screenshot)
-    hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     creaturesBars = getCreaturesBars(hudImg)
     creatures = np.array([], dtype=creatureType)
     hasNoCreaturesBars = len(creaturesBars) == 0
@@ -198,7 +195,7 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                 creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels, displacedYPixels=displacedYPixels)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -216,7 +213,7 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                 creatureWithDirtNameImg2, creatureNameImg2)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels, displacedYPixels=displacedYPixels)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -235,7 +232,7 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                 creatureWithDirtNameImg3, creatureNameImg3)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels, displacedYPixels=displacedYPixels)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -341,17 +338,19 @@ def hasTargetToCreature(hudCreatures, hudCreature, radarCoordinate):
     return hasTarget
 
 
-def makeCreature(creatureName, coordinate, hudCoordinate, hudImg=None, radarCoordinate=None):
+def makeCreature(creatureName, barCoordinate, hudCoordinate, hudImg=None, radarCoordinate=None):
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
-    (x, y) = coordinate
+    (x, y) = barCoordinate
     extraY = 0 if y <= 27 else 15
-    xCoordinate = x - 3 + extraY
+    xCoordinate = x - 3
+    xSlot = round((xCoordinate) / 64)
+    xSlot = min(xSlot, 14)
+    xSlot = max(xSlot, 0)
     yCoordinate = y + 5 + extraY
-    xSlot = round(xCoordinate / 64)
-    xSlot = 14 if xSlot > 14 else xSlot
-    ySlot = 0 if y <= 27 else round(yCoordinate / 64)
-    ySlot = 10 if ySlot > 10 else ySlot
-    healthPercentage = 100
+    yCoordinate = 0 if y <= 14 else y + 5
+    ySlot = round(yCoordinate / 64)
+    ySlot = min(ySlot, 10)
+    ySlot = min(ySlot, 0)
     borderedCreatureImg = hudImg[y+5:y+5+64, x-3:x-3+64]
     pixelsCount = np.sum(np.where(np.logical_or(
         borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
@@ -363,6 +362,6 @@ def makeCreature(creatureName, coordinate, hudCoordinate, hudImg=None, radarCoor
     radarCoordinate = (radarCoordinateX, radarCoordinateY, radarCoordinate[2])
     windowCoordinate = (hudCoordinateX + xCoordinate,
                         hudCoordinateY + yCoordinate)
-    creature = (creatureName, healthPercentage, isBeingAttacked,
+    creature = (creatureName, isBeingAttacked,
                 slot, radarCoordinate, windowCoordinate)
     return creature

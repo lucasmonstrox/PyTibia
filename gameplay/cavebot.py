@@ -29,6 +29,20 @@ def handleCavebot(battleListCreatures, cavebotManager, hudCreatures, radarCoordi
             x, y = targetCreature['windowCoordinate']
             pyautogui.rightClick(x, y)
             time.sleep(0.05)
+            copiedWalkpointsManager['lastCoordinateVisited'] = None
+            copiedWalkpointsManager['lastCoordinateVisitedAt'] = None
+            copiedWalkpointsManager['points'] = gameplay.waypoint.generateFloorWalkpoints(
+                radarCoordinate, targetCreature['radarCoordinate'])
+            copiedWalkpointsManager['points'] = copiedWalkpointsManager['points'][:-1]
+            if copiedWalkpointsManager['lastPressedKey'] is not None:
+                pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
+                copiedWalkpointsManager['lastPressedKey'] = None
+            return copyOfCavebotManager, copiedWalkpointsManager
+        if len(copiedWalkpointsManager['points']) == 0:
+            # print('radarCoordinate', radarCoordinate)
+            # print('targetCreatureRadarCoordinate', targetCreature['radarCoordinate'])
+            copiedWalkpointsManager['points'] = gameplay.waypoint.generateFloorWalkpoints(
+                    radarCoordinate, targetCreature['radarCoordinate'])
     else:
         # print('status', copyOfCavebotManager['status'])
         # if copyOfCavebotManager['status'] == 'tryingToAttackTarget':
@@ -43,7 +57,16 @@ def handleCavebot(battleListCreatures, cavebotManager, hudCreatures, radarCoordi
         x, y = targetCreature['windowCoordinate']
         pyautogui.rightClick(x, y)
         time.sleep(0.05)
+        copiedWalkpointsManager['lastCoordinateVisited'] = None
+        copiedWalkpointsManager['lastCoordinateVisitedAt'] = None
+        copiedWalkpointsManager['points'] = gameplay.waypoint.generateFloorWalkpoints(
+            radarCoordinate, targetCreature['radarCoordinate'])
+        copiedWalkpointsManager['points'] = copiedWalkpointsManager['points'][:-1]
+        if copiedWalkpointsManager['lastPressedKey'] is not None:
+            pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
+            copiedWalkpointsManager['lastPressedKey'] = None
     # if copyOfCavebotManager['status'] != 'tryingToAttackTarget':
-    copiedWalkpointsManager['points'] = gameplay.waypoint.generateFloorWalkpoints(
-        radarCoordinate, targetCreature['radarCoordinate'])
+    # print('targetCreatureCoordinate', targetCreature['radarCoordinate'])
+    # copiedWalkpointsManager['points'] = gameplay.waypoint.generateFloorWalkpoints(
+    #     radarCoordinate, targetCreature['radarCoordinate'])
     return copyOfCavebotManager, copiedWalkpointsManager
