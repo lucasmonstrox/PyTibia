@@ -71,7 +71,7 @@ def main():
         # timef = (time() - loop_time)
         # timef = timef if timef else 1
         # fps = 1 / timef
-        # # print('FPS {}'.format(fps))
+        # print('FPS {}'.format(fps))
         print('corpsesToLoot', corpsesToLoot)
         # loop_time = time()
 

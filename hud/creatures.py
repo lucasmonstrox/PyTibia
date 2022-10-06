@@ -58,7 +58,6 @@ def getClosestCreature(hudCreatures, radarCoordinate):
         sqmsGraph, directed=True, indices=playerHudIndex, unweighted=False)
     creaturesSlots = hudCreatures['slot'][:, [1, 0]]
     hudWalkableFloorsSqmsCreatures = np.zeros((11, 15))
-    print('creaturesSlots', creaturesSlots)
     hudWalkableFloorsSqmsCreatures[creaturesSlots[:,
                                                   0], creaturesSlots[:, 1]] = 1
     creaturesIndexes = np.nonzero(
@@ -336,7 +335,6 @@ def makeCreature(creatureName, barCoordinate, hudCoordinate, hudImg=None, radarC
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
     (x, y) = barCoordinate
     xCoordinate = (x - 3) - displacedXPixels
-    print('displacedYPixels', displacedYPixels)
     yCoordinate = 0 if y <= 14 else y + 5 - displacedYPixels
     xSlot = round((xCoordinate) / 32)
     xSlot = 14 if xSlot > 14 else xSlot

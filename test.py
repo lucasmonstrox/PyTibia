@@ -55,7 +55,7 @@ def main():
     # loop_time = time()
     # hudCreatures = hud.creatures.getCreatures(
     #     screenshot, battleListCreatures, radarCoordinate=radarCoordinate)
-    # # print(hudCreatures)
+    # print(hudCreatures)
     # res = battleList.core.isAttackingSomeCreature(battleListCreatures)
     # print(res)
     # battleListCreatures = battleList.core.getCreatures(screenshot)

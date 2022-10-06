@@ -13,6 +13,7 @@ import gameplay.decision
 import gameplay.waypoint
 import hud.creatures
 import hud.core
+import hud.slot
 import radar.core
 from radar.types import waypointType
 import utils.core
@@ -148,45 +149,35 @@ def main():
         global coordinateHudTracker, hudCreatures, lastDisplacedXPixels, lastDisplacedYPixels, lastXPercentage, lastYPercentage
         displacedXPixels = 0
         displacedYPixels = 0
+        if coordinateHudTracker["currentCoordinate"] is None:
+            coordinateHudTracker["currentCoordinate"] = result['radarCoordinate']
+            coordinateHudTracker['lastHudImg'] = result['hudImg']
+        hudSlice = result['hudImg'][64:80, 96:-96]
+        hudImgPercentageLocate = utils.core.locate(
+            coordinateHudTracker['lastHudImg'], hudSlice)
+        if hudImgPercentageLocate is not None:
+            if result['radarCoordinate'][0] != coordinateHudTracker["currentCoordinate"][0]:
+                isComingFromLeft = coordinateHudTracker["currentCoordinate"][0] < result['radarCoordinate'][0]
+                add32 = 32 if isComingFromLeft else -32
+                xPercentage = hudImgPercentageLocate[0] - 96
+                displacedXPixels = add32 - \
+                    (xPercentage - lastDisplacedXPixels)
+                lastXPercentage = xPercentage
+            if result['radarCoordinate'][1] != coordinateHudTracker["currentCoordinate"][1]:
+                isComingFromTop = coordinateHudTracker["currentCoordinate"][1] < result['radarCoordinate'][1]
+                yPercentage = hudImgPercentageLocate[1] - 64
+                add32 = 32 if isComingFromTop else -32
+                displacedYPixels = add32 - \
+                    (yPercentage - lastDisplacedYPixels)
+        lastDisplacedXPixels = displacedXPixels
+        lastDisplacedYPixels = displacedYPixels
         if result['radarCoordinate'] != coordinateHudTracker["currentCoordinate"]:
-            # print('-------')
-            # print('coordenada', result['radarCoordinate'])
-            # radarCoordinate = result['radarCoordinate']
-            # utils.image.save(result['hudImg'], f'hudImg-{radarCoordinate}.png')
-            # utils.image.save(hudSlice, f'hudSlice{radarCoordinate}.png')
-            # print('lastXPercentage', lastXPercentage)
-            # print('lastDisplacedXPixels', lastDisplacedXPixels)
-            if coordinateHudTracker["currentCoordinate"] is None:
-                coordinateHudTracker["currentCoordinate"] = result['radarCoordinate']
-                coordinateHudTracker['lastHudImg'] = result['hudImg']
-            hudSlice = result['hudImg'][64:80, 96:-96]
-            hudImgPercentageLocate = utils.core.locate(
-                coordinateHudTracker['lastHudImg'], hudSlice)
-            if hudImgPercentageLocate is not None:
-                if result['radarCoordinate'][0] != coordinateHudTracker["currentCoordinate"][0]:
-                    isComingFromLeft = coordinateHudTracker["currentCoordinate"][0] < result['radarCoordinate'][0]
-                    add32 = 32 if isComingFromLeft else -32
-                    xPercentage = hudImgPercentageLocate[0] - 96
-                    displacedXPixels = add32 - \
-                        (xPercentage - lastDisplacedXPixels)
-                    lastXPercentage = xPercentage
-                if result['radarCoordinate'][1] != coordinateHudTracker["currentCoordinate"][1]:
-                    isComingFromTop = coordinateHudTracker["currentCoordinate"][1] < result['radarCoordinate'][1]
-                    yPercentage = hudImgPercentageLocate[1] - 64
-                    add32 = 32 if isComingFromTop else -32
-                    displacedYPixels = add32 - \
-                        (yPercentage - lastDisplacedYPixels)
-            lastDisplacedXPixels = displacedXPixels
-            lastDisplacedYPixels = displacedYPixels
             coordinateHudTracker = {
                 "lastHudImg": result['hudImg'],
                 "currentCoordinate": result['radarCoordinate'],
             }
-        print('-------')
-        print('radar', result['radarCoordinate'])
         hudCreatures = hud.creatures.getCreatures(
             result["battleListCreatures"], result['hudCoordinate'], result['hudImg'], result["radarCoordinate"], displacedXPixels=displacedXPixels, displacedYPixels=displacedYPixels)
-        print('hudCreatures', hudCreatures)
         return {
             "screenshot": result["screenshot"],
             "radarCoordinate": result["radarCoordinate"],
@@ -197,30 +188,31 @@ def main():
         }
     hudCreaturesObserver = hudImgObserver.pipe(operators.map(resolveCreatures))
 
-    # def lootObservable(result):
-    #     global beingAttackedCreature, corpsesToLoot
-    #     screenshot = result['screenshot']
-    #     hudCreatures = result['hudCreatures']
-    #     beingAttackedIndexes = np.where(
-    #         hudCreatures['isBeingAttacked'] == True)[0]
-    #     hasCreatureBeingAttacked = len(beingAttackedIndexes) > 0
-    #     if chat.hasNewLoot(screenshot) and beingAttackedCreature:
-    #         corpsesToLoot = np.append(
-    #             corpsesToLoot, [beingAttackedCreature], axis=0)
-    #     if hasCreatureBeingAttacked:
-    #         beingAttackedCreature = hudCreatures[beingAttackedIndexes[0]]
-    #     else:
-    #         beingAttackedCreature = None
-    # print('corpsesToLoot', corpsesToLoot)
-    # hudCreaturesObserver.subscribe(lootObservable)
+    def lootObservable(result):
+        global beingAttackedCreature, corpsesToLoot
+        screenshot = result['screenshot']
+        hudCreatures = result['hudCreatures']
+        beingAttackedIndexes = np.where(
+            hudCreatures['isBeingAttacked'] == True)[0]
+        hasCreatureBeingAttacked = len(beingAttackedIndexes) > 0
+        if chat.hasNewLoot(screenshot) and beingAttackedCreature:
+            corpsesToLoot = np.append(
+                corpsesToLoot, [beingAttackedCreature], axis=0)
+        if hasCreatureBeingAttacked:
+            beingAttackedCreature = hudCreatures[beingAttackedIndexes[0]]
+        else:
+            beingAttackedCreature = None
+    hudCreaturesObserver.subscribe(lootObservable)
 
     decisionObserver = hudCreaturesObserver.pipe(
         operators.map(lambda result: {
             "screenshot": result["screenshot"],
             "radarCoordinate": result["radarCoordinate"],
             "battleListCreatures": result["battleListCreatures"],
+            "hudCoordinate": result['hudCoordinate'],
             "hudCreatures": result["hudCreatures"],
-            "way": gameplay.decision.getWay(result['hudCreatures'], result['radarCoordinate']),
+            "hudImg": result['hudImg'],
+            "way": gameplay.decision.getWay(corpsesToLoot, result['hudCreatures'], result['radarCoordinate']),
         })
     )
     waypointObserver = decisionObserver.pipe(
@@ -228,38 +220,59 @@ def main():
     )
 
     def waypointObservable(result):
-        global cavebotManager, coordinateHudTracker, lastWay, walkpointsManager, waypointsManager
+        global cavebotManager, coordinateHudTracker, corpsesToLoot, lastWay, walkpointsManager, waypointsManager
         if waypointsManager['currentIndex'] == None:
             waypointsManager['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
                 result['radarCoordinate'], waypointsManager['points'])
-        if result['way'] == 'cavebot':
-            cavebotManager, walkpointsManager = gameplay.cavebot.handleCavebot(
-                result['battleListCreatures'],
-                cavebotManager,
-                result['hudCreatures'],
-                result['radarCoordinate'],
-                walkpointsManager
-            )
-        else:
-            if lastWay == 'cavebot':
-                walkpointsManager['lastCoordinateVisited'] = None
-                walkpointsManager['points'] = np.array([])
-                walkpointsManager['state'] = None
-            waypointsManager = gameplay.waypoint.handleWaypoint(
-                result['screenshot'],
-                result['radarCoordinate'],
-                waypointsManager,
-            )
-            walkpointsManager = gameplay.waypoint.handleWalkpoints(
-                result['radarCoordinate'],
-                walkpointsManager,
-                waypointsManager
-            )
-        walkpointsManager = gameplay.waypoint.walk(
-            result['radarCoordinate'],
-            walkpointsManager
-        )
-        lastWay = result['way']
+        # if result['way'] == 'lootCorpses':
+        #     walkpoints = gameplay.waypoint.generateFloorWalkpoints(
+        #         result['radarCoordinate'], corpsesToLoot[0]['radarCoordinate'])
+        #     print('caminhos até o bicho morto', len(walkpoints))
+        #     if len(walkpoints) > 1:
+        #         walkpoints = np.delete(walkpoints, -1, axis=0)
+        #     walkpointsManager['points'] = walkpoints
+        #     print('dps do delete',
+        #           len(walkpointsManager['points']))
+        #     if len(walkpointsManager['points']) == 0:
+        #         time.sleep(1)
+        #         print('radarCoordinate do monstro',
+        #               corpsesToLoot[0]['radarCoordinate'])
+        #         slot = hud.core.getSlotFromCoordinate(
+        #             result['radarCoordinate'], corpsesToLoot[0]['radarCoordinate'])
+        #         pyautogui.keyDown('shift')
+        #         time.sleep(0.1)
+        #         hud.slot.rightClickSlot(slot, result['hudCoordinate'])
+        #         time.sleep(0.1)
+        #         pyautogui.keyUp('shift')
+        #         corpsesToLoot = np.delete(corpsesToLoot, 0)
+        # if result['way'] == 'cavebot':
+        #     cavebotManager, walkpointsManager = gameplay.cavebot.handleCavebot(
+        #         result['battleListCreatures'],
+        #         cavebotManager,
+        #         result['hudCreatures'],
+        #         result['radarCoordinate'],
+        #         walkpointsManager
+        #     )
+        # else:
+        #     if lastWay == 'cavebot':
+        #         walkpointsManager['lastCoordinateVisited'] = None
+        #         walkpointsManager['points'] = np.array([])
+        #         walkpointsManager['state'] = None
+        #     waypointsManager = gameplay.waypoint.handleWaypoint(
+        #         result['screenshot'],
+        #         result['radarCoordinate'],
+        #         waypointsManager,
+        #     )
+        #     walkpointsManager = gameplay.waypoint.handleWalkpoints(
+        #         result['radarCoordinate'],
+        #         walkpointsManager,
+        #         waypointsManager
+        #     )
+        # walkpointsManager = gameplay.waypoint.walk(
+        #     result['radarCoordinate'],
+        #     walkpointsManager
+        # )
+        # lastWay = result['way']
     waypointObserver.subscribe(waypointObservable)
     while True:
         time.sleep(10)
