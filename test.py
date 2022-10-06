@@ -8,6 +8,7 @@ import hud.creatures
 import hud.core
 import radar.config
 import radar.core
+import skills.core
 import utils.core
 import utils.image
 from PIL import Image, ImageOps
@@ -19,14 +20,16 @@ def main():
     # beingAttackedCreature = None
     # corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
+    hitPoints = skills.core.getHitPoints(screenshot)
+    print('hitPoints', hitPoints)
     # radarCoordinate = radar.core.getCoordinate(screenshot)
-    battleListCreatures = battleList.core.getCreatures(screenshot)
-    print(battleListCreatures)
+    # battleListCreatures = battleList.core.getCreatures(screenshot)
     # hudCoordinate = hud.core.getCoordinate(screenshot)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     # creaturesBars = hud.creatures.getCreaturesBars(hudImg.flatten())
-    # res = timeit.repeat(lambda: battleList.core.getCreatures(
-    #     screenshot), repeat=10, number=1)
+    res = timeit.repeat(lambda: skills.core.getHitPoints(
+        screenshot), repeat=10, number=1)
+    print(res)
     # a = new_panel.array([
     #     [1, 2, 3, 4, 5],
     #     [6, 7, 8, 9, 10]
