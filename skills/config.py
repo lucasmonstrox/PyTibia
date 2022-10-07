@@ -2,6 +2,8 @@ import numpy as np
 import utils.core
 import utils.image
 
+
+minutesOrHoursHashes = {}
 numbersHashes = {}
 
 for number in range(1000):
@@ -25,3 +27,19 @@ for number in range(1000):
     numberAsImg = np.array(numberAsImg, dtype=np.uint8)
     hashKey = utils.core.hashit(numberAsImg)
     numbersHashes[hashKey] = number
+
+
+for number in range(60):
+    numberAsString = "{:02d}".format(number)
+    firstDigit = numberAsString[1]
+    secondDigit = numberAsString[0]
+    firstDigitAsImg = utils.image.loadFromRGBToGray(
+        f'skills/images/{firstDigit}.png')
+    secondDigitAsImg = utils.image.loadFromRGBToGray(
+        f'skills/images/{secondDigit}.png')
+    dateAsImg = np.zeros((8, 14), dtype=np.uint8)
+    dateAsImg[:, 14-6:14] = firstDigitAsImg
+    dateAsImg[:, 0:6] = secondDigitAsImg
+    dateAsImg = np.array(dateAsImg, dtype=np.uint8)
+    hashKey = utils.core.hashit(dateAsImg)
+    minutesOrHoursHashes[hashKey] = number

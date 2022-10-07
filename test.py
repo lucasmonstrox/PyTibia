@@ -20,16 +20,16 @@ def main():
     # beingAttackedCreature = None
     # corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
-    hitPoints = skills.core.getHitPoints(screenshot)
-    print('hitPoints', hitPoints)
+    stamina = skills.core.getStamina(screenshot)
+    print('stamina', stamina)
     # radarCoordinate = radar.core.getCoordinate(screenshot)
     # battleListCreatures = battleList.core.getCreatures(screenshot)
     # hudCoordinate = hud.core.getCoordinate(screenshot)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     # creaturesBars = hud.creatures.getCreaturesBars(hudImg.flatten())
-    res = timeit.repeat(lambda: skills.core.getHitPoints(
-        screenshot), repeat=10, number=1)
-    print(res)
+    # res = timeit.repeat(lambda: skills.core.getStamina(
+    #     screenshot), repeat=10, number=1)
+    # print(res)
     # a = new_panel.array([
     #     [1, 2, 3, 4, 5],
     #     [6, 7, 8, 9, 10]
