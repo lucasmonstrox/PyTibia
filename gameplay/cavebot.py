@@ -1,4 +1,3 @@
-import numpy as np
 import pyautogui
 import time
 import battleList.core
@@ -39,16 +38,9 @@ def handleCavebot(battleListCreatures, cavebotManager, hudCreatures, radarCoordi
                 copiedWalkpointsManager['lastPressedKey'] = None
             return copyOfCavebotManager, copiedWalkpointsManager
         if len(copiedWalkpointsManager['points']) == 0:
-            # print('radarCoordinate', radarCoordinate)
-            # print('targetCreatureRadarCoordinate', targetCreature['radarCoordinate'])
             copiedWalkpointsManager['points'] = gameplay.waypoint.generateFloorWalkpoints(
                     radarCoordinate, targetCreature['radarCoordinate'])
     else:
-        # print('status', copyOfCavebotManager['status'])
-        # if copyOfCavebotManager['status'] == 'tryingToAttackTarget':
-        # return copyOfCavebotManager, copiedWalkpointsManager
-        # copiedWalkpointsManager['points'] = np.array([])
-        # copyOfCavebotManager['status'] = 'tryingToAttackTarget'
         targetCreature = hud.creatures.getClosestCreature(
             hudCreatures, radarCoordinate)
         hasNoTargetCreature = targetCreature == None
@@ -65,8 +57,4 @@ def handleCavebot(battleListCreatures, cavebotManager, hudCreatures, radarCoordi
         if copiedWalkpointsManager['lastPressedKey'] is not None:
             pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
             copiedWalkpointsManager['lastPressedKey'] = None
-    # if copyOfCavebotManager['status'] != 'tryingToAttackTarget':
-    # print('targetCreatureCoordinate', targetCreature['radarCoordinate'])
-    # copiedWalkpointsManager['points'] = gameplay.waypoint.generateFloorWalkpoints(
-    #     radarCoordinate, targetCreature['radarCoordinate'])
     return copyOfCavebotManager, copiedWalkpointsManager

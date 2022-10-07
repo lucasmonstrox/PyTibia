@@ -91,10 +91,6 @@ coordinateHudTracker = {
     "currentCoordinate": None,
 }
 hudCreatures = np.array([], dtype=hud.creatures.creatureType)
-lastDisplacedXPixels = 0
-lastDisplacedYPixels = 0
-lastXPercentage = 0
-lastYPercentage = 0
 
 
 def main():
@@ -145,48 +141,14 @@ def main():
         })
     )
 
-    def resolveCreatures(result):
-        global coordinateHudTracker, hudCreatures, lastDisplacedXPixels, lastDisplacedYPixels, lastXPercentage, lastYPercentage
-        displacedXPixels = 0
-        displacedYPixels = 0
-        if coordinateHudTracker["currentCoordinate"] is None:
-            coordinateHudTracker["currentCoordinate"] = result['radarCoordinate']
-            coordinateHudTracker['lastHudImg'] = result['hudImg']
-        hudSlice = result['hudImg'][64:80, 96:-96]
-        hudImgPercentageLocate = utils.core.locate(
-            coordinateHudTracker['lastHudImg'], hudSlice)
-        if hudImgPercentageLocate is not None:
-            if result['radarCoordinate'][0] != coordinateHudTracker["currentCoordinate"][0]:
-                isComingFromLeft = coordinateHudTracker["currentCoordinate"][0] < result['radarCoordinate'][0]
-                add32 = 32 if isComingFromLeft else -32
-                xPercentage = hudImgPercentageLocate[0] - 96
-                displacedXPixels = add32 - \
-                    (xPercentage - lastDisplacedXPixels)
-                lastXPercentage = xPercentage
-            if result['radarCoordinate'][1] != coordinateHudTracker["currentCoordinate"][1]:
-                isComingFromTop = coordinateHudTracker["currentCoordinate"][1] < result['radarCoordinate'][1]
-                yPercentage = hudImgPercentageLocate[1] - 64
-                add32 = 32 if isComingFromTop else -32
-                displacedYPixels = add32 - \
-                    (yPercentage - lastDisplacedYPixels)
-        lastDisplacedXPixels = displacedXPixels
-        lastDisplacedYPixels = displacedYPixels
-        if result['radarCoordinate'] != coordinateHudTracker["currentCoordinate"]:
-            coordinateHudTracker = {
-                "lastHudImg": result['hudImg'],
-                "currentCoordinate": result['radarCoordinate'],
-            }
-        hudCreatures = hud.creatures.getCreatures(
-            result["battleListCreatures"], result['hudCoordinate'], result['hudImg'], result["radarCoordinate"], displacedXPixels=displacedXPixels, displacedYPixels=displacedYPixels)
-        return {
-            "screenshot": result["screenshot"],
-            "radarCoordinate": result["radarCoordinate"],
-            "battleListCreatures": result["battleListCreatures"],
-            "hudCoordinate": result['hudCoordinate'],
-            "hudCreatures": hudCreatures,
-            "hudImg": result['hudImg'],
-        }
-    hudCreaturesObserver = hudImgObserver.pipe(operators.map(resolveCreatures))
+    hudCreaturesObserver = hudImgObserver.pipe(operators.map(lambda result: {
+        "battleListCreatures": result["battleListCreatures"],
+        "hudCoordinate": result['hudCoordinate'],
+        "hudCreatures": hud.creatures.getCreatures(result["battleListCreatures"], result['hudCoordinate'], result['hudImg'], result["radarCoordinate"]),
+        "hudImg": result['hudImg'],
+        "radarCoordinate": result["radarCoordinate"],
+        "screenshot": result["screenshot"],
+    }))
 
     def lootObservable(result):
         global beingAttackedCreature, corpsesToLoot
@@ -202,21 +164,28 @@ def main():
             beingAttackedCreature = hudCreatures[beingAttackedIndexes[0]]
         else:
             beingAttackedCreature = None
-    hudCreaturesObserver.subscribe(lootObservable)
+        return corpsesToLoot
+
+    lootObserver = hudCreaturesObserver.pipe(operators.map(lambda result: {
+        "battleListCreatures": result["battleListCreatures"],
+        "corpsesToLoot": lootObservable(result),
+        "hudCoordinate": result['hudCoordinate'],
+        "hudCreatures": result['hudCreatures'],
+        "hudImg": result['hudImg'],
+        "radarCoordinate": result["radarCoordinate"],
+        "screenshot": result["screenshot"],
+    }))
 
     decisionObserver = hudCreaturesObserver.pipe(
         operators.map(lambda result: {
-            "screenshot": result["screenshot"],
-            "radarCoordinate": result["radarCoordinate"],
             "battleListCreatures": result["battleListCreatures"],
             "hudCoordinate": result['hudCoordinate'],
             "hudCreatures": result["hudCreatures"],
             "hudImg": result['hudImg'],
-            "way": gameplay.decision.getWay(corpsesToLoot, result['hudCreatures'], result['radarCoordinate']),
+            "radarCoordinate": result["radarCoordinate"],
+            "screenshot": result["screenshot"],
+            "way": gameplay.decision.getWay([], result['hudCreatures'], result['radarCoordinate']),
         })
-    )
-    waypointObserver = decisionObserver.pipe(
-        operators.filter(lambda result: True),
     )
 
     def waypointObservable(result):
@@ -227,16 +196,11 @@ def main():
         # if result['way'] == 'lootCorpses':
         #     walkpoints = gameplay.waypoint.generateFloorWalkpoints(
         #         result['radarCoordinate'], corpsesToLoot[0]['radarCoordinate'])
-        #     print('caminhos até o bicho morto', len(walkpoints))
         #     if len(walkpoints) > 1:
         #         walkpoints = np.delete(walkpoints, -1, axis=0)
         #     walkpointsManager['points'] = walkpoints
-        #     print('dps do delete',
-        #           len(walkpointsManager['points']))
         #     if len(walkpointsManager['points']) == 0:
         #         time.sleep(1)
-        #         print('radarCoordinate do monstro',
-        #               corpsesToLoot[0]['radarCoordinate'])
         #         slot = hud.core.getSlotFromCoordinate(
         #             result['radarCoordinate'], corpsesToLoot[0]['radarCoordinate'])
         #         pyautogui.keyDown('shift')
@@ -273,7 +237,7 @@ def main():
         #     walkpointsManager
         # )
         # lastWay = result['way']
-    waypointObserver.subscribe(waypointObservable)
+    decisionObserver.subscribe(waypointObservable)
     while True:
         time.sleep(10)
         continue
@@ -284,34 +248,30 @@ if __name__ == '__main__':
 
 
 # TODO:
-# - clicando sem querer nas actionBar slots quando os monstros estão nas edges da hud
 # - (x) fica parado quando nao tem target para os bichos fora da tela
 # - (x) nao se mexer quando a distancia do target é só 1
-# - cliques excessivos quando nao consegue atacar o monstro
 # - (x) varios errors de friction tile
-# - quando o target está longe e ainda não atacou e aparece alguem mais proximo, mudar o target
-# - o bot não ignora as piramides e muda de andar, ignorar coordenadas amarelas pra gerar caminho
-# - o que fazer quando tem target e de repente perde o target?
-# - melhorar o target de ataque dependendo da direção
 
-# Problemas walk:
+
+# Walk:
 # - (x) quando está andando e de repente fica parado, recalcular rota e reiniciar walk
 # - quando anda pra fora do caminho traçado, recalcular rota e reiniciar walk
 # - mudar o calculo path finding para o paths do tibiamaps e ignorar buracos, escadas, etc
 # - as vezes da sorry not possible ao andar mesmo sem errar o path, possivelmente batendo sensivelmente nas paredes
+# - o bot não ignora as piramides e muda de andar, ignorar coordenadas amarelas pra gerar caminho
 
-
-# Problemas cavebot:
+# Cavebot:
+# - cliques excessivos quando nao consegue atacar o monstro
 # - está clicando fora do target porque o boneco está em movimentação
-# - as vezes não detecta que a creature está com target e faz varias tentativas
-# - as vezes ataca, há target e não segue
-# - algumas vezes há target mas ele fica andando pra esquerda/direita ou todo torto
+# - (x) as vezes não detecta que a creature está com target e faz varias tentativas
+# - (x) as vezes ataca, há target e não segue
+# - (x) algumas vezes há target mas ele fica andando pra esquerda/direita ou todo torto
 # - quando clica nos edges da hud, acabando clicando nas slots bars
-# - ao clicar numa criatura com target e ir pra cima e a criatura desaparecer, ele fica indo e voltado. A idéia é aumentar o gap.
+# - quando o target está longe e ainda não atacou e aparece alguem mais proximo, mudar o target
+# - o que fazer quando tem target e de repente o target desaparece pois tem q dar a volta?
 
-# Coisas por detectar:
+
+# Detecção:
+# - (x) as vezes os monstros estão com slots 255
 # - detectar npcs
 # - detectar objetos bloqueante
-
-# Lógica ideal:
-# - visualizar, parar, atacar e correr atrás do bicho

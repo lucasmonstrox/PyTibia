@@ -133,7 +133,7 @@ def getCreaturesBars(hudImg):
     return creaturesBarsXY
 
 
-def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=None, displacedXPixels=0, displacedYPixels=0):
+def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=None):
     """
     TODO:
     - Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
@@ -195,7 +195,7 @@ def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=Non
                 creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels, displacedYPixels=displacedYPixels)
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
