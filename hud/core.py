@@ -6,14 +6,14 @@ import utils.image
 
 leftHudImg = utils.image.loadAsGrey('hud/images/leftHud.png')
 rightHudImg = utils.image.loadAsGrey('hud/images/rightHud.png')
-hudSize = (480, 352)
+hudSize = (960, 704)
 
 
 # TODO: cache it
 def getCoordinate(screenshot):
+    global hudSize
     leftSidebarArrows = getLeftSidebarArrows(screenshot)
     rightSidebarArrows = getRightSidebarArrows(screenshot)
-    global hudSize
     (hudWidth, hudHeight) = hudSize
     hudCenter = (
         (rightSidebarArrows[0] - leftSidebarArrows[0]) // 2) + leftSidebarArrows[0]
@@ -63,7 +63,7 @@ def getSlotFromCoordinate(currentRadarCoordinate, coordinate):
 # TODO: add unit tests
 def getSlotImg(hudImg, slot):
     xOfSlot, yOfSlot = slot
-    slotWidth = 32
+    slotWidth = 64
     x = xOfSlot * slotWidth
     y = yOfSlot * slotWidth
     slotImg = hudImg[y:y+slotWidth, x:x+slotWidth]

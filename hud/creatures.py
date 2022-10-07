@@ -10,14 +10,24 @@ import utils.matrix
 import wiki.creatures
 
 
+hudWidth = 960
+hudWidthDouble = hudWidth * 2
+hudWidthTriple = hudWidth * 3
+lifeBarWidth = 26
 lifeBarBlackPixelsMapper = np.array([
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-    480, 506,
-    960, 986,
-    1440, 1441, 1442, 1443, 1444, 1445, 1446, 1447, 1448, 1449, 1450, 1451, 1452, 1453, 1454, 1455, 1456, 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466
+    hudWidth, hudWidth + lifeBarWidth,
+    hudWidthDouble, hudWidthDouble + lifeBarWidth,
+    hudWidthTriple, hudWidthTriple + 1, hudWidthTriple + 2, hudWidthTriple + 3, hudWidthTriple +
+    4, hudWidthTriple + 5, hudWidthTriple + 6, hudWidthTriple + 7, hudWidthTriple +
+    8, hudWidthTriple + 9, hudWidthTriple + 10, hudWidthTriple + 11, hudWidthTriple + 12, hudWidthTriple + 13, hudWidthTriple +
+    14, hudWidthTriple + 15, hudWidthTriple + 16, hudWidthTriple +
+    17, hudWidthTriple + 18, hudWidthTriple + 19, hudWidthTriple + 20, hudWidthTriple + 21, hudWidthTriple +
+    22, hudWidthTriple + 23, hudWidthTriple +
+    24, hudWidthTriple + 25, hudWidthTriple + 26
 ])
 lifeBarFlattenedImg = np.zeros(lifeBarBlackPixelsMapper.size)
-hudWidth = 480
+
 creaturesNamesHashes = {}
 for monster in wiki.creatures.creatures:
     creaturesNamesHashes[monster] = utils.image.loadAsGrey(
@@ -86,7 +96,10 @@ def getCreaturesBars(hudImg):
     # TODO: improve clean code
     flattenedHudImg = hudImg.flatten()
     blackPixelsIndexes = np.nonzero(flattenedHudImg == 0)[0]
-    maxBlackPixelIndex = 168960 - 1468
+    hudNumberOfPixels = 960 * 704
+    # WTF is 1468?
+    wtf = 1468
+    maxBlackPixelIndex = hudNumberOfPixels - wtf
     allowedBlackPixelsIndexes = np.nonzero(
         blackPixelsIndexes < maxBlackPixelIndex)[0]
     blackPixelsIndexes = np.take(blackPixelsIndexes, allowedBlackPixelsIndexes)
@@ -170,7 +183,7 @@ def getCreatures(screenshot, battleListCreatures, radarCoordinate=None):
                 (27 - creatureNameWidth) / 2)
             startingX = max(0, creatureBarX - creatureNameImgHalfWidth +
                             13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
-            endingX = min(480, creatureBarX + creatureNameImgHalfWidth +
+            endingX = min(960, creatureBarX + creatureNameImgHalfWidth +
                           13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
             creatureNameImg = creaturesNamesHashes[creatureName].copy()
             creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1,
@@ -334,12 +347,12 @@ def makeCreature(creatureName, coordinate, hudCoordinate, hudImg=None, radarCoor
     extraY = 0 if y <= 27 else 15
     xCoordinate = x - 3 + extraY
     yCoordinate = y + 5 + extraY
-    xSlot = round(xCoordinate / 32)
+    xSlot = round(xCoordinate / 64)
     xSlot = 14 if xSlot > 14 else xSlot
-    ySlot = 0 if y <= 27 else round(yCoordinate / 32)
+    ySlot = 0 if y <= 27 else round(yCoordinate / 64)
     ySlot = 10 if ySlot > 10 else ySlot
     healthPercentage = 100
-    borderedCreatureImg = hudImg[y+5:y+5+32, x-3:x-3+32]
+    borderedCreatureImg = hudImg[y+5:y+5+64, x-3:x-3+64]
     pixelsCount = np.sum(np.where(np.logical_or(
         borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
     # TODO: fix me
