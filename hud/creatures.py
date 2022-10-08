@@ -91,14 +91,14 @@ def getClosestCreature(hudCreatures, radarCoordinate):
     return closestCreature
 
 
+# TODO: improve clean code
 def getCreaturesBars(hudImg):
-    # TODO: improve clean code
     flattenedHudImg = hudImg.flatten()
     blackPixelsIndexes = np.nonzero(flattenedHudImg == 0)[0]
-    hudNumberOfPixels = 960 * 704
+    numberOfPixelsInHud = 675840
     # WTF is 1468?
     wtf = 1468
-    maxBlackPixelIndex = hudNumberOfPixels - wtf
+    maxBlackPixelIndex = numberOfPixelsInHud - wtf
     allowedBlackPixelsIndexes = np.nonzero(
         blackPixelsIndexes < maxBlackPixelIndex)[0]
     blackPixelsIndexes = np.take(blackPixelsIndexes, allowedBlackPixelsIndexes)
@@ -133,7 +133,7 @@ def getCreaturesBars(hudImg):
     return creaturesBarsXY
 
 
-def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=None):
+def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=None, displacedXPixels=0):
     """
     TODO:
     - Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
@@ -195,7 +195,7 @@ def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=Non
                 creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate)
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -213,7 +213,7 @@ def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=Non
                 creatureWithDirtNameImg2, creatureNameImg2)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels, displacedYPixels=displacedYPixels)
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -232,7 +232,7 @@ def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=Non
                 creatureWithDirtNameImg3, creatureNameImg3)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels, displacedYPixels=displacedYPixels)
+                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -296,7 +296,7 @@ def getTargetCreature(hudCreatures):
     hasNoHudCreatures = len(hudCreatures) == 0
     if hasNoHudCreatures:
         return
-    indexes2d = np.argwhere(hudCreatures["isBeingAttacked"] == True)
+    indexes2d = np.argwhere(hudCreatures['isBeingAttacked'] == True)
     if len(indexes2d) == 0:
         return
     indexes = indexes2d[0]
@@ -312,9 +312,9 @@ def hasTargetToCreatureBySlot(hudCreatures, slot, radarCoordinate):
     hasNoHudCreatures = len(hudCreatures) == 0
     if hasNoHudCreatures:
         return False
-    floorLevel = hudCreatures[0]["radarCoordinate"][2]
+    floorLevel = hudCreatures[0]['radarCoordinate'][2]
     walkableFloorsSqms = radar.config.walkableFloorsSqms[floorLevel].copy()
-    hudCreaturesSlots = hudCreatures["slot"]
+    hudCreaturesSlots = hudCreatures['slot']
     hudWalkableFloorsSqms = getHudWalkableFloorsSqms(
         walkableFloorsSqms, radarCoordinate)
     creaturesSlots = hudCreaturesSlots[:, [1, 0]]
@@ -334,24 +334,26 @@ def hasTargetToCreatureBySlot(hudCreatures, slot, radarCoordinate):
 
 def hasTargetToCreature(hudCreatures, hudCreature, radarCoordinate):
     hasTarget = hasTargetToCreatureBySlot(
-        hudCreatures, hudCreature["slot"], radarCoordinate)
+        hudCreatures, hudCreature['slot'], radarCoordinate)
     return hasTarget
 
 
-def makeCreature(creatureName, barCoordinate, hudCoordinate, hudImg=None, radarCoordinate=None):
+def makeCreature(creatureName, barCoordinate, hudCoordinate, hudImg=None, radarCoordinate=None, displacedXPixels=0):
+    slotWidth = 64
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
     (x, y) = barCoordinate
-    extraY = 0 if y <= 27 else 15
-    xCoordinate = x - 3
-    xSlot = round((xCoordinate) / 64)
+    extraY = 0 if y <= 27 else 31
+    xCoordinate = x - 3 - 31 - displacedXPixels
+    xSlot = round((xCoordinate) / slotWidth)
     xSlot = min(xSlot, 14)
     xSlot = max(xSlot, 0)
     yCoordinate = y + 5 + extraY
     yCoordinate = 0 if y <= 14 else y + 5
-    ySlot = round(yCoordinate / 64)
+    ySlot = round(yCoordinate / slotWidth)
     ySlot = min(ySlot, 10)
-    ySlot = min(ySlot, 0)
-    borderedCreatureImg = hudImg[y+5:y+5+64, x-3:x-3+64]
+    ySlot = max(ySlot, 0)
+    borderedCreatureImg = hudImg[y + 5:y +
+                                 5 + slotWidth, x - 3:x - 3 + slotWidth]
     pixelsCount = np.sum(np.where(np.logical_or(
         borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
     # TODO: fix me

@@ -91,6 +91,10 @@ coordinateHudTracker = {
     "currentCoordinate": None,
 }
 hudCreatures = np.array([], dtype=hud.creatures.creatureType)
+lastDisplacedXPixels = 0
+lastDisplacedYPixels = 0
+lastXPercentage = 0
+lastYPercentage = 0
 
 
 def main():
@@ -141,14 +145,53 @@ def main():
         })
     )
 
-    hudCreaturesObserver = hudImgObserver.pipe(operators.map(lambda result: {
-        "battleListCreatures": result["battleListCreatures"],
-        "hudCoordinate": result['hudCoordinate'],
-        "hudCreatures": hud.creatures.getCreatures(result["battleListCreatures"], result['hudCoordinate'], result['hudImg'], result["radarCoordinate"]),
-        "hudImg": result['hudImg'],
-        "radarCoordinate": result["radarCoordinate"],
-        "screenshot": result["screenshot"],
-    }))
+    def resolveCreatures(result):
+        global coordinateHudTracker, hudCreatures, lastDisplacedXPixels, lastDisplacedYPixels, lastXPercentage, lastYPercentage
+        displacedXPixels = 0
+        displacedYPixels = 0
+        if coordinateHudTracker["currentCoordinate"] is None:
+            coordinateHudTracker["currentCoordinate"] = result['radarCoordinate']
+            coordinateHudTracker['lastHudImg'] = result['hudImg']
+        hudSlice = result['hudImg'][64:80, 96:-96]
+        hudImgPercentageLocate = utils.core.locate(
+            coordinateHudTracker['lastHudImg'], hudSlice)
+        print('hudImgPercentageLocate', hudImgPercentageLocate)
+        if hudImgPercentageLocate is not None:
+            if result['radarCoordinate'][0] != coordinateHudTracker["currentCoordinate"][0]:
+                print('mudou os x')
+                isComingFromLeft = coordinateHudTracker["currentCoordinate"][0] < result['radarCoordinate'][0]
+                add32 = 64 if isComingFromLeft else -64
+                xPercentage = hudImgPercentageLocate[0] - 96
+                displacedXPixels = add32 - \
+                    (xPercentage - lastDisplacedXPixels)
+                lastXPercentage = xPercentage
+            if result['radarCoordinate'][1] != coordinateHudTracker["currentCoordinate"][1]:
+                isComingFromTop = coordinateHudTracker["currentCoordinate"][1] < result['radarCoordinate'][1]
+                yPercentage = hudImgPercentageLocate[1] - 64
+                add32 = 64 if isComingFromTop else -64
+                displacedYPixels = add32 - \
+                    (yPercentage - lastDisplacedYPixels)
+        lastDisplacedXPixels = displacedXPixels
+        lastDisplacedYPixels = displacedYPixels
+        if result['radarCoordinate'] != coordinateHudTracker["currentCoordinate"]:
+            print('mudou a coordenada')
+            coordinateHudTracker = {
+                "lastHudImg": result['hudImg'],
+                "currentCoordinate": result['radarCoordinate'],
+            }
+        print('lastDisplacedXPixels', lastDisplacedXPixels)
+        hudCreatures = hud.creatures.getCreatures(
+            result["battleListCreatures"], result['hudCoordinate'], result['hudImg'], result["radarCoordinate"], displacedXPixels=displacedXPixels)
+        return {
+            "screenshot": result["screenshot"],
+            "radarCoordinate": result["radarCoordinate"],
+            "battleListCreatures": result["battleListCreatures"],
+            "hudCoordinate": result['hudCoordinate'],
+            "hudCreatures": hudCreatures,
+            "hudImg": result['hudImg'],
+        }
+
+    hudCreaturesObserver = hudImgObserver.pipe(operators.map(resolveCreatures))
 
     def lootObservable(result):
         global beingAttackedCreature, corpsesToLoot
