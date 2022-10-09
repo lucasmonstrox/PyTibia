@@ -24,19 +24,19 @@ pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
 
 cavebotManager = {
-    "status": None
+    'status': None
 }
 lastWay = 'waypoint'
 previousCoordinate = None
 walkpointsManager = {
-    "lastCoordinateVisitedAt": time.time(),
-    "lastCoordinateVisited": None,
-    "lastPressedKey": None,
-    "points": np.array([]),
+    'lastCoordinateVisitedAt': time.time(),
+    'lastCoordinateVisited': None,
+    'lastPressedKey': None,
+    'points': np.array([]),
 }
 waypointsManager = {
-    "currentIndex": 0,
-    "points": np.array([
+    'currentIndex': 0,
+    'points': np.array([
         # ('floor', (33121, 32837, 7), 0),
         # ('floor', (33125, 32835, 7), 0),
         # ('floor', (33125, 32833, 7), 0),
@@ -74,7 +74,7 @@ waypointsManager = {
         # ('floor', (33089, 32789, 7), 0),
         # ('floor', (33084, 32789, 7), 0),
     ], dtype=waypointType),
-    "state": None
+    'state': None
 }
 
 
@@ -86,15 +86,11 @@ def shouldExecuteWaypoint(battleListCreatures):
 beingAttackedCreature = None
 corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
 coordinateHudTracker = {
-    "lastCoordinate": None,
-    "lastHudImg": None,
-    "currentCoordinate": None,
+    'lastCoordinate': None,
+    'lastHudImg': None,
+    'currentCoordinate': None,
 }
 hudCreatures = np.array([], dtype=hud.creatures.creatureType)
-lastDisplacedXPixels = 0
-lastDisplacedYPixels = 0
-lastXPercentage = 0
-lastYPercentage = 0
 
 
 def main():
@@ -103,7 +99,7 @@ def main():
     thirteenFps = 0.00833333333
     fpsObserver = interval(thirteenFps)
     fpsWithScreenshot = fpsObserver.pipe(
-        operators.map(lambda _: {"screenshot": utils.image.RGBtoGray(
+        operators.map(lambda _: {'screenshot': utils.image.RGBtoGray(
             utils.core.getScreenshot())}),
     )
 
@@ -114,81 +110,47 @@ def main():
         return previousCoordinate
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.map(lambda result: {
-            "screenshot": result["screenshot"],
-            "radarCoordinate": getCoordinate(result["screenshot"]),
+            'screenshot': result['screenshot'],
+            'radarCoordinate': getCoordinate(result['screenshot']),
         })
     )
     battleListObserver = coordinatesObserver.pipe(
         operators.map(lambda result: {
-            "screenshot": result["screenshot"],
-            "radarCoordinate": result["radarCoordinate"],
-            "battleListCreatures": battleList.core.getCreatures(result["screenshot"])
+            'screenshot': result['screenshot'],
+            'radarCoordinate': result['radarCoordinate'],
+            'battleListCreatures': battleList.core.getCreatures(result['screenshot'])
         })
     )
 
     hudCoordinateObserver = battleListObserver.pipe(
         operators.map(lambda result: {
-            "screenshot": result["screenshot"],
-            "radarCoordinate": result["radarCoordinate"],
-            "battleListCreatures": result["battleListCreatures"],
-            "hudCoordinate": hud.core.getCoordinate(result['screenshot']),
+            'screenshot': result['screenshot'],
+            'radarCoordinate': result['radarCoordinate'],
+            'battleListCreatures': result['battleListCreatures'],
+            'hudCoordinate': hud.core.getCoordinate(result['screenshot']),
         })
     )
 
     hudImgObserver = hudCoordinateObserver.pipe(
         operators.map(lambda result: {
-            "screenshot": result["screenshot"],
-            "radarCoordinate": result["radarCoordinate"],
-            "battleListCreatures": result["battleListCreatures"],
-            "hudCoordinate": result['hudCoordinate'],
-            "hudImg": hud.core.getImgByCoordinate(result['screenshot'], result['hudCoordinate'])
+            'screenshot': result['screenshot'],
+            'radarCoordinate': result['radarCoordinate'],
+            'battleListCreatures': result['battleListCreatures'],
+            'hudCoordinate': result['hudCoordinate'],
+            'hudImg': hud.core.getImgByCoordinate(result['screenshot'], result['hudCoordinate'])
         })
     )
 
     def resolveCreatures(result):
-        global coordinateHudTracker, hudCreatures, lastDisplacedXPixels, lastDisplacedYPixels, lastXPercentage, lastYPercentage
-        displacedXPixels = 0
-        displacedYPixels = 0
-        if coordinateHudTracker["currentCoordinate"] is None:
-            coordinateHudTracker["currentCoordinate"] = result['radarCoordinate']
-            coordinateHudTracker['lastHudImg'] = result['hudImg']
-        hudSlice = result['hudImg'][64:80, 96:-96]
-        hudImgPercentageLocate = utils.core.locate(
-            coordinateHudTracker['lastHudImg'], hudSlice)
-        print('hudImgPercentageLocate', hudImgPercentageLocate)
-        if hudImgPercentageLocate is not None:
-            if result['radarCoordinate'][0] != coordinateHudTracker["currentCoordinate"][0]:
-                print('mudou os x')
-                isComingFromLeft = coordinateHudTracker["currentCoordinate"][0] < result['radarCoordinate'][0]
-                add32 = 64 if isComingFromLeft else -64
-                xPercentage = hudImgPercentageLocate[0] - 96
-                displacedXPixels = add32 - \
-                    (xPercentage - lastDisplacedXPixels)
-                lastXPercentage = xPercentage
-            if result['radarCoordinate'][1] != coordinateHudTracker["currentCoordinate"][1]:
-                isComingFromTop = coordinateHudTracker["currentCoordinate"][1] < result['radarCoordinate'][1]
-                yPercentage = hudImgPercentageLocate[1] - 64
-                add32 = 64 if isComingFromTop else -64
-                displacedYPixels = add32 - \
-                    (yPercentage - lastDisplacedYPixels)
-        lastDisplacedXPixels = displacedXPixels
-        lastDisplacedYPixels = displacedYPixels
-        if result['radarCoordinate'] != coordinateHudTracker["currentCoordinate"]:
-            print('mudou a coordenada')
-            coordinateHudTracker = {
-                "lastHudImg": result['hudImg'],
-                "currentCoordinate": result['radarCoordinate'],
-            }
-        print('lastDisplacedXPixels', lastDisplacedXPixels)
         hudCreatures = hud.creatures.getCreatures(
-            result["battleListCreatures"], result['hudCoordinate'], result['hudImg'], result["radarCoordinate"], displacedXPixels=displacedXPixels)
+            result['battleListCreatures'], result['hudCoordinate'], result['hudImg'], result['radarCoordinate'], displacedXPixels=displacedXPixels)
         return {
-            "screenshot": result["screenshot"],
-            "radarCoordinate": result["radarCoordinate"],
-            "battleListCreatures": result["battleListCreatures"],
-            "hudCoordinate": result['hudCoordinate'],
-            "hudCreatures": hudCreatures,
-            "hudImg": result['hudImg'],
+            'battleListCreatures': result['battleListCreatures'],
+            'hudCoordinate': result['hudCoordinate'],
+            'hudCreatures': hudCreatures,
+            'hudImg': result['hudImg'],
+            'radarCoordinate': result['radarCoordinate'],
+            'screenshot': result['screenshot'],
         }
 
     hudCreaturesObserver = hudImgObserver.pipe(operators.map(resolveCreatures))
@@ -210,24 +172,24 @@ def main():
         return corpsesToLoot
 
     lootObserver = hudCreaturesObserver.pipe(operators.map(lambda result: {
-        "battleListCreatures": result["battleListCreatures"],
-        "corpsesToLoot": lootObservable(result),
-        "hudCoordinate": result['hudCoordinate'],
-        "hudCreatures": result['hudCreatures'],
-        "hudImg": result['hudImg'],
-        "radarCoordinate": result["radarCoordinate"],
-        "screenshot": result["screenshot"],
+        'battleListCreatures': result['battleListCreatures'],
+        'corpsesToLoot': lootObservable(result),
+        'hudCoordinate': result['hudCoordinate'],
+        'hudCreatures': result['hudCreatures'],
+        'hudImg': result['hudImg'],
+        'radarCoordinate': result['radarCoordinate'],
+        'screenshot': result['screenshot'],
     }))
 
     decisionObserver = hudCreaturesObserver.pipe(
         operators.map(lambda result: {
-            "battleListCreatures": result["battleListCreatures"],
-            "hudCoordinate": result['hudCoordinate'],
-            "hudCreatures": result["hudCreatures"],
-            "hudImg": result['hudImg'],
-            "radarCoordinate": result["radarCoordinate"],
-            "screenshot": result["screenshot"],
-            "way": gameplay.decision.getWay([], result['hudCreatures'], result['radarCoordinate']),
+            'battleListCreatures': result['battleListCreatures'],
+            'hudCoordinate': result['hudCoordinate'],
+            'hudCreatures': result['hudCreatures'],
+            'hudImg': result['hudImg'],
+            'radarCoordinate': result['radarCoordinate'],
+            'screenshot': result['screenshot'],
+            'way': gameplay.decision.getWay([], result['hudCreatures'], result['radarCoordinate']),
         })
     )
 

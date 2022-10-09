@@ -147,7 +147,9 @@ def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=Non
     hasNoBattleListCreatures = len(battleListCreatures) == 0
     if hasNoBattleListCreatures:
         return creatures
-    centersBars = np.broadcast_to([239, 175], (len(creaturesBars), 2))
+    # 479 = (hudWidth / 2) - 1
+    # 351 = (hudHeight / 2) - 1
+    centersBars = np.broadcast_to([479, 351], (len(creaturesBars), 2))
     absolute = np.absolute(creaturesBars - centersBars)
     power = np.power(absolute, 2)
     sum = np.sum(power, axis=1)
@@ -343,7 +345,13 @@ def makeCreature(creatureName, barCoordinate, hudCoordinate, hudImg=None, radarC
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
     (x, y) = barCoordinate
     extraY = 0 if y <= 27 else 31
-    xCoordinate = x - 3 - 31 - displacedXPixels
+    distanceBetweenSlotPixelLifeBar = 19
+    displacedXPixels = abs(displacedXPixels)
+    print('x', x)
+    print('displacedXPixels', displacedXPixels)
+    # (875 - 19 - 40) + 216
+    # (863 - 19 - 52) + 216
+    xCoordinate = x - distanceBetweenSlotPixelLifeBar - displacedXPixels
     xSlot = round((xCoordinate) / slotWidth)
     xSlot = min(xSlot, 14)
     xSlot = max(xSlot, 0)
@@ -353,7 +361,7 @@ def makeCreature(creatureName, barCoordinate, hudCoordinate, hudImg=None, radarC
     ySlot = min(ySlot, 10)
     ySlot = max(ySlot, 0)
     borderedCreatureImg = hudImg[y + 5:y +
-                                 5 + slotWidth, x - 3:x - 3 + slotWidth]
+                                 5 + slotWidth, x - distanceBetweenSlotPixelLifeBar:x - distanceBetweenSlotPixelLifeBar + slotWidth]
     pixelsCount = np.sum(np.where(np.logical_or(
         borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
     # TODO: fix me
@@ -364,6 +372,6 @@ def makeCreature(creatureName, barCoordinate, hudCoordinate, hudImg=None, radarC
     radarCoordinate = (radarCoordinateX, radarCoordinateY, radarCoordinate[2])
     windowCoordinate = (hudCoordinateX + xCoordinate,
                         hudCoordinateY + yCoordinate)
-    creature = (creatureName, isBeingAttacked,
-                slot, radarCoordinate, windowCoordinate)
+    creature = (creatureName, isBeingAttacked, slot,
+                radarCoordinate, windowCoordinate)
     return creature
