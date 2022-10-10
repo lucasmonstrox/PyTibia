@@ -13,7 +13,13 @@ hudSize = (960, 704)
 def getCoordinate(screenshot):
     global hudSize
     leftSidebarArrows = getLeftSidebarArrows(screenshot)
+    cannotGetLeftSidebarArrows = leftSidebarArrows is None
+    if cannotGetLeftSidebarArrows:
+        return None
     rightSidebarArrows = getRightSidebarArrows(screenshot)
+    cannotGetRightSidebarArrows = rightSidebarArrows is None
+    if cannotGetRightSidebarArrows:
+        return None
     (hudWidth, hudHeight) = hudSize
     hudCenter = (
         (rightSidebarArrows[0] - leftSidebarArrows[0]) // 2) + leftSidebarArrows[0]

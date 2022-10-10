@@ -4,6 +4,7 @@ from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 import hud.core
 import radar.config
+import radar.core
 import utils.core
 import utils.image
 import utils.matrix
@@ -133,7 +134,7 @@ def getCreaturesBars(hudImg):
     return creaturesBarsXY
 
 
-def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=None, displacedXPixels=0):
+def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, radarCoordinate):
     """
     TODO:
     - Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
@@ -197,7 +198,7 @@ def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=Non
                 creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels)
+                    creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -215,7 +216,7 @@ def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=Non
                 creatureWithDirtNameImg2, creatureNameImg2)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels)
+                    creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -234,7 +235,7 @@ def getCreatures(battleListCreatures, hudCoordinate, hudImg, radarCoordinate=Non
                 creatureWithDirtNameImg3, creatureNameImg3)
             if creatureDidMatch:
                 creature = makeCreature(
-                    creatureName, creatureBar, hudCoordinate, hudImg=hudImg, radarCoordinate=radarCoordinate, displacedXPixels=displacedXPixels)
+                    creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
                 battleListCreatures = np.delete(
@@ -340,18 +341,13 @@ def hasTargetToCreature(hudCreatures, hudCreature, radarCoordinate):
     return hasTarget
 
 
-def makeCreature(creatureName, barCoordinate, hudCoordinate, hudImg=None, radarCoordinate=None, displacedXPixels=0):
+def makeCreature(creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate):
     slotWidth = 64
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
-    (x, y) = barCoordinate
+    (x, y) = creatureBar
     extraY = 0 if y <= 27 else 31
     distanceBetweenSlotPixelLifeBar = 19
-    displacedXPixels = abs(displacedXPixels)
-    print('x', x)
-    print('displacedXPixels', displacedXPixels)
-    # (875 - 19 - 40) + 216
-    # (863 - 19 - 52) + 216
-    xCoordinate = x - distanceBetweenSlotPixelLifeBar - displacedXPixels
+    xCoordinate = x - distanceBetweenSlotPixelLifeBar
     xSlot = round((xCoordinate) / slotWidth)
     xSlot = min(xSlot, 14)
     xSlot = max(xSlot, 0)
@@ -369,7 +365,58 @@ def makeCreature(creatureName, barCoordinate, hudCoordinate, hudImg=None, radarC
     slot = (xSlot, ySlot)
     radarCoordinateX = radarCoordinate[0] - 7 + xSlot
     radarCoordinateY = radarCoordinate[1] - 5 + ySlot
-    radarCoordinate = (radarCoordinateX, radarCoordinateY, radarCoordinate[2])
+    radarCoordinate = [radarCoordinateX, radarCoordinateY, radarCoordinate[2]]
+    currentCreatureCoordinateIsntWalkable = not radar.core.isCoordinateWalkable(
+        radarCoordinate)
+    if currentCreatureCoordinateIsntWalkable:
+        if direction == 'left' or direction == 'right':
+            leftCoordinate = [radarCoordinate[0] - 1,
+                              radarCoordinate[1], radarCoordinate[2]]
+            leftCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                leftCoordinate)
+            if leftCoordinateIsWalkable:
+                radarCoordinate = leftCoordinate
+                xSlot = slot[0] - 1
+                xSlot = min(xSlot, 14)
+                xSlot = max(xSlot, 0)
+                slot = (xSlot, slot[1])
+                xCoordinate -= slotWidth
+            else:
+                rightCoordinate = [radarCoordinate[0] + 1,
+                                   radarCoordinate[1], radarCoordinate[2]]
+                rightCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                    rightCoordinate)
+                if rightCoordinateIsWalkable:
+                    radarCoordinate = rightCoordinate
+                    xSlot = slot[0] + 1
+                    xSlot = min(xSlot, 14)
+                    xSlot = max(xSlot, 0)
+                    slot = (xSlot, slot[1])
+                    xCoordinate += slotWidth
+        if direction == 'top' or direction == 'bottom':
+            topCoordinate = [radarCoordinate[0],
+                             radarCoordinate[1] - 1, radarCoordinate[2]]
+            topCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                topCoordinate)
+            if topCoordinateIsWalkable:
+                radarCoordinate = topCoordinate
+                ySlot = slot[1] - 1
+                ySlot = min(ySlot, 10)
+                ySlot = max(ySlot, 0)
+                slot = (slot[0], ySlot)
+                yCoordinate -= slotWidth
+            else:
+                bottomCoordinate = [radarCoordinate[0],
+                                    radarCoordinate[1] + 1, radarCoordinate[2]]
+                bottomCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                    bottomCoordinate)
+                if bottomCoordinateIsWalkable:
+                    radarCoordinate = bottomCoordinate
+                    ySlot = slot[1] + 1
+                    ySlot = min(ySlot, 10)
+                    ySlot = max(ySlot, 0)
+                    slot = (slot[0], ySlot)
+                    yCoordinate += slotWidth
     windowCoordinate = (hudCoordinateX + xCoordinate,
                         hudCoordinateY + yCoordinate)
     creature = (creatureName, isBeingAttacked, slot,

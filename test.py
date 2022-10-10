@@ -29,9 +29,9 @@ def main():
     radarCoordinate = radar.core.getCoordinate(screenshot)
     battleListCreatures = battleList.core.getCreatures(screenshot)
     # creaturesBars = hud.creatures.getCreaturesBars(hudImg)
-    hudCreatures = hud.creatures.getCreatures(
-        screenshot, battleListCreatures, radarCoordinate)
-    print(hudCreatures)
+    # hudCreatures = hud.creatures.getCreatures(
+    #     screenshot, battleListCreatures, radarCoordinate)
+    # print(hudCreatures)
     # print(hudCreatures)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     # utils.image.save(hudImg, 'hudImg.png')

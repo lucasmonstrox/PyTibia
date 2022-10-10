@@ -26,8 +26,9 @@ pyautogui.PAUSE = 0
 cavebotManager = {
     'status': None
 }
+lastDirection = None
 lastWay = 'waypoint'
-previousCoordinate = None
+previousRadarCoordinate = None
 walkpointsManager = {
     'lastCoordinateVisitedAt': time.time(),
     'lastCoordinateVisited': None,
@@ -104,10 +105,11 @@ def main():
     )
 
     def getCoordinate(screenshot):
-        global previousCoordinate
-        previousCoordinate = radar.core.getCoordinate(
-            screenshot, previousCoordinate=previousCoordinate)
-        return previousCoordinate
+        global previousRadarCoordinate
+        radarCoordinate = radar.core.getCoordinate(
+            screenshot, previousRadarCoordinate=previousRadarCoordinate)
+        return radarCoordinate
+
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.map(lambda result: {
             'screenshot': result['screenshot'],
@@ -142,8 +144,24 @@ def main():
     )
 
     def resolveCreatures(result):
+        global lastDirection, previousRadarCoordinate
+        if previousRadarCoordinate:
+            radarCoordinate = result['radarCoordinate']
+            didntChangeInXAxis = radarCoordinate[0] != previousRadarCoordinate[0]
+            didntChangeInYAxis = radarCoordinate[1] != previousRadarCoordinate[1]
+            didntTeleport = (
+                didntChangeInXAxis and didntChangeInYAxis) == False
+            if didntTeleport:
+                if radarCoordinate[0] != previousRadarCoordinate[0]:
+                    lastDirection = 'left' if radarCoordinate[0] > previousRadarCoordinate[0] else 'right'
+                elif radarCoordinate[1] != previousRadarCoordinate[1]:
+                    lastDirection = 'top' if radarCoordinate[1] > previousRadarCoordinate[1] else 'bottom'
         hudCreatures = hud.creatures.getCreatures(
-            result['battleListCreatures'], result['hudCoordinate'], result['hudImg'], result['radarCoordinate'], displacedXPixels=displacedXPixels)
+            result['battleListCreatures'], lastDirection, result['hudCoordinate'], result['hudImg'], result['radarCoordinate'])
+        coordinateDidChange = np.all(
+            previousRadarCoordinate == result['radarCoordinate']) == False
+        if coordinateDidChange:
+            previousRadarCoordinate = result['radarCoordinate']
         return {
             'battleListCreatures': result['battleListCreatures'],
             'hudCoordinate': result['hudCoordinate'],
@@ -181,7 +199,7 @@ def main():
         'screenshot': result['screenshot'],
     }))
 
-    decisionObserver = hudCreaturesObserver.pipe(
+    decisionObserver = lootObserver.pipe(
         operators.map(lambda result: {
             'battleListCreatures': result['battleListCreatures'],
             'hudCoordinate': result['hudCoordinate'],
@@ -189,7 +207,7 @@ def main():
             'hudImg': result['hudImg'],
             'radarCoordinate': result['radarCoordinate'],
             'screenshot': result['screenshot'],
-            'way': gameplay.decision.getWay([], result['hudCreatures'], result['radarCoordinate']),
+            'way': gameplay.decision.getWay(result['corpsesToLoot'], result['hudCreatures'], result['radarCoordinate']),
         })
     )
 
@@ -198,50 +216,50 @@ def main():
         if waypointsManager['currentIndex'] == None:
             waypointsManager['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
                 result['radarCoordinate'], waypointsManager['points'])
-        # if result['way'] == 'lootCorpses':
-        #     walkpoints = gameplay.waypoint.generateFloorWalkpoints(
-        #         result['radarCoordinate'], corpsesToLoot[0]['radarCoordinate'])
-        #     if len(walkpoints) > 1:
-        #         walkpoints = np.delete(walkpoints, -1, axis=0)
-        #     walkpointsManager['points'] = walkpoints
-        #     if len(walkpointsManager['points']) == 0:
-        #         time.sleep(1)
-        #         slot = hud.core.getSlotFromCoordinate(
-        #             result['radarCoordinate'], corpsesToLoot[0]['radarCoordinate'])
-        #         pyautogui.keyDown('shift')
-        #         time.sleep(0.1)
-        #         hud.slot.rightClickSlot(slot, result['hudCoordinate'])
-        #         time.sleep(0.1)
-        #         pyautogui.keyUp('shift')
-        #         corpsesToLoot = np.delete(corpsesToLoot, 0)
-        # if result['way'] == 'cavebot':
-        #     cavebotManager, walkpointsManager = gameplay.cavebot.handleCavebot(
-        #         result['battleListCreatures'],
-        #         cavebotManager,
-        #         result['hudCreatures'],
-        #         result['radarCoordinate'],
-        #         walkpointsManager
-        #     )
-        # else:
-        #     if lastWay == 'cavebot':
-        #         walkpointsManager['lastCoordinateVisited'] = None
-        #         walkpointsManager['points'] = np.array([])
-        #         walkpointsManager['state'] = None
-        #     waypointsManager = gameplay.waypoint.handleWaypoint(
-        #         result['screenshot'],
-        #         result['radarCoordinate'],
-        #         waypointsManager,
-        #     )
-        #     walkpointsManager = gameplay.waypoint.handleWalkpoints(
-        #         result['radarCoordinate'],
-        #         walkpointsManager,
-        #         waypointsManager
-        #     )
-        # walkpointsManager = gameplay.waypoint.walk(
-        #     result['radarCoordinate'],
-        #     walkpointsManager
-        # )
-        # lastWay = result['way']
+        if result['way'] == 'lootCorpses':
+            walkpoints = gameplay.waypoint.generateFloorWalkpoints(
+                result['radarCoordinate'], corpsesToLoot[0]['radarCoordinate'])
+            if len(walkpoints) > 1:
+                walkpoints = np.delete(walkpoints, -1, axis=0)
+            walkpointsManager['points'] = walkpoints
+            if len(walkpointsManager['points']) == 0:
+                time.sleep(1)
+                slot = hud.core.getSlotFromCoordinate(
+                    result['radarCoordinate'], corpsesToLoot[0]['radarCoordinate'])
+                pyautogui.keyDown('shift')
+                time.sleep(0.1)
+                hud.slot.rightClickSlot(slot, result['hudCoordinate'])
+                time.sleep(0.1)
+                pyautogui.keyUp('shift')
+                corpsesToLoot = np.delete(corpsesToLoot, 0)
+        if result['way'] == 'cavebot':
+            cavebotManager, walkpointsManager = gameplay.cavebot.handleCavebot(
+                result['battleListCreatures'],
+                cavebotManager,
+                result['hudCreatures'],
+                result['radarCoordinate'],
+                walkpointsManager
+            )
+        else:
+            if lastWay == 'cavebot':
+                walkpointsManager['lastCoordinateVisited'] = None
+                walkpointsManager['points'] = np.array([])
+                walkpointsManager['state'] = None
+            waypointsManager = gameplay.waypoint.handleWaypoint(
+                result['screenshot'],
+                result['radarCoordinate'],
+                waypointsManager,
+            )
+            walkpointsManager = gameplay.waypoint.handleWalkpoints(
+                result['radarCoordinate'],
+                walkpointsManager,
+                waypointsManager
+            )
+        walkpointsManager = gameplay.waypoint.walk(
+            result['radarCoordinate'],
+            walkpointsManager
+        )
+        lastWay = result['way']
     decisionObserver.subscribe(waypointObservable)
     while True:
         time.sleep(10)
