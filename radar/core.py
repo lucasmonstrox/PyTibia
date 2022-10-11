@@ -9,7 +9,8 @@ import utils.mouse
 
 
 # TODO: add unit tests
-def getCoordinate(screenshot, previousCoordinate=None):
+# TODO: get by cached images coordinates hashes
+def getCoordinate(screenshot, previousRadarCoordinate=None):
     floorLevel = getFloorLevel(screenshot)
     cannotGetFloorLevel = floorLevel is None
     if cannotGetFloorLevel:
@@ -23,31 +24,30 @@ def getCoordinate(screenshot, previousCoordinate=None):
     shouldGetCoordinateByCachedRadarHashedImg = radarHashedImg in config.coordinates
     if shouldGetCoordinateByCachedRadarHashedImg:
         return config.coordinates[radarHashedImg]
-    shouldGetCoordinateByPreviousCoordinateArea = previousCoordinate is not None
-    if shouldGetCoordinateByPreviousCoordinateArea:
-        (previousCoordinateXPixel, previousCoordinateYPixel) = utils.core.getPixelFromCoordinate(
-            previousCoordinate)
+    shouldGetCoordinateByPreviousRadarCoordinateArea = previousRadarCoordinate is not None
+    if shouldGetCoordinateByPreviousRadarCoordinateArea:
+        (previousRadarCoordinateXPixel, previousRadarCoordinateYPixel) = utils.core.getPixelFromCoordinate(
+            previousRadarCoordinate)
         paddingSize = 20
-        yStart = previousCoordinateYPixel - \
+        yStart = previousRadarCoordinateYPixel - \
             (config.dimensions["halfHeight"] + paddingSize)
-        yEnd = previousCoordinateYPixel + \
+        yEnd = previousRadarCoordinateYPixel + \
             (config.dimensions["halfHeight"] + 1 + paddingSize)
-        xStart = previousCoordinateXPixel - \
+        xStart = previousRadarCoordinateXPixel - \
             (config.dimensions["halfWidth"] + paddingSize)
-        xEnd = previousCoordinateXPixel + \
+        xEnd = previousRadarCoordinateXPixel + \
             (config.dimensions["halfWidth"] + paddingSize)
         areaImgToCompare = config.floorsImgs[floorLevel][yStart:yEnd, xStart:xEnd]
         areaFoundImg = utils.core.locate(
             areaImgToCompare, radarImg, confidence=0.9)
         if areaFoundImg:
-            currentCoordinateXPixel = previousCoordinateXPixel - \
+            currentCoordinateXPixel = previousRadarCoordinateXPixel - \
                 paddingSize + areaFoundImg[0]
-            currentCoordinateYPixel = previousCoordinateYPixel - \
+            currentCoordinateYPixel = previousRadarCoordinateYPixel - \
                 paddingSize + areaFoundImg[1]
             (currentCoordinateX, currentCoordinateY) = utils.core.getCoordinateFromPixel(
                 (currentCoordinateXPixel, currentCoordinateYPixel))
-            return (currentCoordinateX, currentCoordinateY, floorLevel)
-    # config.floorsConfidence[floorLevel]
+            return [currentCoordinateX, currentCoordinateY, floorLevel]
     imgCoordinate = utils.core.locate(
         config.floorsImgs[floorLevel], radarImg, confidence=0.75)
     cannotGetImgCoordinate = imgCoordinate is None
@@ -57,7 +57,7 @@ def getCoordinate(screenshot, previousCoordinate=None):
     yImgCoordinate = imgCoordinate[1] + config.dimensions["halfHeight"]
     xCoordinate, yCoordinate = utils.core.getCoordinateFromPixel(
         (xImgCoordinate, yImgCoordinate))
-    return (xCoordinate, yCoordinate, floorLevel)
+    return [xCoordinate, yCoordinate, floorLevel]
 
 
 # TODO: add unit tests
@@ -125,6 +125,9 @@ def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
         110: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 150, 187, 248, 367, 696, 3060]),
         120: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
         125: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        130: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        135: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        136: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
         140: np.array([0, 0, 0, 0, 0, 0, 0, 111, 125, 143, 167, 201, 254, 344, 531, 1092, 6341]),
         150: np.array([0, 0, 0, 0, 0, 0, 0, 120, 135, 155, 181, 219, 278, 380, 595, 1258, 8036]),
         160: np.array([0, 0, 0, 0, 0, 0, 116, 129, 145, 167, 196, 238, 304, 419, 663, 1443, 10167]),
@@ -133,7 +136,11 @@ def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
         250: np.array([117, 126, 135, 146, 160, 175, 195, 220, 252, 295, 356, 446, 598, 884, 1591, 4557, 81351]),
         255: np.array([117, 126, 135, 146, 160, 175, 195, 220, 252, 295, 356, 446, 598, 884, 1591, 4557, 81351]),
     }
-    breakpoints = tilesFrictionsBreakpoints[tileFriction]
+    # TODO: sometimes friction is not found
+    if tileFriction in tilesFrictionsBreakpoints:
+        breakpoints = tilesFrictionsBreakpoints[tileFriction]
+    else:
+        breakpoints = tilesFrictionsBreakpoints[140]
     currentSpeedBreakpoint = np.nonzero(breakpoints >= charSpeed)[0][0]
     speed = breakpointTileMovementSpeed[currentSpeedBreakpoint]
     return speed
