@@ -102,20 +102,7 @@ def main():
         })
     )
 
-    def getComingDirection(result):
-        comingDirection = 'none'
-        return {
-            'comingDirection': None,
-            'radarCoordinate': getCoordinate(result['screenshot']),
-            'screenshot': result['screenshot'],
-        }
-
-    directionObserver = coordinatesObserver.pipe(
-        operators.filter(lambda result: result['radarCoordinate'] is not None),
-        operators.map(getComingDirection)
-    )
-
-    battleListObserver = directionObserver.pipe(
+    battleListObserver = coordinatesObserver.pipe(
         operators.map(lambda result: {
             'battleListCreatures': battleList.core.getCreatures(result['screenshot']),
             'radarCoordinate': result['radarCoordinate'],
