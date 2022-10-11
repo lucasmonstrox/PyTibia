@@ -24,14 +24,14 @@ def main():
     # beingAttackedCreature = None
     # corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
-    # hudCoordinate = hud.core.getCoordinate(screenshot)
-    # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
+    hudCoordinate = hud.core.getCoordinate(screenshot)
+    hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     radarCoordinate = radar.core.getCoordinate(screenshot)
     battleListCreatures = battleList.core.getCreatures(screenshot)
     # creaturesBars = hud.creatures.getCreaturesBars(hudImg)
-    # hudCreatures = hud.creatures.getCreatures(
-    #     screenshot, battleListCreatures, radarCoordinate)
-    # print(hudCreatures)
+    hudCreatures = hud.creatures.getCreatures(
+        battleListCreatures, 'left', hudCoordinate, hudImg, radarCoordinate)
+    print(hud.creatures.getNearestCreaturesCount(hudCreatures))
     # print(hudCreatures)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     # utils.image.save(hudImg, 'hudImg.png')

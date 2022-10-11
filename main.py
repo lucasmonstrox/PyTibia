@@ -23,10 +23,12 @@ import utils.image
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
 
-cavebotManager = {
-    'status': None
-}
-lastDirection = None
+beingAttackedCreature = None
+cavebotManager = {'status': None}
+coordinateHudTracker = {'lastCoordinate': None, 'lastHudImg': None}
+comingFromDirection = None
+corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
+hudCreatures = np.array([], dtype=hud.creatures.creatureType)
 lastWay = 'waypoint'
 previousRadarCoordinate = None
 walkpointsManager = {
@@ -51,14 +53,11 @@ waypointsManager = {
         # ('floor', (33078, 32760, 7), 0),
         # ('shovel', (33072, 32760, 7), 0),
         # ('floor', (33072, 32760, 8), 0),
-
         ('floor', (33072, 32759, 8), 0),
         ('floor', (33096, 32762, 8), 0),
         ('floor', (33067, 32748, 8), 0),
         ('floor', (33085, 32775, 8), 0),
         ('floor', (33062, 32788, 8), 0),
-
-
         # stonerefinner
         # ('floor', (33037,31977,13), 0),
         # ('floor', (33039,32021,13), 0),
@@ -79,21 +78,6 @@ waypointsManager = {
 }
 
 
-def shouldExecuteWaypoint(battleListCreatures):
-    hasNoBattleListCreatures = len(battleListCreatures) == 0
-    return hasNoBattleListCreatures
-
-
-beingAttackedCreature = None
-corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
-coordinateHudTracker = {
-    'lastCoordinate': None,
-    'lastHudImg': None,
-    'currentCoordinate': None,
-}
-hudCreatures = np.array([], dtype=hud.creatures.creatureType)
-
-
 def main():
     optimal_thread_count = multiprocessing.cpu_count()
     threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
@@ -111,59 +95,85 @@ def main():
         return radarCoordinate
 
     coordinatesObserver = fpsWithScreenshot.pipe(
+        operators.filter(lambda result: result['screenshot'] is not None),
         operators.map(lambda result: {
-            'screenshot': result['screenshot'],
             'radarCoordinate': getCoordinate(result['screenshot']),
+            'screenshot': result['screenshot'],
         })
     )
-    battleListObserver = coordinatesObserver.pipe(
-        operators.map(lambda result: {
+
+    def getComingDirection(result):
+        comingDirection = 'none'
+        return {
+            'comingDirection': None,
+            'radarCoordinate': getCoordinate(result['screenshot']),
             'screenshot': result['screenshot'],
+        }
+
+    directionObserver = coordinatesObserver.pipe(
+        operators.filter(lambda result: result['radarCoordinate'] is not None),
+        operators.map(getComingDirection)
+    )
+
+    battleListObserver = directionObserver.pipe(
+        operators.map(lambda result: {
+            'battleListCreatures': battleList.core.getCreatures(result['screenshot']),
             'radarCoordinate': result['radarCoordinate'],
-            'battleListCreatures': battleList.core.getCreatures(result['screenshot'])
+            'screenshot': result['screenshot'],
         })
     )
 
     hudCoordinateObserver = battleListObserver.pipe(
+        operators.filter(lambda result: result['radarCoordinate'] is not None),
         operators.map(lambda result: {
-            'screenshot': result['screenshot'],
-            'radarCoordinate': result['radarCoordinate'],
             'battleListCreatures': result['battleListCreatures'],
             'hudCoordinate': hud.core.getCoordinate(result['screenshot']),
+            'radarCoordinate': result['radarCoordinate'],
+            'screenshot': result['screenshot'],
         })
     )
 
     hudImgObserver = hudCoordinateObserver.pipe(
         operators.map(lambda result: {
-            'screenshot': result['screenshot'],
-            'radarCoordinate': result['radarCoordinate'],
             'battleListCreatures': result['battleListCreatures'],
             'hudCoordinate': result['hudCoordinate'],
-            'hudImg': hud.core.getImgByCoordinate(result['screenshot'], result['hudCoordinate'])
+            'hudImg': hud.core.getImgByCoordinate(result['screenshot'], result['hudCoordinate']),
+            'radarCoordinate': result['radarCoordinate'],
+            'screenshot': result['screenshot'],
         })
     )
 
-    def resolveCreatures(result):
-        global lastDirection, previousRadarCoordinate
-        if previousRadarCoordinate:
-            radarCoordinate = result['radarCoordinate']
-            didntChangeInXAxis = radarCoordinate[0] != previousRadarCoordinate[0]
-            didntChangeInYAxis = radarCoordinate[1] != previousRadarCoordinate[1]
-            didntTeleport = (
-                didntChangeInXAxis and didntChangeInYAxis) == False
-            if didntTeleport:
-                if radarCoordinate[0] != previousRadarCoordinate[0]:
-                    lastDirection = 'left' if radarCoordinate[0] > previousRadarCoordinate[0] else 'right'
-                elif radarCoordinate[1] != previousRadarCoordinate[1]:
-                    lastDirection = 'top' if radarCoordinate[1] > previousRadarCoordinate[1] else 'bottom'
-        hudCreatures = hud.creatures.getCreatures(
-            result['battleListCreatures'], lastDirection, result['hudCoordinate'], result['hudImg'], result['radarCoordinate'])
+    def resolveDirection(result):
+        global comingFromDirection, previousRadarCoordinate
+        # Se a coordenada anterior for None, setar com o valor da coordenada atual
+        if previousRadarCoordinate is None:
+            previousRadarCoordinate = result['radarCoordinate']
         coordinateDidChange = np.all(
             previousRadarCoordinate == result['radarCoordinate']) == False
         if coordinateDidChange:
+            radarCoordinate = result['radarCoordinate']
+            # Verificar se mudou de andar
+            if radarCoordinate[2] != previousRadarCoordinate[2]:
+                comingFromDirection = None
+            # Verificar se foi teleport/lag
+            elif radarCoordinate[0] != previousRadarCoordinate[0] and radarCoordinate[1] != previousRadarCoordinate[1]:
+                comingFromDirection = None
+            elif radarCoordinate[0] != previousRadarCoordinate[0]:
+                # Verificar se está vindo da esquerda/direita
+                # - Para determinar se está vindo da esquerda, basta o x da coordenada atual ser maior que o x da coordenada anterior
+                # - Para determinar se está vindo da direita, basta o x da coordenada atual ser menor que o x da coordenada anterior
+                comingFromDirection = 'left' if radarCoordinate[
+                    0] > previousRadarCoordinate[0] else 'right'
+            elif radarCoordinate[1] != previousRadarCoordinate[1]:
+                # Verificar cima/baixa
+                # - Para determinar se está vindo de cima, basta o y da coordenada atual ser menor que o y da coordenada anterior
+                # - Para determinar se está vindo de baixo, basta o y da coordenada atual ser maior que o y da coordenada anterior
+                comingFromDirection = 'top' if radarCoordinate[
+                    1] > previousRadarCoordinate[1] else 'bottom'
             previousRadarCoordinate = result['radarCoordinate']
         return {
             'battleListCreatures': result['battleListCreatures'],
+            'comingFromDirection': comingFromDirection,
             'hudCoordinate': result['hudCoordinate'],
             'hudCreatures': hudCreatures,
             'hudImg': result['hudImg'],
@@ -171,7 +181,24 @@ def main():
             'screenshot': result['screenshot'],
         }
 
-    hudCreaturesObserver = hudImgObserver.pipe(operators.map(resolveCreatures))
+    directionObserver = hudImgObserver.pipe(operators.map(resolveDirection))
+
+    def resolveCreatures(result):
+        global comingFromDirection, previousRadarCoordinate
+        hudCreatures = hud.creatures.getCreatures(
+            result['battleListCreatures'], comingFromDirection, result['hudCoordinate'], result['hudImg'], result['radarCoordinate'])
+        return {
+            'battleListCreatures': result['battleListCreatures'],
+            'comingFromDirection': result['comingFromDirection'],
+            'hudCoordinate': result['hudCoordinate'],
+            'hudCreatures': hudCreatures,
+            'hudImg': result['hudImg'],
+            'radarCoordinate': result['radarCoordinate'],
+            'screenshot': result['screenshot'],
+        }
+
+    hudCreaturesObserver = directionObserver.pipe(
+        operators.map(resolveCreatures))
 
     def lootObservable(result):
         global beingAttackedCreature, corpsesToLoot
@@ -191,6 +218,7 @@ def main():
 
     lootObserver = hudCreaturesObserver.pipe(operators.map(lambda result: {
         'battleListCreatures': result['battleListCreatures'],
+        'comingFromDirection': result['comingFromDirection'],
         'corpsesToLoot': lootObservable(result),
         'hudCoordinate': result['hudCoordinate'],
         'hudCreatures': result['hudCreatures'],
@@ -202,6 +230,7 @@ def main():
     decisionObserver = lootObserver.pipe(
         operators.map(lambda result: {
             'battleListCreatures': result['battleListCreatures'],
+            'comingFromDirection': result['comingFromDirection'],
             'hudCoordinate': result['hudCoordinate'],
             'hudCreatures': result['hudCreatures'],
             'hudImg': result['hudImg'],
@@ -260,7 +289,9 @@ def main():
             walkpointsManager
         )
         lastWay = result['way']
+
     decisionObserver.subscribe(waypointObservable)
+
     while True:
         time.sleep(10)
         continue
@@ -290,9 +321,8 @@ if __name__ == '__main__':
 # - (x) as vezes ataca, há target e não segue
 # - (x) algumas vezes há target mas ele fica andando pra esquerda/direita ou todo torto
 # - quando clica nos edges da hud, acabando clicando nas slots bars
-# - quando o target está longe e ainda não atacou e aparece alguem mais proximo, mudar o target
+# - quando o target está longe e ainda não atacou e aparece alguem mais proximo, deveria mudar o target
 # - o que fazer quando tem target e de repente o target desaparece pois tem q dar a volta?
-
 
 # Detecção:
 # - (x) as vezes os monstros estão com slots 255
