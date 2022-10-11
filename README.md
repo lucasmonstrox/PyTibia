@@ -106,6 +106,8 @@ in this project.
 
 A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa), the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12). I started this bot to learn python and especially overcome [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12) slowdowns.
 
+You can check the bot development at [https://twitch.tv/lucasmonstrocs](https://twitch.tv/lucasmonstrocs).
+
 # 📝 License
 
 Copyright © 2021 [**lucasmonstro**](https://github.com/lucasmonstro)  
