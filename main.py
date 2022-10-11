@@ -297,7 +297,7 @@ if __name__ == '__main__':
 # Walk:
 # - (x) quando está andando e de repente fica parado, recalcular rota e reiniciar walk
 # - quando anda pra fora do caminho traçado, recalcular rota e reiniciar walk
-# - mudar o calculo path finding para o paths do tibiamaps e ignorar buracos, escadas, etc
+# - (x) mudar o calculo path finding para o paths do tibiamaps e ignorar buracos, escadas, etc
 # - as vezes da sorry not possible ao andar mesmo sem errar o path, possivelmente batendo sensivelmente nas paredes
 # - o bot não ignora as piramides e muda de andar, ignorar coordenadas amarelas pra gerar caminho
 

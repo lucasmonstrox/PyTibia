@@ -279,7 +279,7 @@ def getHudWalkableFloorsSqms(walkableFloorsSqms, radarCoordinate):
     (xOfPixelCoordinate, yOfPixelCoordinate) = utils.core.getPixelFromCoordinate(
         radarCoordinate)
     hudWalkableFloorsSqms = walkableFloorsSqms[yOfPixelCoordinate -
-                                               5:yOfPixelCoordinate+6, xOfPixelCoordinate-7:xOfPixelCoordinate+8]
+                                               5:yOfPixelCoordinate+6, xOfPixelCoordinate-7:xOfPixelCoordinate+8].copy()
     return hudWalkableFloorsSqms
 
 
@@ -380,7 +380,6 @@ def makeCreature(creatureName, creatureBar, direction, hudCoordinate, hudImg, ra
                 xSlot = min(xSlot, 14)
                 xSlot = max(xSlot, 0)
                 slot = (xSlot, slot[1])
-                xCoordinate -= slotWidth
             else:
                 rightCoordinate = [radarCoordinate[0] + 1,
                                    radarCoordinate[1], radarCoordinate[2]]
@@ -392,7 +391,6 @@ def makeCreature(creatureName, creatureBar, direction, hudCoordinate, hudImg, ra
                     xSlot = min(xSlot, 14)
                     xSlot = max(xSlot, 0)
                     slot = (xSlot, slot[1])
-                    xCoordinate += slotWidth
         if direction == 'top' or direction == 'bottom':
             topCoordinate = [radarCoordinate[0],
                              radarCoordinate[1] - 1, radarCoordinate[2]]
@@ -404,7 +402,6 @@ def makeCreature(creatureName, creatureBar, direction, hudCoordinate, hudImg, ra
                 ySlot = min(ySlot, 10)
                 ySlot = max(ySlot, 0)
                 slot = (slot[0], ySlot)
-                yCoordinate -= slotWidth
             else:
                 bottomCoordinate = [radarCoordinate[0],
                                     radarCoordinate[1] + 1, radarCoordinate[2]]
@@ -416,7 +413,6 @@ def makeCreature(creatureName, creatureBar, direction, hudCoordinate, hudImg, ra
                     ySlot = min(ySlot, 10)
                     ySlot = max(ySlot, 0)
                     slot = (slot[0], ySlot)
-                    yCoordinate += slotWidth
     windowCoordinate = (hudCoordinateX + xCoordinate,
                         hudCoordinateY + yCoordinate)
     creature = (creatureName, isBeingAttacked, slot,

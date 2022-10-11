@@ -23,7 +23,8 @@ def generateFloorWalkpoints(coordinate, goalCoordinate):
     yFromTheStartOfRadar = pixelCoordinate[1] - 54
     yFromTheEndOfRadar = pixelCoordinate[1] + 55
     xOfRadarCoordinate, yOfRadarCoordinate, level = coordinate
-    walkableFloorsSqms = radar.config.walkableFloorsSqms[level][
+    walkableFloorsSqms = radar.config.walkableFloorsSqms[level].copy()
+    walkableFloorsSqms = walkableFloorsSqms[
         yFromTheStartOfRadar:yFromTheEndOfRadar, xFromTheStartOfRadar:xFromTheEndOfRadar]
     # TODO: colocar os players, monstros e buracos/escadas
     pf = tcod.path.AStar(walkableFloorsSqms, 0)
@@ -49,7 +50,7 @@ def resolveMoveUpCoordinate(_, nextCoordinate):
 # TODO: add unit tests
 def resolveShovelWaypointCoordinate(radarCoordinate, nextCoordinate):
     floorLevel = nextCoordinate[2]
-    walkableFloorSqms = radar.config.walkableFloorsSqms[floorLevel]
+    walkableFloorSqms = radar.config.walkableFloorsSqms[floorLevel].copy()
     availableAroundCoordinates = utils.coordinate.getAvailableAroundCoordinates(
         nextCoordinate, walkableFloorSqms)
     closestCoordinate = utils.coordinate.getClosestCoordinate(
