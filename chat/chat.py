@@ -1,8 +1,8 @@
 from ahocorapy.keywordtree import KeywordTree
-import pyautogui
 from hud.core import getLeftSidebarArrows
 import utils.core
 import utils.image
+import utils.mouse
 
 
 chatMenuImg = utils.image.loadAsGrey('chat/images/chatMenu.png')
@@ -12,7 +12,15 @@ chatOffImg = utils.image.loadAsGrey('chat/images/chatOff.png')
 chatOffImg = utils.image.loadAsGrey('chat/images/chatOff.png')
 lootOfTextImg = utils.image.loadAsGrey('chat/images/lootOfText.png')
 nothingTextImg = utils.image.loadAsGrey('chat/images/nothingText.png')
-lootImg = utils.image.loadAsGrey('chat/images/loot.png')
+
+chatTabs = [
+    ('loot', (utils.image.loadAsGrey('chat/images/loot.png'), utils.image.loadAsGrey('chat/images/selectedLootTab.png'))),
+    ('npcs', (utils.image.loadAsGrey('chat/images/NPCs.png'), utils.image.loadAsGrey('chat/images/selectedNPCsTab.png'))),
+    ('localChat', (utils.image.loadAsGrey('chat/images/localChat.png'),
+     utils.image.loadAsGrey('chat/images/selectedLocalChatTab.png')))]
+
+chatTabs = dict(chatTabs)
+
 oldListOfLootCheck = []
 
 
@@ -109,12 +117,14 @@ def enableChatOff(screenshot):
         utils.core.press('enter')
 
 
+@utils.core.cacheObjectPos
 def getChatsTabs(screenshot):
     leftSidebarArrows = getLeftSidebarArrows(screenshot)
     chatMenu = getChatMenuPos(screenshot)
     return leftSidebarArrows[0] + 10, chatMenu[1], chatMenu[0] - (leftSidebarArrows[0] + 10), 20
 
 
+@utils.core.cacheObjectPos
 def getChatMessagesContainerPos(screenshot):
     leftSidebarArrows = getLeftSidebarArrows(screenshot)
     chatMenu = getChatMenuPos(screenshot)
@@ -122,15 +132,40 @@ def getChatMessagesContainerPos(screenshot):
     return leftSidebarArrows[0], chatMenu[1] + 18, chatStatus[0][0] + 40, (chatStatus[0][1] - 6) - (chatMenu[1] + 13)
 
 
+@utils.core.cacheObjectPos
 def getLootTabPos(screenshot):
-    return utils.core.locate(screenshot, lootImg)
+    return utils.core.locate(screenshot, chatTabs['loot'][0])
+
+
+@utils.core.cacheObjectPos
+def getNPCsTabPos(screenshot):
+    return utils.core.locate(screenshot, chatTabs['npcs'][0])
+
+
+@utils.core.cacheObjectPos
+def getLocalChatTabPos(screenshot):
+    return utils.core.locate(screenshot, chatTabs['localChat'][0])
+
+
+def isTabSelected(screenshot, tabName):
+    if utils.core.locate(screenshot, chatTabs[tabName][1]) is not None:
+        return True
+    return False
 
 
 def selectLootTab(screenshot):
-    clickCoord = getLootTabPos(screenshot)
-    clickCoord = utils.core.randomCoord(
-        clickCoord[0], clickCoord[1], clickCoord[2], clickCoord[3])
-    pyautogui.click(clickCoord[0], clickCoord[1])
+    (x, y, _, _) = getLootTabPos(screenshot)
+    utils.mouse.leftClick(x, y)
+
+
+def selectNPCsTab(screenshot):
+    (x, y, _, _) = getNPCsTabPos(screenshot)
+    utils.mouse.leftClick(x, y)
+
+
+def selectLocalChatTab(screenshot):
+    (x, y, _, _) = getLocalChatTabPos(screenshot)
+    utils.mouse.leftClick(x, y)
 
 
 def sendMessage(screenshot, phrase):
