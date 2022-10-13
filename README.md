@@ -110,6 +110,7 @@ poetry run python test.py
 # ✅ TODO
 
 - Add python typings
+- Add mypy
 - Add way to make e2e tests into the tibia client
 - Add pytest-cov
 - Add api documentation
