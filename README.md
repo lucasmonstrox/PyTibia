@@ -36,7 +36,6 @@ Be free to use any function to create your custom bot or wait for the release of
   - Ignoring non target monsters :heavy_check_mark:
   - Resume coordinate :heavy_check_mark:
   - Retarget to another creature when current target is non attackable :heavy_check_mark:
-  - Start attacking creature with less life :warning:
 - Chat:
   - Check if Server Log is selected :heavy_check_mark:
   - Talk to NPC's to trade :heavy_check_mark:
@@ -48,8 +47,8 @@ Be free to use any function to create your custom bot or wait for the release of
     - Parse server logs message to get loot notification :heavy_check_mark:
     - Get dead monster by target :heavy_check_mark:
     - Get dead monster by exori :heavy_check_mark:
-  - Collect loot :warning:
-    - When hunting, go to dead monster to collect :warning:
+  - Collect loot :heavy_check_mark:
+    - When hunting, go to dead monster to collect :heavy_check_mark:
     - Detect container full :heavy_check_mark:
 - Healing:
   - Spell :heavy_check_mark:
