@@ -6,9 +6,17 @@ This bot memorizes and applies cache to detect images and thus avoid excessive c
 
 This bot is all based on matrix calculation, applies parallelism and also pre-processing, as it is the only way to have maximum performance.
 
-This bot also uses data structure, arrays, path finding(djkistra), among other important things to have smart gameplay.
+This bot also uses data structure, arrays, path finding(djkistra), among other important things to have smart decisions and gameplay.
 
-# 🗺️ MVP Features Status
+I created this bot to learn python, to stream on twitch, to make friends, to apply my knowledgments in deep learning, path finding, matrix, etc.
+
+I'm not going to sell subscription to this bot, but it will work on "global" and you can use it, it's at your own risk.
+
+This BOT ins't ready yet, this bot still under construction.
+
+Be free to use any function to create your custom bot or wait for the release of v0.
+
+# 🗺️ V0 Features Status
 
 - ActionBar:
   - Counting slots :heavy_check_mark:
@@ -61,6 +69,17 @@ This bot also uses data structure, arrays, path finding(djkistra), among other i
   - Getting Life :heavy_check_mark:
   - Getting Mana :heavy_check_mark:
 
+# ⚽ Goals
+
+- Detect every necessary information in the client in (milli/macro/nano)seconds
+- Walk through keyboard
+- Control every pixel of the mouse to make human movements
+- Use convolutionals neural networks to detect relevant stuffs like blockable objects, dropped loots, etc
+- Use recurrent neural networks to use natural language processing to chat with others players
+- Make party gameplay
+- Make a guild gameplay, start a war and dominate a tibia server
+- Raise money and send $ to help my Venezuelan friends who are experiencing economic difficulties
+
 # 🧰 Installation
 
 ## Prerequisites
@@ -91,6 +110,7 @@ poetry run python test.py
 - Add python typings
 - Add way to make e2e tests into the tibia client
 - Add pytest-cov
+- Add api documentation
 
 # 👷 Authors
 
