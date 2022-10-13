@@ -2,9 +2,11 @@
 
 > Fastest Tibia PixelBot developed in python to get unlocked fps.
 
-This bot memorizes and applies cache to detect images and thus avoid excessive cpu/gpu usage.
+This bot memorizes works locating image around the screen and applies cache to avoid iamge redetection and thus avoid excessive cpu/gpu usage.
 
-This bot is all based on matrix calculation, applies parallelism and also pre-processing, as it is the only way to have maximum performance.
+This bot is all based on matrix calculation, also applies parallelism and also pre-processing, as it is the only way to have maximum performance.
+
+The main goal is to work with "microseconds" using complex algorithms, calculations, etc.
 
 This bot also uses data structure, arrays, path finding(djkistra), among other important things to have smart decisions and gameplay.
 
@@ -76,6 +78,7 @@ Be free to use any function to create your custom bot or wait for the release of
 - Control every pixel of the mouse to make human movements
 - Use convolutionals neural networks to detect relevant stuffs like blockable objects, dropped loots, etc
 - Use recurrent neural networks to use natural language processing to chat with others players
+- Crack kernel or put tibia working in a sub system to avoid BE detections
 - Make party gameplay
 - Make a guild gameplay, start a war and dominate a tibia server
 - Raise money and send $ to help my Venezuelan friends who are experiencing economic difficulties
@@ -122,9 +125,11 @@ poetry run python test.py
 See also the list of [contributors](../../graphs/contributors) who participated
 in this project.
 
+If you want to become a contributor, send a message to my [**linkedin**](https://www.linkedin.com/in/lucasmonstro/).
+
 # ❤️ Development inspiration
 
-A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa), the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12). I started this bot to learn python and especially overcome [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12) slowdowns.
+A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa), the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12). I started this especially to overcome [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12) slowdowns.
 
 You can check the bot development at [https://twitch.tv/lucasmonstrocs](https://twitch.tv/lucasmonstrocs).
 
