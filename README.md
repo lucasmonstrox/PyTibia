@@ -2,7 +2,7 @@
 
 > Fastest Tibia PixelBot developed in python to get unlocked fps.
 
-This bot memorizes works locating image around the screen and applies cache to avoid iamge redetection and thus avoid excessive cpu/gpu usage.
+This bot memorizes works locating image around the screen and applies cache to avoid image redetection and thus avoid excessive cpu/gpu usage.
 
 This bot is all based on matrix calculation, also applies parallelism and also pre-processing, as it is the only way to have maximum performance.
 
