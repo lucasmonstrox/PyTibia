@@ -18,10 +18,13 @@ This BOT ins't ready yet, this bot still under construction.
 
 Be free to use any function to create your custom bot or wait for the release of v0.
 
-# 🗺️ V0 Features Status
+# 🗺️ V0 Features
+
+## Parsers
 
 - ActionBar:
-  - Counting slots :heavy_check_mark:
+  - Counting slots :warning:
+  - Detect item in slot :warning:
   - Getting cooldowns for knight:
     - attack :heavy_check_mark:
     - exori :heavy_check_mark:
@@ -29,46 +32,12 @@ Be free to use any function to create your custom bot or wait for the release of
     - exori gran :heavy_check_mark:
 - BattleList:
   - [Getting monsters](battleList/docs/README.md) :heavy_check_mark:
-  - [Checking if monster is being attacked](battleList/docs/README.md) :heavy_check_mark:
   - Is attacking any creature :heavy_check_mark:
-- Cavebot:
-  - Attacking closest creature :heavy_check_mark:
-  - Ignoring non target monsters :heavy_check_mark:
-  - Resume coordinate :heavy_check_mark:
-  - Retarget to another creature when current target is non attackable :heavy_check_mark:
-- Chat:
-  - Check if Server Log is selected :heavy_check_mark:
-  - Talk to NPC's to trade :heavy_check_mark:
-- Equipment:
-  - Count cap :heavy_check_mark:
-  - Auto ring :heavy_check_mark:
-- Loot:
-  - Get dead monsters by player
-    - Parse server logs message to get loot notification :heavy_check_mark:
-    - Get dead monster by target :heavy_check_mark:
-    - Get dead monster by exori :heavy_check_mark:
-  - Collect loot :heavy_check_mark:
-    - When hunting, go to dead monster to collect :heavy_check_mark:
-    - Detect container full :heavy_check_mark:
-- Healing:
-  - Spell :heavy_check_mark:
-  - Potion :heavy_check_mark:
-- HUD:
-  - Getting coordinates(playable area) :heavy_check_mark:
-  - Getting Monsters :heavy_check_mark:
-- Radar:
-  - Floor level :heavy_check_mark:
-  - Tracking coordinates :heavy_check_mark:
-- Refill:
-  - Deposit items in depot :heavy_check_mark:
-  - Detect trade container :heavy_check_mark:
-  - Scroll until icon is detected :heavy_check_mark:
-  - Buy necessary quantity of icon :heavy_check_mark:
-- Spell:
-  - Apply exori when there are a certain number of monsters around :heavy_check_mark:
-- Status:
-  - Getting Life :heavy_check_mark:
-  - Getting Mana :heavy_check_mark:
+- Skills:
+  - Get cap :heavy_check_mark:
+  - Get hit points :heavy_check_mark:
+  - Get speed :heavy_check_mark:
+  - Get stamina :heavy_check_mark:
 
 # ⚽ Goals
 
