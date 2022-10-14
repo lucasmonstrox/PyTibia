@@ -107,6 +107,13 @@ poetry run python main.py
 poetry run python test.py
 ```
 
+## 🧪 Running tests
+
+```bash
+# unit tests
+poetry run python -m pytest
+```
+
 # ✅ TODO
 
 - Add python typings
