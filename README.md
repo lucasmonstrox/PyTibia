@@ -20,24 +20,14 @@ Be free to use any function to create your custom bot or wait for the release of
 
 # 🗺️ V0 Features
 
-## Parsers
+Only available for knights
 
-- ActionBar:
-  - Counting slots :warning:
-  - Detect item in slot :warning:
-  - Getting cooldowns for knight:
-    - attack :heavy_check_mark:
-    - exori :heavy_check_mark:
-    - exori mas :heavy_check_mark:
-    - exori gran :heavy_check_mark:
-- BattleList:
-  - [Getting monsters](battleList/docs/README.md) :heavy_check_mark:
-  - Is attacking any creature :heavy_check_mark:
-- Skills:
-  - Get cap :heavy_check_mark:
-  - Get hit points :heavy_check_mark:
-  - Get speed :heavy_check_mark:
-  - Get stamina :heavy_check_mark:
+- Cavebot :heavy_check_mark:
+- Healing :heavy_check_mark:
+- Spell :heavy_check_mark:
+- Target :heavy_check_mark:
+- Gameplay by keyboard :heavy_check_mark:
+- UI :warning:
 
 # ⚽ Goals
 
