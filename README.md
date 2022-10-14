@@ -2,21 +2,19 @@
 
 > Fastest Tibia PixelBot developed in python to get unlocked fps.
 
-This bot memorizes works locating image around the screen and applies cache to avoid image redetection and thus avoid excessive cpu/gpu usage.
+This BOT memorizes works locating image around the screen and applies cache to avoid image redetection and thus avoid excessive cpu/gpu usage.
 
-This bot is all based on matrix calculation, also applies parallelism and also pre-processing, as it is the only way to have maximum performance.
+This BOT is all based on matrix calculation, also applies parallelism and also pre-processing, as it is the only way to have maximum performance(nanoseconds/microseconds).
 
-The main goal is to work with "microseconds" using complex algorithms, calculations, etc.
+This BOT also uses data structure, arrays, path finding(djkistra), among other important things to have smart decisions and gameplay.
 
-This bot also uses data structure, arrays, path finding(djkistra), among other important things to have smart decisions and gameplay.
+I created this BOT to learn python, to stream on twitch, to make friends, to apply my knowledgments in deep learning, path finding, matrix, etc.
 
-I created this bot to learn python, to stream on twitch, to make friends, to apply my knowledgments in deep learning, path finding, matrix, etc.
+I'm not going to sell subscription to this BOT, but it will work on "global" and you can use it, it's at your own risk.
 
-I'm not going to sell subscription to this bot, but it will work on "global" and you can use it, it's at your own risk.
+This BOT ins't ready yet, this BOT still under construction.
 
-This BOT ins't ready yet, this bot still under construction.
-
-Be free to use any function to create your custom bot or wait for the release of v0.
+Be free to use any function to create your custom BOT or wait for the release of v0.
 
 # 🗺️ V0 Features
 
