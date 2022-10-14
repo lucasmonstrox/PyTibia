@@ -100,7 +100,6 @@ poetry install
 ## ⚙ Running the app
 
 ```bash
-# main file to track basic functions output like(is burning, has helmet equipped, etc)
 poetry run python main.py
 
 # to test last experiments with mess code
