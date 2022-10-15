@@ -17,12 +17,16 @@ nptyping = "^2.2.0"
 ahocorapy = "^1.6.1"
 dxcam = {git = "https://github.com/ra1nty/DXcam.git"}
 scipy = "^1.9.1"
-pyee = "^9.0.4"
+tcod = "^13.8.1"
 
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.1.3"
 pytest-mock = "^3.8.2"
+
+
+[tool.poetry.group.development.dependencies]
+pdoc3 = "^0.10.0"
 
 [build-system]
 requires = ["poetry-core"]

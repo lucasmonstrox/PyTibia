@@ -2,7 +2,7 @@ import numpy as np
 import pathlib
 from actionBar.locators import getSlot1Pos, getSlot2Pos, getSlot3Pos, getSlot4Pos, getSlot5Pos, getSlot6Pos, getSlot7Pos, getSlot8Pos, getSlot9Pos
 from actionBar import extractors
-from utils import core
+from utils.core import locate
 from utils.image import loadAsGrey, loadFromRGBToGray, save
 from utils.matrix import hasMatrixInsideOther
 
@@ -89,7 +89,7 @@ def hasCooldownByImg(screenshot, cooldownImg):
     cannotGetListOfCooldownsImg = listOfCooldownsImg is None
     if cannotGetListOfCooldownsImg:
         return None
-    cooldownImgPos = core.locate(listOfCooldownsImg, cooldownImg)
+    cooldownImgPos = locate(listOfCooldownsImg, cooldownImg)
     cannotGetCooldownImgPos = cooldownImgPos is None
     if cannotGetCooldownImgPos:
         return False

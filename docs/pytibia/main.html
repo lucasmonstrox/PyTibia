@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>pytibia.main API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pytibia.main</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import multiprocessing
+import numpy as np
+import pyautogui
+from rx import interval, of, operators, pipe, timer
+from rx.scheduler import ThreadPoolScheduler
+from rx.subject import Subject
+import time
+from typing import cast
+import battleList.core
+from chat import chat
+import gameplay.cavebot
+import gameplay.decision
+import gameplay.waypoint
+import hud.creatures
+import hud.core
+import hud.slot
+import radar.core
+from radar.types import waypointType
+import utils.core
+import utils.image
+
+
+pyautogui.FAILSAFE = False
+pyautogui.PAUSE = 0
+
+beingAttackedCreature = None
+cavebotManager = {&#39;status&#39;: None}
+coordinateHudTracker = {&#39;lastCoordinate&#39;: None, &#39;lastHudImg&#39;: None}
+comingFromDirection = None
+corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
+hudCreatures = np.array([], dtype=hud.creatures.creatureType)
+lastWay = &#39;waypoint&#39;
+previousRadarCoordinate = None
+walkpointsManager = {
+    &#39;lastCoordinateVisitedAt&#39;: time.time(),
+    &#39;lastCoordinateVisited&#39;: None,
+    &#39;lastPressedKey&#39;: None,
+    &#39;points&#39;: np.array([]),
+}
+waypointsManager = {
+    &#39;currentIndex&#39;: 0,
+    &#39;points&#39;: np.array([
+        # (&#39;floor&#39;, (33121, 32837, 7), 0),
+        # (&#39;floor&#39;, (33125, 32835, 7), 0),
+        # (&#39;floor&#39;, (33125, 32833, 7), 0),
+        # (&#39;floor&#39;, (33114, 32830, 7), 0),
+        # (&#39;floor&#39;, (33098, 32830, 7), 0),
+        # (&#39;floor&#39;, (33098, 32793, 7), 0),
+        # (&#39;floor&#39;, (33088, 32788, 7), 0),
+        # (&#39;moveUp&#39;, (33088, 32786, 6), 0),
+        # (&#39;floor&#39;, (33088, 32785, 6), 0),
+        # (&#39;moveDown&#39;, (33088, 32783, 7), 0),
+        # (&#39;floor&#39;, (33078, 32760, 7), 0),
+        # (&#39;shovel&#39;, (33072, 32760, 7), 0),
+        # (&#39;floor&#39;, (33072, 32760, 8), 0),
+        (&#39;floor&#39;, (33072, 32759, 8), 0),
+        (&#39;floor&#39;, (33096, 32762, 8), 0),
+        (&#39;floor&#39;, (33067, 32748, 8), 0),
+        (&#39;floor&#39;, (33085, 32775, 8), 0),
+        (&#39;floor&#39;, (33062, 32788, 8), 0),
+        # stonerefinner
+        # (&#39;floor&#39;, (33037,31977,13), 0),
+        # (&#39;floor&#39;, (33039,32021,13), 0),
+        # (&#39;floor&#39;, (33078,32017,13), 0),
+        # (&#39;floor&#39;, (33041,32041,13), 0),
+        # (&#39;floor&#39;, (33079,32042,13), 0),
+        # (&#39;floor&#39;, (33034,32053,13), 0),
+
+        # teste em curvas
+        # (&#39;floor&#39;, (33093, 32788, 7), 0),
+        # (&#39;floor&#39;, (33088, 32788, 7), 0),
+
+        # teste em linha reta
+        # (&#39;floor&#39;, (33089, 32789, 7), 0),
+        # (&#39;floor&#39;, (33084, 32789, 7), 0),
+    ], dtype=waypointType),
+    &#39;state&#39;: None
+}
+
+
+def main():
+    optimal_thread_count = multiprocessing.cpu_count()
+    threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
+    thirteenFps = 0.00833333333
+    fpsObserver = interval(thirteenFps)
+    fpsWithScreenshot = fpsObserver.pipe(
+        operators.map(lambda _: {&#39;screenshot&#39;: utils.image.RGBtoGray(
+            utils.core.getScreenshot())}),
+    )
+
+    def getCoordinate(screenshot):
+        global previousRadarCoordinate
+        radarCoordinate = radar.core.getCoordinate(
+            screenshot, previousRadarCoordinate=previousRadarCoordinate)
+        return radarCoordinate
+
+    coordinatesObserver = fpsWithScreenshot.pipe(
+        operators.filter(lambda result: result[&#39;screenshot&#39;] is not None),
+        operators.map(lambda result: {
+            &#39;radarCoordinate&#39;: getCoordinate(result[&#39;screenshot&#39;]),
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        })
+    )
+
+    battleListObserver = coordinatesObserver.pipe(
+        operators.map(lambda result: {
+            &#39;battleListCreatures&#39;: battleList.core.getCreatures(result[&#39;screenshot&#39;]),
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        })
+    )
+
+    hudCoordinateObserver = battleListObserver.pipe(
+        operators.filter(lambda result: result[&#39;radarCoordinate&#39;] is not None),
+        operators.map(lambda result: {
+            &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+            &#39;hudCoordinate&#39;: hud.core.getCoordinate(result[&#39;screenshot&#39;]),
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        })
+    )
+
+    hudImgObserver = hudCoordinateObserver.pipe(
+        operators.map(lambda result: {
+            &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+            &#39;hudCoordinate&#39;: result[&#39;hudCoordinate&#39;],
+            &#39;hudImg&#39;: hud.core.getImgByCoordinate(result[&#39;screenshot&#39;], result[&#39;hudCoordinate&#39;]),
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        })
+    )
+
+    def resolveDirection(result):
+        global comingFromDirection, previousRadarCoordinate
+        # Se a coordenada anterior for None, setar com o valor da coordenada atual
+        if previousRadarCoordinate is None:
+            previousRadarCoordinate = result[&#39;radarCoordinate&#39;]
+        coordinateDidChange = np.all(
+            previousRadarCoordinate == result[&#39;radarCoordinate&#39;]) == False
+        if coordinateDidChange:
+            radarCoordinate = result[&#39;radarCoordinate&#39;]
+            # Verificar se mudou de andar
+            if radarCoordinate[2] != previousRadarCoordinate[2]:
+                comingFromDirection = None
+            # Verificar se foi teleport/lag
+            elif radarCoordinate[0] != previousRadarCoordinate[0] and radarCoordinate[1] != previousRadarCoordinate[1]:
+                comingFromDirection = None
+            elif radarCoordinate[0] != previousRadarCoordinate[0]:
+                # Verificar se está vindo da esquerda/direita
+                # - Para determinar se está vindo da esquerda, basta o x da coordenada atual ser maior que o x da coordenada anterior
+                # - Para determinar se está vindo da direita, basta o x da coordenada atual ser menor que o x da coordenada anterior
+                comingFromDirection = &#39;left&#39; if radarCoordinate[
+                    0] &gt; previousRadarCoordinate[0] else &#39;right&#39;
+            elif radarCoordinate[1] != previousRadarCoordinate[1]:
+                # Verificar cima/baixa
+                # - Para determinar se está vindo de cima, basta o y da coordenada atual ser menor que o y da coordenada anterior
+                # - Para determinar se está vindo de baixo, basta o y da coordenada atual ser maior que o y da coordenada anterior
+                comingFromDirection = &#39;top&#39; if radarCoordinate[
+                    1] &gt; previousRadarCoordinate[1] else &#39;bottom&#39;
+            previousRadarCoordinate = result[&#39;radarCoordinate&#39;]
+        return {
+            &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+            &#39;comingFromDirection&#39;: comingFromDirection,
+            &#39;hudCoordinate&#39;: result[&#39;hudCoordinate&#39;],
+            &#39;hudCreatures&#39;: hudCreatures,
+            &#39;hudImg&#39;: result[&#39;hudImg&#39;],
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        }
+
+    directionObserver = hudImgObserver.pipe(operators.map(resolveDirection))
+
+    def resolveCreatures(result):
+        global comingFromDirection, previousRadarCoordinate
+        hudCreatures = hud.creatures.getCreatures(
+            result[&#39;battleListCreatures&#39;], comingFromDirection, result[&#39;hudCoordinate&#39;], result[&#39;hudImg&#39;], result[&#39;radarCoordinate&#39;])
+        return {
+            &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+            &#39;comingFromDirection&#39;: result[&#39;comingFromDirection&#39;],
+            &#39;hudCoordinate&#39;: result[&#39;hudCoordinate&#39;],
+            &#39;hudCreatures&#39;: hudCreatures,
+            &#39;hudImg&#39;: result[&#39;hudImg&#39;],
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        }
+
+    hudCreaturesObserver = directionObserver.pipe(
+        operators.map(resolveCreatures))
+
+    def lootObservable(result):
+        global beingAttackedCreature, corpsesToLoot
+        screenshot = result[&#39;screenshot&#39;]
+        hudCreatures = result[&#39;hudCreatures&#39;]
+        beingAttackedIndexes = np.where(
+            hudCreatures[&#39;isBeingAttacked&#39;] == True)[0]
+        hasCreatureBeingAttacked = len(beingAttackedIndexes) &gt; 0
+        if chat.hasNewLoot(screenshot) and beingAttackedCreature:
+            corpsesToLoot = np.append(
+                corpsesToLoot, [beingAttackedCreature], axis=0)
+        if hasCreatureBeingAttacked:
+            beingAttackedCreature = hudCreatures[beingAttackedIndexes[0]]
+        else:
+            beingAttackedCreature = None
+        return corpsesToLoot
+
+    lootObserver = hudCreaturesObserver.pipe(operators.map(lambda result: {
+        &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+        &#39;comingFromDirection&#39;: result[&#39;comingFromDirection&#39;],
+        &#39;corpsesToLoot&#39;: lootObservable(result),
+        &#39;hudCoordinate&#39;: result[&#39;hudCoordinate&#39;],
+        &#39;hudCreatures&#39;: result[&#39;hudCreatures&#39;],
+        &#39;hudImg&#39;: result[&#39;hudImg&#39;],
+        &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+        &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+    }))
+
+    decisionObserver = lootObserver.pipe(
+        operators.map(lambda result: {
+            &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+            &#39;comingFromDirection&#39;: result[&#39;comingFromDirection&#39;],
+            &#39;hudCoordinate&#39;: result[&#39;hudCoordinate&#39;],
+            &#39;hudCreatures&#39;: result[&#39;hudCreatures&#39;],
+            &#39;hudImg&#39;: result[&#39;hudImg&#39;],
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+            &#39;way&#39;: gameplay.decision.getWay(result[&#39;corpsesToLoot&#39;], result[&#39;hudCreatures&#39;], result[&#39;radarCoordinate&#39;]),
+        })
+    )
+
+    def waypointObservable(result):
+        global cavebotManager, coordinateHudTracker, corpsesToLoot, lastWay, walkpointsManager, waypointsManager
+        if waypointsManager[&#39;currentIndex&#39;] == None:
+            waypointsManager[&#39;currentIndex&#39;] = radar.core.getClosestWaypointIndexFromCoordinate(
+                result[&#39;radarCoordinate&#39;], waypointsManager[&#39;points&#39;])
+        if result[&#39;way&#39;] == &#39;lootCorpses&#39;:
+            walkpoints = gameplay.waypoint.generateFloorWalkpoints(
+                result[&#39;radarCoordinate&#39;], corpsesToLoot[0][&#39;radarCoordinate&#39;])
+            if len(walkpoints) &gt; 1:
+                walkpoints = np.delete(walkpoints, -1, axis=0)
+            walkpointsManager[&#39;points&#39;] = walkpoints
+            if len(walkpointsManager[&#39;points&#39;]) == 0:
+                time.sleep(1)
+                slot = hud.core.getSlotFromCoordinate(
+                    result[&#39;radarCoordinate&#39;], corpsesToLoot[0][&#39;radarCoordinate&#39;])
+                pyautogui.keyDown(&#39;shift&#39;)
+                time.sleep(0.1)
+                hud.slot.rightClickSlot(slot, result[&#39;hudCoordinate&#39;])
+                time.sleep(0.1)
+                pyautogui.keyUp(&#39;shift&#39;)
+                corpsesToLoot = np.delete(corpsesToLoot, 0)
+        if result[&#39;way&#39;] == &#39;cavebot&#39;:
+            cavebotManager, walkpointsManager = gameplay.cavebot.handleCavebot(
+                result[&#39;battleListCreatures&#39;],
+                cavebotManager,
+                result[&#39;hudCreatures&#39;],
+                result[&#39;radarCoordinate&#39;],
+                walkpointsManager
+            )
+        else:
+            if lastWay == &#39;cavebot&#39;:
+                walkpointsManager[&#39;lastCoordinateVisited&#39;] = None
+                walkpointsManager[&#39;points&#39;] = np.array([])
+                walkpointsManager[&#39;state&#39;] = None
+            waypointsManager = gameplay.waypoint.handleWaypoint(
+                result[&#39;screenshot&#39;],
+                result[&#39;radarCoordinate&#39;],
+                waypointsManager,
+            )
+            walkpointsManager = gameplay.waypoint.handleWalkpoints(
+                result[&#39;radarCoordinate&#39;],
+                walkpointsManager,
+                waypointsManager
+            )
+        walkpointsManager = gameplay.waypoint.walk(
+            result[&#39;radarCoordinate&#39;],
+            walkpointsManager
+        )
+        lastWay = result[&#39;way&#39;]
+
+    decisionObserver.subscribe(waypointObservable)
+
+    while True:
+        time.sleep(10)
+        continue
+
+
+if __name__ == &#39;__main__&#39;:
+    main()
+
+
+# TODO:
+# - (x) fica parado quando nao tem target para os bichos fora da tela
+# - (x) nao se mexer quando a distancia do target é só 1
+# - (x) varios errors de friction tile
+
+
+# Walk:
+# - (x) quando está andando e de repente fica parado, recalcular rota e reiniciar walk
+# - quando anda pra fora do caminho traçado, recalcular rota e reiniciar walk
+# - (x) mudar o calculo path finding para o paths do tibiamaps e ignorar buracos, escadas, etc
+# - as vezes da sorry not possible ao andar mesmo sem errar o path, possivelmente batendo sensivelmente nas paredes
+# - o bot não ignora as piramides e muda de andar, ignorar coordenadas amarelas pra gerar caminho
+
+# Cavebot:
+# - cliques excessivos quando nao consegue atacar o monstro
+# - está clicando fora do target porque o boneco está em movimentação
+# - (x) as vezes não detecta que a creature está com target e faz varias tentativas
+# - (x) as vezes ataca, há target e não segue
+# - (x) algumas vezes há target mas ele fica andando pra esquerda/direita ou todo torto
+# - quando clica nos edges da hud, acabando clicando nas slots bars
+# - quando o target está longe e ainda não atacou e aparece alguem mais proximo, deveria mudar o target
+# - o que fazer quando tem target e de repente o target desaparece pois tem q dar a volta?
+
+# Detecção:
+# - (x) as vezes os monstros estão com slots 255
+# - detectar npcs
+# - detectar objetos bloqueante</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pytibia.main.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main():
+    optimal_thread_count = multiprocessing.cpu_count()
+    threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
+    thirteenFps = 0.00833333333
+    fpsObserver = interval(thirteenFps)
+    fpsWithScreenshot = fpsObserver.pipe(
+        operators.map(lambda _: {&#39;screenshot&#39;: utils.image.RGBtoGray(
+            utils.core.getScreenshot())}),
+    )
+
+    def getCoordinate(screenshot):
+        global previousRadarCoordinate
+        radarCoordinate = radar.core.getCoordinate(
+            screenshot, previousRadarCoordinate=previousRadarCoordinate)
+        return radarCoordinate
+
+    coordinatesObserver = fpsWithScreenshot.pipe(
+        operators.filter(lambda result: result[&#39;screenshot&#39;] is not None),
+        operators.map(lambda result: {
+            &#39;radarCoordinate&#39;: getCoordinate(result[&#39;screenshot&#39;]),
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        })
+    )
+
+    battleListObserver = coordinatesObserver.pipe(
+        operators.map(lambda result: {
+            &#39;battleListCreatures&#39;: battleList.core.getCreatures(result[&#39;screenshot&#39;]),
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        })
+    )
+
+    hudCoordinateObserver = battleListObserver.pipe(
+        operators.filter(lambda result: result[&#39;radarCoordinate&#39;] is not None),
+        operators.map(lambda result: {
+            &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+            &#39;hudCoordinate&#39;: hud.core.getCoordinate(result[&#39;screenshot&#39;]),
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        })
+    )
+
+    hudImgObserver = hudCoordinateObserver.pipe(
+        operators.map(lambda result: {
+            &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+            &#39;hudCoordinate&#39;: result[&#39;hudCoordinate&#39;],
+            &#39;hudImg&#39;: hud.core.getImgByCoordinate(result[&#39;screenshot&#39;], result[&#39;hudCoordinate&#39;]),
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        })
+    )
+
+    def resolveDirection(result):
+        global comingFromDirection, previousRadarCoordinate
+        # Se a coordenada anterior for None, setar com o valor da coordenada atual
+        if previousRadarCoordinate is None:
+            previousRadarCoordinate = result[&#39;radarCoordinate&#39;]
+        coordinateDidChange = np.all(
+            previousRadarCoordinate == result[&#39;radarCoordinate&#39;]) == False
+        if coordinateDidChange:
+            radarCoordinate = result[&#39;radarCoordinate&#39;]
+            # Verificar se mudou de andar
+            if radarCoordinate[2] != previousRadarCoordinate[2]:
+                comingFromDirection = None
+            # Verificar se foi teleport/lag
+            elif radarCoordinate[0] != previousRadarCoordinate[0] and radarCoordinate[1] != previousRadarCoordinate[1]:
+                comingFromDirection = None
+            elif radarCoordinate[0] != previousRadarCoordinate[0]:
+                # Verificar se está vindo da esquerda/direita
+                # - Para determinar se está vindo da esquerda, basta o x da coordenada atual ser maior que o x da coordenada anterior
+                # - Para determinar se está vindo da direita, basta o x da coordenada atual ser menor que o x da coordenada anterior
+                comingFromDirection = &#39;left&#39; if radarCoordinate[
+                    0] &gt; previousRadarCoordinate[0] else &#39;right&#39;
+            elif radarCoordinate[1] != previousRadarCoordinate[1]:
+                # Verificar cima/baixa
+                # - Para determinar se está vindo de cima, basta o y da coordenada atual ser menor que o y da coordenada anterior
+                # - Para determinar se está vindo de baixo, basta o y da coordenada atual ser maior que o y da coordenada anterior
+                comingFromDirection = &#39;top&#39; if radarCoordinate[
+                    1] &gt; previousRadarCoordinate[1] else &#39;bottom&#39;
+            previousRadarCoordinate = result[&#39;radarCoordinate&#39;]
+        return {
+            &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+            &#39;comingFromDirection&#39;: comingFromDirection,
+            &#39;hudCoordinate&#39;: result[&#39;hudCoordinate&#39;],
+            &#39;hudCreatures&#39;: hudCreatures,
+            &#39;hudImg&#39;: result[&#39;hudImg&#39;],
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        }
+
+    directionObserver = hudImgObserver.pipe(operators.map(resolveDirection))
+
+    def resolveCreatures(result):
+        global comingFromDirection, previousRadarCoordinate
+        hudCreatures = hud.creatures.getCreatures(
+            result[&#39;battleListCreatures&#39;], comingFromDirection, result[&#39;hudCoordinate&#39;], result[&#39;hudImg&#39;], result[&#39;radarCoordinate&#39;])
+        return {
+            &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+            &#39;comingFromDirection&#39;: result[&#39;comingFromDirection&#39;],
+            &#39;hudCoordinate&#39;: result[&#39;hudCoordinate&#39;],
+            &#39;hudCreatures&#39;: hudCreatures,
+            &#39;hudImg&#39;: result[&#39;hudImg&#39;],
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+        }
+
+    hudCreaturesObserver = directionObserver.pipe(
+        operators.map(resolveCreatures))
+
+    def lootObservable(result):
+        global beingAttackedCreature, corpsesToLoot
+        screenshot = result[&#39;screenshot&#39;]
+        hudCreatures = result[&#39;hudCreatures&#39;]
+        beingAttackedIndexes = np.where(
+            hudCreatures[&#39;isBeingAttacked&#39;] == True)[0]
+        hasCreatureBeingAttacked = len(beingAttackedIndexes) &gt; 0
+        if chat.hasNewLoot(screenshot) and beingAttackedCreature:
+            corpsesToLoot = np.append(
+                corpsesToLoot, [beingAttackedCreature], axis=0)
+        if hasCreatureBeingAttacked:
+            beingAttackedCreature = hudCreatures[beingAttackedIndexes[0]]
+        else:
+            beingAttackedCreature = None
+        return corpsesToLoot
+
+    lootObserver = hudCreaturesObserver.pipe(operators.map(lambda result: {
+        &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+        &#39;comingFromDirection&#39;: result[&#39;comingFromDirection&#39;],
+        &#39;corpsesToLoot&#39;: lootObservable(result),
+        &#39;hudCoordinate&#39;: result[&#39;hudCoordinate&#39;],
+        &#39;hudCreatures&#39;: result[&#39;hudCreatures&#39;],
+        &#39;hudImg&#39;: result[&#39;hudImg&#39;],
+        &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+        &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+    }))
+
+    decisionObserver = lootObserver.pipe(
+        operators.map(lambda result: {
+            &#39;battleListCreatures&#39;: result[&#39;battleListCreatures&#39;],
+            &#39;comingFromDirection&#39;: result[&#39;comingFromDirection&#39;],
+            &#39;hudCoordinate&#39;: result[&#39;hudCoordinate&#39;],
+            &#39;hudCreatures&#39;: result[&#39;hudCreatures&#39;],
+            &#39;hudImg&#39;: result[&#39;hudImg&#39;],
+            &#39;radarCoordinate&#39;: result[&#39;radarCoordinate&#39;],
+            &#39;screenshot&#39;: result[&#39;screenshot&#39;],
+            &#39;way&#39;: gameplay.decision.getWay(result[&#39;corpsesToLoot&#39;], result[&#39;hudCreatures&#39;], result[&#39;radarCoordinate&#39;]),
+        })
+    )
+
+    def waypointObservable(result):
+        global cavebotManager, coordinateHudTracker, corpsesToLoot, lastWay, walkpointsManager, waypointsManager
+        if waypointsManager[&#39;currentIndex&#39;] == None:
+            waypointsManager[&#39;currentIndex&#39;] = radar.core.getClosestWaypointIndexFromCoordinate(
+                result[&#39;radarCoordinate&#39;], waypointsManager[&#39;points&#39;])
+        if result[&#39;way&#39;] == &#39;lootCorpses&#39;:
+            walkpoints = gameplay.waypoint.generateFloorWalkpoints(
+                result[&#39;radarCoordinate&#39;], corpsesToLoot[0][&#39;radarCoordinate&#39;])
+            if len(walkpoints) &gt; 1:
+                walkpoints = np.delete(walkpoints, -1, axis=0)
+            walkpointsManager[&#39;points&#39;] = walkpoints
+            if len(walkpointsManager[&#39;points&#39;]) == 0:
+                time.sleep(1)
+                slot = hud.core.getSlotFromCoordinate(
+                    result[&#39;radarCoordinate&#39;], corpsesToLoot[0][&#39;radarCoordinate&#39;])
+                pyautogui.keyDown(&#39;shift&#39;)
+                time.sleep(0.1)
+                hud.slot.rightClickSlot(slot, result[&#39;hudCoordinate&#39;])
+                time.sleep(0.1)
+                pyautogui.keyUp(&#39;shift&#39;)
+                corpsesToLoot = np.delete(corpsesToLoot, 0)
+        if result[&#39;way&#39;] == &#39;cavebot&#39;:
+            cavebotManager, walkpointsManager = gameplay.cavebot.handleCavebot(
+                result[&#39;battleListCreatures&#39;],
+                cavebotManager,
+                result[&#39;hudCreatures&#39;],
+                result[&#39;radarCoordinate&#39;],
+                walkpointsManager
+            )
+        else:
+            if lastWay == &#39;cavebot&#39;:
+                walkpointsManager[&#39;lastCoordinateVisited&#39;] = None
+                walkpointsManager[&#39;points&#39;] = np.array([])
+                walkpointsManager[&#39;state&#39;] = None
+            waypointsManager = gameplay.waypoint.handleWaypoint(
+                result[&#39;screenshot&#39;],
+                result[&#39;radarCoordinate&#39;],
+                waypointsManager,
+            )
+            walkpointsManager = gameplay.waypoint.handleWalkpoints(
+                result[&#39;radarCoordinate&#39;],
+                walkpointsManager,
+                waypointsManager
+            )
+        walkpointsManager = gameplay.waypoint.walk(
+            result[&#39;radarCoordinate&#39;],
+            walkpointsManager
+        )
+        lastWay = result[&#39;way&#39;]
+
+    decisionObserver.subscribe(waypointObservable)
+
+    while True:
+        time.sleep(10)
+        continue</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pytibia" href="index.html">pytibia</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pytibia.main.main" href="#pytibia.main.main">main</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

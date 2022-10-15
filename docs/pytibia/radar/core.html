@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>pytibia.radar.core API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pytibia.radar.core</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import numpy as np
+import pyautogui
+from scipy.spatial import distance
+from time import sleep
+from radar import config, extractors, locators
+import utils.core
+import utils.image
+import utils.mouse
+
+
+# TODO: add unit tests
+# TODO: get by cached images coordinates hashes
+def getCoordinate(screenshot, previousRadarCoordinate=None):
+    floorLevel = getFloorLevel(screenshot)
+    cannotGetFloorLevel = floorLevel is None
+    if cannotGetFloorLevel:
+        return None
+    radarToolsPos = locators.getRadarToolsPos(screenshot)
+    cannotGetRadarToolsPos = radarToolsPos is None
+    if cannotGetRadarToolsPos:
+        return None
+    radarImg = extractors.getRadarImg(screenshot, radarToolsPos)
+    radarHashedImg = utils.core.hashitHex(radarImg)
+    shouldGetCoordinateByCachedRadarHashedImg = radarHashedImg in config.coordinates
+    if shouldGetCoordinateByCachedRadarHashedImg:
+        return config.coordinates[radarHashedImg]
+    shouldGetCoordinateByPreviousRadarCoordinateArea = previousRadarCoordinate is not None
+    if shouldGetCoordinateByPreviousRadarCoordinateArea:
+        (previousRadarCoordinateXPixel, previousRadarCoordinateYPixel) = utils.core.getPixelFromCoordinate(
+            previousRadarCoordinate)
+        paddingSize = 20
+        yStart = previousRadarCoordinateYPixel - \
+            (config.dimensions[&#34;halfHeight&#34;] + paddingSize)
+        yEnd = previousRadarCoordinateYPixel + \
+            (config.dimensions[&#34;halfHeight&#34;] + 1 + paddingSize)
+        xStart = previousRadarCoordinateXPixel - \
+            (config.dimensions[&#34;halfWidth&#34;] + paddingSize)
+        xEnd = previousRadarCoordinateXPixel + \
+            (config.dimensions[&#34;halfWidth&#34;] + paddingSize)
+        areaImgToCompare = config.floorsImgs[floorLevel][yStart:yEnd, xStart:xEnd]
+        areaFoundImg = utils.core.locate(
+            areaImgToCompare, radarImg, confidence=0.9)
+        if areaFoundImg:
+            currentCoordinateXPixel = previousRadarCoordinateXPixel - \
+                paddingSize + areaFoundImg[0]
+            currentCoordinateYPixel = previousRadarCoordinateYPixel - \
+                paddingSize + areaFoundImg[1]
+            (currentCoordinateX, currentCoordinateY) = utils.core.getCoordinateFromPixel(
+                (currentCoordinateXPixel, currentCoordinateYPixel))
+            return [currentCoordinateX, currentCoordinateY, floorLevel]
+    imgCoordinate = utils.core.locate(
+        config.floorsImgs[floorLevel], radarImg, confidence=0.75)
+    cannotGetImgCoordinate = imgCoordinate is None
+    if cannotGetImgCoordinate:
+        return None
+    xImgCoordinate = imgCoordinate[0] + config.dimensions[&#34;halfWidth&#34;]
+    yImgCoordinate = imgCoordinate[1] + config.dimensions[&#34;halfHeight&#34;]
+    xCoordinate, yCoordinate = utils.core.getCoordinateFromPixel(
+        (xImgCoordinate, yImgCoordinate))
+    return [xCoordinate, yCoordinate, floorLevel]
+
+
+# TODO: add unit tests
+def getFloorLevel(screenshot):
+    radarToolsPos = locators.getRadarToolsPos(screenshot)
+    radarToolsPosIsEmpty = radarToolsPos is None
+    if radarToolsPosIsEmpty:
+        return None
+    left, top, width, height = radarToolsPos
+    left = left + width + 8
+    top = top - 7
+    height = 67
+    width = 2
+    floorLevelImg = screenshot[top:top + height, left:left + width]
+    floorImgHash = utils.core.hashit(floorLevelImg)
+    hashNotExists = not floorImgHash in config.floorsLevelsImgsHashes
+    if hashNotExists:
+        return None
+    floorLevel = config.floorsLevelsImgsHashes[floorImgHash]
+    return floorLevel
+
+
+def getClosestWaypointIndexFromCoordinate(coordinate, waypoints):
+    (xOfCoordinate, yOfCoordinate, floorLevel) = coordinate
+    currentCoordinateWithoutFloor = [xOfCoordinate, yOfCoordinate]
+    waypointsCoordinatesWithoutFloor = waypoints[&#39;coordinate&#39;][:, :-1]
+    waypointsCoordinatesDistances = distance.cdist(
+        waypointsCoordinatesWithoutFloor, [currentCoordinateWithoutFloor]).flatten()
+    waypointsIndexesOfCurrentFloor = np.nonzero(
+        waypoints[&#39;coordinate&#39;][:, 2] == floorLevel)[0]
+    waypointsCoordinatesDistancesOfCurrentFloor = waypointsCoordinatesDistances[
+        waypointsIndexesOfCurrentFloor]
+    lowestWaypointIndex = np.argmin(
+        waypointsCoordinatesDistancesOfCurrentFloor)
+    lowestWaypointIndexOfCurrentFloor = waypointsIndexesOfCurrentFloor[lowestWaypointIndex]
+    return lowestWaypointIndexOfCurrentFloor
+
+
+# TODO: add unit tests
+def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
+    breakpointTileMovementSpeed = {
+        1: 850,
+        2: 800,
+        3: 750,
+        4: 700,
+        5: 650,
+        6: 600,
+        7: 550,
+        8: 500,
+        9: 450,
+        10: 400,
+        11: 350,
+        12: 300,
+        13: 250,
+        14: 200,
+        15: 150,
+        16: 100,
+        17: 50,
+    }
+    tilesFrictionsBreakpoints = {
+        70:  np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 111, 142, 200, 342, 1070]),
+        90:  np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 147, 192, 278, 499, 1842]),
+        95:  np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 157, 205, 299, 543, 2096]),
+        100: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 113, 135, 167, 219, 321, 592, 2382]),
+        110: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 150, 187, 248, 367, 696, 3060]),
+        120: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        125: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        130: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        135: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        136: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        140: np.array([0, 0, 0, 0, 0, 0, 0, 111, 125, 143, 167, 201, 254, 344, 531, 1092, 6341]),
+        150: np.array([0, 0, 0, 0, 0, 0, 0, 120, 135, 155, 181, 219, 278, 380, 595, 1258, 8036]),
+        160: np.array([0, 0, 0, 0, 0, 0, 116, 129, 145, 167, 196, 238, 304, 419, 663, 1443, 10167]),
+        170: np.array([0, 0, 0, 0, 0, 0, 116, 129, 145, 167, 196, 238, 304, 419, 663, 1443, 10167]),
+        200: np.array([0, 0, 0, 114, 124, 135, 149, 167, 190, 219, 261, 322, 419, 597, 998, 2444, 25761]),
+        250: np.array([117, 126, 135, 146, 160, 175, 195, 220, 252, 295, 356, 446, 598, 884, 1591, 4557, 81351]),
+        255: np.array([117, 126, 135, 146, 160, 175, 195, 220, 252, 295, 356, 446, 598, 884, 1591, 4557, 81351]),
+    }
+    # TODO: sometimes friction is not found
+    if tileFriction in tilesFrictionsBreakpoints:
+        breakpoints = tilesFrictionsBreakpoints[tileFriction]
+    else:
+        breakpoints = tilesFrictionsBreakpoints[140]
+    currentSpeedBreakpoint = np.nonzero(breakpoints &gt;= charSpeed)[0][0]
+    speed = breakpointTileMovementSpeed[currentSpeedBreakpoint]
+    return speed
+
+
+# TODO: add unit tests
+def getTileFrictionByRadarCoordinate(coordinate):
+    xOfPixelCoordinate, yOfPixelCoordinate = utils.core.getPixelFromCoordinate(
+        coordinate)
+    floorLevel = coordinate[2]
+    tileFriction = config.floorsPathsSqms[floorLevel,
+                                          yOfPixelCoordinate, xOfPixelCoordinate]
+    return tileFriction
+
+
+# TODO: add unit tests
+def goToCoordinate(screenshot, currentRadarCoordinate, nextRadarCoordinate):
+    (radarToolsPosX, radarToolsPosY, _, _) = locators.getRadarToolsPos(screenshot)
+    x0 = radarToolsPosX - config.dimensions[&#39;width&#39;] - 11
+    y0 = radarToolsPosY - 50
+    radarCenterX = x0 + config.dimensions[&#39;halfWidth&#39;]
+    radarCenterY = y0 + config.dimensions[&#39;halfHeight&#39;]
+    xdiff = nextRadarCoordinate[0] - currentRadarCoordinate[0]
+    ydiff = nextRadarCoordinate[1] - currentRadarCoordinate[1]
+    x = xdiff + radarCenterX
+    y = ydiff + radarCenterY
+    pyautogui.click(x, y)
+    sleep(0.25)
+
+
+def isCloseToCoordinate(currentCoordinate, possibleCloseCoordinate, distanceTolerance=10):
+    (xOfCurrentCoordinate, yOfCurrentCoordinate, _) = currentCoordinate
+    XYOfCurrentCoordinate = (xOfCurrentCoordinate, yOfCurrentCoordinate)
+    (xOfPossibleCloseCoordinate, yOfPossibleCloseCoordinate, _) = possibleCloseCoordinate
+    XYOfPossibleCloseCoordinate = (
+        xOfPossibleCloseCoordinate, yOfPossibleCloseCoordinate)
+    euclideanDistance = distance.cdist(
+        [XYOfCurrentCoordinate], [XYOfPossibleCloseCoordinate])
+    isClose = euclideanDistance &lt;= distanceTolerance
+    return isClose
+
+
+# TODO: 2 coordinates was tested. Is very hard too test all coordinates(16 floors * 2560 mapWidth * 2048 mapHeight = 83.886.080 pixels)
+def isCoordinateWalkable(coordinate):
+    (_, _, floorLevel) = coordinate
+    (xOfPixel, yOfPixel) = utils.core.getPixelFromCoordinate(coordinate)
+    pixelValue = config.walkableFloorsSqms[floorLevel, yOfPixel, xOfPixel]
+    isWalkable = pixelValue == 1
+    return isWalkable
+
+
+def isNonWalkablePixelColor(pixelColor):
+    isNonWalkable = np.isin(pixelColor, config.nonWalkablePixelsColors)
+    return isNonWalkable</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pytibia.radar.core.getBreakpointTileMovementSpeed"><code class="name flex">
+<span>def <span class="ident">getBreakpointTileMovementSpeed</span></span>(<span>charSpeed, tileFriction)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
+    breakpointTileMovementSpeed = {
+        1: 850,
+        2: 800,
+        3: 750,
+        4: 700,
+        5: 650,
+        6: 600,
+        7: 550,
+        8: 500,
+        9: 450,
+        10: 400,
+        11: 350,
+        12: 300,
+        13: 250,
+        14: 200,
+        15: 150,
+        16: 100,
+        17: 50,
+    }
+    tilesFrictionsBreakpoints = {
+        70:  np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 111, 142, 200, 342, 1070]),
+        90:  np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 147, 192, 278, 499, 1842]),
+        95:  np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 157, 205, 299, 543, 2096]),
+        100: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 113, 135, 167, 219, 321, 592, 2382]),
+        110: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 150, 187, 248, 367, 696, 3060]),
+        120: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        125: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        130: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        135: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        136: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
+        140: np.array([0, 0, 0, 0, 0, 0, 0, 111, 125, 143, 167, 201, 254, 344, 531, 1092, 6341]),
+        150: np.array([0, 0, 0, 0, 0, 0, 0, 120, 135, 155, 181, 219, 278, 380, 595, 1258, 8036]),
+        160: np.array([0, 0, 0, 0, 0, 0, 116, 129, 145, 167, 196, 238, 304, 419, 663, 1443, 10167]),
+        170: np.array([0, 0, 0, 0, 0, 0, 116, 129, 145, 167, 196, 238, 304, 419, 663, 1443, 10167]),
+        200: np.array([0, 0, 0, 114, 124, 135, 149, 167, 190, 219, 261, 322, 419, 597, 998, 2444, 25761]),
+        250: np.array([117, 126, 135, 146, 160, 175, 195, 220, 252, 295, 356, 446, 598, 884, 1591, 4557, 81351]),
+        255: np.array([117, 126, 135, 146, 160, 175, 195, 220, 252, 295, 356, 446, 598, 884, 1591, 4557, 81351]),
+    }
+    # TODO: sometimes friction is not found
+    if tileFriction in tilesFrictionsBreakpoints:
+        breakpoints = tilesFrictionsBreakpoints[tileFriction]
+    else:
+        breakpoints = tilesFrictionsBreakpoints[140]
+    currentSpeedBreakpoint = np.nonzero(breakpoints &gt;= charSpeed)[0][0]
+    speed = breakpointTileMovementSpeed[currentSpeedBreakpoint]
+    return speed</code></pre>
+</details>
+</dd>
+<dt id="pytibia.radar.core.getClosestWaypointIndexFromCoordinate"><code class="name flex">
+<span>def <span class="ident">getClosestWaypointIndexFromCoordinate</span></span>(<span>coordinate, waypoints)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getClosestWaypointIndexFromCoordinate(coordinate, waypoints):
+    (xOfCoordinate, yOfCoordinate, floorLevel) = coordinate
+    currentCoordinateWithoutFloor = [xOfCoordinate, yOfCoordinate]
+    waypointsCoordinatesWithoutFloor = waypoints[&#39;coordinate&#39;][:, :-1]
+    waypointsCoordinatesDistances = distance.cdist(
+        waypointsCoordinatesWithoutFloor, [currentCoordinateWithoutFloor]).flatten()
+    waypointsIndexesOfCurrentFloor = np.nonzero(
+        waypoints[&#39;coordinate&#39;][:, 2] == floorLevel)[0]
+    waypointsCoordinatesDistancesOfCurrentFloor = waypointsCoordinatesDistances[
+        waypointsIndexesOfCurrentFloor]
+    lowestWaypointIndex = np.argmin(
+        waypointsCoordinatesDistancesOfCurrentFloor)
+    lowestWaypointIndexOfCurrentFloor = waypointsIndexesOfCurrentFloor[lowestWaypointIndex]
+    return lowestWaypointIndexOfCurrentFloor</code></pre>
+</details>
+</dd>
+<dt id="pytibia.radar.core.getCoordinate"><code class="name flex">
+<span>def <span class="ident">getCoordinate</span></span>(<span>screenshot, previousRadarCoordinate=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getCoordinate(screenshot, previousRadarCoordinate=None):
+    floorLevel = getFloorLevel(screenshot)
+    cannotGetFloorLevel = floorLevel is None
+    if cannotGetFloorLevel:
+        return None
+    radarToolsPos = locators.getRadarToolsPos(screenshot)
+    cannotGetRadarToolsPos = radarToolsPos is None
+    if cannotGetRadarToolsPos:
+        return None
+    radarImg = extractors.getRadarImg(screenshot, radarToolsPos)
+    radarHashedImg = utils.core.hashitHex(radarImg)
+    shouldGetCoordinateByCachedRadarHashedImg = radarHashedImg in config.coordinates
+    if shouldGetCoordinateByCachedRadarHashedImg:
+        return config.coordinates[radarHashedImg]
+    shouldGetCoordinateByPreviousRadarCoordinateArea = previousRadarCoordinate is not None
+    if shouldGetCoordinateByPreviousRadarCoordinateArea:
+        (previousRadarCoordinateXPixel, previousRadarCoordinateYPixel) = utils.core.getPixelFromCoordinate(
+            previousRadarCoordinate)
+        paddingSize = 20
+        yStart = previousRadarCoordinateYPixel - \
+            (config.dimensions[&#34;halfHeight&#34;] + paddingSize)
+        yEnd = previousRadarCoordinateYPixel + \
+            (config.dimensions[&#34;halfHeight&#34;] + 1 + paddingSize)
+        xStart = previousRadarCoordinateXPixel - \
+            (config.dimensions[&#34;halfWidth&#34;] + paddingSize)
+        xEnd = previousRadarCoordinateXPixel + \
+            (config.dimensions[&#34;halfWidth&#34;] + paddingSize)
+        areaImgToCompare = config.floorsImgs[floorLevel][yStart:yEnd, xStart:xEnd]
+        areaFoundImg = utils.core.locate(
+            areaImgToCompare, radarImg, confidence=0.9)
+        if areaFoundImg:
+            currentCoordinateXPixel = previousRadarCoordinateXPixel - \
+                paddingSize + areaFoundImg[0]
+            currentCoordinateYPixel = previousRadarCoordinateYPixel - \
+                paddingSize + areaFoundImg[1]
+            (currentCoordinateX, currentCoordinateY) = utils.core.getCoordinateFromPixel(
+                (currentCoordinateXPixel, currentCoordinateYPixel))
+            return [currentCoordinateX, currentCoordinateY, floorLevel]
+    imgCoordinate = utils.core.locate(
+        config.floorsImgs[floorLevel], radarImg, confidence=0.75)
+    cannotGetImgCoordinate = imgCoordinate is None
+    if cannotGetImgCoordinate:
+        return None
+    xImgCoordinate = imgCoordinate[0] + config.dimensions[&#34;halfWidth&#34;]
+    yImgCoordinate = imgCoordinate[1] + config.dimensions[&#34;halfHeight&#34;]
+    xCoordinate, yCoordinate = utils.core.getCoordinateFromPixel(
+        (xImgCoordinate, yImgCoordinate))
+    return [xCoordinate, yCoordinate, floorLevel]</code></pre>
+</details>
+</dd>
+<dt id="pytibia.radar.core.getFloorLevel"><code class="name flex">
+<span>def <span class="ident">getFloorLevel</span></span>(<span>screenshot)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getFloorLevel(screenshot):
+    radarToolsPos = locators.getRadarToolsPos(screenshot)
+    radarToolsPosIsEmpty = radarToolsPos is None
+    if radarToolsPosIsEmpty:
+        return None
+    left, top, width, height = radarToolsPos
+    left = left + width + 8
+    top = top - 7
+    height = 67
+    width = 2
+    floorLevelImg = screenshot[top:top + height, left:left + width]
+    floorImgHash = utils.core.hashit(floorLevelImg)
+    hashNotExists = not floorImgHash in config.floorsLevelsImgsHashes
+    if hashNotExists:
+        return None
+    floorLevel = config.floorsLevelsImgsHashes[floorImgHash]
+    return floorLevel</code></pre>
+</details>
+</dd>
+<dt id="pytibia.radar.core.getTileFrictionByRadarCoordinate"><code class="name flex">
+<span>def <span class="ident">getTileFrictionByRadarCoordinate</span></span>(<span>coordinate)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getTileFrictionByRadarCoordinate(coordinate):
+    xOfPixelCoordinate, yOfPixelCoordinate = utils.core.getPixelFromCoordinate(
+        coordinate)
+    floorLevel = coordinate[2]
+    tileFriction = config.floorsPathsSqms[floorLevel,
+                                          yOfPixelCoordinate, xOfPixelCoordinate]
+    return tileFriction</code></pre>
+</details>
+</dd>
+<dt id="pytibia.radar.core.goToCoordinate"><code class="name flex">
+<span>def <span class="ident">goToCoordinate</span></span>(<span>screenshot, currentRadarCoordinate, nextRadarCoordinate)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def goToCoordinate(screenshot, currentRadarCoordinate, nextRadarCoordinate):
+    (radarToolsPosX, radarToolsPosY, _, _) = locators.getRadarToolsPos(screenshot)
+    x0 = radarToolsPosX - config.dimensions[&#39;width&#39;] - 11
+    y0 = radarToolsPosY - 50
+    radarCenterX = x0 + config.dimensions[&#39;halfWidth&#39;]
+    radarCenterY = y0 + config.dimensions[&#39;halfHeight&#39;]
+    xdiff = nextRadarCoordinate[0] - currentRadarCoordinate[0]
+    ydiff = nextRadarCoordinate[1] - currentRadarCoordinate[1]
+    x = xdiff + radarCenterX
+    y = ydiff + radarCenterY
+    pyautogui.click(x, y)
+    sleep(0.25)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.radar.core.isCloseToCoordinate"><code class="name flex">
+<span>def <span class="ident">isCloseToCoordinate</span></span>(<span>currentCoordinate, possibleCloseCoordinate, distanceTolerance=10)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def isCloseToCoordinate(currentCoordinate, possibleCloseCoordinate, distanceTolerance=10):
+    (xOfCurrentCoordinate, yOfCurrentCoordinate, _) = currentCoordinate
+    XYOfCurrentCoordinate = (xOfCurrentCoordinate, yOfCurrentCoordinate)
+    (xOfPossibleCloseCoordinate, yOfPossibleCloseCoordinate, _) = possibleCloseCoordinate
+    XYOfPossibleCloseCoordinate = (
+        xOfPossibleCloseCoordinate, yOfPossibleCloseCoordinate)
+    euclideanDistance = distance.cdist(
+        [XYOfCurrentCoordinate], [XYOfPossibleCloseCoordinate])
+    isClose = euclideanDistance &lt;= distanceTolerance
+    return isClose</code></pre>
+</details>
+</dd>
+<dt id="pytibia.radar.core.isCoordinateWalkable"><code class="name flex">
+<span>def <span class="ident">isCoordinateWalkable</span></span>(<span>coordinate)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def isCoordinateWalkable(coordinate):
+    (_, _, floorLevel) = coordinate
+    (xOfPixel, yOfPixel) = utils.core.getPixelFromCoordinate(coordinate)
+    pixelValue = config.walkableFloorsSqms[floorLevel, yOfPixel, xOfPixel]
+    isWalkable = pixelValue == 1
+    return isWalkable</code></pre>
+</details>
+</dd>
+<dt id="pytibia.radar.core.isNonWalkablePixelColor"><code class="name flex">
+<span>def <span class="ident">isNonWalkablePixelColor</span></span>(<span>pixelColor)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def isNonWalkablePixelColor(pixelColor):
+    isNonWalkable = np.isin(pixelColor, config.nonWalkablePixelsColors)
+    return isNonWalkable</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pytibia.radar" href="index.html">pytibia.radar</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pytibia.radar.core.getBreakpointTileMovementSpeed" href="#pytibia.radar.core.getBreakpointTileMovementSpeed">getBreakpointTileMovementSpeed</a></code></li>
+<li><code><a title="pytibia.radar.core.getClosestWaypointIndexFromCoordinate" href="#pytibia.radar.core.getClosestWaypointIndexFromCoordinate">getClosestWaypointIndexFromCoordinate</a></code></li>
+<li><code><a title="pytibia.radar.core.getCoordinate" href="#pytibia.radar.core.getCoordinate">getCoordinate</a></code></li>
+<li><code><a title="pytibia.radar.core.getFloorLevel" href="#pytibia.radar.core.getFloorLevel">getFloorLevel</a></code></li>
+<li><code><a title="pytibia.radar.core.getTileFrictionByRadarCoordinate" href="#pytibia.radar.core.getTileFrictionByRadarCoordinate">getTileFrictionByRadarCoordinate</a></code></li>
+<li><code><a title="pytibia.radar.core.goToCoordinate" href="#pytibia.radar.core.goToCoordinate">goToCoordinate</a></code></li>
+<li><code><a title="pytibia.radar.core.isCloseToCoordinate" href="#pytibia.radar.core.isCloseToCoordinate">isCloseToCoordinate</a></code></li>
+<li><code><a title="pytibia.radar.core.isCoordinateWalkable" href="#pytibia.radar.core.isCoordinateWalkable">isCoordinateWalkable</a></code></li>
+<li><code><a title="pytibia.radar.core.isNonWalkablePixelColor" href="#pytibia.radar.core.isNonWalkablePixelColor">isNonWalkablePixelColor</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

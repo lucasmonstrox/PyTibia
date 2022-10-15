@@ -42,5 +42,5 @@ for monster in creatures.creatures:
     monsterLetters[np.nonzero(monsterLetters == 0)] = 255
     monsterLetters[np.nonzero(monsterLetters == 1)] = 0
     monsterLetters[np.nonzero(monsterLetters == 2)] = 0
-    utils.image.saveFromArray(
+    utils.image.save(
         monsterLetters, 'hud/images/monsters/{}.png'.format(monster))

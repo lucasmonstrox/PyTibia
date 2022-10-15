@@ -5,10 +5,10 @@ import utils.image
 coordinates = {}
 
 dimensions = {
-    "width": 106,
-    "height": 109,
-    "halfWidth": 53,
-    "halfHeight": 54,
+    'width': 106,
+    'height': 109,
+    'halfWidth': 53,
+    'halfHeight': 54,
 }
 
 floors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
@@ -65,31 +65,31 @@ images = {
 floorsLevelsImgs = np.load('radar/npys/floorsLevelsImgs.npy')
 floorsLevelsImgsHashes = {}
 pixelsColorsValues = {
-    "accessPoint": 226,
-    "caveFloor": 111,
-    "caveWall": 76,
-    "commonFloorOrStreet": 1,
-    "grassOrRockyGround": 120,
-    "ice": 240,
-    "lava": 136,
-    "mountainOrStone": 102,
-    "sand": 213,
-    "snow": 255,
-    "swamp": 207,
-    "treesOrBushes": 60,
-    "wall": 106,
-    "water": 93,
-    "vacuumOrUndiscoveredArea": 0
+    'accessPoint': 226,
+    'caveFloor': 111,
+    'caveWall': 76,
+    'commonFloorOrStreet': 1,
+    'grassOrRockyGround': 120,
+    'ice': 240,
+    'lava': 136,
+    'mountainOrStone': 102,
+    'sand': 213,
+    'snow': 255,
+    'swamp': 207,
+    'treesOrBushes': 60,
+    'wall': 106,
+    'water': 93,
+    'vacuumOrUndiscoveredArea': 0
 }
 nonWalkablePixelsColors = [
-    pixelsColorsValues["caveWall"],
-    pixelsColorsValues["lava"],
-    pixelsColorsValues["mountainOrStone"],
-    pixelsColorsValues["swamp"],
-    pixelsColorsValues["treesOrBushes"],
-    pixelsColorsValues["wall"],
-    pixelsColorsValues["water"],
-    pixelsColorsValues["vacuumOrUndiscoveredArea"],
+    pixelsColorsValues['caveWall'],
+    pixelsColorsValues['lava'],
+    pixelsColorsValues['mountainOrStone'],
+    pixelsColorsValues['swamp'],
+    pixelsColorsValues['treesOrBushes'],
+    pixelsColorsValues['wall'],
+    pixelsColorsValues['water'],
+    pixelsColorsValues['vacuumOrUndiscoveredArea'],
 ]
 walkableFloorsSqms = np.ndarray(shape=(16, 2048, 2560), dtype=np.uint)
 

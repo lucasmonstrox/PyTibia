@@ -1,0 +1,1645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import numpy as np
+import pathlib
+from battleList.extractors import getCreatureNameImg
+import utils.image
+
+
+currentPath = pathlib.Path(__file__).parent.resolve()
+
+
+def getImages(creatureName: str):
+    slotImg = utils.image.loadAsGrey(
+        f&#39;{currentPath}/slotsImgs/{creatureName}.png&#39;)
+    nameImg = utils.image.loadAsGrey(
+        f&#39;battleList/images/monsters/{creatureName}.png&#39;)
+    creatureNameImg = getCreatureNameImg(slotImg)
+    return creatureNameImg, nameImg
+
+
+def test_should_assert_A_Greedy_Eye():
+    creatureNameImg, nameImg = getImages(&#39;A Greedy Eye&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_A_Shielded_Astral_Glyph():
+    creatureNameImg, nameImg = getImages(&#39;A Shielded Astral Glyph&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Abyssador():
+    creatureNameImg, nameImg = getImages(&#39;Abyssador&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Achad():
+    creatureNameImg, nameImg = getImages(&#39;Achad&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Acid_Blob():
+    creatureNameImg, nameImg = getImages(&#39;Acid Blob&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Acolyte_Of_Darkness():
+    creatureNameImg, nameImg = getImages(&#39;Acolyte Of Darkness&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Acolyte_Of_The_Cult():
+    creatureNameImg, nameImg = getImages(&#39;Acolyte Of The Cult&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Adept_Of_The_Cult():
+    creatureNameImg, nameImg = getImages(&#39;Adept Of The Cult&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Adult_Goanna():
+    creatureNameImg, nameImg = getImages(&#39;Adult Goanna&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Adventurer():
+    creatureNameImg, nameImg = getImages(&#39;Adventurer&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Aftershock():
+    creatureNameImg, nameImg = getImages(&#39;Aftershock&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Aggressive_Lava():
+    creatureNameImg, nameImg = getImages(&#39;Aggressive Lava&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Aggressive_Matter():
+    creatureNameImg, nameImg = getImages(&#39;Aggressive Matter&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Agrestic_Chicken():
+    creatureNameImg, nameImg = getImages(&#39;Agrestic Chicken&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Alptramun():
+    creatureNameImg, nameImg = getImages(&#39;Alptramun&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Amazon():
+    creatureNameImg, nameImg = getImages(&#39;Amazon&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_An_Astral_Glyph():
+    creatureNameImg, nameImg = getImages(&#39;An Astral Glyph&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_An_Observer_Eye():
+    creatureNameImg, nameImg = getImages(&#39;An Observer Eye&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Ancient_Lion_Archer():
+    creatureNameImg, nameImg = getImages(&#39;Ancient Lion Archer&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Ancient_Lion_Knight():
+    creatureNameImg, nameImg = getImages(&#39;Ancient Lion Knight&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Ancient_Lion_Warlock():
+    creatureNameImg, nameImg = getImages(&#39;Ancient Lion Warlock&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Ancient_Scarab():
+    creatureNameImg, nameImg = getImages(&#39;Ancient Scarab&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Ancient_Spawn_Of_Morgathla():
+    creatureNameImg, nameImg = getImages(&#39;Ancient Spawn Of Morgathla&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Angry_Adventurer():
+    creatureNameImg, nameImg = getImages(&#39;Angry Adventurer&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Angry_Demon():
+    creatureNameImg, nameImg = getImages(&#39;Angry Demon&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Angry_Plant():
+    creatureNameImg, nameImg = getImages(&#39;Angry Plant&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Clomp():
+    creatureNameImg, nameImg = getImages(&#39;Animated Clomp&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Cyclops():
+    creatureNameImg, nameImg = getImages(&#39;Animated Cyclops&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Feather():
+    creatureNameImg, nameImg = getImages(&#39;Animated Feather&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Guzzlemaw():
+    creatureNameImg, nameImg = getImages(&#39;Animated Guzzlemaw&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Moohtant():
+    creatureNameImg, nameImg = getImages(&#39;Animated Moohtant&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Mummy():
+    creatureNameImg, nameImg = getImages(&#39;Animated Mummy&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Ogre_Brute():
+    creatureNameImg, nameImg = getImages(&#39;Animated Ogre Brute&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Ogre_Savage():
+    creatureNameImg, nameImg = getImages(&#39;Animated Ogre Savage&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Ogre_Savage():
+    creatureNameImg, nameImg = getImages(&#39;Animated Ogre Savage&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Ogre_Shaman():
+    creatureNameImg, nameImg = getImages(&#39;Animated Ogre Shaman&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Rotworm():
+    creatureNameImg, nameImg = getImages(&#39;Animated Rotworm&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Skunk():
+    creatureNameImg, nameImg = getImages(&#39;Animated Skunk&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Snowman():
+    creatureNameImg, nameImg = getImages(&#39;Animated Snowman&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Animated_Sword():
+    creatureNameImg, nameImg = getImages(&#39;Animated Sword&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Annihilon():
+    creatureNameImg, nameImg = getImages(&#39;Annihilon&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Anomaly():
+    creatureNameImg, nameImg = getImages(&#39;Anomaly&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Apprentice_Sheng():
+    creatureNameImg, nameImg = getImages(&#39;Apprentice Sheng&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Arachir_The_Ancient_One():
+    creatureNameImg, nameImg = getImages(&#39;Arachir The Ancient One&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Arachnophobica():
+    creatureNameImg, nameImg = getImages(&#39;Arachnophobica&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Arctic_Faun():
+    creatureNameImg, nameImg = getImages(&#39;Arctic Faun&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Armadile():
+    creatureNameImg, nameImg = getImages(&#39;Armadile&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Armenius():
+    creatureNameImg, nameImg = getImages(&#39;Armenius&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Ascending_Ferumbras():
+    creatureNameImg, nameImg = getImages(&#39;Ascending Ferumbras&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Ashmunrah():
+    creatureNameImg, nameImg = getImages(&#39;Ashmunrah&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Askarak_Demon():
+    creatureNameImg, nameImg = getImages(&#39;Askarak Demon&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Askarak_Lord():
+    creatureNameImg, nameImg = getImages(&#39;Askarak Lord&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Askarak_Prince():
+    creatureNameImg, nameImg = getImages(&#39;Askarak Prince&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Assassin():
+    creatureNameImg, nameImg = getImages(&#39;Assassin&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Avalanche():
+    creatureNameImg, nameImg = getImages(&#39;Avalanche&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Axeitus_Headbanger():
+    creatureNameImg, nameImg = getImages(&#39;Axeitus Headbanger&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Azure_Frog():
+    creatureNameImg, nameImg = getImages(&#39;Azure Frog&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Baby_Dragon():
+    creatureNameImg, nameImg = getImages(&#39;Baby Dragon&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Bad_Dream():
+    creatureNameImg, nameImg = getImages(&#39;Bad Dream&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Badger():
+    creatureNameImg, nameImg = getImages(&#39;Badger&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Baleful_Bunny():
+    creatureNameImg, nameImg = getImages(&#39;Baleful Bunny&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Bandit():
+    creatureNameImg, nameImg = getImages(&#39;Bandit&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Bane_Bringer():
+    creatureNameImg, nameImg = getImages(&#39;Bane Bringer&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Banshee():
+    creatureNameImg, nameImg = getImages(&#39;Banshee&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barbaria():
+    creatureNameImg, nameImg = getImages(&#39;Barbaria&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barbarian_Bloodwalker():
+    creatureNameImg, nameImg = getImages(&#39;Barbarian Bloodwalker&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barbarian_Brutetamer():
+    creatureNameImg, nameImg = getImages(&#39;Barbarian Brutetamer&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barbarian_Headsplitter():
+    creatureNameImg, nameImg = getImages(&#39;Barbarian Headsplitter&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barbarian_Skullhunter():
+    creatureNameImg, nameImg = getImages(&#39;Barbarian Skullhunter&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barkless_Devotee():
+    creatureNameImg, nameImg = getImages(&#39;Barkless Devotee&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Barkless_Fanatic():
+    creatureNameImg, nameImg = getImages(&#39;Barkless Fanatic&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Baron_Brute():
+    creatureNameImg, nameImg = getImages(&#39;Baron Brute&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Bat():
+    creatureNameImg, nameImg = getImages(&#39;Bat&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Battlemaster_Zunzu():
+    creatureNameImg, nameImg = getImages(&#39;Battlemaster Zunzu&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Bear():
+    creatureNameImg, nameImg = getImages(&#39;Bear&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Behemoth():
+    creatureNameImg, nameImg = getImages(&#39;Behemoth&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Berserker_Chicken():
+    creatureNameImg, nameImg = getImages(&#39;Berserker Chicken&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)
+
+
+def test_should_assert_Betrayed_Wraith():
+    creatureNameImg, nameImg = getImages(&#39;Betrayed Wraith&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.getImages"><code class="name flex">
+<span>def <span class="ident">getImages</span></span>(<span>creatureName: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getImages(creatureName: str):
+    slotImg = utils.image.loadAsGrey(
+        f&#39;{currentPath}/slotsImgs/{creatureName}.png&#39;)
+    nameImg = utils.image.loadAsGrey(
+        f&#39;battleList/images/monsters/{creatureName}.png&#39;)
+    creatureNameImg = getCreatureNameImg(slotImg)
+    return creatureNameImg, nameImg</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_A_Greedy_Eye"><code class="name flex">
+<span>def <span class="ident">test_should_assert_A_Greedy_Eye</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_A_Greedy_Eye():
+    creatureNameImg, nameImg = getImages(&#39;A Greedy Eye&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_A_Shielded_Astral_Glyph"><code class="name flex">
+<span>def <span class="ident">test_should_assert_A_Shielded_Astral_Glyph</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_A_Shielded_Astral_Glyph():
+    creatureNameImg, nameImg = getImages(&#39;A Shielded Astral Glyph&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Abyssador"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Abyssador</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Abyssador():
+    creatureNameImg, nameImg = getImages(&#39;Abyssador&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Achad"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Achad</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Achad():
+    creatureNameImg, nameImg = getImages(&#39;Achad&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Acid_Blob"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Acid_Blob</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Acid_Blob():
+    creatureNameImg, nameImg = getImages(&#39;Acid Blob&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Acolyte_Of_Darkness"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Acolyte_Of_Darkness</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Acolyte_Of_Darkness():
+    creatureNameImg, nameImg = getImages(&#39;Acolyte Of Darkness&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Acolyte_Of_The_Cult"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Acolyte_Of_The_Cult</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Acolyte_Of_The_Cult():
+    creatureNameImg, nameImg = getImages(&#39;Acolyte Of The Cult&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Adept_Of_The_Cult"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Adept_Of_The_Cult</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Adept_Of_The_Cult():
+    creatureNameImg, nameImg = getImages(&#39;Adept Of The Cult&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Adult_Goanna"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Adult_Goanna</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Adult_Goanna():
+    creatureNameImg, nameImg = getImages(&#39;Adult Goanna&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Adventurer"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Adventurer</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Adventurer():
+    creatureNameImg, nameImg = getImages(&#39;Adventurer&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Aftershock"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Aftershock</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Aftershock():
+    creatureNameImg, nameImg = getImages(&#39;Aftershock&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Aggressive_Lava"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Aggressive_Lava</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Aggressive_Lava():
+    creatureNameImg, nameImg = getImages(&#39;Aggressive Lava&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Aggressive_Matter"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Aggressive_Matter</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Aggressive_Matter():
+    creatureNameImg, nameImg = getImages(&#39;Aggressive Matter&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Agrestic_Chicken"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Agrestic_Chicken</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Agrestic_Chicken():
+    creatureNameImg, nameImg = getImages(&#39;Agrestic Chicken&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Alptramun"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Alptramun</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Alptramun():
+    creatureNameImg, nameImg = getImages(&#39;Alptramun&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Amazon"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Amazon</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Amazon():
+    creatureNameImg, nameImg = getImages(&#39;Amazon&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_An_Astral_Glyph"><code class="name flex">
+<span>def <span class="ident">test_should_assert_An_Astral_Glyph</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_An_Astral_Glyph():
+    creatureNameImg, nameImg = getImages(&#39;An Astral Glyph&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_An_Observer_Eye"><code class="name flex">
+<span>def <span class="ident">test_should_assert_An_Observer_Eye</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_An_Observer_Eye():
+    creatureNameImg, nameImg = getImages(&#39;An Observer Eye&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Lion_Archer"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Ancient_Lion_Archer</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Ancient_Lion_Archer():
+    creatureNameImg, nameImg = getImages(&#39;Ancient Lion Archer&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Lion_Knight"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Ancient_Lion_Knight</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Ancient_Lion_Knight():
+    creatureNameImg, nameImg = getImages(&#39;Ancient Lion Knight&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Lion_Warlock"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Ancient_Lion_Warlock</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Ancient_Lion_Warlock():
+    creatureNameImg, nameImg = getImages(&#39;Ancient Lion Warlock&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Scarab"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Ancient_Scarab</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Ancient_Scarab():
+    creatureNameImg, nameImg = getImages(&#39;Ancient Scarab&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Spawn_Of_Morgathla"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Ancient_Spawn_Of_Morgathla</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Ancient_Spawn_Of_Morgathla():
+    creatureNameImg, nameImg = getImages(&#39;Ancient Spawn Of Morgathla&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Angry_Adventurer"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Angry_Adventurer</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Angry_Adventurer():
+    creatureNameImg, nameImg = getImages(&#39;Angry Adventurer&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Angry_Demon"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Angry_Demon</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Angry_Demon():
+    creatureNameImg, nameImg = getImages(&#39;Angry Demon&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Angry_Plant"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Angry_Plant</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Angry_Plant():
+    creatureNameImg, nameImg = getImages(&#39;Angry Plant&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Clomp"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Clomp</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Clomp():
+    creatureNameImg, nameImg = getImages(&#39;Animated Clomp&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Cyclops"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Cyclops</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Cyclops():
+    creatureNameImg, nameImg = getImages(&#39;Animated Cyclops&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Feather"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Feather</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Feather():
+    creatureNameImg, nameImg = getImages(&#39;Animated Feather&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Guzzlemaw"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Guzzlemaw</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Guzzlemaw():
+    creatureNameImg, nameImg = getImages(&#39;Animated Guzzlemaw&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Moohtant"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Moohtant</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Moohtant():
+    creatureNameImg, nameImg = getImages(&#39;Animated Moohtant&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Mummy"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Mummy</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Mummy():
+    creatureNameImg, nameImg = getImages(&#39;Animated Mummy&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Ogre_Brute"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Ogre_Brute</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Ogre_Brute():
+    creatureNameImg, nameImg = getImages(&#39;Animated Ogre Brute&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Ogre_Savage"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Ogre_Savage</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Ogre_Savage():
+    creatureNameImg, nameImg = getImages(&#39;Animated Ogre Savage&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Ogre_Shaman"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Ogre_Shaman</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Ogre_Shaman():
+    creatureNameImg, nameImg = getImages(&#39;Animated Ogre Shaman&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Rotworm"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Rotworm</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Rotworm():
+    creatureNameImg, nameImg = getImages(&#39;Animated Rotworm&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Skunk"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Skunk</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Skunk():
+    creatureNameImg, nameImg = getImages(&#39;Animated Skunk&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Snowman"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Snowman</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Snowman():
+    creatureNameImg, nameImg = getImages(&#39;Animated Snowman&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Sword"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Animated_Sword</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Animated_Sword():
+    creatureNameImg, nameImg = getImages(&#39;Animated Sword&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Annihilon"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Annihilon</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Annihilon():
+    creatureNameImg, nameImg = getImages(&#39;Annihilon&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Anomaly"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Anomaly</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Anomaly():
+    creatureNameImg, nameImg = getImages(&#39;Anomaly&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Apprentice_Sheng"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Apprentice_Sheng</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Apprentice_Sheng():
+    creatureNameImg, nameImg = getImages(&#39;Apprentice Sheng&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Arachir_The_Ancient_One"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Arachir_The_Ancient_One</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Arachir_The_Ancient_One():
+    creatureNameImg, nameImg = getImages(&#39;Arachir The Ancient One&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Arachnophobica"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Arachnophobica</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Arachnophobica():
+    creatureNameImg, nameImg = getImages(&#39;Arachnophobica&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Arctic_Faun"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Arctic_Faun</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Arctic_Faun():
+    creatureNameImg, nameImg = getImages(&#39;Arctic Faun&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Armadile"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Armadile</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Armadile():
+    creatureNameImg, nameImg = getImages(&#39;Armadile&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Armenius"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Armenius</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Armenius():
+    creatureNameImg, nameImg = getImages(&#39;Armenius&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ascending_Ferumbras"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Ascending_Ferumbras</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Ascending_Ferumbras():
+    creatureNameImg, nameImg = getImages(&#39;Ascending Ferumbras&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ashmunrah"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Ashmunrah</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Ashmunrah():
+    creatureNameImg, nameImg = getImages(&#39;Ashmunrah&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Askarak_Demon"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Askarak_Demon</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Askarak_Demon():
+    creatureNameImg, nameImg = getImages(&#39;Askarak Demon&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Askarak_Lord"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Askarak_Lord</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Askarak_Lord():
+    creatureNameImg, nameImg = getImages(&#39;Askarak Lord&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Askarak_Prince"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Askarak_Prince</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Askarak_Prince():
+    creatureNameImg, nameImg = getImages(&#39;Askarak Prince&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Assassin"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Assassin</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Assassin():
+    creatureNameImg, nameImg = getImages(&#39;Assassin&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Avalanche"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Avalanche</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Avalanche():
+    creatureNameImg, nameImg = getImages(&#39;Avalanche&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Axeitus_Headbanger"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Axeitus_Headbanger</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Axeitus_Headbanger():
+    creatureNameImg, nameImg = getImages(&#39;Axeitus Headbanger&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Azure_Frog"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Azure_Frog</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Azure_Frog():
+    creatureNameImg, nameImg = getImages(&#39;Azure Frog&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Baby_Dragon"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Baby_Dragon</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Baby_Dragon():
+    creatureNameImg, nameImg = getImages(&#39;Baby Dragon&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bad_Dream"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Bad_Dream</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Bad_Dream():
+    creatureNameImg, nameImg = getImages(&#39;Bad Dream&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Badger"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Badger</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Badger():
+    creatureNameImg, nameImg = getImages(&#39;Badger&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Baleful_Bunny"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Baleful_Bunny</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Baleful_Bunny():
+    creatureNameImg, nameImg = getImages(&#39;Baleful Bunny&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bandit"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Bandit</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Bandit():
+    creatureNameImg, nameImg = getImages(&#39;Bandit&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bane_Bringer"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Bane_Bringer</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Bane_Bringer():
+    creatureNameImg, nameImg = getImages(&#39;Bane Bringer&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Banshee"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Banshee</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Banshee():
+    creatureNameImg, nameImg = getImages(&#39;Banshee&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbaria"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Barbaria</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Barbaria():
+    creatureNameImg, nameImg = getImages(&#39;Barbaria&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Bloodwalker"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Barbarian_Bloodwalker</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Barbarian_Bloodwalker():
+    creatureNameImg, nameImg = getImages(&#39;Barbarian Bloodwalker&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Brutetamer"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Barbarian_Brutetamer</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Barbarian_Brutetamer():
+    creatureNameImg, nameImg = getImages(&#39;Barbarian Brutetamer&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Headsplitter"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Barbarian_Headsplitter</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Barbarian_Headsplitter():
+    creatureNameImg, nameImg = getImages(&#39;Barbarian Headsplitter&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Skullhunter"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Barbarian_Skullhunter</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Barbarian_Skullhunter():
+    creatureNameImg, nameImg = getImages(&#39;Barbarian Skullhunter&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barkless_Devotee"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Barkless_Devotee</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Barkless_Devotee():
+    creatureNameImg, nameImg = getImages(&#39;Barkless Devotee&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barkless_Fanatic"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Barkless_Fanatic</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Barkless_Fanatic():
+    creatureNameImg, nameImg = getImages(&#39;Barkless Fanatic&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Baron_Brute"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Baron_Brute</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Baron_Brute():
+    creatureNameImg, nameImg = getImages(&#39;Baron Brute&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bat"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Bat</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Bat():
+    creatureNameImg, nameImg = getImages(&#39;Bat&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Battlemaster_Zunzu"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Battlemaster_Zunzu</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Battlemaster_Zunzu():
+    creatureNameImg, nameImg = getImages(&#39;Battlemaster Zunzu&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bear"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Bear</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Bear():
+    creatureNameImg, nameImg = getImages(&#39;Bear&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Behemoth"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Behemoth</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Behemoth():
+    creatureNameImg, nameImg = getImages(&#39;Behemoth&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Berserker_Chicken"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Berserker_Chicken</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Berserker_Chicken():
+    creatureNameImg, nameImg = getImages(&#39;Berserker Chicken&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+<dt id="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Betrayed_Wraith"><code class="name flex">
+<span>def <span class="ident">test_should_assert_Betrayed_Wraith</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_should_assert_Betrayed_Wraith():
+    creatureNameImg, nameImg = getImages(&#39;Betrayed Wraith&#39;)
+    np.testing.assert_array_equal(creatureNameImg, nameImg)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg" href="index.html">pytibia.battleList.tests.extractors.getCreatureNameImg</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.getImages" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.getImages">getImages</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_A_Greedy_Eye" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_A_Greedy_Eye">test_should_assert_A_Greedy_Eye</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_A_Shielded_Astral_Glyph" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_A_Shielded_Astral_Glyph">test_should_assert_A_Shielded_Astral_Glyph</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Abyssador" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Abyssador">test_should_assert_Abyssador</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Achad" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Achad">test_should_assert_Achad</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Acid_Blob" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Acid_Blob">test_should_assert_Acid_Blob</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Acolyte_Of_Darkness" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Acolyte_Of_Darkness">test_should_assert_Acolyte_Of_Darkness</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Acolyte_Of_The_Cult" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Acolyte_Of_The_Cult">test_should_assert_Acolyte_Of_The_Cult</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Adept_Of_The_Cult" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Adept_Of_The_Cult">test_should_assert_Adept_Of_The_Cult</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Adult_Goanna" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Adult_Goanna">test_should_assert_Adult_Goanna</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Adventurer" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Adventurer">test_should_assert_Adventurer</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Aftershock" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Aftershock">test_should_assert_Aftershock</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Aggressive_Lava" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Aggressive_Lava">test_should_assert_Aggressive_Lava</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Aggressive_Matter" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Aggressive_Matter">test_should_assert_Aggressive_Matter</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Agrestic_Chicken" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Agrestic_Chicken">test_should_assert_Agrestic_Chicken</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Alptramun" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Alptramun">test_should_assert_Alptramun</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Amazon" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Amazon">test_should_assert_Amazon</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_An_Astral_Glyph" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_An_Astral_Glyph">test_should_assert_An_Astral_Glyph</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_An_Observer_Eye" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_An_Observer_Eye">test_should_assert_An_Observer_Eye</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Lion_Archer" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Lion_Archer">test_should_assert_Ancient_Lion_Archer</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Lion_Knight" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Lion_Knight">test_should_assert_Ancient_Lion_Knight</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Lion_Warlock" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Lion_Warlock">test_should_assert_Ancient_Lion_Warlock</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Scarab" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Scarab">test_should_assert_Ancient_Scarab</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Spawn_Of_Morgathla" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ancient_Spawn_Of_Morgathla">test_should_assert_Ancient_Spawn_Of_Morgathla</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Angry_Adventurer" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Angry_Adventurer">test_should_assert_Angry_Adventurer</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Angry_Demon" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Angry_Demon">test_should_assert_Angry_Demon</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Angry_Plant" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Angry_Plant">test_should_assert_Angry_Plant</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Clomp" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Clomp">test_should_assert_Animated_Clomp</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Cyclops" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Cyclops">test_should_assert_Animated_Cyclops</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Feather" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Feather">test_should_assert_Animated_Feather</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Guzzlemaw" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Guzzlemaw">test_should_assert_Animated_Guzzlemaw</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Moohtant" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Moohtant">test_should_assert_Animated_Moohtant</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Mummy" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Mummy">test_should_assert_Animated_Mummy</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Ogre_Brute" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Ogre_Brute">test_should_assert_Animated_Ogre_Brute</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Ogre_Savage" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Ogre_Savage">test_should_assert_Animated_Ogre_Savage</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Ogre_Shaman" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Ogre_Shaman">test_should_assert_Animated_Ogre_Shaman</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Rotworm" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Rotworm">test_should_assert_Animated_Rotworm</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Skunk" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Skunk">test_should_assert_Animated_Skunk</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Snowman" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Snowman">test_should_assert_Animated_Snowman</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Sword" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Animated_Sword">test_should_assert_Animated_Sword</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Annihilon" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Annihilon">test_should_assert_Annihilon</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Anomaly" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Anomaly">test_should_assert_Anomaly</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Apprentice_Sheng" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Apprentice_Sheng">test_should_assert_Apprentice_Sheng</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Arachir_The_Ancient_One" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Arachir_The_Ancient_One">test_should_assert_Arachir_The_Ancient_One</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Arachnophobica" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Arachnophobica">test_should_assert_Arachnophobica</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Arctic_Faun" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Arctic_Faun">test_should_assert_Arctic_Faun</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Armadile" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Armadile">test_should_assert_Armadile</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Armenius" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Armenius">test_should_assert_Armenius</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ascending_Ferumbras" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ascending_Ferumbras">test_should_assert_Ascending_Ferumbras</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ashmunrah" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Ashmunrah">test_should_assert_Ashmunrah</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Askarak_Demon" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Askarak_Demon">test_should_assert_Askarak_Demon</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Askarak_Lord" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Askarak_Lord">test_should_assert_Askarak_Lord</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Askarak_Prince" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Askarak_Prince">test_should_assert_Askarak_Prince</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Assassin" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Assassin">test_should_assert_Assassin</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Avalanche" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Avalanche">test_should_assert_Avalanche</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Axeitus_Headbanger" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Axeitus_Headbanger">test_should_assert_Axeitus_Headbanger</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Azure_Frog" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Azure_Frog">test_should_assert_Azure_Frog</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Baby_Dragon" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Baby_Dragon">test_should_assert_Baby_Dragon</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bad_Dream" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bad_Dream">test_should_assert_Bad_Dream</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Badger" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Badger">test_should_assert_Badger</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Baleful_Bunny" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Baleful_Bunny">test_should_assert_Baleful_Bunny</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bandit" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bandit">test_should_assert_Bandit</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bane_Bringer" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bane_Bringer">test_should_assert_Bane_Bringer</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Banshee" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Banshee">test_should_assert_Banshee</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbaria" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbaria">test_should_assert_Barbaria</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Bloodwalker" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Bloodwalker">test_should_assert_Barbarian_Bloodwalker</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Brutetamer" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Brutetamer">test_should_assert_Barbarian_Brutetamer</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Headsplitter" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Headsplitter">test_should_assert_Barbarian_Headsplitter</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Skullhunter" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barbarian_Skullhunter">test_should_assert_Barbarian_Skullhunter</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barkless_Devotee" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barkless_Devotee">test_should_assert_Barkless_Devotee</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barkless_Fanatic" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Barkless_Fanatic">test_should_assert_Barkless_Fanatic</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Baron_Brute" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Baron_Brute">test_should_assert_Baron_Brute</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bat" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bat">test_should_assert_Bat</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Battlemaster_Zunzu" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Battlemaster_Zunzu">test_should_assert_Battlemaster_Zunzu</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bear" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Bear">test_should_assert_Bear</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Behemoth" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Behemoth">test_should_assert_Behemoth</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Berserker_Chicken" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Berserker_Chicken">test_should_assert_Berserker_Chicken</a></code></li>
+<li><code><a title="pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Betrayed_Wraith" href="#pytibia.battleList.tests.extractors.getCreatureNameImg.test_getCreatureNameImg.test_should_assert_Betrayed_Wraith">test_should_assert_Betrayed_Wraith</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

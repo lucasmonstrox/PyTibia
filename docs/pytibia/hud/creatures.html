@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>pytibia.hud.creatures API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pytibia.hud.creatures</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import math
+import numpy as np
+from scipy.sparse import csr_matrix
+from scipy.sparse.csgraph import dijkstra
+import hud.core
+import radar.config
+import radar.core
+import utils.core
+import utils.image
+import utils.matrix
+import wiki.creatures
+
+
+hudWidth = 960
+hudWidthDouble = hudWidth * 2
+hudWidthTriple = hudWidth * 3
+lifeBarWidth = 26
+lifeBarBlackPixelsMapper = np.array([
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+    hudWidth, hudWidth + lifeBarWidth,
+    hudWidthDouble, hudWidthDouble + lifeBarWidth,
+    hudWidthTriple, hudWidthTriple + 1, hudWidthTriple + 2, hudWidthTriple + 3, hudWidthTriple +
+    4, hudWidthTriple + 5, hudWidthTriple + 6, hudWidthTriple + 7, hudWidthTriple +
+    8, hudWidthTriple + 9, hudWidthTriple + 10, hudWidthTriple + 11, hudWidthTriple + 12, hudWidthTriple + 13, hudWidthTriple +
+    14, hudWidthTriple + 15, hudWidthTriple + 16, hudWidthTriple +
+    17, hudWidthTriple + 18, hudWidthTriple + 19, hudWidthTriple + 20, hudWidthTriple + 21, hudWidthTriple +
+    22, hudWidthTriple + 23, hudWidthTriple +
+    24, hudWidthTriple + 25, hudWidthTriple + 26
+])
+lifeBarFlattenedImg = np.zeros(lifeBarBlackPixelsMapper.size)
+
+creaturesNamesHashes = {}
+for monster in wiki.creatures.creatures:
+    creaturesNamesHashes[monster] = utils.image.loadAsGrey(
+        &#39;hud/images/monsters/{}.png&#39;.format(monster))
+creatureType = np.dtype([
+    (&#39;name&#39;, np.str_, 64),
+    (&#39;isBeingAttacked&#39;, np.bool_),
+    (&#39;slot&#39;, np.uint8, (2,)),
+    (&#39;radarCoordinate&#39;, np.uint16, (3,)),
+    (&#39;windowCoordinate&#39;, np.uint32, (2,))
+])
+
+
+def cleanCreatureName(creatureName):
+    creatureName = np.where(creatureName == 29, 0, creatureName)
+    creatureName = np.where(creatureName == 57, 0, creatureName)
+    creatureName = np.where(creatureName == 91, 0, creatureName)
+    creatureName = np.where(creatureName == 113, 0, creatureName)
+    creatureName = np.where(creatureName == 152, 0, creatureName)
+    creatureName = np.where(creatureName == 170, 0, creatureName)
+    creatureName = np.where(creatureName == 192, 0, creatureName)
+    return creatureName
+
+
+def getClosestCreature(hudCreatures, radarCoordinate):
+    hasNoCreatures = len(hudCreatures) == 0
+    if hasNoCreatures:
+        return None
+    floorLevel = radarCoordinate[2]
+    walkableFloorsSqms = radar.config.walkableFloorsSqms[floorLevel].copy()
+    hudWalkableFloorsSqms = getHudWalkableFloorsSqms(
+        walkableFloorsSqms, radarCoordinate)
+    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudWalkableFloorsSqms)
+    sqmsGraph = csr_matrix(adjacencyMatrix)
+    playerHudIndex = 82
+    sqmsGraphWeights = dijkstra(
+        sqmsGraph, directed=True, indices=playerHudIndex, unweighted=False)
+    creaturesSlots = hudCreatures[&#39;slot&#39;][:, [1, 0]]
+    hudWalkableFloorsSqmsCreatures = np.zeros((11, 15))
+    hudWalkableFloorsSqmsCreatures[creaturesSlots[:,
+                                                  0], creaturesSlots[:, 1]] = 1
+    creaturesIndexes = np.nonzero(
+        hudWalkableFloorsSqmsCreatures.flatten() == 1)[0]
+    creaturesGraphWeights = np.take(sqmsGraphWeights, creaturesIndexes)
+    nonTargetCreaturesIndexes = np.where(creaturesGraphWeights == np.inf)[0]
+    creaturesIndexes = np.delete(creaturesIndexes, nonTargetCreaturesIndexes)
+    creaturesGraphWeights = np.delete(
+        creaturesGraphWeights, nonTargetCreaturesIndexes)
+    hasOnlyNonTargetCreatures = len(creaturesGraphWeights) == 0
+    if hasOnlyNonTargetCreatures:
+        return None
+    creaturesDistances = np.where(
+        creaturesGraphWeights == np.amin(creaturesGraphWeights))[0]
+    closestCreatureHudIndex = creaturesIndexes[np.random.choice(
+        creaturesDistances)]
+    creatureSlot = [closestCreatureHudIndex %
+                    15, closestCreatureHudIndex // 15]
+    closestCreatureIndex = np.where(
+        (hudCreatures[&#39;slot&#39;] == creatureSlot).all(axis=1))[0][0]
+    closestCreature = hudCreatures[closestCreatureIndex]
+    return closestCreature
+
+
+# TODO: improve clean code
+def getCreaturesBars(hudImg):
+    flattenedHudImg = hudImg.flatten()
+    blackPixelsIndexes = np.nonzero(flattenedHudImg == 0)[0]
+    numberOfPixelsInHud = 675840
+    # WTF is 1468?
+    wtf = 1468
+    maxBlackPixelIndex = numberOfPixelsInHud - wtf
+    allowedBlackPixelsIndexes = np.nonzero(
+        blackPixelsIndexes &lt; maxBlackPixelIndex)[0]
+    blackPixelsIndexes = np.take(blackPixelsIndexes, allowedBlackPixelsIndexes)
+    noBlackPixels = blackPixelsIndexes.size == 0
+    if noBlackPixels:
+        return np.array([])
+    blackPixelsIndexesDiff = np.diff(blackPixelsIndexes)
+    blackPixelsIndexesDiff = np.where(blackPixelsIndexesDiff == 1, 1, 0)
+    cumulativeOfBlackPixelsIndexesDiff = np.cumsum(blackPixelsIndexesDiff)
+    corr = np.diff(np.hstack(
+        ((0,), cumulativeOfBlackPixelsIndexesDiff[blackPixelsIndexesDiff == 0])))
+    a2 = blackPixelsIndexesDiff.copy()
+    a2[blackPixelsIndexesDiff == 0] -= corr
+    f = a2.cumsum()
+    h = np.where(f == 26)[0]
+    h = h - 25
+    blackPixelsIndexes = np.take(blackPixelsIndexes, h)
+    blackPixelsIndexes2d = np.broadcast_to(
+        blackPixelsIndexes, (lifeBarBlackPixelsMapper.size, blackPixelsIndexes.size))
+    blackPixelsIndexes2d = np.transpose(blackPixelsIndexes2d)
+    z = np.add(blackPixelsIndexes2d, lifeBarBlackPixelsMapper)
+    pixelsColorsIndexes = np.take(hudImg, z)
+    g = (pixelsColorsIndexes == lifeBarFlattenedImg).all(1)
+    possibleCreatures = np.nonzero(g)[0]
+    hasNoCreaturesBars = possibleCreatures.size == 0
+    if hasNoCreaturesBars:
+        return np.array([])
+    creaturesBars = np.take(blackPixelsIndexes, possibleCreatures)
+    creaturesBarsX = creaturesBars % hudWidth
+    creaturesBarsY = creaturesBars // hudWidth
+    creaturesBarsXY = np.column_stack((creaturesBarsX, creaturesBarsY))
+    return creaturesBarsXY
+
+
+def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, radarCoordinate):
+    &#34;&#34;&#34;
+    TODO:
+    - Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
+    - Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars
+    &#34;&#34;&#34;
+    creaturesBars = getCreaturesBars(hudImg)
+    creatures = np.array([], dtype=creatureType)
+    hasNoCreaturesBars = len(creaturesBars) == 0
+    if hasNoCreaturesBars:
+        return creatures
+    hasNoBattleListCreatures = len(battleListCreatures) == 0
+    if hasNoBattleListCreatures:
+        return creatures
+    # 479 = (hudWidth / 2) - 1
+    # 351 = (hudHeight / 2) - 1
+    centersBars = np.broadcast_to([479, 351], (len(creaturesBars), 2))
+    absolute = np.absolute(creaturesBars - centersBars)
+    power = np.power(absolute, 2)
+    sum = np.sum(power, axis=1)
+    sqrt = np.sqrt(sum)
+    creaturesBarsSortedInxes = np.argsort(sqrt)
+    for creatureBarSortedIndex in creaturesBarsSortedInxes:
+        creatureBar = creaturesBars[creatureBarSortedIndex]
+        nonCreaturesForCurrentBar = {}
+        battleListCreaturesCount = len(battleListCreatures)
+        for battleListIndex in range(battleListCreaturesCount):
+            battleListCreature = battleListCreatures[battleListIndex]
+            creatureName = battleListCreature[&#39;name&#39;]
+            creatureTypeAlreadyTried = creatureName in nonCreaturesForCurrentBar
+            if creatureTypeAlreadyTried:
+                continue
+            _, creatureNameWidth = creaturesNamesHashes[creatureName].shape
+            (creatureBarX, creatureBarY) = creatureBar
+            creatureBarY0 = creatureBarY - 13
+            creatureBarY1 = creatureBarY0 + 11
+            creatureNameImgHalfWidth = math.floor(creatureNameWidth / 2)
+            leftDiff = max(creatureNameImgHalfWidth - 13, 0)
+            gapLeft = 0 if creatureBarX &gt; leftDiff else leftDiff - creatureBarX
+            gapInnerLeft = 0 if creatureNameWidth &gt; 27 else math.ceil(
+                (27 - creatureNameWidth) / 2)
+            rightDiff = max(creatureNameWidth -
+                            creatureNameImgHalfWidth - 14, 0)
+            gapRight = 0 if hud.core.hudSize[0] &gt; (
+                creatureBarX + 27 + rightDiff) else creatureBarX + 27 + rightDiff - hud.core.hudSize[0]
+            gapInnerRight = 0 if creatureNameWidth &gt; 27 else math.floor(
+                (27 - creatureNameWidth) / 2)
+            startingX = max(0, creatureBarX - creatureNameImgHalfWidth +
+                            13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
+            endingX = min(960, creatureBarX + creatureNameImgHalfWidth +
+                          13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
+            creatureNameImg = creaturesNamesHashes[creatureName].copy()
+            creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1,
+                                             startingX:endingX]
+            if creatureNameImg.shape[1] != creatureWithDirtNameImg.shape[1]:
+                creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1,
+                                                 startingX:endingX + 1]
+            # TODO: avoid cleaning matrix, search directly by specific colours
+            creatureWithDirtNameImg = cleanCreatureName(
+                creatureWithDirtNameImg)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
+                creatureWithDirtNameImg, creatureNameImg)
+            if creatureDidMatch:
+                creature = makeCreature(
+                    creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate)
+                creaturesToAppend = np.array([creature], dtype=creatureType)
+                creatures = np.append(creatures, creaturesToAppend)
+                battleListCreatures = np.delete(
+                    battleListCreatures, battleListIndex)
+                break
+            creatureNameImg2 = creaturesNamesHashes[creatureName].copy()
+            creatureWithDirtNameImg2 = hudImg[creatureBarY0:creatureBarY1,
+                                              startingX+1:endingX+1]
+            if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
+                creatureNameImg2 = creatureNameImg2[:,
+                                                    0:creatureNameImg2.shape[1] - 1]
+            creatureWithDirtNameImg2 = cleanCreatureName(
+                creatureWithDirtNameImg2)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
+                creatureWithDirtNameImg2, creatureNameImg2)
+            if creatureDidMatch:
+                creature = makeCreature(
+                    creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate)
+                creaturesToAppend = np.array([creature], dtype=creatureType)
+                creatures = np.append(creatures, creaturesToAppend)
+                battleListCreatures = np.delete(
+                    battleListCreatures, battleListIndex)
+                break
+            creatureWithDirtNameImg3 = hudImg[creatureBarY0:creatureBarY1,
+                                              startingX:endingX - 1]
+            creatureWithDirtNameImg3 = cleanCreatureName(
+                creatureWithDirtNameImg3)
+            creatureNameImg3 = creaturesNamesHashes[creatureName].copy()
+            creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
+            if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
+                creatureNameImg3 = creatureNameImg3[:,
+                                                    0:creatureNameImg3.shape[1] - 1]
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
+                creatureWithDirtNameImg3, creatureNameImg3)
+            if creatureDidMatch:
+                creature = makeCreature(
+                    creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate)
+                creaturesToAppend = np.array([creature], dtype=creatureType)
+                creatures = np.append(creatures, creaturesToAppend)
+                battleListCreatures = np.delete(
+                    battleListCreatures, battleListIndex)
+                break
+            nonCreaturesForCurrentBar[creatureName] = True
+    return creatures
+
+
+def getDifferentCreaturesBySlots(previousHudCreatures, currentHudCreatures, slots):
+    previousHudCreaturesBySlots = np.array(
+        [], dtype=creatureType)
+    currentHudCreaturesBySlots = np.array(
+        [], dtype=creatureType)
+    differentCreatures = np.array([], dtype=creatureType)
+    for previousHudCreature in previousHudCreatures:
+        if np.isin(previousHudCreature[&#39;slot&#39;], slots).all():
+            previousHudCreaturesBySlots = np.append(
+                previousHudCreaturesBySlots, [previousHudCreature])
+    for currentHudCreature in currentHudCreatures:
+        if np.isin(currentHudCreature[&#39;slot&#39;], slots).all():
+            currentHudCreaturesBySlots = np.append(
+                currentHudCreaturesBySlots, [currentHudCreature])
+    for previousHudCreature in previousHudCreaturesBySlots:
+        creatureDoesNotExists = True
+        for currentHudCreature in currentHudCreatures:
+            previousHudCreatureHash = utils.core.hashitHex(
+                previousHudCreature)
+            currentHudCreatureHash = utils.core.hashitHex(
+                currentHudCreature)
+            if previousHudCreatureHash == currentHudCreatureHash:
+                creatureDoesNotExists = False
+                break
+        if creatureDoesNotExists:
+            differentCreatures = np.append(
+                differentCreatures, [previousHudCreature])
+    return differentCreatures
+
+
+def getHudWalkableFloorsSqms(walkableFloorsSqms, radarCoordinate):
+    (xOfPixelCoordinate, yOfPixelCoordinate) = utils.core.getPixelFromCoordinate(
+        radarCoordinate)
+    hudWalkableFloorsSqms = walkableFloorsSqms[yOfPixelCoordinate -
+                                               5:yOfPixelCoordinate+6, xOfPixelCoordinate-7:xOfPixelCoordinate+8].copy()
+    return hudWalkableFloorsSqms
+
+
+def getNearestCreaturesCount(creatures):
+    hudWalkableFloorsSqmsCreatures = np.zeros((11, 15), dtype=np.uint)
+    xySlots = creatures[&#39;slot&#39;][:, [1, 0]]
+    hudWalkableFloorsSqmsCreatures[xySlots[:, 0], xySlots[:, 1]] = 1
+    indicesOfNearestCreatures = hudWalkableFloorsSqmsCreatures[
+        [4, 4, 4, 5, 5, 6, 6, 6],
+        [6, 7, 8, 6, 8, 6, 7, 8]
+    ]
+    nearestCreaturesCount = np.sum(indicesOfNearestCreatures)
+    return nearestCreaturesCount
+
+
+def getTargetCreature(hudCreatures):
+    hasNoHudCreatures = len(hudCreatures) == 0
+    if hasNoHudCreatures:
+        return
+    indexes2d = np.argwhere(hudCreatures[&#39;isBeingAttacked&#39;] == True)
+    if len(indexes2d) == 0:
+        return
+    indexes = indexes2d[0]
+    hasNoTarget = len(indexes) == 0
+    if hasNoTarget:
+        return
+    targetCreatureIndex = indexes[0]
+    targetCreature = hudCreatures[targetCreatureIndex]
+    return targetCreature
+
+
+def hasTargetToCreatureBySlot(hudCreatures, slot, radarCoordinate):
+    hasNoHudCreatures = len(hudCreatures) == 0
+    if hasNoHudCreatures:
+        return False
+    floorLevel = hudCreatures[0][&#39;radarCoordinate&#39;][2]
+    walkableFloorsSqms = radar.config.walkableFloorsSqms[floorLevel].copy()
+    hudCreaturesSlots = hudCreatures[&#39;slot&#39;]
+    hudWalkableFloorsSqms = getHudWalkableFloorsSqms(
+        walkableFloorsSqms, radarCoordinate)
+    creaturesSlots = hudCreaturesSlots[:, [1, 0]]
+    hudWalkableFloorsSqms[creaturesSlots[:, 0], creaturesSlots[:, 1]] = 0
+    xOfSlot, yOfSlot = slot
+    hudWalkableFloorsSqms[yOfSlot, xOfSlot] = 1
+    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudWalkableFloorsSqms)
+    graph = csr_matrix(adjacencyMatrix)
+    playerHudIndex = 82
+    graphWeights = dijkstra(graph, directed=True,
+                            indices=playerHudIndex, unweighted=False)
+    graphWeights = graphWeights.reshape(11, 15)
+    creatureGraphValue = graphWeights[yOfSlot, xOfSlot]
+    hasTarget = creatureGraphValue != np.inf
+    return hasTarget
+
+
+def hasTargetToCreature(hudCreatures, hudCreature, radarCoordinate):
+    hasTarget = hasTargetToCreatureBySlot(
+        hudCreatures, hudCreature[&#39;slot&#39;], radarCoordinate)
+    return hasTarget
+
+
+def makeCreature(creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate):
+    slotWidth = 64
+    (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
+    (x, y) = creatureBar
+    extraY = 0 if y &lt;= 27 else 31
+    distanceBetweenSlotPixelLifeBar = 19
+    xCoordinate = x - distanceBetweenSlotPixelLifeBar
+    xSlot = round((xCoordinate) / slotWidth)
+    xSlot = min(xSlot, 14)
+    xSlot = max(xSlot, 0)
+    yCoordinate = y + 5 + extraY
+    yCoordinate = 0 if y &lt;= 14 else y + 5
+    ySlot = round(yCoordinate / slotWidth)
+    ySlot = min(ySlot, 10)
+    ySlot = max(ySlot, 0)
+    borderedCreatureImg = hudImg[y + 5:y +
+                                 5 + slotWidth, x - distanceBetweenSlotPixelLifeBar:x - distanceBetweenSlotPixelLifeBar + slotWidth]
+    pixelsCount = np.sum(np.where(np.logical_or(
+        borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
+    # TODO: fix me
+    isBeingAttacked = pixelsCount &gt; 50
+    slot = (xSlot, ySlot)
+    radarCoordinateX = radarCoordinate[0] - 7 + xSlot
+    radarCoordinateY = radarCoordinate[1] - 5 + ySlot
+    radarCoordinate = [radarCoordinateX, radarCoordinateY, radarCoordinate[2]]
+    currentCreatureCoordinateIsntWalkable = not radar.core.isCoordinateWalkable(
+        radarCoordinate)
+    if currentCreatureCoordinateIsntWalkable:
+        if direction == &#39;left&#39; or direction == &#39;right&#39;:
+            leftCoordinate = [radarCoordinate[0] - 1,
+                              radarCoordinate[1], radarCoordinate[2]]
+            leftCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                leftCoordinate)
+            if leftCoordinateIsWalkable:
+                radarCoordinate = leftCoordinate
+                xSlot = slot[0] - 1
+                xSlot = min(xSlot, 14)
+                xSlot = max(xSlot, 0)
+                slot = (xSlot, slot[1])
+            else:
+                rightCoordinate = [radarCoordinate[0] + 1,
+                                   radarCoordinate[1], radarCoordinate[2]]
+                rightCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                    rightCoordinate)
+                if rightCoordinateIsWalkable:
+                    radarCoordinate = rightCoordinate
+                    xSlot = slot[0] + 1
+                    xSlot = min(xSlot, 14)
+                    xSlot = max(xSlot, 0)
+                    slot = (xSlot, slot[1])
+        if direction == &#39;top&#39; or direction == &#39;bottom&#39;:
+            topCoordinate = [radarCoordinate[0],
+                             radarCoordinate[1] - 1, radarCoordinate[2]]
+            topCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                topCoordinate)
+            if topCoordinateIsWalkable:
+                radarCoordinate = topCoordinate
+                ySlot = slot[1] - 1
+                ySlot = min(ySlot, 10)
+                ySlot = max(ySlot, 0)
+                slot = (slot[0], ySlot)
+            else:
+                bottomCoordinate = [radarCoordinate[0],
+                                    radarCoordinate[1] + 1, radarCoordinate[2]]
+                bottomCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                    bottomCoordinate)
+                if bottomCoordinateIsWalkable:
+                    radarCoordinate = bottomCoordinate
+                    ySlot = slot[1] + 1
+                    ySlot = min(ySlot, 10)
+                    ySlot = max(ySlot, 0)
+                    slot = (slot[0], ySlot)
+    windowCoordinate = (hudCoordinateX + xCoordinate,
+                        hudCoordinateY + yCoordinate)
+    creature = (creatureName, isBeingAttacked, slot,
+                radarCoordinate, windowCoordinate)
+    return creature</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pytibia.hud.creatures.cleanCreatureName"><code class="name flex">
+<span>def <span class="ident">cleanCreatureName</span></span>(<span>creatureName)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cleanCreatureName(creatureName):
+    creatureName = np.where(creatureName == 29, 0, creatureName)
+    creatureName = np.where(creatureName == 57, 0, creatureName)
+    creatureName = np.where(creatureName == 91, 0, creatureName)
+    creatureName = np.where(creatureName == 113, 0, creatureName)
+    creatureName = np.where(creatureName == 152, 0, creatureName)
+    creatureName = np.where(creatureName == 170, 0, creatureName)
+    creatureName = np.where(creatureName == 192, 0, creatureName)
+    return creatureName</code></pre>
+</details>
+</dd>
+<dt id="pytibia.hud.creatures.getClosestCreature"><code class="name flex">
+<span>def <span class="ident">getClosestCreature</span></span>(<span>hudCreatures, radarCoordinate)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getClosestCreature(hudCreatures, radarCoordinate):
+    hasNoCreatures = len(hudCreatures) == 0
+    if hasNoCreatures:
+        return None
+    floorLevel = radarCoordinate[2]
+    walkableFloorsSqms = radar.config.walkableFloorsSqms[floorLevel].copy()
+    hudWalkableFloorsSqms = getHudWalkableFloorsSqms(
+        walkableFloorsSqms, radarCoordinate)
+    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudWalkableFloorsSqms)
+    sqmsGraph = csr_matrix(adjacencyMatrix)
+    playerHudIndex = 82
+    sqmsGraphWeights = dijkstra(
+        sqmsGraph, directed=True, indices=playerHudIndex, unweighted=False)
+    creaturesSlots = hudCreatures[&#39;slot&#39;][:, [1, 0]]
+    hudWalkableFloorsSqmsCreatures = np.zeros((11, 15))
+    hudWalkableFloorsSqmsCreatures[creaturesSlots[:,
+                                                  0], creaturesSlots[:, 1]] = 1
+    creaturesIndexes = np.nonzero(
+        hudWalkableFloorsSqmsCreatures.flatten() == 1)[0]
+    creaturesGraphWeights = np.take(sqmsGraphWeights, creaturesIndexes)
+    nonTargetCreaturesIndexes = np.where(creaturesGraphWeights == np.inf)[0]
+    creaturesIndexes = np.delete(creaturesIndexes, nonTargetCreaturesIndexes)
+    creaturesGraphWeights = np.delete(
+        creaturesGraphWeights, nonTargetCreaturesIndexes)
+    hasOnlyNonTargetCreatures = len(creaturesGraphWeights) == 0
+    if hasOnlyNonTargetCreatures:
+        return None
+    creaturesDistances = np.where(
+        creaturesGraphWeights == np.amin(creaturesGraphWeights))[0]
+    closestCreatureHudIndex = creaturesIndexes[np.random.choice(
+        creaturesDistances)]
+    creatureSlot = [closestCreatureHudIndex %
+                    15, closestCreatureHudIndex // 15]
+    closestCreatureIndex = np.where(
+        (hudCreatures[&#39;slot&#39;] == creatureSlot).all(axis=1))[0][0]
+    closestCreature = hudCreatures[closestCreatureIndex]
+    return closestCreature</code></pre>
+</details>
+</dd>
+<dt id="pytibia.hud.creatures.getCreatures"><code class="name flex">
+<span>def <span class="ident">getCreatures</span></span>(<span>battleListCreatures, direction, hudCoordinate, hudImg, radarCoordinate)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO:
+- Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
+- Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, radarCoordinate):
+    &#34;&#34;&#34;
+    TODO:
+    - Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
+    - Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars
+    &#34;&#34;&#34;
+    creaturesBars = getCreaturesBars(hudImg)
+    creatures = np.array([], dtype=creatureType)
+    hasNoCreaturesBars = len(creaturesBars) == 0
+    if hasNoCreaturesBars:
+        return creatures
+    hasNoBattleListCreatures = len(battleListCreatures) == 0
+    if hasNoBattleListCreatures:
+        return creatures
+    # 479 = (hudWidth / 2) - 1
+    # 351 = (hudHeight / 2) - 1
+    centersBars = np.broadcast_to([479, 351], (len(creaturesBars), 2))
+    absolute = np.absolute(creaturesBars - centersBars)
+    power = np.power(absolute, 2)
+    sum = np.sum(power, axis=1)
+    sqrt = np.sqrt(sum)
+    creaturesBarsSortedInxes = np.argsort(sqrt)
+    for creatureBarSortedIndex in creaturesBarsSortedInxes:
+        creatureBar = creaturesBars[creatureBarSortedIndex]
+        nonCreaturesForCurrentBar = {}
+        battleListCreaturesCount = len(battleListCreatures)
+        for battleListIndex in range(battleListCreaturesCount):
+            battleListCreature = battleListCreatures[battleListIndex]
+            creatureName = battleListCreature[&#39;name&#39;]
+            creatureTypeAlreadyTried = creatureName in nonCreaturesForCurrentBar
+            if creatureTypeAlreadyTried:
+                continue
+            _, creatureNameWidth = creaturesNamesHashes[creatureName].shape
+            (creatureBarX, creatureBarY) = creatureBar
+            creatureBarY0 = creatureBarY - 13
+            creatureBarY1 = creatureBarY0 + 11
+            creatureNameImgHalfWidth = math.floor(creatureNameWidth / 2)
+            leftDiff = max(creatureNameImgHalfWidth - 13, 0)
+            gapLeft = 0 if creatureBarX &gt; leftDiff else leftDiff - creatureBarX
+            gapInnerLeft = 0 if creatureNameWidth &gt; 27 else math.ceil(
+                (27 - creatureNameWidth) / 2)
+            rightDiff = max(creatureNameWidth -
+                            creatureNameImgHalfWidth - 14, 0)
+            gapRight = 0 if hud.core.hudSize[0] &gt; (
+                creatureBarX + 27 + rightDiff) else creatureBarX + 27 + rightDiff - hud.core.hudSize[0]
+            gapInnerRight = 0 if creatureNameWidth &gt; 27 else math.floor(
+                (27 - creatureNameWidth) / 2)
+            startingX = max(0, creatureBarX - creatureNameImgHalfWidth +
+                            13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
+            endingX = min(960, creatureBarX + creatureNameImgHalfWidth +
+                          13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
+            creatureNameImg = creaturesNamesHashes[creatureName].copy()
+            creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1,
+                                             startingX:endingX]
+            if creatureNameImg.shape[1] != creatureWithDirtNameImg.shape[1]:
+                creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1,
+                                                 startingX:endingX + 1]
+            # TODO: avoid cleaning matrix, search directly by specific colours
+            creatureWithDirtNameImg = cleanCreatureName(
+                creatureWithDirtNameImg)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
+                creatureWithDirtNameImg, creatureNameImg)
+            if creatureDidMatch:
+                creature = makeCreature(
+                    creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate)
+                creaturesToAppend = np.array([creature], dtype=creatureType)
+                creatures = np.append(creatures, creaturesToAppend)
+                battleListCreatures = np.delete(
+                    battleListCreatures, battleListIndex)
+                break
+            creatureNameImg2 = creaturesNamesHashes[creatureName].copy()
+            creatureWithDirtNameImg2 = hudImg[creatureBarY0:creatureBarY1,
+                                              startingX+1:endingX+1]
+            if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
+                creatureNameImg2 = creatureNameImg2[:,
+                                                    0:creatureNameImg2.shape[1] - 1]
+            creatureWithDirtNameImg2 = cleanCreatureName(
+                creatureWithDirtNameImg2)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
+                creatureWithDirtNameImg2, creatureNameImg2)
+            if creatureDidMatch:
+                creature = makeCreature(
+                    creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate)
+                creaturesToAppend = np.array([creature], dtype=creatureType)
+                creatures = np.append(creatures, creaturesToAppend)
+                battleListCreatures = np.delete(
+                    battleListCreatures, battleListIndex)
+                break
+            creatureWithDirtNameImg3 = hudImg[creatureBarY0:creatureBarY1,
+                                              startingX:endingX - 1]
+            creatureWithDirtNameImg3 = cleanCreatureName(
+                creatureWithDirtNameImg3)
+            creatureNameImg3 = creaturesNamesHashes[creatureName].copy()
+            creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
+            if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
+                creatureNameImg3 = creatureNameImg3[:,
+                                                    0:creatureNameImg3.shape[1] - 1]
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
+                creatureWithDirtNameImg3, creatureNameImg3)
+            if creatureDidMatch:
+                creature = makeCreature(
+                    creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate)
+                creaturesToAppend = np.array([creature], dtype=creatureType)
+                creatures = np.append(creatures, creaturesToAppend)
+                battleListCreatures = np.delete(
+                    battleListCreatures, battleListIndex)
+                break
+            nonCreaturesForCurrentBar[creatureName] = True
+    return creatures</code></pre>
+</details>
+</dd>
+<dt id="pytibia.hud.creatures.getCreaturesBars"><code class="name flex">
+<span>def <span class="ident">getCreaturesBars</span></span>(<span>hudImg)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getCreaturesBars(hudImg):
+    flattenedHudImg = hudImg.flatten()
+    blackPixelsIndexes = np.nonzero(flattenedHudImg == 0)[0]
+    numberOfPixelsInHud = 675840
+    # WTF is 1468?
+    wtf = 1468
+    maxBlackPixelIndex = numberOfPixelsInHud - wtf
+    allowedBlackPixelsIndexes = np.nonzero(
+        blackPixelsIndexes &lt; maxBlackPixelIndex)[0]
+    blackPixelsIndexes = np.take(blackPixelsIndexes, allowedBlackPixelsIndexes)
+    noBlackPixels = blackPixelsIndexes.size == 0
+    if noBlackPixels:
+        return np.array([])
+    blackPixelsIndexesDiff = np.diff(blackPixelsIndexes)
+    blackPixelsIndexesDiff = np.where(blackPixelsIndexesDiff == 1, 1, 0)
+    cumulativeOfBlackPixelsIndexesDiff = np.cumsum(blackPixelsIndexesDiff)
+    corr = np.diff(np.hstack(
+        ((0,), cumulativeOfBlackPixelsIndexesDiff[blackPixelsIndexesDiff == 0])))
+    a2 = blackPixelsIndexesDiff.copy()
+    a2[blackPixelsIndexesDiff == 0] -= corr
+    f = a2.cumsum()
+    h = np.where(f == 26)[0]
+    h = h - 25
+    blackPixelsIndexes = np.take(blackPixelsIndexes, h)
+    blackPixelsIndexes2d = np.broadcast_to(
+        blackPixelsIndexes, (lifeBarBlackPixelsMapper.size, blackPixelsIndexes.size))
+    blackPixelsIndexes2d = np.transpose(blackPixelsIndexes2d)
+    z = np.add(blackPixelsIndexes2d, lifeBarBlackPixelsMapper)
+    pixelsColorsIndexes = np.take(hudImg, z)
+    g = (pixelsColorsIndexes == lifeBarFlattenedImg).all(1)
+    possibleCreatures = np.nonzero(g)[0]
+    hasNoCreaturesBars = possibleCreatures.size == 0
+    if hasNoCreaturesBars:
+        return np.array([])
+    creaturesBars = np.take(blackPixelsIndexes, possibleCreatures)
+    creaturesBarsX = creaturesBars % hudWidth
+    creaturesBarsY = creaturesBars // hudWidth
+    creaturesBarsXY = np.column_stack((creaturesBarsX, creaturesBarsY))
+    return creaturesBarsXY</code></pre>
+</details>
+</dd>
+<dt id="pytibia.hud.creatures.getDifferentCreaturesBySlots"><code class="name flex">
+<span>def <span class="ident">getDifferentCreaturesBySlots</span></span>(<span>previousHudCreatures, currentHudCreatures, slots)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getDifferentCreaturesBySlots(previousHudCreatures, currentHudCreatures, slots):
+    previousHudCreaturesBySlots = np.array(
+        [], dtype=creatureType)
+    currentHudCreaturesBySlots = np.array(
+        [], dtype=creatureType)
+    differentCreatures = np.array([], dtype=creatureType)
+    for previousHudCreature in previousHudCreatures:
+        if np.isin(previousHudCreature[&#39;slot&#39;], slots).all():
+            previousHudCreaturesBySlots = np.append(
+                previousHudCreaturesBySlots, [previousHudCreature])
+    for currentHudCreature in currentHudCreatures:
+        if np.isin(currentHudCreature[&#39;slot&#39;], slots).all():
+            currentHudCreaturesBySlots = np.append(
+                currentHudCreaturesBySlots, [currentHudCreature])
+    for previousHudCreature in previousHudCreaturesBySlots:
+        creatureDoesNotExists = True
+        for currentHudCreature in currentHudCreatures:
+            previousHudCreatureHash = utils.core.hashitHex(
+                previousHudCreature)
+            currentHudCreatureHash = utils.core.hashitHex(
+                currentHudCreature)
+            if previousHudCreatureHash == currentHudCreatureHash:
+                creatureDoesNotExists = False
+                break
+        if creatureDoesNotExists:
+            differentCreatures = np.append(
+                differentCreatures, [previousHudCreature])
+    return differentCreatures</code></pre>
+</details>
+</dd>
+<dt id="pytibia.hud.creatures.getHudWalkableFloorsSqms"><code class="name flex">
+<span>def <span class="ident">getHudWalkableFloorsSqms</span></span>(<span>walkableFloorsSqms, radarCoordinate)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getHudWalkableFloorsSqms(walkableFloorsSqms, radarCoordinate):
+    (xOfPixelCoordinate, yOfPixelCoordinate) = utils.core.getPixelFromCoordinate(
+        radarCoordinate)
+    hudWalkableFloorsSqms = walkableFloorsSqms[yOfPixelCoordinate -
+                                               5:yOfPixelCoordinate+6, xOfPixelCoordinate-7:xOfPixelCoordinate+8].copy()
+    return hudWalkableFloorsSqms</code></pre>
+</details>
+</dd>
+<dt id="pytibia.hud.creatures.getNearestCreaturesCount"><code class="name flex">
+<span>def <span class="ident">getNearestCreaturesCount</span></span>(<span>creatures)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getNearestCreaturesCount(creatures):
+    hudWalkableFloorsSqmsCreatures = np.zeros((11, 15), dtype=np.uint)
+    xySlots = creatures[&#39;slot&#39;][:, [1, 0]]
+    hudWalkableFloorsSqmsCreatures[xySlots[:, 0], xySlots[:, 1]] = 1
+    indicesOfNearestCreatures = hudWalkableFloorsSqmsCreatures[
+        [4, 4, 4, 5, 5, 6, 6, 6],
+        [6, 7, 8, 6, 8, 6, 7, 8]
+    ]
+    nearestCreaturesCount = np.sum(indicesOfNearestCreatures)
+    return nearestCreaturesCount</code></pre>
+</details>
+</dd>
+<dt id="pytibia.hud.creatures.getTargetCreature"><code class="name flex">
+<span>def <span class="ident">getTargetCreature</span></span>(<span>hudCreatures)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getTargetCreature(hudCreatures):
+    hasNoHudCreatures = len(hudCreatures) == 0
+    if hasNoHudCreatures:
+        return
+    indexes2d = np.argwhere(hudCreatures[&#39;isBeingAttacked&#39;] == True)
+    if len(indexes2d) == 0:
+        return
+    indexes = indexes2d[0]
+    hasNoTarget = len(indexes) == 0
+    if hasNoTarget:
+        return
+    targetCreatureIndex = indexes[0]
+    targetCreature = hudCreatures[targetCreatureIndex]
+    return targetCreature</code></pre>
+</details>
+</dd>
+<dt id="pytibia.hud.creatures.hasTargetToCreature"><code class="name flex">
+<span>def <span class="ident">hasTargetToCreature</span></span>(<span>hudCreatures, hudCreature, radarCoordinate)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def hasTargetToCreature(hudCreatures, hudCreature, radarCoordinate):
+    hasTarget = hasTargetToCreatureBySlot(
+        hudCreatures, hudCreature[&#39;slot&#39;], radarCoordinate)
+    return hasTarget</code></pre>
+</details>
+</dd>
+<dt id="pytibia.hud.creatures.hasTargetToCreatureBySlot"><code class="name flex">
+<span>def <span class="ident">hasTargetToCreatureBySlot</span></span>(<span>hudCreatures, slot, radarCoordinate)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def hasTargetToCreatureBySlot(hudCreatures, slot, radarCoordinate):
+    hasNoHudCreatures = len(hudCreatures) == 0
+    if hasNoHudCreatures:
+        return False
+    floorLevel = hudCreatures[0][&#39;radarCoordinate&#39;][2]
+    walkableFloorsSqms = radar.config.walkableFloorsSqms[floorLevel].copy()
+    hudCreaturesSlots = hudCreatures[&#39;slot&#39;]
+    hudWalkableFloorsSqms = getHudWalkableFloorsSqms(
+        walkableFloorsSqms, radarCoordinate)
+    creaturesSlots = hudCreaturesSlots[:, [1, 0]]
+    hudWalkableFloorsSqms[creaturesSlots[:, 0], creaturesSlots[:, 1]] = 0
+    xOfSlot, yOfSlot = slot
+    hudWalkableFloorsSqms[yOfSlot, xOfSlot] = 1
+    adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudWalkableFloorsSqms)
+    graph = csr_matrix(adjacencyMatrix)
+    playerHudIndex = 82
+    graphWeights = dijkstra(graph, directed=True,
+                            indices=playerHudIndex, unweighted=False)
+    graphWeights = graphWeights.reshape(11, 15)
+    creatureGraphValue = graphWeights[yOfSlot, xOfSlot]
+    hasTarget = creatureGraphValue != np.inf
+    return hasTarget</code></pre>
+</details>
+</dd>
+<dt id="pytibia.hud.creatures.makeCreature"><code class="name flex">
+<span>def <span class="ident">makeCreature</span></span>(<span>creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def makeCreature(creatureName, creatureBar, direction, hudCoordinate, hudImg, radarCoordinate):
+    slotWidth = 64
+    (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
+    (x, y) = creatureBar
+    extraY = 0 if y &lt;= 27 else 31
+    distanceBetweenSlotPixelLifeBar = 19
+    xCoordinate = x - distanceBetweenSlotPixelLifeBar
+    xSlot = round((xCoordinate) / slotWidth)
+    xSlot = min(xSlot, 14)
+    xSlot = max(xSlot, 0)
+    yCoordinate = y + 5 + extraY
+    yCoordinate = 0 if y &lt;= 14 else y + 5
+    ySlot = round(yCoordinate / slotWidth)
+    ySlot = min(ySlot, 10)
+    ySlot = max(ySlot, 0)
+    borderedCreatureImg = hudImg[y + 5:y +
+                                 5 + slotWidth, x - distanceBetweenSlotPixelLifeBar:x - distanceBetweenSlotPixelLifeBar + slotWidth]
+    pixelsCount = np.sum(np.where(np.logical_or(
+        borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
+    # TODO: fix me
+    isBeingAttacked = pixelsCount &gt; 50
+    slot = (xSlot, ySlot)
+    radarCoordinateX = radarCoordinate[0] - 7 + xSlot
+    radarCoordinateY = radarCoordinate[1] - 5 + ySlot
+    radarCoordinate = [radarCoordinateX, radarCoordinateY, radarCoordinate[2]]
+    currentCreatureCoordinateIsntWalkable = not radar.core.isCoordinateWalkable(
+        radarCoordinate)
+    if currentCreatureCoordinateIsntWalkable:
+        if direction == &#39;left&#39; or direction == &#39;right&#39;:
+            leftCoordinate = [radarCoordinate[0] - 1,
+                              radarCoordinate[1], radarCoordinate[2]]
+            leftCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                leftCoordinate)
+            if leftCoordinateIsWalkable:
+                radarCoordinate = leftCoordinate
+                xSlot = slot[0] - 1
+                xSlot = min(xSlot, 14)
+                xSlot = max(xSlot, 0)
+                slot = (xSlot, slot[1])
+            else:
+                rightCoordinate = [radarCoordinate[0] + 1,
+                                   radarCoordinate[1], radarCoordinate[2]]
+                rightCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                    rightCoordinate)
+                if rightCoordinateIsWalkable:
+                    radarCoordinate = rightCoordinate
+                    xSlot = slot[0] + 1
+                    xSlot = min(xSlot, 14)
+                    xSlot = max(xSlot, 0)
+                    slot = (xSlot, slot[1])
+        if direction == &#39;top&#39; or direction == &#39;bottom&#39;:
+            topCoordinate = [radarCoordinate[0],
+                             radarCoordinate[1] - 1, radarCoordinate[2]]
+            topCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                topCoordinate)
+            if topCoordinateIsWalkable:
+                radarCoordinate = topCoordinate
+                ySlot = slot[1] - 1
+                ySlot = min(ySlot, 10)
+                ySlot = max(ySlot, 0)
+                slot = (slot[0], ySlot)
+            else:
+                bottomCoordinate = [radarCoordinate[0],
+                                    radarCoordinate[1] + 1, radarCoordinate[2]]
+                bottomCoordinateIsWalkable = radar.core.isCoordinateWalkable(
+                    bottomCoordinate)
+                if bottomCoordinateIsWalkable:
+                    radarCoordinate = bottomCoordinate
+                    ySlot = slot[1] + 1
+                    ySlot = min(ySlot, 10)
+                    ySlot = max(ySlot, 0)
+                    slot = (slot[0], ySlot)
+    windowCoordinate = (hudCoordinateX + xCoordinate,
+                        hudCoordinateY + yCoordinate)
+    creature = (creatureName, isBeingAttacked, slot,
+                radarCoordinate, windowCoordinate)
+    return creature</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pytibia.hud" href="index.html">pytibia.hud</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pytibia.hud.creatures.cleanCreatureName" href="#pytibia.hud.creatures.cleanCreatureName">cleanCreatureName</a></code></li>
+<li><code><a title="pytibia.hud.creatures.getClosestCreature" href="#pytibia.hud.creatures.getClosestCreature">getClosestCreature</a></code></li>
+<li><code><a title="pytibia.hud.creatures.getCreatures" href="#pytibia.hud.creatures.getCreatures">getCreatures</a></code></li>
+<li><code><a title="pytibia.hud.creatures.getCreaturesBars" href="#pytibia.hud.creatures.getCreaturesBars">getCreaturesBars</a></code></li>
+<li><code><a title="pytibia.hud.creatures.getDifferentCreaturesBySlots" href="#pytibia.hud.creatures.getDifferentCreaturesBySlots">getDifferentCreaturesBySlots</a></code></li>
+<li><code><a title="pytibia.hud.creatures.getHudWalkableFloorsSqms" href="#pytibia.hud.creatures.getHudWalkableFloorsSqms">getHudWalkableFloorsSqms</a></code></li>
+<li><code><a title="pytibia.hud.creatures.getNearestCreaturesCount" href="#pytibia.hud.creatures.getNearestCreaturesCount">getNearestCreaturesCount</a></code></li>
+<li><code><a title="pytibia.hud.creatures.getTargetCreature" href="#pytibia.hud.creatures.getTargetCreature">getTargetCreature</a></code></li>
+<li><code><a title="pytibia.hud.creatures.hasTargetToCreature" href="#pytibia.hud.creatures.hasTargetToCreature">hasTargetToCreature</a></code></li>
+<li><code><a title="pytibia.hud.creatures.hasTargetToCreatureBySlot" href="#pytibia.hud.creatures.hasTargetToCreatureBySlot">hasTargetToCreatureBySlot</a></code></li>
+<li><code><a title="pytibia.hud.creatures.makeCreature" href="#pytibia.hud.creatures.makeCreature">makeCreature</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
