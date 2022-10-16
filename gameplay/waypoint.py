@@ -107,31 +107,31 @@ def resolveWaypointByType(screenshot, radarCoordinate, waypointsManager):
     return copiedWaypointsManager
 
 
+
 # TODO: add unit tests
 def handleWaypoint(screenshot, radarCoordinate, waypointsManager):
     copiedWaypointsManager = waypointsManager.copy()
     nextWaypointIndex = utils.array.getNextArrayIndex(
         copiedWaypointsManager['points'], copiedWaypointsManager['currentIndex'])
     nextWaypoint = copiedWaypointsManager['points'][nextWaypointIndex]
-    if copiedWaypointsManager['state'] == None:
-        copiedWaypointsManager['state'] = {
-            'goalCoordinate': resolveGoalCoordinate(radarCoordinate, nextWaypoint),
-            'goalWaypoint': nextWaypoint,
-            'status': 'awaiting'
-        }
-    copiedWaypointsManager = resolveWaypointByType(
-        screenshot, radarCoordinate, copiedWaypointsManager)
-    hasWaypointResolved = copiedWaypointsManager['state']['status'] == 'done'
-    if hasWaypointResolved:
-        copiedWaypointsManager['currentIndex'] = nextWaypointIndex
-        nextOfNextWaypointIndex = utils.array.getNextArrayIndex(
-            copiedWaypointsManager['points'], copiedWaypointsManager['currentIndex'])
-        nextWaypoint = copiedWaypointsManager['points'][nextOfNextWaypointIndex]
-        copiedWaypointsManager['state'] = {
-            'goalCoordinate': resolveGoalCoordinate(radarCoordinate, nextWaypoint),
-            'goalWaypoint': nextWaypoint,
-            'status': 'awaiting'
-        }
+    # if copiedWaypointsManager['state'] == None:
+    # copiedWaypointsManager['state'] = {
+    #     'goalCoordinate': resolveGoalCoordinate(radarCoordinate, nextWaypoint),
+    #     'goalWaypoint': nextWaypoint,
+    # }
+    # copiedWaypointsManager = resolveWaypointByType(
+    #     screenshot, radarCoordinate, copiedWaypointsManager)
+    # hasWaypointResolved = copiedWaypointsManager['state']['status'] == 'done'
+    # if hasWaypointResolved:
+    #     copiedWaypointsManager['currentIndex'] = nextWaypointIndex
+    #     nextOfNextWaypointIndex = utils.array.getNextArrayIndex(
+    #         copiedWaypointsManager['points'], copiedWaypointsManager['currentIndex'])
+    #     nextWaypoint = copiedWaypointsManager['points'][nextOfNextWaypointIndex]
+    #     copiedWaypointsManager['state'] = {
+    #         'goalCoordinate': resolveGoalCoordinate(radarCoordinate, nextWaypoint),
+    #         'goalWaypoint': nextWaypoint,
+    #         'status': 'awaiting'
+    #     }
     return copiedWaypointsManager
 
 
