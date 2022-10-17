@@ -77,7 +77,9 @@ def getSlotImg(hudImg, slot):
 
 
 # TODO: add unit tests
-def isHoleOpen(slotImg):
+def isHoleOpen(hudImg, radarCoordinate, waypointRadarCoordinate):
+    slot = getSlotFromCoordinate(radarCoordinate, waypointRadarCoordinate)
+    slotImg = getSlotImg(hudImg, slot)
     holeOpenImg = utils.image.RGBtoGray(
         utils.image.load('hud/images/waypoint/holeOpenImg.png'))
     holeOpenLocation = utils.core.locate(slotImg, holeOpenImg)
