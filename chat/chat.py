@@ -148,9 +148,8 @@ def getLocalChatTabPos(screenshot):
 
 
 def isTabSelected(screenshot, tabName):
-    if utils.core.locate(screenshot, chatTabs[tabName][1]) is not None:
-        return True
-    return False
+    isSelected = utils.core.locate(screenshot, chatTabs[tabName][1]) is not None
+    return isSelected
 
 
 def selectLootTab(screenshot):
