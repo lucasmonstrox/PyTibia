@@ -98,7 +98,7 @@ def getCreaturesBars(hudImg):
     blackPixelsIndexes = np.nonzero(flattenedHudImg == 0)[0]
     numberOfPixelsInHud = 675840
     # WTF is 1468?
-    wtf = 1468
+    wtf = 960 * 4
     maxBlackPixelIndex = numberOfPixelsInHud - wtf
     allowedBlackPixelsIndexes = np.nonzero(
         blackPixelsIndexes < maxBlackPixelIndex)[0]

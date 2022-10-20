@@ -5,17 +5,20 @@ from rx import interval, of, operators, pipe, timer
 from rx.scheduler import ThreadPoolScheduler
 from rx.subject import Subject
 import time
-from typing import cast
 import battleList.core
+import battleList.typing
 from chat import chat
 import gameplay.cavebot
 import gameplay.decision
+import gameplay.baseTasks
+import gameplay.resolvers
 import gameplay.waypoint
 import hud.creatures
 import hud.core
 import hud.slot
 import radar.core
 from radar.types import waypointType
+import utils.array
 import utils.core
 import utils.image
 
@@ -23,59 +26,62 @@ import utils.image
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
 
-beingAttackedCreature = None
-cavebotManager = {'status': None}
-coordinateHudTracker = {'lastCoordinate': None, 'lastHudImg': None}
-comingFromDirection = None
-corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
-hudCreatures = np.array([], dtype=hud.creatures.creatureType)
-lastWay = 'waypoint'
-previousRadarCoordinate = None
-walkpointsManager = {
+
+gameContext = {
+    'battleListCreatures': np.array([], dtype=battleList.typing.creatureType),
+    'beingAttackedCreature': None,
+    'cavvebot': {'status': None},
+    'comingFromDirection': None,
+    'corpsesToLoot': np.array([], dtype=hud.creatures.creatureType),
+    'hudCoordinate': None,
+    'hudCreatures': np.array([], dtype=hud.creatures.creatureType),
+    'hudImg': None,
     'lastCoordinateVisitedAt': time.time(),
     'lastCoordinateVisited': None,
     'lastPressedKey': None,
-    'points': np.array([]),
+    'lastWay': 'waypoint',
+    'previousRadarCoordinate': None,
+    'radarCoordinate': None,
+    'waypoints': {
+        'currentIndex': None,
+        'points': np.array([
+            ('floor', (33125, 32836, 7), 0, {}),
+            ('floor', (33125, 32834, 7), 0, {}),
+            ('floor', (33114, 32830, 7), 0, {}),
+            ('floor', (33098, 32830, 7), 0, {}),
+            ('floor', (33098, 32793, 7), 0, {}),
+            ('moveUpNorth', (33088, 32788, 7), 0, {}),
+            ('moveDownNorth', (33088, 32785, 6), 0, {}),
+            ('floor', (33078, 32760, 7), 0, {}),
+            ('floor', (33078, 32761, 7), 0, {}),
+            ('useShovel', (33072, 32760, 7), 0, {}),
+            ('floor', (33095, 32761, 8), 0, {}),
+            ('floor', (33084, 32770, 8), 0, {}),
+            ('floor', (33062, 32762, 8), 0, {}),
+            ('check', (33073, 32758, 8), 0, {
+                'minimumOfManaPotions': 50,
+                'minimumOfHealthPotions': 50,
+                'minimumOfCapacity': 500,
+            }),
+            ('useRope', (33072, 32760, 8), 0, {}),
+            ('floor', (33075, 32771, 7), 0, {}),
+            ('moveUpSouth', (33088, 32783, 7), 0, {}),
+            ('moveDownSouth', (33088, 32786, 6), 0, {}),
+            ('floor', (33098, 32793, 7), 0, {}),
+            ('floor', (33099, 32830, 7), 0, {}),
+            ('floor', (33125, 32833, 7), 0, {}),
+            33073, 32758, 8
+        ], dtype=waypointType),
+        'state': None
+    },
+    'screenshot': None,
+    'tasks': np.array([], dtype=np.dtype([
+        ('type', np.str_, 64),
+        ('data', np.object_),
+    ])),
+    'way': None,
 }
-waypointsManager = {
-    'currentIndex': 0,
-    'points': np.array([
-        # ('floor', (33121, 32837, 7), 0),
-        # ('floor', (33125, 32835, 7), 0),
-        # ('floor', (33125, 32833, 7), 0),
-        # ('floor', (33114, 32830, 7), 0),
-        # ('floor', (33098, 32830, 7), 0),
-        # ('floor', (33098, 32793, 7), 0),
-        # ('floor', (33088, 32788, 7), 0),
-        # ('moveUp', (33088, 32786, 6), 0),
-        # ('floor', (33088, 32785, 6), 0),
-        # ('moveDown', (33088, 32783, 7), 0),
-        # ('floor', (33078, 32760, 7), 0),
-        # ('shovel', (33072, 32760, 7), 0),
-        # ('floor', (33072, 32760, 8), 0),
-        ('floor', (33072, 32759, 8), 0),
-        ('floor', (33096, 32762, 8), 0),
-        ('floor', (33067, 32748, 8), 0),
-        ('floor', (33085, 32775, 8), 0),
-        ('floor', (33062, 32788, 8), 0),
-        # stonerefinner
-        # ('floor', (33037,31977,13), 0),
-        # ('floor', (33039,32021,13), 0),
-        # ('floor', (33078,32017,13), 0),
-        # ('floor', (33041,32041,13), 0),
-        # ('floor', (33079,32042,13), 0),
-        # ('floor', (33034,32053,13), 0),
-
-        # teste em curvas
-        # ('floor', (33093, 32788, 7), 0),
-        # ('floor', (33088, 32788, 7), 0),
-
-        # teste em linha reta
-        # ('floor', (33089, 32789, 7), 0),
-        # ('floor', (33084, 32789, 7), 0),
-    ], dtype=waypointType),
-    'state': None
-}
+hudCreatures = np.array([], dtype=hud.creatures.creatureType)
 
 
 def main():
@@ -83,201 +89,245 @@ def main():
     threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
     thirteenFps = 0.00833333333
     fpsObserver = interval(thirteenFps)
+
+    def handleScreenshot(_):
+        global gameContext
+        copyOfContext = gameContext.copy()
+        screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
+        copyOfContext['screenshot'] = screenshot
+        gameContext = copyOfContext
+        return copyOfContext
+
     fpsWithScreenshot = fpsObserver.pipe(
-        operators.map(lambda _: {'screenshot': utils.image.RGBtoGray(
-            utils.core.getScreenshot())}),
+        operators.map(handleScreenshot),
     )
 
-    def getCoordinate(screenshot):
-        global previousRadarCoordinate
-        radarCoordinate = radar.core.getCoordinate(
-            screenshot, previousRadarCoordinate=previousRadarCoordinate)
-        return radarCoordinate
+    def handleCoordinate(context):
+        global gameContext
+        copyOfContext = context.copy()
+        copyOfContext['radarCoordinate'] = radar.core.getCoordinate(
+            copyOfContext['screenshot'], previousRadarCoordinate=copyOfContext['previousRadarCoordinate'])
+        copyOfContext['previousRadarCoordinate'] = copyOfContext['radarCoordinate']
+        gameContext = copyOfContext
+        return copyOfContext
 
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.filter(lambda result: result['screenshot'] is not None),
-        operators.map(lambda result: {
-            'radarCoordinate': getCoordinate(result['screenshot']),
-            'screenshot': result['screenshot'],
-        })
+        operators.map(handleCoordinate)
     )
 
+    def handleBattleListCreatures(context):
+        global gameContext
+        copyOfContext = context.copy()
+        copyOfContext['battleListCreatures'] = battleList.core.getCreatures(
+            copyOfContext['screenshot'])
+        gameContext = copyOfContext
+        return copyOfContext
+
     battleListObserver = coordinatesObserver.pipe(
-        operators.map(lambda result: {
-            'battleListCreatures': battleList.core.getCreatures(result['screenshot']),
-            'radarCoordinate': result['radarCoordinate'],
-            'screenshot': result['screenshot'],
-        })
+        operators.map(handleBattleListCreatures)
     )
+
+    def handleHudCoordinate(context):
+        global gameContext
+        copyOfContext = context.copy()
+        copyOfContext['hudCoordinate'] = hud.core.getCoordinate(
+            copyOfContext['screenshot'])
+        gameContext = copyOfContext
+        return copyOfContext
 
     hudCoordinateObserver = battleListObserver.pipe(
         operators.filter(lambda result: result['radarCoordinate'] is not None),
-        operators.map(lambda result: {
-            'battleListCreatures': result['battleListCreatures'],
-            'hudCoordinate': hud.core.getCoordinate(result['screenshot']),
-            'radarCoordinate': result['radarCoordinate'],
-            'screenshot': result['screenshot'],
-        })
+        operators.map(handleHudCoordinate)
     )
+
+    def handleHudImg(context):
+        global gameContext
+        copyOfContext = context.copy()
+        copyOfContext['hudImg'] = hud.core.getImgByCoordinate(
+            copyOfContext['screenshot'], copyOfContext['hudCoordinate'])
+        gameContext = copyOfContext
+        return copyOfContext
 
     hudImgObserver = hudCoordinateObserver.pipe(
-        operators.map(lambda result: {
-            'battleListCreatures': result['battleListCreatures'],
-            'hudCoordinate': result['hudCoordinate'],
-            'hudImg': hud.core.getImgByCoordinate(result['screenshot'], result['hudCoordinate']),
-            'radarCoordinate': result['radarCoordinate'],
-            'screenshot': result['screenshot'],
-        })
+        operators.map(handleHudImg)
     )
 
-    def resolveDirection(result):
-        global comingFromDirection, previousRadarCoordinate
-        # Se a coordenada anterior for None, setar com o valor da coordenada atual
-        if previousRadarCoordinate is None:
-            previousRadarCoordinate = result['radarCoordinate']
+    def resolveDirection(context):
+        global gameContext
+        copyOfContext = context.copy()
+        comingFromDirection = None
+        if copyOfContext['previousRadarCoordinate'] is None:
+            copyOfContext['previousRadarCoordinate'] = copyOfContext['radarCoordinate']
         coordinateDidChange = np.all(
-            previousRadarCoordinate == result['radarCoordinate']) == False
+            copyOfContext['previousRadarCoordinate'] == copyOfContext['radarCoordinate']) == False
         if coordinateDidChange:
-            radarCoordinate = result['radarCoordinate']
-            # Verificar se mudou de andar
-            if radarCoordinate[2] != previousRadarCoordinate[2]:
+            radarCoordinate = copyOfContext['radarCoordinate']
+            if radarCoordinate[2] != copyOfContext['previousRadarCoordinate'][2]:
                 comingFromDirection = None
-            # Verificar se foi teleport/lag
-            elif radarCoordinate[0] != previousRadarCoordinate[0] and radarCoordinate[1] != previousRadarCoordinate[1]:
+            elif radarCoordinate[0] != copyOfContext['previousRadarCoordinate'][0] and radarCoordinate[1] != copyOfContext['previousRadarCoordinate'][1]:
                 comingFromDirection = None
-            elif radarCoordinate[0] != previousRadarCoordinate[0]:
-                # Verificar se está vindo da esquerda/direita
-                # - Para determinar se está vindo da esquerda, basta o x da coordenada atual ser maior que o x da coordenada anterior
-                # - Para determinar se está vindo da direita, basta o x da coordenada atual ser menor que o x da coordenada anterior
+            elif radarCoordinate[0] != copyOfContext['previousRadarCoordinate'][0]:
                 comingFromDirection = 'left' if radarCoordinate[
-                    0] > previousRadarCoordinate[0] else 'right'
-            elif radarCoordinate[1] != previousRadarCoordinate[1]:
-                # Verificar cima/baixa
-                # - Para determinar se está vindo de cima, basta o y da coordenada atual ser menor que o y da coordenada anterior
-                # - Para determinar se está vindo de baixo, basta o y da coordenada atual ser maior que o y da coordenada anterior
+                    0] > copyOfContext['previousRadarCoordinate'][0] else 'right'
+            elif radarCoordinate[1] != copyOfContext['previousRadarCoordinate'][1]:
                 comingFromDirection = 'top' if radarCoordinate[
-                    1] > previousRadarCoordinate[1] else 'bottom'
-            previousRadarCoordinate = result['radarCoordinate']
-        return {
-            'battleListCreatures': result['battleListCreatures'],
-            'comingFromDirection': comingFromDirection,
-            'hudCoordinate': result['hudCoordinate'],
-            'hudCreatures': hudCreatures,
-            'hudImg': result['hudImg'],
-            'radarCoordinate': result['radarCoordinate'],
-            'screenshot': result['screenshot'],
-        }
+                    1] > copyOfContext['previousRadarCoordinate'][1] else 'bottom'
+            copyOfContext['previousRadarCoordinate'] = copyOfContext['radarCoordinate']
+        copyOfContext['comingFromDirection'] = comingFromDirection
+        gameContext = copyOfContext
+        return copyOfContext
 
     directionObserver = hudImgObserver.pipe(operators.map(resolveDirection))
 
-    def resolveCreatures(result):
-        global comingFromDirection, previousRadarCoordinate
+    def resolveCreatures(context):
+        global gameContext, hudCreatures
+        copyOfContext = context.copy()
         hudCreatures = hud.creatures.getCreatures(
-            result['battleListCreatures'], comingFromDirection, result['hudCoordinate'], result['hudImg'], result['radarCoordinate'])
-        return {
-            'battleListCreatures': result['battleListCreatures'],
-            'comingFromDirection': result['comingFromDirection'],
-            'hudCoordinate': result['hudCoordinate'],
-            'hudCreatures': hudCreatures,
-            'hudImg': result['hudImg'],
-            'radarCoordinate': result['radarCoordinate'],
-            'screenshot': result['screenshot'],
-        }
+            copyOfContext['battleListCreatures'], copyOfContext['comingFromDirection'], copyOfContext['hudCoordinate'], copyOfContext['hudImg'], copyOfContext['radarCoordinate'])
+        copyOfContext['hudCreatures'] = hudCreatures
+        gameContext = copyOfContext
+        return copyOfContext
 
     hudCreaturesObserver = directionObserver.pipe(
         operators.map(resolveCreatures))
 
-    def lootObservable(result):
-        global beingAttackedCreature, corpsesToLoot
-        screenshot = result['screenshot']
-        hudCreatures = result['hudCreatures']
+    def handleLoot(context):
+        global gameContext
+        copyOfContext = context.copy()
+        corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
         beingAttackedIndexes = np.where(
             hudCreatures['isBeingAttacked'] == True)[0]
         hasCreatureBeingAttacked = len(beingAttackedIndexes) > 0
-        if chat.hasNewLoot(screenshot) and beingAttackedCreature:
-            corpsesToLoot = np.append(
-                corpsesToLoot, [beingAttackedCreature], axis=0)
+        if chat.hasNewLoot(copyOfContext['screenshot']) and copyOfContext['beingAttackedCreature']:
+            corpsesToLoot = np.append(copyOfContext['corpsesToLoot'], [
+                                      copyOfContext['beingAttackedCreature']], axis=0)
+        beingAttackedCreature = None
         if hasCreatureBeingAttacked:
             beingAttackedCreature = hudCreatures[beingAttackedIndexes[0]]
-        else:
-            beingAttackedCreature = None
-        return corpsesToLoot
+        copyOfContext['beingAttackedCreature'] = beingAttackedCreature
+        copyOfContext['corpsesToLoot'] = corpsesToLoot
+        gameContext = copyOfContext
+        return copyOfContext
 
-    lootObserver = hudCreaturesObserver.pipe(operators.map(lambda result: {
-        'battleListCreatures': result['battleListCreatures'],
-        'comingFromDirection': result['comingFromDirection'],
-        'corpsesToLoot': lootObservable(result),
-        'hudCoordinate': result['hudCoordinate'],
-        'hudCreatures': result['hudCreatures'],
-        'hudImg': result['hudImg'],
-        'radarCoordinate': result['radarCoordinate'],
-        'screenshot': result['screenshot'],
-    }))
+    lootObserver = hudCreaturesObserver.pipe(operators.map(handleLoot))
+
+    def handleDecision(context):
+        global gameContext
+        copyOfContext = context.copy()
+        copyOfContext['way'] = gameplay.decision.getWay(
+            copyOfContext['corpsesToLoot'], copyOfContext['hudCreatures'], copyOfContext['radarCoordinate'])
+        gameContext = copyOfContext
+        return copyOfContext
 
     decisionObserver = lootObserver.pipe(
-        operators.map(lambda result: {
-            'battleListCreatures': result['battleListCreatures'],
-            'comingFromDirection': result['comingFromDirection'],
-            'hudCoordinate': result['hudCoordinate'],
-            'hudCreatures': result['hudCreatures'],
-            'hudImg': result['hudImg'],
-            'radarCoordinate': result['radarCoordinate'],
-            'screenshot': result['screenshot'],
-            'way': gameplay.decision.getWay(result['corpsesToLoot'], result['hudCreatures'], result['radarCoordinate']),
-        })
+        operators.map(handleDecision)
     )
 
-    def waypointObservable(result):
-        global cavebotManager, coordinateHudTracker, corpsesToLoot, lastWay, walkpointsManager, waypointsManager
-        if waypointsManager['currentIndex'] == None:
-            waypointsManager['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
-                result['radarCoordinate'], waypointsManager['points'])
-        if result['way'] == 'lootCorpses':
-            walkpoints = gameplay.waypoint.generateFloorWalkpoints(
-                result['radarCoordinate'], corpsesToLoot[0]['radarCoordinate'])
-            if len(walkpoints) > 1:
-                walkpoints = np.delete(walkpoints, -1, axis=0)
-            walkpointsManager['points'] = walkpoints
-            if len(walkpointsManager['points']) == 0:
-                time.sleep(1)
-                slot = hud.core.getSlotFromCoordinate(
-                    result['radarCoordinate'], corpsesToLoot[0]['radarCoordinate'])
-                pyautogui.keyDown('shift')
-                time.sleep(0.1)
-                hud.slot.rightClickSlot(slot, result['hudCoordinate'])
-                time.sleep(0.1)
-                pyautogui.keyUp('shift')
-                corpsesToLoot = np.delete(corpsesToLoot, 0)
-        if result['way'] == 'cavebot':
-            cavebotManager, walkpointsManager = gameplay.cavebot.handleCavebot(
-                result['battleListCreatures'],
-                cavebotManager,
-                result['hudCreatures'],
-                result['radarCoordinate'],
-                walkpointsManager
-            )
-        else:
-            if lastWay == 'cavebot':
-                walkpointsManager['lastCoordinateVisited'] = None
-                walkpointsManager['points'] = np.array([])
-                walkpointsManager['state'] = None
-            waypointsManager = gameplay.waypoint.handleWaypoint(
-                result['screenshot'],
-                result['radarCoordinate'],
-                waypointsManager,
-            )
-            walkpointsManager = gameplay.waypoint.handleWalkpoints(
-                result['radarCoordinate'],
-                walkpointsManager,
-                waypointsManager
-            )
-        walkpointsManager = gameplay.waypoint.walk(
-            result['radarCoordinate'],
-            walkpointsManager
-        )
-        lastWay = result['way']
+    def handleTasks(context):
+        global gameContext
+        copyOfContext = context.copy()
+        if copyOfContext['waypoints']['currentIndex'] == None:
+            copyOfContext['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
+                copyOfContext['radarCoordinate'], copyOfContext['waypoints']['points'])
+        currentWaypointIndex = copyOfContext['waypoints']['currentIndex']
+        nextWaypointIndex = utils.array.getNextArrayIndex(
+            copyOfContext['waypoints']['points'], currentWaypointIndex)
+        currentWaypoint = copyOfContext['waypoints']['points'][currentWaypointIndex]
+        nextWaypoint = copyOfContext['waypoints']['points'][nextWaypointIndex]
+        waypointsStateIsEmpty = copyOfContext['waypoints']['state'] == None
+        if waypointsStateIsEmpty:
+            copyOfContext['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
+                copyOfContext['radarCoordinate'], currentWaypoint)
+        result = copyOfContext['radarCoordinate'] == copyOfContext['waypoints']['state']['checkInCoordinate']
+        didReachWaypoint = np.all(result) == True
+        hasNoTasks = len(copyOfContext['tasks']) == 0
+        if hasNoTasks:
+            if copyOfContext['way'] == 'waypoint':
+                print('pegando task aki', currentWaypoint)
+                copyOfContext['tasks'] = gameplay.resolvers.resolveTasksByWaypointType(
+                    copyOfContext, currentWaypoint)
+        print('way', copyOfContext['way'])
+        print('tasks len', len(copyOfContext['tasks']))
+        # print('tasks', copyOfContext['tasks'])
+        if copyOfContext['way'] == 'cavebot':
+            isTryingToAttackClosestCreature = len(
+                copyOfContext['tasks']) > 0 and copyOfContext['tasks'][0]['type'] == 'attackClosestCreature'
+            if isTryingToAttackClosestCreature:
+                print('to tentando atacar')
+            else:
+                tasks = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
+                if tasks is not None:
+                    if copyOfContext['lastPressedKey'] is not None:
+                        pyautogui.keyUp(copyOfContext['lastPressedKey'])
+                        copyOfContext['lastPressedKey'] = None
+                    copyOfContext['tasks'] = tasks
+        if didReachWaypoint:
+            if len(copyOfContext['tasks']) == 0 or copyOfContext['tasks'][0]['type'] != 'check':
+                copyOfContext['waypoints']['currentIndex'] = nextWaypointIndex
+                copyOfContext['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
+                    copyOfContext['radarCoordinate'], nextWaypoint)
+            else:
+                print(' n fiz nada pq é check')
+        gameContext = copyOfContext
+        return copyOfContext
 
-    decisionObserver.subscribe(waypointObservable)
+    def hasTasksToExecute(context):
+        has = len(context['tasks']) > 0
+        return has
+
+    taskObserver = decisionObserver.pipe(
+        operators.map(handleTasks),
+        operators.filter(hasTasksToExecute),
+    )
+
+    def taskObservable(context):
+        global gameContext
+        copyOfContext = context.copy()
+        if len(copyOfContext['tasks']) > 0:
+            task = copyOfContext['tasks'][0]
+            if task['data']['status'] == 'notStarted':
+                if task['data']['startedAt'] == None:
+                    task['data']['startedAt'] = time.time()
+                passedTimeSinceLastCheck = time.time() - \
+                    task['data']['startedAt']
+                shouldExecNow = passedTimeSinceLastCheck >= task['data']['delayBeforeStart']
+                if shouldExecNow:
+                    shouldExecResponse = task['data']['shouldExec'](
+                        copyOfContext)
+                    shouldNotExecTask = shouldExecResponse == False and task[
+                        'data']['status'] != 'running'
+                    if shouldNotExecTask:
+                        copyOfContext = task['data']['didNotComplete'](copyOfContext)
+                        copyOfContext['tasks'] = np.delete(
+                            copyOfContext['tasks'], 0)
+                    else:
+                        task['data']['status'] = 'running'
+                        copyOfContext = task['data']['do'](copyOfContext)
+                        if len(copyOfContext['tasks']) > 0:
+                            copyOfContext['tasks'][0] = task
+            elif task['data']['status'] == 'running':
+                shouldNotRestart = not task['data']['shouldRestart'](
+                    copyOfContext)
+                if shouldNotRestart:
+                    didTask = task['data']['did'](copyOfContext)
+                    if didTask:
+                        task['data']['finishedAt'] = time.time()
+                        task['data']['status'] = 'completed'
+                        copyOfContext['tasks'][0] = task
+            if task['data']['status'] == 'completed':
+                passedTimeSinceTaskCompleted = time.time() - \
+                    task['data']['finishedAt']
+                didPassedEnoughDelayAfterTaskComplete = passedTimeSinceTaskCompleted > task[
+                    'data']['delayAfterComplete']
+                if didPassedEnoughDelayAfterTaskComplete:
+                    # copyOfContext = task['data']['after'](copyOfContext)
+                    copyOfContext['tasks'] = np.delete(
+                        copyOfContext['tasks'], 0)
+        gameContext = copyOfContext
+        copyOfContext['lastCoordinateVisited'] = context['radarCoordinate']
+
+    taskObserver.subscribe(taskObservable)
 
     while True:
         time.sleep(10)
@@ -286,32 +336,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-# TODO:
-# - (x) fica parado quando nao tem target para os bichos fora da tela
-# - (x) nao se mexer quando a distancia do target é só 1
-# - (x) varios errors de friction tile
-
-
-# Walk:
-# - (x) quando está andando e de repente fica parado, recalcular rota e reiniciar walk
-# - quando anda pra fora do caminho traçado, recalcular rota e reiniciar walk
-# - (x) mudar o calculo path finding para o paths do tibiamaps e ignorar buracos, escadas, etc
-# - as vezes da sorry not possible ao andar mesmo sem errar o path, possivelmente batendo sensivelmente nas paredes
-# - o bot não ignora as piramides e muda de andar, ignorar coordenadas amarelas pra gerar caminho
-
-# Cavebot:
-# - cliques excessivos quando nao consegue atacar o monstro
-# - está clicando fora do target porque o boneco está em movimentação
-# - (x) as vezes não detecta que a creature está com target e faz varias tentativas
-# - (x) as vezes ataca, há target e não segue
-# - (x) algumas vezes há target mas ele fica andando pra esquerda/direita ou todo torto
-# - quando clica nos edges da hud, acabando clicando nas slots bars
-# - quando o target está longe e ainda não atacou e aparece alguem mais proximo, deveria mudar o target
-# - o que fazer quando tem target e de repente o target desaparece pois tem q dar a volta?
-
-# Detecção:
-# - (x) as vezes os monstros estão com slots 255
-# - detectar npcs
-# - detectar objetos bloqueante

@@ -99,6 +99,9 @@ for floor in floors:
     walkableFloorSqms = np.where(
         np.isin(floorsPathsImgs[floor], [105, 226]), 0, 1)
     walkableFloorsSqms[floor] = walkableFloorSqms
+    # fa = np.array(
+    #     np.where(walkableFloorsSqms[floor].copy() == 0, 255, 100), dtype=np.uint8)
+    # utils.image.save(fa, f'floor-{floor}.png')
 
 # radarImagesCoordinates = np.load('radar/npys/radarImagesCoordinates.npy', allow_pickle=True)
 # walkableFloorsSqms = np.load('radar/npys/walkableFloorsSqms.npy')
