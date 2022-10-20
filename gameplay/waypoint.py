@@ -10,7 +10,6 @@ import utils.mouse
 import utils.matrix
 
 
-# TODO: add unit tests
 def generateFloorWalkpoints(coordinate, goalCoordinate):
     pixelCoordinate = utils.core.getPixelFromCoordinate(coordinate)
     xFromTheStartOfRadar = pixelCoordinate[0] - 53
@@ -32,26 +31,49 @@ def generateFloorWalkpoints(coordinate, goalCoordinate):
     return walkpoints
 
 
-# TODO: add unit tests
 def resolveFloorCoordinate(_, nextCoordinate):
-    return nextCoordinate
+    return {
+        'goalCoordinate': nextCoordinate,
+        'checkInCoordinate': nextCoordinate,
+    }
 
 
-# TODO: add unit tests
 def resolveMoveDownNorthCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
-    goalCoordinate = [x, y - 2, floorLevel + 1]
-    return goalCoordinate
+    checkInCoordinate = [x, y - 2, floorLevel + 1]
+    return {
+        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
+        'checkInCoordinate': checkInCoordinate,
+    }
 
 
-# TODO: add unit tests
+def resolveMoveDownSouthCoordinate(_, nextCoordinate):
+    (x, y, floorLevel) = nextCoordinate
+    checkInCoordinate = [x, y + 2, floorLevel + 1]
+    return {
+        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
+        'checkInCoordinate': checkInCoordinate,
+    }
+
+
 def resolveMoveUpNorthCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     goalCoordinate = [x, y - 2, floorLevel - 1]
-    return goalCoordinate
+    return {
+        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
+        'checkInCoordinate': goalCoordinate,
+    }
 
 
-# TODO: add unit tests
+def resolveMoveUpSouthCoordinate(_, nextCoordinate):
+    (x, y, floorLevel) = nextCoordinate
+    goalCoordinate = [x, y + 2, floorLevel - 1]
+    return {
+        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
+        'checkInCoordinate': goalCoordinate,
+    }
+
+
 def resolveUseShovelWaypointCoordinate(radarCoordinate, nextCoordinate):
     floorLevel = nextCoordinate[2]
     walkableFloorSqms = radar.config.walkableFloorsSqms[floorLevel].copy()
@@ -59,20 +81,42 @@ def resolveUseShovelWaypointCoordinate(radarCoordinate, nextCoordinate):
         nextCoordinate, walkableFloorSqms)
     closestCoordinate = utils.coordinate.getClosestCoordinate(
         radarCoordinate, availableAroundCoordinates)
-    return closestCoordinate
+    checkInCoordinate = [nextCoordinate[0],
+                         nextCoordinate[1], nextCoordinate[2] + 1]
+    return {
+        'goalCoordinate': closestCoordinate,
+        'checkInCoordinate': checkInCoordinate,
+    }
 
 
-# TODO: add unit tests
+def resolveUseRopeWaypointCoordinate(_, nextCoordinate):
+    checkInCoordinate = [nextCoordinate[0],
+                         nextCoordinate[1] + 1, nextCoordinate[2] - 1]
+    return {
+        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
+        'checkInCoordinate': checkInCoordinate,
+    }
+
+
 def resolveGoalCoordinate(radarCoordinate, waypoint):
     goalCoordinate = None
-    if waypoint['type'] == 'useShovel':
+    if waypoint['type'] == 'useRope':
+        goalCoordinate = resolveUseRopeWaypointCoordinate(
+            radarCoordinate, waypoint['coordinate'])
+    elif waypoint['type'] == 'useShovel':
         goalCoordinate = resolveUseShovelWaypointCoordinate(
             radarCoordinate, waypoint['coordinate'])
     elif waypoint['type'] == 'moveDownNorth':
         goalCoordinate = resolveMoveDownNorthCoordinate(
             radarCoordinate, waypoint['coordinate'])
+    elif waypoint['type'] == 'moveDownSouth':
+        goalCoordinate = resolveMoveDownSouthCoordinate(
+            radarCoordinate, waypoint['coordinate'])
     elif waypoint['type'] == 'moveUpNorth':
         goalCoordinate = resolveMoveUpNorthCoordinate(
+            radarCoordinate, waypoint['coordinate'])
+    elif waypoint['type'] == 'moveUpSouth':
+        goalCoordinate = resolveMoveUpSouthCoordinate(
             radarCoordinate, waypoint['coordinate'])
     else:
         goalCoordinate = resolveFloorCoordinate(

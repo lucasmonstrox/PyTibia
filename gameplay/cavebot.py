@@ -1,60 +1,86 @@
+import numpy as np
 import pyautogui
 import time
 import battleList.core
-import gameplay.waypoint
 import hud.creatures
+from . import baseTasks
 
 
-# TODO: add unit tests
-def handleCavebot(battleListCreatures, cavebotManager, hudCreatures, radarCoordinate, walkpointsManager):
-    copiedWalkpointsManager = walkpointsManager.copy()
-    copyOfCavebotManager = cavebotManager.copy()
-    if battleList.core.isAttackingSomeCreature(battleListCreatures):
-        copyOfCavebotManager['status'] = 'attackingTarget'
-        targetCreature = hud.creatures.getTargetCreature(hudCreatures)
+def doAttackClosestCreature(context, closestCreature):
+    x, y = closestCreature['windowCoordinate']
+    pyautogui.rightClick(x, y)
+    return context
+
+
+def makeAttackClosestCreatureTask(closestCreature):
+    task = {
+        'createdAt': time.time(),
+        'startedAt': None,
+        'finishedAt': None,
+        'delayBeforeStart': 0,
+        'delayAfterComplete': 0.1,
+        'shouldExec': lambda context: True,
+        'do': lambda context: doAttackClosestCreature(context, closestCreature),
+        'did': lambda _: True,  # Verificar se a criatura tem target
+        'didNotComplete': lambda context: context,
+        'shouldRestart': lambda context: False,  # Verificar se ficou sem target
+        'status': 'notStarted',
+        'value': closestCreature,
+    }
+    return ('attackClosestCreature', task)
+
+
+def makeAttackClosestCreatureTasks(context, closestCreature):
+    tasksArray = np.array([], dtype=baseTasks.taskType)
+    tasksToAppend = np.array([
+        makeAttackClosestCreatureTask(closestCreature),
+    ], dtype=baseTasks.taskType)
+    tasksArray = np.append(tasksArray, [tasksToAppend])
+    floorTasks = baseTasks.makeWalkpointTasks(
+        context, closestCreature['radarCoordinate'])
+    for floorTask in floorTasks:
+        taskToAppend = np.array([floorTask], dtype=baseTasks.taskType)
+        tasksArray = np.append(tasksArray, [taskToAppend])
+    return tasksArray
+
+
+def makeFollowCreatureTasks(context, closestCreature):
+    tasksArray = np.array([], dtype=baseTasks.taskType)
+    floorTasks = baseTasks.makeWalkpointTasks(
+        context, closestCreature['radarCoordinate'])
+    for floorTask in floorTasks:
+        taskToAppend = np.array([floorTask], dtype=baseTasks.taskType)
+        tasksArray = np.append(tasksArray, [taskToAppend])
+    return tasksArray
+
+
+def resolveCavebotTasks(context):
+    isAttackingSomeCreature = battleList.core.isAttackingSomeCreature(
+        context['battleListCreatures'])
+    if isAttackingSomeCreature:
+        targetCreature = hud.creatures.getTargetCreature(
+            context['hudCreatures'])
         hasNoTargetCreature = targetCreature == None
         if hasNoTargetCreature:
-            copyOfCavebotManager['status'] = None
-            return copyOfCavebotManager, copiedWalkpointsManager
+            print('hasNoTargetCreature 1')
+            return None
         hasNoTargetToTargetCreature = hud.creatures.hasTargetToCreature(
-            hudCreatures, targetCreature, radarCoordinate) == False
+            context['hudCreatures'], targetCreature, context['radarCoordinate']) == False
         if hasNoTargetToTargetCreature:
             targetCreature = hud.creatures.getClosestCreature(
-                hudCreatures, radarCoordinate)
+                context['hudCreatures'], context['radarCoordinate'])
             hasNoTargetCreature = targetCreature == None
             if hasNoTargetCreature:
-                copyOfCavebotManager['status'] = None
-                return copyOfCavebotManager, copiedWalkpointsManager
-            x, y = targetCreature['windowCoordinate']
-            pyautogui.rightClick(x, y)
-            time.sleep(0.05)
-            copiedWalkpointsManager['lastCoordinateVisited'] = None
-            copiedWalkpointsManager['lastCoordinateVisitedAt'] = None
-            copiedWalkpointsManager['points'] = gameplay.waypoint.generateFloorWalkpoints(
-                radarCoordinate, targetCreature['radarCoordinate'])
-            copiedWalkpointsManager['points'] = copiedWalkpointsManager['points'][:-1]
-            if copiedWalkpointsManager['lastPressedKey'] is not None:
-                pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
-                copiedWalkpointsManager['lastPressedKey'] = None
-            return copyOfCavebotManager, copiedWalkpointsManager
-        if len(copiedWalkpointsManager['points']) == 0:
-            copiedWalkpointsManager['points'] = gameplay.waypoint.generateFloorWalkpoints(
-                    radarCoordinate, targetCreature['radarCoordinate'])
-    else:
-        targetCreature = hud.creatures.getClosestCreature(
-            hudCreatures, radarCoordinate)
-        hasNoTargetCreature = targetCreature == None
-        if hasNoTargetCreature:
-            return copyOfCavebotManager, copiedWalkpointsManager
-        x, y = targetCreature['windowCoordinate']
-        pyautogui.rightClick(x, y)
-        time.sleep(0.05)
-        copiedWalkpointsManager['lastCoordinateVisited'] = None
-        copiedWalkpointsManager['lastCoordinateVisitedAt'] = None
-        copiedWalkpointsManager['points'] = gameplay.waypoint.generateFloorWalkpoints(
-            radarCoordinate, targetCreature['radarCoordinate'])
-        copiedWalkpointsManager['points'] = copiedWalkpointsManager['points'][:-1]
-        if copiedWalkpointsManager['lastPressedKey'] is not None:
-            pyautogui.keyUp(copiedWalkpointsManager['lastPressedKey'])
-            copiedWalkpointsManager['lastPressedKey'] = None
-    return copyOfCavebotManager, copiedWalkpointsManager
+                print('hasNoTargetCreature 2')
+                return None
+        # - regenerar tasks se for preciso para seguir a criatura
+        tasks = makeFollowCreatureTasks(context, targetCreature)
+        return tasks
+    targetCreature = hud.creatures.getClosestCreature(
+        context['hudCreatures'], context['radarCoordinate'])
+    hasNoTargetCreature = targetCreature == None
+    if hasNoTargetCreature:
+        print('hasNoTargetCreature 3')
+        return None
+    tasks = makeAttackClosestCreatureTasks(context, targetCreature)
+    return tasks

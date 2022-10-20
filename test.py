@@ -2,11 +2,11 @@ from os import walk
 import numpy as np
 import cv2
 from time import sleep, time
+import actionBar.core
 import battleList.core
 from chat import chat
 import hud.core
 import hud.creatures
-import radar.config
 import radar.core
 import skills.core
 import utils.core
@@ -26,10 +26,10 @@ def main():
     # map = utils.image.RGBtoGray(
     #     utils.image.load('radar/images/paths/floor-11.png'))
     # utils.image.save(map, 'map11.png')
-    coordinate = (33078, 32755, 8)
-    isWalkable = radar.core.isCoordinateWalkable(coordinate)
-    print(isWalkable)
-    # screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
+    screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
+    quantityOfHealthPotions = actionBar.core.getSlotCount(screenshot, '1')
+    # coordinate = (33078, 32755, 8)
+    # isWalkable = radar.core.isCoordinateWalkable(coordinate)
     # hudCoordinate = hud.core.getCoordinate(screenshot)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     # radarCoordinate = radar.core.getCoordinate(screenshot)

@@ -10,7 +10,8 @@ import battleList.typing
 from chat import chat
 import gameplay.cavebot
 import gameplay.decision
-import gameplay.tasks
+import gameplay.baseTasks
+import gameplay.resolvers
 import gameplay.waypoint
 import hud.creatures
 import hud.core
@@ -44,20 +45,32 @@ gameContext = {
     'waypoints': {
         'currentIndex': None,
         'points': np.array([
-            ('floor', (33125, 32836, 7), 0),
-            ('floor', (33125, 32834, 7), 0),
-            ('floor', (33114, 32830, 7), 0),
-            ('floor', (33098, 32830, 7), 0),
-            ('floor', (33098, 32793, 7), 0),
-            ('moveUpNorth', (33088, 32788, 7), 0),
-            ('moveDownNorth', (33088, 32785, 6), 0),
-            ('useShovel', (33072, 32760, 7), 0),
-            ('floor', (33072, 32760, 8), 0),
-            ('floor', (33072, 32759, 8), 0),
-            ('floor', (33096, 32762, 8), 0),
-            ('floor', (33067, 32748, 8), 0),
-            ('floor', (33085, 32775, 8), 0),
-            ('floor', (33062, 32788, 8), 0),
+            ('floor', (33125, 32836, 7), 0, {}),
+            ('floor', (33125, 32834, 7), 0, {}),
+            ('floor', (33114, 32830, 7), 0, {}),
+            ('floor', (33098, 32830, 7), 0, {}),
+            ('floor', (33098, 32793, 7), 0, {}),
+            ('moveUpNorth', (33088, 32788, 7), 0, {}),
+            ('moveDownNorth', (33088, 32785, 6), 0, {}),
+            ('floor', (33078, 32760, 7), 0, {}),
+            ('floor', (33078, 32761, 7), 0, {}),
+            ('useShovel', (33072, 32760, 7), 0, {}),
+            ('floor', (33095, 32761, 8), 0, {}),
+            ('floor', (33084, 32770, 8), 0, {}),
+            ('floor', (33062, 32762, 8), 0, {}),
+            ('check', (33073, 32758, 8), 0, {
+                'minimumOfManaPotions': 50,
+                'minimumOfHealthPotions': 50,
+                'minimumOfCapacity': 500,
+            }),
+            ('useRope', (33072, 32760, 8), 0, {}),
+            ('floor', (33075, 32771, 7), 0, {}),
+            ('moveUpSouth', (33088, 32783, 7), 0, {}),
+            ('moveDownSouth', (33088, 32786, 6), 0, {}),
+            ('floor', (33098, 32793, 7), 0, {}),
+            ('floor', (33099, 32830, 7), 0, {}),
+            ('floor', (33125, 32833, 7), 0, {}),
+            33073, 32758, 8
         ], dtype=waypointType),
         'state': None
     },
@@ -217,29 +230,45 @@ def main():
         if copyOfContext['waypoints']['currentIndex'] == None:
             copyOfContext['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
                 copyOfContext['radarCoordinate'], copyOfContext['waypoints']['points'])
+        currentWaypointIndex = copyOfContext['waypoints']['currentIndex']
         nextWaypointIndex = utils.array.getNextArrayIndex(
-            copyOfContext['waypoints']['points'], copyOfContext['waypoints']['currentIndex'])
+            copyOfContext['waypoints']['points'], currentWaypointIndex)
+        currentWaypoint = copyOfContext['waypoints']['points'][currentWaypointIndex]
         nextWaypoint = copyOfContext['waypoints']['points'][nextWaypointIndex]
         waypointsStateIsEmpty = copyOfContext['waypoints']['state'] == None
         if waypointsStateIsEmpty:
-            copyOfContext['waypoints']['state'] = {
-                'goalCoordinate': gameplay.waypoint.resolveGoalCoordinate(copyOfContext['radarCoordinate'], nextWaypoint)
-            }
-        result = copyOfContext['radarCoordinate'] == copyOfContext['waypoints']['state']['goalCoordinate']
+            copyOfContext['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
+                copyOfContext['radarCoordinate'], currentWaypoint)
+        result = copyOfContext['radarCoordinate'] == copyOfContext['waypoints']['state']['checkInCoordinate']
         didReachWaypoint = np.all(result) == True
-        if didReachWaypoint:
-            nextWaypointIndex = utils.array.getNextArrayIndex(
-                copyOfContext['waypoints']['points'], copyOfContext['waypoints']['currentIndex'])
-            copyOfContext['waypoints']['currentIndex'] = nextWaypointIndex
-            copyOfContext['waypoints']['state'] = None
         hasNoTasks = len(copyOfContext['tasks']) == 0
         if hasNoTasks:
             if copyOfContext['way'] == 'waypoint':
-                nextWaypointIndex = utils.array.getNextArrayIndex(
-                    copyOfContext['waypoints']['points'], copyOfContext['waypoints']['currentIndex'])
-                nextWaypoint = copyOfContext['waypoints']['points'][nextWaypointIndex]
-                copyOfContext['tasks'] = gameplay.tasks.resolveTasksByWaypointType(
-                    copyOfContext, nextWaypoint)
+                print('pegando task aki', currentWaypoint)
+                copyOfContext['tasks'] = gameplay.resolvers.resolveTasksByWaypointType(
+                    copyOfContext, currentWaypoint)
+        print('way', copyOfContext['way'])
+        print('tasks len', len(copyOfContext['tasks']))
+        # print('tasks', copyOfContext['tasks'])
+        if copyOfContext['way'] == 'cavebot':
+            isTryingToAttackClosestCreature = len(
+                copyOfContext['tasks']) > 0 and copyOfContext['tasks'][0]['type'] == 'attackClosestCreature'
+            if isTryingToAttackClosestCreature:
+                print('to tentando atacar')
+            else:
+                tasks = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
+                if tasks is not None:
+                    if copyOfContext['lastPressedKey'] is not None:
+                        pyautogui.keyUp(copyOfContext['lastPressedKey'])
+                        copyOfContext['lastPressedKey'] = None
+                    copyOfContext['tasks'] = tasks
+        if didReachWaypoint:
+            if len(copyOfContext['tasks']) == 0 or copyOfContext['tasks'][0]['type'] != 'check':
+                copyOfContext['waypoints']['currentIndex'] = nextWaypointIndex
+                copyOfContext['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
+                    copyOfContext['radarCoordinate'], nextWaypoint)
+            else:
+                print(' n fiz nada pq é check')
         gameContext = copyOfContext
         return copyOfContext
 
@@ -250,38 +279,49 @@ def main():
     taskObserver = decisionObserver.pipe(
         operators.map(handleTasks),
         operators.filter(hasTasksToExecute),
-        # operators.do_action(lambda context: 1),
-        # reiniciar em caso de erro
-        # reiniciar se não terminou corretamente
-        # reiniciar após X segundos
     )
 
     def taskObservable(context):
         global gameContext
         copyOfContext = context.copy()
-        print(len(copyOfContext['tasks']))
-        task = copyOfContext['tasks'][0]
-        if task['data']['status'] == 'notStarted':
-            if task['data']['startedAt'] == None:
-                task['data']['startedAt'] = time.time()
-            passedTimeSinceLastCheck = time.time() - task['data']['startedAt']
-            shouldExecNow = passedTimeSinceLastCheck >= task['data']['delay']
-            if shouldExecNow:
-                shouldExecResponse = task['data']['shouldExec'](copyOfContext)
-                shouldNotExecTask = shouldExecResponse == False and task[
-                    'data']['status'] != 'running'
-                if shouldNotExecTask:
-                    copyOfContext['tasks'] = np.delete(
-                        copyOfContext['tasks'], 0)
-                else:
-                    task['data']['status'] = 'running'
-                    copyOfContext = task['data']['do'](copyOfContext)
-                copyOfContext['tasks'][0] = task
-        elif task['data']['status'] == 'running':
-            shouldNotRestart = not task['data']['shouldRestart'](copyOfContext)
-            if shouldNotRestart:
-                didTask = task['data']['did'](copyOfContext)
-                if didTask:
+        if len(copyOfContext['tasks']) > 0:
+            task = copyOfContext['tasks'][0]
+            if task['data']['status'] == 'notStarted':
+                if task['data']['startedAt'] == None:
+                    task['data']['startedAt'] = time.time()
+                passedTimeSinceLastCheck = time.time() - \
+                    task['data']['startedAt']
+                shouldExecNow = passedTimeSinceLastCheck >= task['data']['delayBeforeStart']
+                if shouldExecNow:
+                    shouldExecResponse = task['data']['shouldExec'](
+                        copyOfContext)
+                    shouldNotExecTask = shouldExecResponse == False and task[
+                        'data']['status'] != 'running'
+                    if shouldNotExecTask:
+                        copyOfContext = task['data']['didNotComplete'](copyOfContext)
+                        copyOfContext['tasks'] = np.delete(
+                            copyOfContext['tasks'], 0)
+                    else:
+                        task['data']['status'] = 'running'
+                        copyOfContext = task['data']['do'](copyOfContext)
+                        if len(copyOfContext['tasks']) > 0:
+                            copyOfContext['tasks'][0] = task
+            elif task['data']['status'] == 'running':
+                shouldNotRestart = not task['data']['shouldRestart'](
+                    copyOfContext)
+                if shouldNotRestart:
+                    didTask = task['data']['did'](copyOfContext)
+                    if didTask:
+                        task['data']['finishedAt'] = time.time()
+                        task['data']['status'] = 'completed'
+                        copyOfContext['tasks'][0] = task
+            if task['data']['status'] == 'completed':
+                passedTimeSinceTaskCompleted = time.time() - \
+                    task['data']['finishedAt']
+                didPassedEnoughDelayAfterTaskComplete = passedTimeSinceTaskCompleted > task[
+                    'data']['delayAfterComplete']
+                if didPassedEnoughDelayAfterTaskComplete:
+                    # copyOfContext = task['data']['after'](copyOfContext)
                     copyOfContext['tasks'] = np.delete(
                         copyOfContext['tasks'], 0)
         gameContext = copyOfContext

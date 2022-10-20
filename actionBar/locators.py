@@ -1,6 +1,6 @@
 import pathlib
 from utils.core import cacheObjectPos, locate
-from utils.image import loadAsGrey, loadFromRGBToGray
+from utils.image import loadFromRGBToGray
 
 currentPath = pathlib.Path(__file__).parent.resolve()
 imagesPath = f'{currentPath}/images'

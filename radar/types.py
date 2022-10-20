@@ -7,5 +7,6 @@ waypointDistanceType = np.dtype(
 waypointType = np.dtype([
     ('type', np.str_, 64),
     ('coordinate', np.uint32, (3,)),
-    ('tolerance', np.uint8)
+    ('tolerance', np.uint8),
+    ('options', object),
 ])
