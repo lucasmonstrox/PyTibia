@@ -118,10 +118,10 @@ def enableChatOff(screenshot):
 
 
 @utils.core.cacheObjectPos
-def getChatsTabs(screenshot):
+def getChatsTabsContainer(screenshot):
     leftSidebarArrows = getLeftSidebarArrows(screenshot)
-    chatMenu = getChatMenuPos(screenshot)
-    return leftSidebarArrows[0] + 10, chatMenu[1], chatMenu[0] - (leftSidebarArrows[0] + 10), 20
+    chatMenuPos = getChatMenuPos(screenshot)
+    return leftSidebarArrows[0] + 10, chatMenuPos[1], chatMenuPos[0] - (leftSidebarArrows[0] + 10), 20
 
 
 @utils.core.cacheObjectPos
