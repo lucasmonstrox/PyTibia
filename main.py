@@ -43,7 +43,7 @@ gameContext = {
     'previousRadarCoordinate': None,
     'radarCoordinate': None,
     'waypoints': {
-        'currentIndex': None,
+        'currentIndex': 23,
         'points': np.array([
             ('floor', (33125, 32836, 7), 0, {}),
             ('floor', (33125, 32834, 7), 0, {}),
@@ -59,9 +59,9 @@ gameContext = {
             ('floor', (33084, 32770, 8), 0, {}),
             ('floor', (33062, 32762, 8), 0, {}),
             ('check', (33073, 32758, 8), 0, {
-                'minimumOfManaPotions': 50,
-                'minimumOfHealthPotions': 50,
-                'minimumOfCapacity': 500,
+                'minimumOfManaPotions': 30,
+                'minimumOfHealthPotions': 30,
+                'minimumOfCapacity': 200,
             }),
             ('useRope', (33072, 32760, 8), 0, {}),
             ('floor', (33075, 32771, 7), 0, {}),
@@ -70,7 +70,19 @@ gameContext = {
             ('floor', (33098, 32793, 7), 0, {}),
             ('floor', (33099, 32830, 7), 0, {}),
             ('floor', (33125, 32833, 7), 0, {}),
-            33073, 32758, 8
+            ('refillPotionsChecker', (33127, 32834, 7), 0, {
+                'minimumOfManaPotions': 30,
+                'minimumOfHealthPotions': 30,
+            }),
+            ('moveUpNorth', (33128, 32827, 7), 0, {}),
+            ('moveUpNorth', (33131, 32817, 6), 0, {}),
+            ('floor', (33128, 32811, 5), 0, {}),
+            ('refill', (33128, 32810, 5), 0, {
+                'minimumOfManaPotions': 30,
+                'minimumOfHealthPotions': 30,
+            }),
+            ('floor', (33130, 32815, 5), 0, {}),
+
         ], dtype=waypointType),
         'state': None
     },
@@ -248,8 +260,10 @@ def main():
                 copyOfContext['tasks'] = gameplay.resolvers.resolveTasksByWaypointType(
                     copyOfContext, currentWaypoint)
         print('way', copyOfContext['way'])
-        print('tasks len', len(copyOfContext['tasks']))
         # print('tasks', copyOfContext['tasks'])
+        print('tasks len', len(copyOfContext['tasks']))
+        if len(copyOfContext['tasks']) > 0:
+            print('taskType', copyOfContext['tasks'][0]['type'])
         if copyOfContext['way'] == 'cavebot':
             isTryingToAttackClosestCreature = len(
                 copyOfContext['tasks']) > 0 and copyOfContext['tasks'][0]['type'] == 'attackClosestCreature'
@@ -262,8 +276,9 @@ def main():
                         pyautogui.keyUp(copyOfContext['lastPressedKey'])
                         copyOfContext['lastPressedKey'] = None
                     copyOfContext['tasks'] = tasks
+        print('currentWaypoint', currentWaypoint)
         if didReachWaypoint:
-            if len(copyOfContext['tasks']) == 0 or copyOfContext['tasks'][0]['type'] != 'check':
+            if len(copyOfContext['tasks']) == 0 or copyOfContext['tasks'][0]['type'] != 'check' or copyOfContext['tasks'][0]['type'] != 'refillPotionsChecker' or copyOfContext['tasks'][0]['type'] != 'refill' or copyOfContext['tasks'][0]['type'] != 'say' or copyOfContext['tasks'][0]['type'] != 'buyItem':
                 copyOfContext['waypoints']['currentIndex'] = nextWaypointIndex
                 copyOfContext['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
                     copyOfContext['radarCoordinate'], nextWaypoint)
@@ -298,7 +313,8 @@ def main():
                     shouldNotExecTask = shouldExecResponse == False and task[
                         'data']['status'] != 'running'
                     if shouldNotExecTask:
-                        copyOfContext = task['data']['didNotComplete'](copyOfContext)
+                        copyOfContext = task['data']['didNotComplete'](
+                            copyOfContext)
                         copyOfContext['tasks'] = np.delete(
                             copyOfContext['tasks'], 0)
                     else:
@@ -336,3 +352,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# melhorias
+# - Não andar quando estiver escrevendo

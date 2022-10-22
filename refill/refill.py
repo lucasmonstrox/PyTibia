@@ -5,6 +5,7 @@ import utils.mouse
 import chat.chat
 from time import sleep
 
+
 npcTradeBarImg = utils.image.loadAsGrey('refill/images/npcTradeBar.png')
 npcTradeOkImg = utils.image.loadAsGrey('refill/images/npcTradeOk.png')
 
@@ -58,7 +59,6 @@ def startTrade(screenshot):
 
 
 def buyItems(screenshot, itemAndQuantity):
-
     startTrade(screenshot)
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
     for item in itemAndQuantity:

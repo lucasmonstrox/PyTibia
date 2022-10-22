@@ -7,6 +7,7 @@ import battleList.core
 from chat import chat
 import hud.core
 import hud.creatures
+import hud.slot
 import radar.core
 import skills.core
 import utils.core
@@ -14,6 +15,9 @@ import utils.image
 from PIL import Image, ImageOps
 import pathlib
 import timeit
+import dxcam
+import scipy.fft
+import gameplay.waypoint
 
 
 def main():
@@ -25,25 +29,32 @@ def main():
     # corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
     # map = utils.image.RGBtoGray(
     #     utils.image.load('radar/images/paths/floor-11.png'))
-    # utils.image.save(map, 'map11.png')
-    screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
-    quantityOfHealthPotions = actionBar.core.getSlotCount(screenshot, '1')
-    # coordinate = (33078, 32755, 8)
-    # isWalkable = radar.core.isCoordinateWalkable(coordinate)
-    # hudCoordinate = hud.core.getCoordinate(screenshot)
-    # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
-    # radarCoordinate = radar.core.getCoordinate(screenshot)
-    # battleListCreatures = battleList.core.getCreatures(screenshot)
-    # # creaturesBars = hud.creatures.getCreaturesBars(hudImg)
-    # hudCreatures = hud.creatures.getCreatures(
-    #     battleListCreatures, 'left', hudCoordinate, hudImg, radarCoordinate)
+    nonGrayScreenshot = utils.core.getScreenshot()
+    # utils.image.save(nonGrayScreenshot, 'nonGrayScreenshot.png')
+    screenshot = utils.image.RGBtoGray(nonGrayScreenshot)
+    # utils.image.save(screenshot, 'screenshot.png')
+    hudCoordinate = hud.core.getCoordinate(screenshot)
+    hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
+    utils.image.save(hudImg, 'hudImg.png')
+    radarCoordinate = radar.core.getCoordinate(screenshot)
+    battleListCreatures = battleList.core.getCreatures(screenshot)
+    hudCreatures = hud.creatures.getCreatures(
+        battleListCreatures, 'left', hudCoordinate, hudImg, radarCoordinate)
+    walkpoints = gameplay.waypoint.generateFloorWalkpoints(
+        radarCoordinate, [33093, 32788, 7])
+    print(walkpoints)
+    # closestCreature = hud.creatures.getClosestCreature(
+    #     hudCreatures, radarCoordinate)
+    # targetCreature = hud.creatures.getTargetCreature(hudCreatures)
     # print(hud.creatures.getNearestCreaturesCount(hudCreatures))
-    # print(hudCreatures)
+    # print(targetCreature)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
     # utils.image.save(hudImg, 'hudImg.png')
-    # res = timeit.repeat(lambda: skills.core.getStamina(
-    #     screenshot), repeat=10, number=1)
-    # print(res)
+    # res1 = timeit.repeat(lambda: np.fft.fft(
+    #     np.ascontiguousarray(lava3)), repeat=10, number=1)
+    # res2 = timeit.repeat(lambda: utils.core.hashit(lava3), repeat=10, number=1)
+    # print(res1)
+    # print(res2)
 
 
 if __name__ == '__main__':

@@ -6,14 +6,12 @@ import skills.core
 
 
 def doCheck(context):
-    print('eu vou fazerrrrrrrrrrrrrrrrr')
-    context['waypoints']['currentIndex'] = 10
+    context['waypoints']['currentIndex'] = 10  # TODO: replace by variable
     context['waypoints']['state'] = None
     return context
 
 
 def didNotComplete(context):
-    print('eu nao completeiiiiiiiiii')
     context['waypoints']['currentIndex'] += 1
     context['waypoints']['state'] = None
     return context
@@ -47,9 +45,15 @@ def makeCheckTasks(waypoint):
 
 
 def shouldExecCheckTask(context, waypoint):
+    quantityOfCapacity = skills.core.getCapacity(context['screenshot'])
     quantityOfHealthPotions = actionBar.core.getSlotCount(
         context['screenshot'], '1')
-    quantityOfCapacity = skills.core.getCapacity(context['screenshot'])
-    shouldExec = quantityOfHealthPotions > waypoint['options'][
-        'minimumOfHealthPotions'] or quantityOfCapacity > waypoint['options']['minimumOfCapacity']
+    quantityOfManaPotions = actionBar.core.getSlotCount(
+        context['screenshot'], '2')
+    hasEnoughCapacity = quantityOfCapacity > waypoint['options']['minimumOfCapacity']
+    hasEnoughHealthPotions = quantityOfHealthPotions > waypoint['options'][
+        'minimumOfHealthPotions']
+    hasEnoughManaPotions = quantityOfManaPotions > waypoint['options'][
+        'minimumOfManaPotions']
+    shouldExec = hasEnoughCapacity and hasEnoughHealthPotions and hasEnoughManaPotions
     return shouldExec
