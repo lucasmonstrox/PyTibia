@@ -30,7 +30,6 @@ Only available for knights
 # ⚽ Goals
 
 - Detect every necessary information in the client in (milli/macro/nano)seconds
-- Walk through keyboard
 - Control every pixel of the mouse to make human movements
 - Use convolutionals neural networks to detect relevant stuffs like blockable objects, dropped loots, etc
 - Use recurrent neural networks to use natural language processing to chat with others players
