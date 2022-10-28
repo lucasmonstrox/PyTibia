@@ -37,6 +37,7 @@ def makeClickHoleTask(waypoint):
         'shouldExec': lambda context: True,  # TODO: check if is near to hole
         'do': lambda context: doClickHoleTask(context, waypoint),
         'did': lambda _: True,
+        'didComplete': lambda context: context,
         'didNotComplete': lambda context: context,
         'shouldRestart': lambda context: didClickHoleTask(context, waypoint),
         'status': 'notStarted',
@@ -55,6 +56,7 @@ def makeOpenHoleTask(waypoint):
         'shouldExec': lambda context: shouldExecOpenHole(context, waypoint['coordinate']),
         'do': lambda context: doOpenHole(context, waypoint['coordinate']),
         'did': lambda _: True,
+        'didComplete': lambda context: context,
         'didNotComplete': lambda context: context,
         'shouldRestart': lambda context: False,
         'status': 'notStarted',

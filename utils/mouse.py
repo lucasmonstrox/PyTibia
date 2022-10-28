@@ -12,7 +12,7 @@ def rightClick(x, y):
 
 
 def mouseMove(x, y):
-    pyautogui.moveTo(x, y)
+    pyautogui.moveTo(x, y, duration=3)
 
 
 def mouseScroll(scrolls):

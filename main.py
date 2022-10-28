@@ -42,11 +42,20 @@ gameContext = {
     'lastWay': 'waypoint',
     'previousRadarCoordinate': None,
     'radarCoordinate': None,
+    'refill': {
+        'healthItem': {
+            'name': 'ultimate spirit potion',
+            'quantity': 140,
+        },
+        'manaItem': {
+            'name': 'mana potion',
+            'quantity': 30,
+        },
+    },
     'waypoints': {
-        'currentIndex': 23,
+        'currentIndex': 22,
         'points': np.array([
-            ('floor', (33125, 32836, 7), 0, {}),
-            ('floor', (33125, 32834, 7), 0, {}),
+            ('floor', (33125, 32833, 7), 0, {}),
             ('floor', (33114, 32830, 7), 0, {}),
             ('floor', (33098, 32830, 7), 0, {}),
             ('floor', (33098, 32793, 7), 0, {}),
@@ -70,19 +79,13 @@ gameContext = {
             ('floor', (33098, 32793, 7), 0, {}),
             ('floor', (33099, 32830, 7), 0, {}),
             ('floor', (33125, 32833, 7), 0, {}),
-            ('refillPotionsChecker', (33127, 32834, 7), 0, {
-                'minimumOfManaPotions': 30,
-                'minimumOfHealthPotions': 30,
-            }),
+            ('refillPotionsChecker', (33127, 32834, 7), 0, {}),
             ('moveUpNorth', (33128, 32827, 7), 0, {}),
             ('moveUpNorth', (33131, 32817, 6), 0, {}),
             ('floor', (33128, 32811, 5), 0, {}),
-            ('refill', (33128, 32810, 5), 0, {
-                'minimumOfManaPotions': 30,
-                'minimumOfHealthPotions': 30,
-            }),
-            ('floor', (33130, 32815, 5), 0, {}),
-
+            ('refill', (33128, 32810, 5), 0, {}),
+            ('moveDownSouth', (33130, 32815, 5), 0, {}),
+            ('moveDownWest', (33124, 32814, 6), 0, {}),
         ], dtype=waypointType),
         'state': None
     },
@@ -256,14 +259,8 @@ def main():
         hasNoTasks = len(copyOfContext['tasks']) == 0
         if hasNoTasks:
             if copyOfContext['way'] == 'waypoint':
-                print('pegando task aki', currentWaypoint)
                 copyOfContext['tasks'] = gameplay.resolvers.resolveTasksByWaypointType(
                     copyOfContext, currentWaypoint)
-        print('way', copyOfContext['way'])
-        # print('tasks', copyOfContext['tasks'])
-        print('tasks len', len(copyOfContext['tasks']))
-        if len(copyOfContext['tasks']) > 0:
-            print('taskType', copyOfContext['tasks'][0]['type'])
         if copyOfContext['way'] == 'cavebot':
             isTryingToAttackClosestCreature = len(
                 copyOfContext['tasks']) > 0 and copyOfContext['tasks'][0]['type'] == 'attackClosestCreature'
@@ -276,7 +273,6 @@ def main():
                         pyautogui.keyUp(copyOfContext['lastPressedKey'])
                         copyOfContext['lastPressedKey'] = None
                     copyOfContext['tasks'] = tasks
-        print('currentWaypoint', currentWaypoint)
         if didReachWaypoint:
             if len(copyOfContext['tasks']) == 0 or copyOfContext['tasks'][0]['type'] != 'check' or copyOfContext['tasks'][0]['type'] != 'refillPotionsChecker' or copyOfContext['tasks'][0]['type'] != 'refill' or copyOfContext['tasks'][0]['type'] != 'say' or copyOfContext['tasks'][0]['type'] != 'buyItem':
                 copyOfContext['waypoints']['currentIndex'] = nextWaypointIndex
@@ -328,6 +324,8 @@ def main():
                 if shouldNotRestart:
                     didTask = task['data']['did'](copyOfContext)
                     if didTask:
+                        copyOfContext = task['data']['didComplete'](
+                            copyOfContext)
                         task['data']['finishedAt'] = time.time()
                         task['data']['status'] = 'completed'
                         copyOfContext['tasks'][0] = task
@@ -337,7 +335,6 @@ def main():
                 didPassedEnoughDelayAfterTaskComplete = passedTimeSinceTaskCompleted > task[
                     'data']['delayAfterComplete']
                 if didPassedEnoughDelayAfterTaskComplete:
-                    # copyOfContext = task['data']['after'](copyOfContext)
                     copyOfContext['tasks'] = np.delete(
                         copyOfContext['tasks'], 0)
         gameContext = copyOfContext

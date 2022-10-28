@@ -54,6 +54,31 @@ def doWalkpointTask(context, walkpoint):
     return copyOfContext
 
 
+def doSetNextWaypoint(context):
+    context['waypoints']['currentIndex'] += 1
+    context['waypoints']['state'] = None
+    return context
+
+
+def makeSetNextWaypoint():
+    task = {
+        'createdAt': time.time(),
+        'startedAt': None,
+        'finishedAt': None,
+        'delayBeforeStart': 2,
+        'delayAfterComplete': 2,
+        'shouldExec': lambda _: True,
+        'do': lambda context: doSetNextWaypoint(context),
+        'did': lambda _: True,
+        'didComplete': lambda context: context,
+        'didNotComplete': lambda _: True,
+        'shouldRestart': lambda _: False,
+        'status': 'notStarted',
+        'value': None,
+    }
+    return ('buyItem', task)
+
+
 def makeWalkpointTask(walkpoint):
     data = {
         'createdAt': time.time(),
@@ -64,6 +89,7 @@ def makeWalkpointTask(walkpoint):
         'shouldExec': lambda context: shouldExecWalkpointTask(context),
         'do': lambda context: doWalkpointTask(context, walkpoint),
         'did': lambda context: didWalkpointTask(context['radarCoordinate'], walkpoint),
+        'didComplete': lambda context: context,
         'didNotComplete': lambda context: context,
         'shouldRestart': lambda context: shouldRestartWalkpointTask(context),
         'status': 'notStarted',
@@ -91,3 +117,13 @@ def shouldExecWalkpointTask(context):
 
 def shouldRestartWalkpointTask(context):
     return False
+
+
+def makeWalkpointsTasksBetweenGoalAndCheckinCoordinates(context):
+    tasks = makeWalkpointTasks(
+        context, context['waypoints']['state']['goalCoordinate'])
+    walkpointTask = makeWalkpointTask(
+        context['waypoints']['state']['checkInCoordinate'])
+    taskToAppend = np.array([walkpointTask], dtype=taskType)
+    tasks = np.append(tasks, [taskToAppend])
+    return tasks

@@ -2,6 +2,7 @@ import gameplay.baseTasks
 import gameplay.tasks.check
 import gameplay.tasks.moveDownNorth
 import gameplay.tasks.moveDownSouth
+import gameplay.tasks.moveDownWest
 import gameplay.tasks.moveUpNorth
 import gameplay.tasks.moveUpSouth
 import gameplay.tasks.refillPotionsChecker
@@ -17,13 +18,21 @@ def resolveTasksByWaypointType(context, waypoint):
         tasks = gameplay.baseTasks.makeWalkpointTasks(
             context, waypoint['coordinate'])
         return tasks
+    elif waypoint['type'] == 'moveDownEast':
+        tasks = gameplay.baseTasks.makeWalkpointsTasksBetweenGoalAndCheckinCoordinates(
+            context)
+        return tasks
     elif waypoint['type'] == 'moveDownNorth':
-        tasks = gameplay.tasks.moveDownNorth.makeMoveDownNorthTasks(
-            context, context['waypoints']['state']['goalCoordinate'], waypoint['coordinate'])
+        tasks = gameplay.baseTasks.makeWalkpointsTasksBetweenGoalAndCheckinCoordinates(
+            context)
         return tasks
     elif waypoint['type'] == 'moveDownSouth':
-        tasks = gameplay.tasks.moveDownSouth.makeMoveDownSouthTasks(
-            context, context['waypoints']['state']['goalCoordinate'], waypoint['coordinate'])
+        tasks = gameplay.baseTasks.makeWalkpointsTasksBetweenGoalAndCheckinCoordinates(
+            context)
+        return tasks
+    elif waypoint['type'] == 'moveDownWest':
+        tasks = gameplay.baseTasks.makeWalkpointsTasksBetweenGoalAndCheckinCoordinates(
+            context)
         return tasks
     elif waypoint['type'] == 'moveUpNorth':
         tasks = gameplay.tasks.moveUpNorth.makeMoveUpNorthTasks(
@@ -34,10 +43,12 @@ def resolveTasksByWaypointType(context, waypoint):
             context, context['waypoints']['state']['goalCoordinate'], waypoint['coordinate'])
         return tasks
     elif waypoint['type'] == 'refill':
-        tasks = gameplay.tasks.refillPotionsChecker.makeRefillTasks(waypoint)
+        tasks = gameplay.tasks.refillPotionsChecker.makeRefillTasks(
+            context, waypoint)
         return tasks
     elif waypoint['type'] == 'refillPotionsChecker':
-        tasks = gameplay.tasks.refillPotionsChecker.makeRefillPotionsCheckerTasks(waypoint)
+        tasks = gameplay.tasks.refillPotionsChecker.makeRefillPotionsCheckerTasks(
+            waypoint)
         return tasks
     elif waypoint['type'] == 'useRope':
         tasks = gameplay.tasks.useRope.makeUseRopeTasks(

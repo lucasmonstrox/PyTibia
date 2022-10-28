@@ -24,6 +24,7 @@ def makeUseRopeTask(waypoint):
         'shouldExec': lambda context: True,
         'do': lambda context: doUseRope(context, waypoint['coordinate']),
         'did': lambda _: True,
+        'didComplete': lambda context: context,
         'didNotComplete': lambda context: context,
         'shouldRestart': lambda context: False,
         'status': 'notStarted',

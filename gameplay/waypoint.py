@@ -38,6 +38,15 @@ def resolveFloorCoordinate(_, nextCoordinate):
     }
 
 
+def resolveMoveDownWestCoordinate(_, nextCoordinate):
+    (x, y, floorLevel) = nextCoordinate
+    checkInCoordinate = [x + 2, y, floorLevel + 1]
+    return {
+        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
+        'checkInCoordinate': checkInCoordinate,
+    }
+
+
 def resolveMoveDownNorthCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     checkInCoordinate = [x, y - 2, floorLevel + 1]
@@ -50,6 +59,15 @@ def resolveMoveDownNorthCoordinate(_, nextCoordinate):
 def resolveMoveDownSouthCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     checkInCoordinate = [x, y + 2, floorLevel + 1]
+    return {
+        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
+        'checkInCoordinate': checkInCoordinate,
+    }
+
+
+def resolveMoveDownWestCoordinate(_, nextCoordinate):
+    (x, y, floorLevel) = nextCoordinate
+    checkInCoordinate = [x - 2, y, floorLevel + 1]
     return {
         'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
         'checkInCoordinate': checkInCoordinate,
@@ -106,11 +124,17 @@ def resolveGoalCoordinate(radarCoordinate, waypoint):
     elif waypoint['type'] == 'useShovel':
         goalCoordinate = resolveUseShovelWaypointCoordinate(
             radarCoordinate, waypoint['coordinate'])
+    elif waypoint['type'] == 'moveDownEast':
+        goalCoordinate = resolveMoveDownEastCoordinate(
+            radarCoordinate, waypoint['coordinate'])
     elif waypoint['type'] == 'moveDownNorth':
         goalCoordinate = resolveMoveDownNorthCoordinate(
             radarCoordinate, waypoint['coordinate'])
     elif waypoint['type'] == 'moveDownSouth':
         goalCoordinate = resolveMoveDownSouthCoordinate(
+            radarCoordinate, waypoint['coordinate'])
+    elif waypoint['type'] == 'moveDownWest':
+        goalCoordinate = resolveMoveDownWestCoordinate(
             radarCoordinate, waypoint['coordinate'])
     elif waypoint['type'] == 'moveUpNorth':
         goalCoordinate = resolveMoveUpNorthCoordinate(

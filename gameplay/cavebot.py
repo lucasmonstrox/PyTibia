@@ -22,6 +22,7 @@ def makeAttackClosestCreatureTask(closestCreature):
         'shouldExec': lambda context: True,
         'do': lambda context: doAttackClosestCreature(context, closestCreature),
         'did': lambda _: True,  # Verificar se a criatura tem target
+        'didComplete': lambda context: context,
         'didNotComplete': lambda context: context,
         'shouldRestart': lambda context: False,  # Verificar se ficou sem target
         'status': 'notStarted',

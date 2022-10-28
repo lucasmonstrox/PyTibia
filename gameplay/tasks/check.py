@@ -27,6 +27,7 @@ def makeCheckTask(waypoint):
         'shouldExec': lambda context: shouldExecCheckTask(context, waypoint),
         'do': lambda context: doCheck(context),
         'did': lambda _: True,
+        'didComplete': lambda context: context,
         'didNotComplete': lambda context: didNotComplete(context),
         'shouldRestart': lambda context: False,
         'status': 'notStarted',

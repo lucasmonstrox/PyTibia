@@ -413,8 +413,8 @@ def makeCreature(creatureName, creatureBar, direction, hudCoordinate, hudImg, ra
                     ySlot = min(ySlot, 10)
                     ySlot = max(ySlot, 0)
                     slot = (slot[0], ySlot)
-    windowCoordinate = (hudCoordinateX + xCoordinate,
-                        hudCoordinateY + yCoordinate)
+    windowCoordinate = (hudCoordinateX + xCoordinate + 32,
+                        hudCoordinateY + yCoordinate + 32)
     creature = (creatureName, isBeingAttacked, slot,
                 radarCoordinate, windowCoordinate)
     return creature
