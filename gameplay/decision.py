@@ -3,10 +3,12 @@ import hud.creatures
 
 # TODO: add unit tests
 def getWay(corpsesToLoot, hudCreatures, radarCoordinate):
-    if len(corpsesToLoot) > 0:
+    hasCorpsesToLoot = len(corpsesToLoot) > 0
+    if hasCorpsesToLoot:
         return 'lootCorpses'
     targetCreature = hud.creatures.getClosestCreature(
         hudCreatures, radarCoordinate)
     hasTargetCreature = targetCreature != None
-    way = 'cavebot' if hasTargetCreature else 'waypoint'
-    return way
+    if hasTargetCreature:
+        return 'cavebot'
+    return 'waypoint'

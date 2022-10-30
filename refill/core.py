@@ -3,20 +3,12 @@ import utils.image
 import utils.core
 import utils.mouse
 from time import sleep
-
-
-npcTradeBarImg = utils.image.loadFromRGBToGray('refill/images/npcTradeBar.png')
-npcTradeOkImg = utils.image.loadFromRGBToGray('refill/images/npcTradeOk.png')
-manaPotionImg = utils.image.loadFromRGBToGray('refill/images/manaPotion.png')
-itemsImages = {
-    'mana potion': utils.image.loadFromRGBToGray('refill/images/manaPotion.png'),
-    'ultimate spirit potion': utils.image.loadFromRGBToGray('refill/images/ultimateSpiritPotion.png'),
-}
+from . import config
 
 
 @utils.core.cacheObjectPos
 def getTradeTopPos(screenshot):
-    return utils.core.locate(screenshot, npcTradeBarImg)
+    return utils.core.locate(screenshot, config.npcTradeBarImage)
 
 
 @utils.core.cacheObjectPos
@@ -24,7 +16,7 @@ def getTradeBottomPos(screenshot):
     (x, y, _, _) = getTradeTopPos(screenshot)
     croppedImage = utils.image.crop(
         screenshot, x, y, 174, len(screenshot) - y)
-    (_, botY, _, _) = utils.core.locate(croppedImage, npcTradeOkImg)
+    (_, botY, _, _) = utils.core.locate(croppedImage, config.npcTradeOkImage)
     return x, y + botY + 26, 174, 2
 
 
@@ -37,7 +29,7 @@ def findItem(screenshot, itemName):
     pyautogui.typewrite(itemName)
     sleep(2)
     screenshotAfterFind = utils.image.RGBtoGray(utils.core.getScreenshot())
-    itemImg = itemsImages[itemName]
+    itemImg = config.potionsImages[itemName]
     itemPos = utils.core.locate(screenshotAfterFind, itemImg)
     # TODO: improve it, click should be done in a handle coordinate inside the box
     x = itemPos[0] + 10
@@ -69,15 +61,19 @@ def clearSearchBox(screenshot):
     utils.mouse.mouseMove(x, y + 20)
 
 
-def buyItems(screenshot, itemAndQuantity):
+def buyItems(screenshot, itemsAndQuantities):
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
-    for item in itemAndQuantity:
-        (itemName, amount) = item
-        findItem(screenshot, itemName)
-        sleep(1)
-        setAmount(screenshot, amount)
-        sleep(1)
-        buyItem(screenshot)
-        sleep(1)
-        clearSearchBox(screenshot)
-        sleep(1)
+    for itemAndQuantity in itemsAndQuantities:
+        buyItem(screenshot, itemAndQuantity)
+
+
+def buyItem(screenshot, itemAndQuantity):
+    (itemName, quantity) = itemAndQuantity
+    findItem(screenshot, itemName)
+    sleep(1)
+    setAmount(screenshot, quantity)
+    sleep(1)
+    buyItem(screenshot)
+    sleep(1)
+    clearSearchBox(screenshot)
+    sleep(1)

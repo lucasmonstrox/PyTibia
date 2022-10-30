@@ -1,10 +1,10 @@
-import pyautogui
+import numpy as np
 from time import time
 import hud.core
 import hud.slot
 
 
-class UseShovelTask:
+class ClickInCoordinateTask:
     def __init__(self, value):
         self.createdAt = time()
         self.startedAt = None
@@ -14,22 +14,19 @@ class UseShovelTask:
         self.status = 'notStarted'
         self.value = value
 
-    def shouldIgnore(self, context):
-        isHoleOpen = hud.core.isHoleOpen(
-            context['hudImg'], context['radarCoordinate'], self.value)
-        return isHoleOpen
+    def shouldIgnore(self, _):
+        return False
 
-    def do(self, context, roleRadarCoordinate):
+    def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
-            context['radarCoordinate'], roleRadarCoordinate)
-        # TODO: replace by correct binds
-        pyautogui.press('f9')
+            context['radarCoordinate'], self.value)
         hud.slot.clickSlot(slot, context['hudCoordinate'])
         return context
 
     def did(self, context):
-        # TODO: check if char is in upper coordinate
-        return True
+        did = np.all(context['waypoints']['state']
+                     ['checkInCoordinate'] == context['radarCoordinate']) == True
+        return did
 
     def shouldRestart(self, _):
         return False

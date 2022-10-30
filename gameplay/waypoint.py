@@ -6,8 +6,8 @@ import utils.array
 import utils.coordinate
 import utils.core
 import utils.image
-import utils.mouse
 import utils.matrix
+import utils.mouse
 
 
 def generateFloorWalkpoints(coordinate, goalCoordinate):
@@ -124,9 +124,9 @@ def resolveGoalCoordinate(radarCoordinate, waypoint):
     elif waypoint['type'] == 'useShovel':
         goalCoordinate = resolveUseShovelWaypointCoordinate(
             radarCoordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveDownEast':
-        goalCoordinate = resolveMoveDownEastCoordinate(
-            radarCoordinate, waypoint['coordinate'])
+    # elif waypoint['type'] == 'moveDownEast':
+    #     goalCoordinate = resolveMoveDownEastCoordinate(
+    #         radarCoordinate, waypoint['coordinate'])
     elif waypoint['type'] == 'moveDownNorth':
         goalCoordinate = resolveMoveDownNorthCoordinate(
             radarCoordinate, waypoint['coordinate'])

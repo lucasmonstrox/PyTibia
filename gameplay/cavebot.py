@@ -1,56 +1,18 @@
 import numpy as np
-import pyautogui
-import time
 import battleList.core
+from gameplay.groupTasks.makeGroupOfAttackClosestCreatureTasks import makeAttackClosestCreatureTasks
+from gameplay.groupTasks.makeGroupOfWalkpointTasks import makeGroupOfWalkpointTasks
 import hud.creatures
-from . import baseTasks
-
-
-def doAttackClosestCreature(context, closestCreature):
-    x, y = closestCreature['windowCoordinate']
-    pyautogui.rightClick(x, y)
-    return context
-
-
-def makeAttackClosestCreatureTask(closestCreature):
-    task = {
-        'createdAt': time.time(),
-        'startedAt': None,
-        'finishedAt': None,
-        'delayBeforeStart': 0,
-        'delayAfterComplete': 0.1,
-        'shouldExec': lambda context: True,
-        'do': lambda context: doAttackClosestCreature(context, closestCreature),
-        'did': lambda _: True,  # Verificar se a criatura tem target
-        'didComplete': lambda context: context,
-        'didNotComplete': lambda context: context,
-        'shouldRestart': lambda context: False,  # Verificar se ficou sem target
-        'status': 'notStarted',
-        'value': closestCreature,
-    }
-    return ('attackClosestCreature', task)
-
-
-def makeAttackClosestCreatureTasks(context, closestCreature):
-    tasksArray = np.array([], dtype=baseTasks.taskType)
-    tasksToAppend = np.array([
-        makeAttackClosestCreatureTask(closestCreature),
-    ], dtype=baseTasks.taskType)
-    tasksArray = np.append(tasksArray, [tasksToAppend])
-    floorTasks = baseTasks.makeWalkpointTasks(
-        context, closestCreature['radarCoordinate'])
-    for floorTask in floorTasks:
-        taskToAppend = np.array([floorTask], dtype=baseTasks.taskType)
-        tasksArray = np.append(tasksArray, [taskToAppend])
-    return tasksArray
+from gameplay.factories.makeAttackClosestCreature import makeAttackClosestCreatureTask
+from gameplay.typings import taskType
 
 
 def makeFollowCreatureTasks(context, closestCreature):
-    tasksArray = np.array([], dtype=baseTasks.taskType)
-    floorTasks = baseTasks.makeWalkpointTasks(
+    tasksArray = np.array([], dtype=taskType)
+    floorTasks = makeGroupOfWalkpointTasks(
         context, closestCreature['radarCoordinate'])
     for floorTask in floorTasks:
-        taskToAppend = np.array([floorTask], dtype=baseTasks.taskType)
+        taskToAppend = np.array([floorTask], dtype=taskType)
         tasksArray = np.append(tasksArray, [taskToAppend])
     return tasksArray
 

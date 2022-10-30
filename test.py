@@ -6,7 +6,7 @@ from time import sleep, time
 import actionBar.core
 import actionBar.locators
 import battleList.core
-from chat import chat
+from chat import core
 import hud.core
 import hud.creatures
 import hud.slot
@@ -53,6 +53,7 @@ def main():
     # walkpoints = gameplay.waypoint.generateFloorWalkpoints(
     #     radarCoordinate, [33093, 32788, 7])
     count1 = actionBar.core.getSlotCount(screenshot, '2')
+
     # closestCreature = hud.creatures.getClosestCreature(
     #     hudCreatures, radarCoordinate)
     # targetCreature = hud.creatures.getTargetCreature(hudCreatures)
