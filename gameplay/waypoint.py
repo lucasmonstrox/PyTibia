@@ -116,6 +116,15 @@ def resolveUseRopeWaypointCoordinate(_, nextCoordinate):
     }
 
 
+def resolveUseHoleCoordinate(_, nextCoordinate):
+    (x, y, floorLevel) = nextCoordinate
+    goalCoordinate = [x, y, floorLevel + 1]
+    return {
+        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
+        'checkInCoordinate': goalCoordinate,
+    }
+
+
 def resolveGoalCoordinate(radarCoordinate, waypoint):
     goalCoordinate = None
     if waypoint['type'] == 'useRope':
@@ -141,6 +150,9 @@ def resolveGoalCoordinate(radarCoordinate, waypoint):
             radarCoordinate, waypoint['coordinate'])
     elif waypoint['type'] == 'moveUpSouth':
         goalCoordinate = resolveMoveUpSouthCoordinate(
+            radarCoordinate, waypoint['coordinate'])
+    elif waypoint['type'] == 'useHole':
+        goalCoordinate = resolveUseHoleCoordinate(
             radarCoordinate, waypoint['coordinate'])
     else:
         goalCoordinate = resolveFloorCoordinate(

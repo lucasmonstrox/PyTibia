@@ -18,14 +18,16 @@ class AttackClosestCreatureTask:
 
     def do(self, context):
         closestCreature = self.value
+        print('closestCreature', closestCreature)
         x, y = closestCreature['windowCoordinate']
+        print(x, y)
         pyautogui.rightClick(x, y)
         return context
 
     def did(self, _):
         # TODO: check if closest creature is being attacked
         return True
-    
+
     def shouldRestart(self, _):
         return False
 

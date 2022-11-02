@@ -21,9 +21,9 @@ class RefillCheckerTask:
         quantityOfManaPotions = actionBar.core.getSlotCount(
             context['screenshot'], '2')
         hasEnoughHealthPotions = quantityOfHealthPotions > context['refill'][
-            'healthItem']['quantity']
+            'health']['quantity']
         hasEnoughManaPotions = quantityOfManaPotions > context['refill'][
-            'manaItem']['quantity']
+            'mana']['quantity']
         shouldIgnore = hasEnoughHealthPotions and hasEnoughManaPotions
         return shouldIgnore
 
@@ -45,7 +45,8 @@ class RefillCheckerTask:
 
     def onDidComplete(self, context):
         currentWaypointIndex = context['waypoints']['currentIndex']
-        nextWaypointIndex = getNextArrayIndex(context['waypoints']['points'], currentWaypointIndex)
+        nextWaypointIndex = getNextArrayIndex(
+            context['waypoints']['points'], currentWaypointIndex)
         context['waypoints']['currentIndex'] = nextWaypointIndex
         context['waypoints']['state'] = None
         return context

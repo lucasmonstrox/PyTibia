@@ -22,25 +22,25 @@ def makeGroupOfRefillTasks(context, waypoint):
         'ultimate spirit potion': '1',
     }
     # TODO: take slot quantity automatically
-    manaPotionSlot = itemSlot[context['refill']['manaItem']['name']]
+    manaPotionSlot = itemSlot[context['refill']['mana']['item']]
     manaPotionsAmount = getSlotCount(
         context['screenshot'], manaPotionSlot)
-    amountOfManaPotionsToBuy = context['refill']['manaItem']['quantity'] - \
+    amountOfManaPotionsToBuy = context['refill']['mana']['quantity'] - \
         manaPotionsAmount
     # TODO: take slot quantity automatically
-    healthPotionSlot = itemSlot[context['refill']['healthItem']['name']]
+    healthPotionSlot = itemSlot[context['refill']['health']['item']]
     healthPotionsAmount = getSlotCount(
         context['screenshot'], healthPotionSlot)
-    amountOfHealthPotionsToBuy = context['refill']['healthItem']['quantity'] - \
+    amountOfHealthPotionsToBuy = context['refill']['health']['quantity'] - \
         healthPotionsAmount
     tasks = np.array([], dtype=taskType)
     tasksToAppend = np.array([
         makeSayTask('hi', waypoint),
         makeSayTask('trade', waypoint),
-        makeBuyItemTask(context['refill']['manaItem']
-                        ['name'], amountOfManaPotionsToBuy),
-        makeBuyItemTask(context['refill']['healthItem']
-                        ['name'], amountOfHealthPotionsToBuy),
+        makeBuyItemTask(context['refill']['mana']
+                        ['item'], amountOfManaPotionsToBuy),
+        makeBuyItemTask(context['refill']['health']
+                        ['item'], amountOfHealthPotionsToBuy),
         makeSetNextWaypointTask(),
     ], dtype=taskType)
     tasks = np.append(tasks, [tasksToAppend])

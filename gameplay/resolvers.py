@@ -1,5 +1,6 @@
 from gameplay.groupTasks.makeGroupOfRefillCheckerTasks import makeGroupOfRefillCheckerTasks
 from gameplay.groupTasks.makeGroupOfUseRopeTasks import makeGroupOfUseRopeTasks
+from gameplay.groupTasks.makeGroupOfUseHoleTasks import makeGroupOfUseHoleTasks
 from gameplay.groupTasks.makeGroupOfUseShovelTasks import makeGroupOfUseShovelTasks
 from gameplay.groupTasks.makeGroupOfWalkpointTasks import makeGroupOfWalkpointTasks
 from gameplay.groupTasks.makeWalkpointsBetweenTwoCoordinatesTasks import makeWalkpointsBetweenTwoCoordinatesTasks
@@ -23,6 +24,10 @@ def resolveTasksByWaypointType(context, waypoint):
     #     return tasks
     elif waypoint['type'] == 'refillChecker':
         tasks = makeGroupOfRefillCheckerTasks(waypoint)
+        return tasks
+    elif waypoint['type'] == 'useHole':
+        tasks = makeGroupOfUseHoleTasks(
+            context, context['waypoints']['state']['goalCoordinate'], waypoint)
         return tasks
     elif waypoint['type'] == 'useRope':
         tasks = makeGroupOfUseRopeTasks(

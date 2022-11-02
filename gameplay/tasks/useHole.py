@@ -1,34 +1,29 @@
-import pyautogui
 from time import time
 import hud.core
 import hud.slot
 
 
-class UseShovelTask:
+class UseHoleTask:
     def __init__(self, value):
         self.createdAt = time()
         self.startedAt = None
-        self.delayBeforeStart = 1
-        self.delayAfterComplete = 0.5
-        self.name = 'useShovel'
+        self.delayBeforeStart = 2
+        self.delayAfterComplete = 2
+        self.name = 'useHole'
         self.status = 'notStarted'
         self.value = value
 
-    def shouldIgnore(self, context):
-        isHoleOpen = hud.core.isHoleOpen(
-            context['hudImg'], context['radarCoordinate'], self.value['coordinate'])
-        return isHoleOpen
+    def shouldIgnore(self, _):
+        return False
 
     def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
             context['radarCoordinate'], self.value['coordinate'])
-        # TODO: replace by correct binds
-        pyautogui.press('f9')
-        hud.slot.clickSlot(slot, context['hudCoordinate'])
+        hud.slot.rightClickSlot(slot, context['hudCoordinate'])
         return context
 
     def did(self, _):
-        # TODO: check if hole is open
+        # TODO: check if char is in upper coordinate
         return True
 
     def shouldRestart(self, _):

@@ -30,7 +30,7 @@ pyautogui.PAUSE = 0
 gameContext = {
     'battleListCreatures': np.array([], dtype=battleList.typing.creatureType),
     'beingAttackedCreature': None,
-    'cavvebot': {'status': None},
+    'cavebot': {'status': None},
     'comingFromDirection': None,
     'corpsesToLoot': np.array([], dtype=hud.creatures.creatureType),
     'hudCoordinate': None,
@@ -43,54 +43,60 @@ gameContext = {
     'previousRadarCoordinate': None,
     'radarCoordinate': None,
     'refill': {
-        'healthItem': {
-            'name': 'health potion',
+        'health': {
+            'item': 'health potion',
             'quantity': 140,
         },
-        'manaItem': {
-            'name': 'mana potion',
+        'mana': {
+            'item': 'mana potion',
             'quantity': 30,
         },
     },
     'waypoints': {
         'currentIndex': None,
         'points': np.array([
-            ('floor', (33125, 32833, 7), 0, {}),
-            ('floor', (33114, 32830, 7), 0, {}),
-            ('floor', (33098, 32830, 7), 0, {}),
-            ('floor', (33098, 32793, 7), 0, {}),
-            ('floor', (33088, 32788, 7), 0, {}),
-            ('moveUpNorth', (33088, 32788, 7), 0, {}),
-            ('floor', (33088, 32785, 6), 0, {}),
-            ('moveDownNorth', (33088, 32785, 6), 0, {}),
-            ('floor', (33073, 32760, 7), 0, {}),
-            ('useShovel', (33072, 32760, 7), 0, {}),
-            ('floor', (33095, 32761, 8), 0, {}),
-            ('floor', (33084, 32770, 8), 0, {}),
-            ('floor', (33062, 32762, 8), 0, {}),
-            ('floor', (33072, 32760, 8), 0, {}),
-            ('refillChecker', (33073, 32758, 8), 0, {
-                'minimumOfManaPotions': 30,
-                'minimumOfHealthPotions': 30,
-                'minimumOfCapacity': 200,
-                'successIndex': 10,
-            }),
-            ('floor', (33072, 32760, 8), 0, {}),
-            ('useRope', (33072, 32760, 8), 0, {}),
-            ('floor', (33088, 32783, 7), 0, {}),
-            ('moveUpSouth', (33088, 32783, 7), 0, {}),
-            ('floor', (33088, 32786, 6), 0, {}),
-            ('moveDownSouth', (33088, 32786, 6), 0, {}),
-            ('floor', (33098, 32793, 7), 0, {}),
-            ('floor', (33099, 32830, 7), 0, {}),
-            ('floor', (33125, 32833, 7), 0, {}),
-            # ('refillChecker', (33127, 32834, 7), 0, {}),
-            ('moveUpNorth', (33128, 32827, 7), 0, {}),
-            ('moveUpNorth', (33131, 32817, 6), 0, {}),
-            ('floor', (33128, 32811, 5), 0, {}),
-            # ('refill', (33128, 32810, 5), 0, {}),
-            # ('moveDownSouth', (33130, 32815, 5), 0, {}),
-            # ('moveDownWest', (33124, 32814, 6), 0, {}),
+            ('floor', (32339, 32225, 7), 0, {}),
+            ('floor', (32331, 32214, 7), 0, {}),
+            ('useHole', (32330, 32214, 7), 0, {}),
+            # # verificar se tem items pra depositar
+            # # verificar se tem dinheiro pra depositar
+            # # verificar se precisa de comprar mana
+            # ('floor', (33125, 32833, 7), 0, {}),
+            # ('floor', (33114, 32830, 7), 0, {}),
+            # ('floor', (33098, 32830, 7), 0, {}),
+            # ('floor', (33098, 32793, 7), 0, {}),
+            # ('floor', (33088, 32788, 7), 0, {}),
+            # ('moveUpNorth', (33088, 32788, 7), 0, {}),
+            # ('floor', (33088, 32785, 6), 0, {}),
+            # ('moveDownNorth', (33088, 32785, 6), 0, {}),
+            # ('floor', (33073, 32760, 7), 0, {}),
+            # ('useShovel', (33072, 32760, 7), 0, {}),
+            # ('floor', (33095, 32761, 8), 0, {}),
+            # ('floor', (33084, 32770, 8), 0, {}),
+            # ('floor', (33062, 32762, 8), 0, {}),
+            # ('floor', (33072, 32760, 8), 0, {}),
+            # ('refillChecker', (33073, 32758, 8), 0, {
+            #     'minimumOfManaPotions': 30,
+            #     'minimumOfHealthPotions': 30,
+            #     'minimumOfCapacity': 200,
+            #     'successIndex': 10,
+            # }),
+            # ('floor', (33072, 32760, 8), 0, {}),
+            # ('useRope', (33072, 32760, 8), 0, {}),
+            # ('floor', (33088, 32783, 7), 0, {}),
+            # ('moveUpSouth', (33088, 32783, 7), 0, {}),
+            # ('floor', (33088, 32786, 6), 0, {}),
+            # ('moveDownSouth', (33088, 32786, 6), 0, {}),
+            # ('floor', (33098, 32793, 7), 0, {}),
+            # ('floor', (33099, 32830, 7), 0, {}),
+            # ('floor', (33125, 32833, 7), 0, {}),
+            # # ('refillChecker', (33127, 32834, 7), 0, {}),
+            # ('moveUpNorth', (33128, 32827, 7), 0, {}),
+            # ('moveUpNorth', (33131, 32817, 6), 0, {}),
+            # ('floor', (33128, 32811, 5), 0, {}),
+            # # ('refill', (33128, 32810, 5), 0, {}),
+            # # ('moveDownSouth', (33130, 32815, 5), 0, {}),
+            # # ('moveDownWest', (33124, 32814, 6), 0, {}),
         ], dtype=waypointType),
         'state': None
     },
@@ -262,17 +268,19 @@ def main():
         if hasNoTasks:
             copyOfContext['tasks'] = gameplay.resolvers.resolveTasksByWaypointType(
                 copyOfContext, currentWaypoint)
-        print('currentWaypointIndex', currentWaypointIndex)
-        if len(copyOfContext['tasks']) > 0:
-            print(copyOfContext['tasks'][0])
-        copyOfContext['way'] = 'waypoint'
+        # print('currentWaypointIndex', currentWaypointIndex)
+        # if len(copyOfContext['tasks']) > 0:
+        #     print(copyOfContext['tasks'][0])
+        # copyOfContext['way'] = 'waypoint'
         if copyOfContext['way'] == 'cavebot':
+            print(copyOfContext['tasks'])
             isTryingToAttackClosestCreature = len(
                 copyOfContext['tasks']) > 0 and copyOfContext['tasks'][0]['type'] == 'attackClosestCreature'
             if isTryingToAttackClosestCreature:
                 print('to tentando atacar')
             else:
                 tasks = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
+                print('tasks gerada pra cave', tasks)
                 if tasks is not None:
                     if copyOfContext['lastPressedKey'] is not None:
                         pyautogui.keyUp(copyOfContext['lastPressedKey'])

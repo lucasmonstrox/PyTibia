@@ -11,6 +11,8 @@ import hud.core
 import hud.creatures
 import hud.slot
 import radar.core
+import radar.locators
+import radar.extractors
 import skills.core
 import utils.core
 import utils.image
@@ -31,10 +33,24 @@ def main():
     # corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
     # map = utils.image.RGBtoGray(
     #     utils.image.load('radar/images/paths/floor-11.png'))
-    reader = easyocr.Reader(['en'])
+    # reader = easyocr.Reader(['en'])
     # while True:
     nonGrayScreenshot = utils.core.getScreenshot()
     screenshot = utils.image.RGBtoGray(nonGrayScreenshot)
+
+    def cenas(screenshot):
+        floorLevel = radar.core.getFloorLevel(screenshot)
+        cannotGetFloorLevel = floorLevel is None
+        if cannotGetFloorLevel:
+            return None
+        radarToolsPos = radar.locators.getRadarToolsPos(screenshot)
+        cannotGetRadarToolsPos = radarToolsPos is None
+        if cannotGetRadarToolsPos:
+            return None
+        radarImg = radar.extractors.getRadarImg(screenshot, radarToolsPos)
+        radarHashedImg = utils.core.hashitHex(radarImg)
+    res2 = timeit.repeat(lambda: cenas(screenshot), repeat=10, number=1)
+    print(res2)
     # utils.image.save(screenshot, 'screenshot.png')
     # count2 = actionBar.core.getSlotCount(screenshot, '2')
     # if count2 == 7:
@@ -52,7 +68,8 @@ def main():
     #     battleListCreatures, 'left', hudCoordinate, hudImg, radarCoordinate)
     # walkpoints = gameplay.waypoint.generateFloorWalkpoints(
     #     radarCoordinate, [33093, 32788, 7])
-    count1 = actionBar.core.getSlotCount(screenshot, '2')
+    # count1 = actionBar.core.getSlotCount(screenshot, '2')
+
 
     # closestCreature = hud.creatures.getClosestCreature(
     #     hudCreatures, radarCoordinate)
