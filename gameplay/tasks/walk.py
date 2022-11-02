@@ -1,7 +1,10 @@
 import numpy as np
 import pyautogui
 from time import time
+import gameplay.typings
+import gameplay.waypoint
 import utils.coordinate
+import utils.array
 
 
 class WalkTask:
@@ -35,16 +38,11 @@ class WalkTask:
             _, nextTask = copyOfContext['tasks'][1]
             futureDirection = utils.coordinate.getDirectionBetweenRadarCoordinates(
                 walkpoint, nextTask.value)
-        print('hasMoreWalkpointTasks', hasMoreWalkpointTasks)
-        print('direction', direction)
-        print('futureDirection', futureDirection)
         if direction != futureDirection:
             if copyOfContext['lastPressedKey'] is not None:
-                print('keyUp')
                 pyautogui.keyUp(copyOfContext['lastPressedKey'])
                 copyOfContext['lastPressedKey'] = None
             else:
-                print('press 1')
                 pyautogui.press(direction)
             return copyOfContext
         else:
@@ -53,16 +51,13 @@ class WalkTask:
             walkTasksLength = len(walkTasks)
             if direction != copyOfContext['lastPressedKey']:
                 if walkTasksLength > 2:
-                    print('keyDown 1')
                     pyautogui.keyDown(direction)
                     copyOfContext['lastPressedKey'] = direction
                 else:
-                    print('press 2')
                     pyautogui.press(direction)
             elif walkTasksLength == 1:
                 if copyOfContext['lastPressedKey'] is not None:
                     pyautogui.keyUp(copyOfContext['lastPressedKey'])
-                    print('keyUp 2')
                     copyOfContext['lastPressedKey'] = None
         return copyOfContext
 
@@ -79,4 +74,11 @@ class WalkTask:
         return context
 
     def onDidComplete(self, context):
+        if context['way'] == 'cavebot':
+            return context
+        result = context['radarCoordinate'] == context['waypoints']['state']['checkInCoordinate']
+        didReachWaypoint = np.all(result) == True
+        if didReachWaypoint:
+            context['waypoints']['state'] = None
+            context['tasks'] = np.array([], dtype=gameplay.typings.taskType)
         return context

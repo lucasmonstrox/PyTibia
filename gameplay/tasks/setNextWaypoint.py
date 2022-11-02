@@ -22,11 +22,11 @@ class SetNextWaypointTask:
         return context
 
     def did(self, context):
-        nextWalkpoint = self.value
-        response = np.all(context['radarCoordinate'] == nextWalkpoint)
+        waypoint = self.value
+        response = np.all(context['radarCoordinate'] == waypoint['coordinate'])
         did = response == True
-        return did
-    
+        return True
+
     def shouldRestart(self, _):
         return False
 

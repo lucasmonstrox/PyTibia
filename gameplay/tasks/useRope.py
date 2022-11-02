@@ -17,9 +17,9 @@ class UseRopeTask:
     def shouldIgnore(self, _):
         return False
 
-    def do(self, context, roleRadarCoordinate):
+    def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
-            context['radarCoordinate'], roleRadarCoordinate)
+            context['radarCoordinate'], self.value['coordinate'])
         # TODO: replace by correct bindings
         pyautogui.press('f8')
         hud.slot.clickSlot(slot, context['hudCoordinate'])
@@ -35,5 +35,5 @@ class UseRopeTask:
     def onDidNotComplete(self, context):
         return context
 
-    def onDidComplete(context):
+    def onDidComplete(self, context):
         return context

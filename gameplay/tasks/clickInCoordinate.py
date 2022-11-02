@@ -10,7 +10,7 @@ class ClickInCoordinateTask:
         self.startedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.5
-        self.name = 'useShovel'
+        self.name = 'clickInCoordinate'
         self.status = 'notStarted'
         self.value = value
 
@@ -19,13 +19,13 @@ class ClickInCoordinateTask:
 
     def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
-            context['radarCoordinate'], self.value)
+            context['radarCoordinate'], self.value['coordinate'])
         hud.slot.clickSlot(slot, context['hudCoordinate'])
         return context
 
     def did(self, context):
-        did = np.all(context['waypoints']['state']
-                     ['checkInCoordinate'] == context['radarCoordinate']) == True
+        res = context['radarCoordinate'] == context['waypoints']['state']['checkInCoordinate'] 
+        did = np.all(res) == True
         return did
 
     def shouldRestart(self, _):

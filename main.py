@@ -11,6 +11,7 @@ from chat import core
 import gameplay.cavebot
 import gameplay.decision
 import gameplay.resolvers
+import gameplay.typings
 import gameplay.waypoint
 import hud.creatures
 import hud.core
@@ -43,7 +44,7 @@ gameContext = {
     'radarCoordinate': None,
     'refill': {
         'healthItem': {
-            'name': 'ultimate spirit potion',
+            'name': 'health potion',
             'quantity': 140,
         },
         'manaItem': {
@@ -54,35 +55,39 @@ gameContext = {
     'waypoints': {
         'currentIndex': None,
         'points': np.array([
-            # ('floor', (33125, 32833, 7), 0, {}),
-            # ('floor', (33114, 32830, 7), 0, {}),
-            # ('floor', (33098, 32830, 7), 0, {}),
+            ('floor', (33125, 32833, 7), 0, {}),
+            ('floor', (33114, 32830, 7), 0, {}),
+            ('floor', (33098, 32830, 7), 0, {}),
             ('floor', (33098, 32793, 7), 0, {}),
             ('floor', (33088, 32788, 7), 0, {}),
             ('moveUpNorth', (33088, 32788, 7), 0, {}),
-            # ('moveDown', (33088, 32785, 6), 0, {}),
-            # ('floor', (33078, 32760, 7), 0, {}),
-            # ('floor', (33078, 32761, 7), 0, {}),
-            # ('useShovel', (33072, 32760, 7), 0, {}),
-            # ('floor', (33095, 32761, 8), 0, {}),
-            # ('floor', (33084, 32770, 8), 0, {}),
-            # ('floor', (33062, 32762, 8), 0, {}),
-            # ('refillChecker', (33073, 32758, 8), 0, {
-            #     'minimumOfManaPotions': 30,
-            #     'minimumOfHealthPotions': 30,
-            #     'minimumOfCapacity': 200,
-            # }),
-            # ('useRope', (33072, 32760, 8), 0, {}),
-            # ('floor', (33075, 32771, 7), 0, {}),
-            # ('moveUpSouth', (33088, 32783, 7), 0, {}),
-            # ('moveDownSouth', (33088, 32786, 6), 0, {}),
-            # ('floor', (33098, 32793, 7), 0, {}),
-            # ('floor', (33099, 32830, 7), 0, {}),
-            # ('floor', (33125, 32833, 7), 0, {}),
+            ('floor', (33088, 32785, 6), 0, {}),
+            ('moveDownNorth', (33088, 32785, 6), 0, {}),
+            ('floor', (33073, 32760, 7), 0, {}),
+            ('useShovel', (33072, 32760, 7), 0, {}),
+            ('floor', (33095, 32761, 8), 0, {}),
+            ('floor', (33084, 32770, 8), 0, {}),
+            ('floor', (33062, 32762, 8), 0, {}),
+            ('floor', (33072, 32760, 8), 0, {}),
+            ('refillChecker', (33073, 32758, 8), 0, {
+                'minimumOfManaPotions': 30,
+                'minimumOfHealthPotions': 30,
+                'minimumOfCapacity': 200,
+                'successIndex': 10,
+            }),
+            ('floor', (33072, 32760, 8), 0, {}),
+            ('useRope', (33072, 32760, 8), 0, {}),
+            ('floor', (33088, 32783, 7), 0, {}),
+            ('moveUpSouth', (33088, 32783, 7), 0, {}),
+            ('floor', (33088, 32786, 6), 0, {}),
+            ('moveDownSouth', (33088, 32786, 6), 0, {}),
+            ('floor', (33098, 32793, 7), 0, {}),
+            ('floor', (33099, 32830, 7), 0, {}),
+            ('floor', (33125, 32833, 7), 0, {}),
             # ('refillChecker', (33127, 32834, 7), 0, {}),
-            # ('moveUpNorth', (33128, 32827, 7), 0, {}),
-            # ('moveUpNorth', (33131, 32817, 6), 0, {}),
-            # ('floor', (33128, 32811, 5), 0, {}),
+            ('moveUpNorth', (33128, 32827, 7), 0, {}),
+            ('moveUpNorth', (33131, 32817, 6), 0, {}),
+            ('floor', (33128, 32811, 5), 0, {}),
             # ('refill', (33128, 32810, 5), 0, {}),
             # ('moveDownSouth', (33130, 32815, 5), 0, {}),
             # ('moveDownWest', (33124, 32814, 6), 0, {}),
@@ -90,7 +95,7 @@ gameContext = {
         'state': None
     },
     'screenshot': None,
-    'tasks': None,
+    'tasks': np.array([], dtype=gameplay.typings.taskType),
     'way': None,
 }
 hudCreatures = np.array([], dtype=hud.creatures.creatureType)
@@ -253,15 +258,14 @@ def main():
                 copyOfContext['radarCoordinate'], currentWaypoint)
         result = copyOfContext['radarCoordinate'] == copyOfContext['waypoints']['state']['checkInCoordinate']
         didReachWaypoint = np.all(result) == True
-        # hasNoTasks = len(copyOfContext['tasks']) == 0
-        if copyOfContext['tasks'] is None:
-            copyOfContext['tasks'] = np.array([], dtype=np.dtype([
-                ('type', np.str_, 64),
-                ('data', np.object_),
-            ]))
+        hasNoTasks = len(copyOfContext['tasks']) == 0
+        if hasNoTasks:
             copyOfContext['tasks'] = gameplay.resolvers.resolveTasksByWaypointType(
                 copyOfContext, currentWaypoint)
-        print('tasks', copyOfContext['tasks'])
+        print('currentWaypointIndex', currentWaypointIndex)
+        if len(copyOfContext['tasks']) > 0:
+            print(copyOfContext['tasks'][0])
+        copyOfContext['way'] = 'waypoint'
         if copyOfContext['way'] == 'cavebot':
             isTryingToAttackClosestCreature = len(
                 copyOfContext['tasks']) > 0 and copyOfContext['tasks'][0]['type'] == 'attackClosestCreature'
@@ -274,13 +278,14 @@ def main():
                         pyautogui.keyUp(copyOfContext['lastPressedKey'])
                         copyOfContext['lastPressedKey'] = None
                     copyOfContext['tasks'] = tasks
+        tasksLength = len(copyOfContext['tasks'])
         if didReachWaypoint:
-            if len(copyOfContext['tasks']) == 0 or copyOfContext['tasks'][0]['type'] != 'check' or copyOfContext['tasks'][0]['type'] != 'refillChecker' or copyOfContext['tasks'][0]['type'] != 'refill' or copyOfContext['tasks'][0]['type'] != 'say' or copyOfContext['tasks'][0]['type'] != 'buyItem':
+            allowedTasks = np.array(
+                ['buyItem', 'check', 'clickInCoordinate', 'refill', 'refillChecker', 'say', 'useShovel'])
+            if tasksLength == 0 or np.any(copyOfContext['tasks'][0]['type'] == allowedTasks) == False:
                 copyOfContext['waypoints']['currentIndex'] = nextWaypointIndex
                 copyOfContext['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
                     copyOfContext['radarCoordinate'], nextWaypoint)
-            else:
-                print(' n fiz nada pq é check')
         gameContext = copyOfContext
         return copyOfContext
 
@@ -315,22 +320,22 @@ def main():
                         task.status = 'running'
                         copyOfContext = task.do(copyOfContext)
                         if len(copyOfContext['tasks']) > 0:
-                            copyOfContext['tasks'][0] = task
+                            copyOfContext['tasks'][0] = (taskName, task)
             elif task.status == 'running':
                 shouldNotRestart = not task.shouldRestart(copyOfContext)
                 if shouldNotRestart:
                     didTask = task.did(copyOfContext)
                     if didTask:
-                        copyOfContext = task.onDidComplete(copyOfContext)
                         task.finishedAt = time.time()
                         task.status = 'completed'
-                        copyOfContext['tasks'][0] = task
+                        copyOfContext['tasks'][0] = (taskName, task)
             if task.status == 'completed':
                 passedTimeSinceTaskCompleted = time.time() - task.finishedAt
                 didPassedEnoughDelayAfterTaskComplete = passedTimeSinceTaskCompleted > task.delayAfterComplete
                 if didPassedEnoughDelayAfterTaskComplete:
                     copyOfContext['tasks'] = np.delete(
                         copyOfContext['tasks'], 0)
+                    copyOfContext = task.onDidComplete(copyOfContext)
         gameContext = copyOfContext
         copyOfContext['lastCoordinateVisited'] = context['radarCoordinate']
 

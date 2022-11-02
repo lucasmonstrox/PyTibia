@@ -29,5 +29,5 @@ class SayTask:
     def onDidNotComplete(self, context):
         return context
 
-    def onDidComplete(context):
+    def onDidComplete(self, context):
         return context

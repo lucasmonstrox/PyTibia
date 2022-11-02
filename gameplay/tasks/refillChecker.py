@@ -1,5 +1,6 @@
 from time import time
 import actionBar.core
+from utils.array import getNextArrayIndex
 
 
 class RefillCheckerTask:
@@ -38,9 +39,13 @@ class RefillCheckerTask:
         return False
 
     def onDidNotComplete(self, context):
-        context['waypoints']['currentIndex'] = 0
+        context['waypoints']['currentIndex'] = self.value['options']['successIndex']
         context['waypoints']['state'] = None
         return context
 
-    def onDidComplete(context):
+    def onDidComplete(self, context):
+        currentWaypointIndex = context['waypoints']['currentIndex']
+        nextWaypointIndex = getNextArrayIndex(context['waypoints']['points'], currentWaypointIndex)
+        context['waypoints']['currentIndex'] = nextWaypointIndex
+        context['waypoints']['state'] = None
         return context

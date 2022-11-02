@@ -1,18 +1,16 @@
 import numpy as np
-import gameplay.baseTasks
 from gameplay.factories.makeClickInCoordinateTask import makeClickInCoordinateTask
+from gameplay.factories.makeSetNextWaypointTask import makeSetNextWaypointTask
 from gameplay.factories.makeUseShovelTask import makeUseShovelTask
+from gameplay.typings import taskType
 
 
-def makeUseShovelTasks(context, goalCoordinate, waypoint):
-    tasks = np.array([], dtype=gameplay.baseTasks.taskType)
-    floorTasks = gameplay.baseTasks.makeWalkpointTasks(context, goalCoordinate)
-    for floorTask in floorTasks:
-        taskToAppend = np.array([floorTask], dtype=gameplay.baseTasks.taskType)
-        tasks = np.append(tasks, [taskToAppend])
+def makeGroupOfUseShovelTasks(_, __, waypoint):
+    tasks = np.array([], dtype=taskType)
     tasksToAppend = np.array([
         makeUseShovelTask(waypoint),
         makeClickInCoordinateTask(waypoint),
-    ], dtype=gameplay.baseTasks.taskType)
+        makeSetNextWaypointTask(waypoint),
+    ], dtype=taskType)
     tasks = np.append(tasks, [tasksToAppend])
     return tasks

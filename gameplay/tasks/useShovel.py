@@ -16,18 +16,18 @@ class UseShovelTask:
 
     def shouldIgnore(self, context):
         isHoleOpen = hud.core.isHoleOpen(
-            context['hudImg'], context['radarCoordinate'], self.value)
+            context['hudImg'], context['radarCoordinate'], self.value['coordinate'])
         return isHoleOpen
 
-    def do(self, context, roleRadarCoordinate):
+    def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
-            context['radarCoordinate'], roleRadarCoordinate)
+            context['radarCoordinate'], self.value['coordinate'])
         # TODO: replace by correct binds
         pyautogui.press('f9')
         hud.slot.clickSlot(slot, context['hudCoordinate'])
         return context
 
-    def did(self, context):
+    def did(self, _):
         # TODO: check if char is in upper coordinate
         return True
 
