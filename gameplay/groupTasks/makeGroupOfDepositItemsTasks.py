@@ -1,12 +1,12 @@
 import numpy as np
+from gameplay.factories.makeDepositItemsTask import makeDepositItemsTask
 from gameplay.typings import taskType
-from gameplay.factories.makeUseRopeTask import makeUseRopeTask
 
 
-def makeGroupOfUseRopeTasks(_, __, waypoint):
+def makeGroupOfDepositItemsTasks(waypoint):
     tasks = np.array([], dtype=taskType)
     tasksToAppend = np.array([
-        makeUseRopeTask(waypoint),
+        makeDepositItemsTask(waypoint),
     ], dtype=taskType)
     tasks = np.append(tasks, [tasksToAppend])
     return tasks

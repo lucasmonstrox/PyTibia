@@ -1,39 +1,31 @@
-from gameplay.groupTasks.makeGroupOfRefillCheckerTasks import makeGroupOfRefillCheckerTasks
-from gameplay.groupTasks.makeGroupOfUseRopeTasks import makeGroupOfUseRopeTasks
-from gameplay.groupTasks.makeGroupOfUseHoleTasks import makeGroupOfUseHoleTasks
-from gameplay.groupTasks.makeGroupOfUseShovelTasks import makeGroupOfUseShovelTasks
-from gameplay.groupTasks.makeGroupOfWalkpointTasks import makeGroupOfWalkpointTasks
-from gameplay.groupTasks.makeWalkpointsBetweenTwoCoordinatesTasks import makeWalkpointsBetweenTwoCoordinatesTasks
+from gameplay.groupTasks.groupOfRefillCheckerTasks import GroupOfRefillCheckerTasks
+from gameplay.groupTasks.groupOfSingleWalkTasks import GroupOfSingleWalkTasks
+from gameplay.groupTasks.groupOfUseRopeTasks import GroupOfUseRopeTasks
+from gameplay.groupTasks.groupOfUseShovelTasks import GroupOfUseShovelTasks
+from gameplay.groupTasks.groupOfWalkTasks import GroupOfWalkTasks
 
 
 def resolveTasksByWaypointType(context, waypoint):
-    if waypoint['type'] == 'floor':
-        tasks = makeGroupOfWalkpointTasks(context, waypoint['coordinate'])
-        return tasks
-    elif waypoint['type'] == 'moveDownEast' or waypoint['type'] == 'moveDownNorth' or waypoint['type'] == 'moveDownSouth' or waypoint['type'] == 'moveDownWest':
-        tasks = makeWalkpointsBetweenTwoCoordinatesTasks(
-            context['waypoints']['state']['checkInCoordinate'])
-        return tasks
+    # if waypoint['type'] == 'depositItems':
+    #     tasks = makeGroupOfDepositItemsTasks(waypoint)
+    #     return tasks
+    if waypoint['type'] == 'moveDownEast' or waypoint['type'] == 'moveDownNorth' or waypoint['type'] == 'moveDownSouth' or waypoint['type'] == 'moveDownWest':
+        return GroupOfSingleWalkTasks(context, context['waypoints']['state']['checkInCoordinate'])
     elif waypoint['type'] == 'moveUpNorth' or waypoint['type'] == 'moveUpSouth' or waypoint['type'] == 'moveUpWest' or waypoint['type'] == 'moveUpEast':
-        tasks = makeWalkpointsBetweenTwoCoordinatesTasks(
-            context['waypoints']['state']['checkInCoordinate'])
-        return tasks
+        return GroupOfSingleWalkTasks(context, context['waypoints']['state']['checkInCoordinate'])
+    elif waypoint['type'] == 'walk':
+        return GroupOfWalkTasks(context, waypoint['coordinate'])
     # elif waypoint['type'] == 'refill':
     #     tasks = gameplay.tasks.refillChecker.makeRefillTasks(
     #         context, waypoint)
     #     return tasks
     elif waypoint['type'] == 'refillChecker':
-        tasks = makeGroupOfRefillCheckerTasks(waypoint)
-        return tasks
-    elif waypoint['type'] == 'useHole':
-        tasks = makeGroupOfUseHoleTasks(
-            context, context['waypoints']['state']['goalCoordinate'], waypoint)
-        return tasks
+        return GroupOfRefillCheckerTasks(waypoint)
+    # elif waypoint['type'] == 'useHole':
+    #     tasks = makeGroupOfUseHoleTasks(
+    #         context, context['waypoints']['state']['goalCoordinate'], waypoint)
+    #     return tasks
     elif waypoint['type'] == 'useRope':
-        tasks = makeGroupOfUseRopeTasks(
-            context, context['waypoints']['state']['goalCoordinate'], waypoint)
-        return tasks
+        return GroupOfUseRopeTasks(context, waypoint)
     elif waypoint['type'] == 'useShovel':
-        tasks = makeGroupOfUseShovelTasks(
-            context, context['waypoints']['state']['goalCoordinate'], waypoint)
-        return tasks
+        return GroupOfUseShovelTasks(context, waypoint)

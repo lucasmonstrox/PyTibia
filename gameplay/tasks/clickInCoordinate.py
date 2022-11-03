@@ -8,6 +8,7 @@ class ClickInCoordinateTask:
     def __init__(self, value):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.5
         self.name = 'clickInCoordinate'
@@ -19,19 +20,19 @@ class ClickInCoordinateTask:
 
     def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
-            context['radarCoordinate'], self.value['coordinate'])
+            context['coordinate'], self.value['coordinate'])
         hud.slot.clickSlot(slot, context['hudCoordinate'])
         return context
 
     def did(self, context):
-        res = context['radarCoordinate'] == context['waypoints']['state']['checkInCoordinate'] 
+        res = context['coordinate'] == context['waypoints']['state']['checkInCoordinate']
         did = np.all(res) == True
         return did
 
     def shouldRestart(self, _):
         return False
 
-    def onDidNotComplete(self, context):
+    def onIgnored(self, context):
         return context
 
     def onDidComplete(self, context):

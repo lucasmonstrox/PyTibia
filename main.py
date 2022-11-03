@@ -18,6 +18,7 @@ import hud.core
 import hud.slot
 import radar.core
 from radar.types import waypointType
+from gameplay.taskExecutor import TaskExecutor
 import utils.array
 import utils.core
 import utils.image
@@ -33,15 +34,16 @@ gameContext = {
     'cavebot': {'status': None},
     'comingFromDirection': None,
     'corpsesToLoot': np.array([], dtype=hud.creatures.creatureType),
+    'currentGroupTask': None,
     'hudCoordinate': None,
-    'hudCreatures': np.array([], dtype=hud.creatures.creatureType),
     'hudImg': None,
-    'lastCoordinateVisitedAt': time.time(),
     'lastCoordinateVisited': None,
     'lastPressedKey': None,
     'lastWay': 'waypoint',
-    'previousRadarCoordinate': None,
-    'radarCoordinate': None,
+    'monsters': np.array([], dtype=hud.creatures.creatureType),
+    'players': np.array([], dtype=hud.creatures.creatureType),
+    'previousCoordinate': None,
+    'coordinate': None,
     'refill': {
         'health': {
             'item': 'health potion',
@@ -55,45 +57,47 @@ gameContext = {
     'waypoints': {
         'currentIndex': None,
         'points': np.array([
-            ('floor', (32339, 32225, 7), 0, {}),
-            ('floor', (32331, 32214, 7), 0, {}),
-            ('useHole', (32330, 32214, 7), 0, {}),
-            # # verificar se tem items pra depositar
-            # # verificar se tem dinheiro pra depositar
-            # # verificar se precisa de comprar mana
-            # ('floor', (33125, 32833, 7), 0, {}),
-            # ('floor', (33114, 32830, 7), 0, {}),
-            # ('floor', (33098, 32830, 7), 0, {}),
-            # ('floor', (33098, 32793, 7), 0, {}),
-            # ('floor', (33088, 32788, 7), 0, {}),
-            # ('moveUpNorth', (33088, 32788, 7), 0, {}),
-            # ('floor', (33088, 32785, 6), 0, {}),
-            # ('moveDownNorth', (33088, 32785, 6), 0, {}),
-            # ('floor', (33073, 32760, 7), 0, {}),
-            # ('useShovel', (33072, 32760, 7), 0, {}),
-            # ('floor', (33095, 32761, 8), 0, {}),
-            # ('floor', (33084, 32770, 8), 0, {}),
-            # ('floor', (33062, 32762, 8), 0, {}),
-            # ('floor', (33072, 32760, 8), 0, {}),
-            # ('refillChecker', (33073, 32758, 8), 0, {
-            #     'minimumOfManaPotions': 30,
-            #     'minimumOfHealthPotions': 30,
-            #     'minimumOfCapacity': 200,
-            #     'successIndex': 10,
-            # }),
-            # ('floor', (33072, 32760, 8), 0, {}),
-            # ('useRope', (33072, 32760, 8), 0, {}),
-            # ('floor', (33088, 32783, 7), 0, {}),
-            # ('moveUpSouth', (33088, 32783, 7), 0, {}),
-            # ('floor', (33088, 32786, 6), 0, {}),
-            # ('moveDownSouth', (33088, 32786, 6), 0, {}),
-            # ('floor', (33098, 32793, 7), 0, {}),
-            # ('floor', (33099, 32830, 7), 0, {}),
-            # ('floor', (33125, 32833, 7), 0, {}),
+            # verificar se tem items pra depositar
+            ('walk', (33127, 32830, 7), 0, {}),
+            ('walk', (33126, 32834, 7), 0, {}),
+            # ('depositItems', (33126, 32841, 7), 0, {}),
+            # verificar se tem dinheiro pra depositar
+            # verificar se precisa de comprar potions
+            ('walk', (33125, 32833, 7), 0, {}),
+            ('walk', (33114, 32830, 7), 0, {}),
+            ('walk', (33098, 32830, 7), 0, {}),
+            ('walk', (33098, 32793, 7), 0, {}),
+            ('walk', (33088, 32788, 7), 0, {}),
+            ('moveUpNorth', (33088, 32788, 7), 0, {}),
+            ('walk', (33088, 32785, 6), 0, {}),
+            ('moveDownNorth', (33088, 32785, 6), 0, {}),
+            ('walk', (33073, 32760, 7), 0, {}),
+            ('useShovel', (33072, 32760, 7), 0, {}),
+            ('walk', (33095, 32761, 8), 0, {}),
+            ('walk', (33084, 32770, 8), 0, {}),
+            ('walk', (33062, 32762, 8), 0, {}),
+            ('walk', (33072, 32760, 8), 0, {}),
+            ('walk', (33076, 32757, 8), 0, {}),
+            ('walk', (33072, 32759, 8), 0, {}),
+            ('refillChecker', (33072, 32760, 8), 0, {
+                'minimumOfManaPotions': 100,
+                'minimumOfHealthPotions': 100,
+                'minimumOfCapacity': 200,
+                'successIndex': 12,
+            }),
+            ('walk', (33072, 32760, 8), 0, {}),
+            ('useRope', (33072, 32760, 8), 0, {}),
+            ('walk', (33088, 32783, 7), 0, {}),
+            ('moveUpSouth', (33088, 32783, 7), 0, {}),
+            ('walk', (33088, 32786, 6), 0, {}),
+            ('moveDownSouth', (33088, 32786, 6), 0, {}),
+            ('walk', (33098, 32793, 7), 0, {}),
+            ('walk', (33099, 32830, 7), 0, {}),
+            ('walk', (33125, 32833, 7), 0, {}),
             # # ('refillChecker', (33127, 32834, 7), 0, {}),
             # ('moveUpNorth', (33128, 32827, 7), 0, {}),
             # ('moveUpNorth', (33131, 32817, 6), 0, {}),
-            # ('floor', (33128, 32811, 5), 0, {}),
+            # ('walk', (33128, 32811, 5), 0, {}),
             # # ('refill', (33128, 32810, 5), 0, {}),
             # # ('moveDownSouth', (33130, 32815, 5), 0, {}),
             # # ('moveDownWest', (33124, 32814, 6), 0, {}),
@@ -101,10 +105,11 @@ gameContext = {
         'state': None
     },
     'screenshot': None,
-    'tasks': np.array([], dtype=gameplay.typings.taskType),
+    # 'tasks': np.array([], dtype=gameplay.typings.taskType),
     'way': None,
 }
 hudCreatures = np.array([], dtype=hud.creatures.creatureType)
+taskExecutor = TaskExecutor()
 
 
 def main():
@@ -128,9 +133,9 @@ def main():
     def handleCoordinate(context):
         global gameContext
         copyOfContext = context.copy()
-        copyOfContext['radarCoordinate'] = radar.core.getCoordinate(
-            copyOfContext['screenshot'], previousRadarCoordinate=copyOfContext['previousRadarCoordinate'])
-        copyOfContext['previousRadarCoordinate'] = copyOfContext['radarCoordinate']
+        copyOfContext['coordinate'] = radar.core.getCoordinate(
+            copyOfContext['screenshot'], previousCoordinate=copyOfContext['previousCoordinate'])
+        copyOfContext['previousCoordinate'] = copyOfContext['coordinate']
         gameContext = copyOfContext
         return copyOfContext
 
@@ -160,7 +165,7 @@ def main():
         return copyOfContext
 
     hudCoordinateObserver = battleListObserver.pipe(
-        operators.filter(lambda result: result['radarCoordinate'] is not None),
+        operators.filter(lambda result: result['coordinate'] is not None),
         operators.map(handleHudCoordinate)
     )
 
@@ -180,23 +185,23 @@ def main():
         global gameContext
         copyOfContext = context.copy()
         comingFromDirection = None
-        if copyOfContext['previousRadarCoordinate'] is None:
-            copyOfContext['previousRadarCoordinate'] = copyOfContext['radarCoordinate']
+        if copyOfContext['previousCoordinate'] is None:
+            copyOfContext['previousCoordinate'] = copyOfContext['coordinate']
         coordinateDidChange = np.all(
-            copyOfContext['previousRadarCoordinate'] == copyOfContext['radarCoordinate']) == False
+            copyOfContext['previousCoordinate'] == copyOfContext['coordinate']) == False
         if coordinateDidChange:
-            radarCoordinate = copyOfContext['radarCoordinate']
-            if radarCoordinate[2] != copyOfContext['previousRadarCoordinate'][2]:
+            coordinate = copyOfContext['coordinate']
+            if coordinate[2] != copyOfContext['previousCoordinate'][2]:
                 comingFromDirection = None
-            elif radarCoordinate[0] != copyOfContext['previousRadarCoordinate'][0] and radarCoordinate[1] != copyOfContext['previousRadarCoordinate'][1]:
+            elif coordinate[0] != copyOfContext['previousCoordinate'][0] and coordinate[1] != copyOfContext['previousCoordinate'][1]:
                 comingFromDirection = None
-            elif radarCoordinate[0] != copyOfContext['previousRadarCoordinate'][0]:
-                comingFromDirection = 'left' if radarCoordinate[
-                    0] > copyOfContext['previousRadarCoordinate'][0] else 'right'
-            elif radarCoordinate[1] != copyOfContext['previousRadarCoordinate'][1]:
-                comingFromDirection = 'top' if radarCoordinate[
-                    1] > copyOfContext['previousRadarCoordinate'][1] else 'bottom'
-            copyOfContext['previousRadarCoordinate'] = copyOfContext['radarCoordinate']
+            elif coordinate[0] != copyOfContext['previousCoordinate'][0]:
+                comingFromDirection = 'left' if coordinate[
+                    0] > copyOfContext['previousCoordinate'][0] else 'right'
+            elif coordinate[1] != copyOfContext['previousCoordinate'][1]:
+                comingFromDirection = 'top' if coordinate[
+                    1] > copyOfContext['previousCoordinate'][1] else 'bottom'
+            copyOfContext['previousCoordinate'] = copyOfContext['coordinate']
         copyOfContext['comingFromDirection'] = comingFromDirection
         gameContext = copyOfContext
         return copyOfContext
@@ -207,8 +212,11 @@ def main():
         global gameContext, hudCreatures
         copyOfContext = context.copy()
         hudCreatures = hud.creatures.getCreatures(
-            copyOfContext['battleListCreatures'], copyOfContext['comingFromDirection'], copyOfContext['hudCoordinate'], copyOfContext['hudImg'], copyOfContext['radarCoordinate'])
-        copyOfContext['hudCreatures'] = hudCreatures
+            copyOfContext['battleListCreatures'], copyOfContext['comingFromDirection'], copyOfContext['hudCoordinate'], copyOfContext['hudImg'], copyOfContext['coordinate'])
+        monsters = hud.creatures.getCreatureByType(hudCreatures, 'monster')
+        players = hud.creatures.getCreatureByType(hudCreatures, 'player')
+        copyOfContext['monsters'] = monsters
+        copyOfContext['players'] = players
         gameContext = copyOfContext
         return copyOfContext
 
@@ -239,7 +247,7 @@ def main():
         global gameContext
         copyOfContext = context.copy()
         copyOfContext['way'] = gameplay.decision.getWay(
-            copyOfContext['corpsesToLoot'], copyOfContext['hudCreatures'], copyOfContext['radarCoordinate'])
+            copyOfContext['corpsesToLoot'], copyOfContext['monsters'], copyOfContext['coordinate'])
         gameContext = copyOfContext
         return copyOfContext
 
@@ -252,100 +260,66 @@ def main():
         copyOfContext = context.copy()
         if copyOfContext['waypoints']['currentIndex'] == None:
             copyOfContext['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
-                copyOfContext['radarCoordinate'], copyOfContext['waypoints']['points'])
+                copyOfContext['coordinate'], copyOfContext['waypoints']['points'])
         currentWaypointIndex = copyOfContext['waypoints']['currentIndex']
+        print('handleTasks.currentWaypointIndex', currentWaypointIndex)
         nextWaypointIndex = utils.array.getNextArrayIndex(
             copyOfContext['waypoints']['points'], currentWaypointIndex)
+        print('handleTasks.nextWaypointIndex', nextWaypointIndex)
         currentWaypoint = copyOfContext['waypoints']['points'][currentWaypointIndex]
         nextWaypoint = copyOfContext['waypoints']['points'][nextWaypointIndex]
         waypointsStateIsEmpty = copyOfContext['waypoints']['state'] == None
         if waypointsStateIsEmpty:
             copyOfContext['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
-                copyOfContext['radarCoordinate'], currentWaypoint)
-        result = copyOfContext['radarCoordinate'] == copyOfContext['waypoints']['state']['checkInCoordinate']
+                copyOfContext['coordinate'], currentWaypoint)
+        result = copyOfContext['coordinate'] == copyOfContext['waypoints']['state']['checkInCoordinate']
         didReachWaypoint = np.all(result) == True
-        hasNoTasks = len(copyOfContext['tasks']) == 0
-        if hasNoTasks:
-            copyOfContext['tasks'] = gameplay.resolvers.resolveTasksByWaypointType(
+        if copyOfContext['currentGroupTask'] == None:
+            copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(
                 copyOfContext, currentWaypoint)
-        # print('currentWaypointIndex', currentWaypointIndex)
-        # if len(copyOfContext['tasks']) > 0:
-        #     print(copyOfContext['tasks'][0])
-        # copyOfContext['way'] = 'waypoint'
-        if copyOfContext['way'] == 'cavebot':
-            print(copyOfContext['tasks'])
-            isTryingToAttackClosestCreature = len(
-                copyOfContext['tasks']) > 0 and copyOfContext['tasks'][0]['type'] == 'attackClosestCreature'
-            if isTryingToAttackClosestCreature:
-                print('to tentando atacar')
-            else:
-                tasks = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
-                print('tasks gerada pra cave', tasks)
-                if tasks is not None:
-                    if copyOfContext['lastPressedKey'] is not None:
-                        pyautogui.keyUp(copyOfContext['lastPressedKey'])
-                        copyOfContext['lastPressedKey'] = None
-                    copyOfContext['tasks'] = tasks
-        tasksLength = len(copyOfContext['tasks'])
+        # if copyOfContext['way'] == 'cavebot':
+        #     isTryingToAttackClosestCreature = len(
+        #         copyOfContext['tasks']) > 0 and copyOfContext['tasks'][0]['type'] == 'attackClosestCreature'
+        #     if isTryingToAttackClosestCreature:
+        #         print('to tentando atacar')
+        #     else:
+        #         tasks = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
+        #         if tasks is not None:
+        #             if copyOfContext['lastPressedKey'] is not None:
+        #                 pyautogui.keyUp(copyOfContext['lastPressedKey'])
+        #                 copyOfContext['lastPressedKey'] = None
+        #             copyOfContext['tasks'] = tasks
+        # if copyOfContext['currentGroupTask']:
+            # print('nome da task é', copyOfContext['currentGroupTask'].name)
+            # print(copyOfContext['currentGroupTask'].tasks)
         if didReachWaypoint:
             allowedTasks = np.array(
-                ['buyItem', 'check', 'clickInCoordinate', 'refill', 'refillChecker', 'say', 'useShovel'])
-            if tasksLength == 0 or np.any(copyOfContext['tasks'][0]['type'] == allowedTasks) == False:
+                ['groupOfRefillChecker', 'groupOfUseShovel'])
+            if copyOfContext['currentGroupTask'] == None or np.any(copyOfContext['currentGroupTask'].name == allowedTasks) == False:
+                # print('chegou no waypoint e vamo embora')
                 copyOfContext['waypoints']['currentIndex'] = nextWaypointIndex
                 copyOfContext['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
-                    copyOfContext['radarCoordinate'], nextWaypoint)
+                    copyOfContext['coordinate'], nextWaypoint)
+                # print('currentIndex',
+                #       copyOfContext['waypoints']['currentIndex'])
         gameContext = copyOfContext
         return copyOfContext
 
-    def hasTasksToExecute(context):
-        has = len(context['tasks']) > 0
+    def hasTaskToExecute(context):
+        has = context['currentGroupTask'] is not None
         return has
 
     taskObserver = decisionObserver.pipe(
         operators.map(handleTasks),
-        operators.filter(hasTasksToExecute),
+        operators.filter(hasTaskToExecute),
     )
 
     def taskObservable(context):
-        global gameContext
+        global gameContext, taskExecutor
         copyOfContext = context.copy()
-        if len(copyOfContext['tasks']) > 0:
-            taskName, task = copyOfContext['tasks'][0]
-            if task.status == 'notStarted':
-                if task.startedAt == None:
-                    task.startedAt = time.time()
-                passedTimeSinceLastCheck = time.time() - task.startedAt
-                shouldExecNow = passedTimeSinceLastCheck >= task.delayBeforeStart
-                if shouldExecNow:
-                    shouldExecResponse = task.shouldIgnore(
-                        copyOfContext) == False
-                    shouldNotExecTask = shouldExecResponse == False and task.status != 'running'
-                    if shouldNotExecTask:
-                        copyOfContext = task.onDidNotComplete(copyOfContext)
-                        copyOfContext['tasks'] = np.delete(
-                            copyOfContext['tasks'], 0)
-                    else:
-                        task.status = 'running'
-                        copyOfContext = task.do(copyOfContext)
-                        if len(copyOfContext['tasks']) > 0:
-                            copyOfContext['tasks'][0] = (taskName, task)
-            elif task.status == 'running':
-                shouldNotRestart = not task.shouldRestart(copyOfContext)
-                if shouldNotRestart:
-                    didTask = task.did(copyOfContext)
-                    if didTask:
-                        task.finishedAt = time.time()
-                        task.status = 'completed'
-                        copyOfContext['tasks'][0] = (taskName, task)
-            if task.status == 'completed':
-                passedTimeSinceTaskCompleted = time.time() - task.finishedAt
-                didPassedEnoughDelayAfterTaskComplete = passedTimeSinceTaskCompleted > task.delayAfterComplete
-                if didPassedEnoughDelayAfterTaskComplete:
-                    copyOfContext['tasks'] = np.delete(
-                        copyOfContext['tasks'], 0)
-                    copyOfContext = task.onDidComplete(copyOfContext)
+        copyOfContext = taskExecutor.exec(copyOfContext)
+        copyOfContext['lastCoordinateVisited'] = context['coordinate']
         gameContext = copyOfContext
-        copyOfContext['lastCoordinateVisited'] = context['radarCoordinate']
 
     taskObserver.subscribe(taskObservable)
 
@@ -356,3 +330,10 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# abrir bp principal
+# abrir bp que está setada para loot
+# se houver loots
+# -- abrir depot
+# -- abrir chest setado para itens
+# -- arrastar item a item para o chest e paginar nas backpacks

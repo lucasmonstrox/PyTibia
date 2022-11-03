@@ -7,6 +7,7 @@ class AttackClosestCreatureTask:
     def __init__(self, closestCreature):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 2
         self.delayAfterComplete = 2
         self.name = 'attackClosestCreature'
@@ -14,13 +15,11 @@ class AttackClosestCreatureTask:
         self.value = closestCreature
 
     def shouldIgnore(self, context):
-        return True
+        return False
 
     def do(self, context):
         closestCreature = self.value
-        print('closestCreature', closestCreature)
         x, y = closestCreature['windowCoordinate']
-        print(x, y)
         pyautogui.rightClick(x, y)
         return context
 
@@ -31,7 +30,7 @@ class AttackClosestCreatureTask:
     def shouldRestart(self, _):
         return False
 
-    def onDidNotComplete(self, context):
+    def onIgnored(self, context):
         return context
 
     def onDidComplete(self, context):

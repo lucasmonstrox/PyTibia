@@ -7,6 +7,7 @@ class UseHoleTask:
     def __init__(self, value):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 2
         self.delayAfterComplete = 2
         self.name = 'useHole'
@@ -18,7 +19,7 @@ class UseHoleTask:
 
     def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
-            context['radarCoordinate'], self.value['coordinate'])
+            context['coordinate'], self.value['coordinate'])
         hud.slot.rightClickSlot(slot, context['hudCoordinate'])
         return context
 
@@ -29,7 +30,7 @@ class UseHoleTask:
     def shouldRestart(self, _):
         return False
 
-    def onDidNotComplete(self, context):
+    def onIgnored(self, context):
         return context
 
     def onDidComplete(self, context):

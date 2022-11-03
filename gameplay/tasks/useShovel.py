@@ -8,6 +8,7 @@ class UseShovelTask:
     def __init__(self, value):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.5
         self.name = 'useShovel'
@@ -16,25 +17,26 @@ class UseShovelTask:
 
     def shouldIgnore(self, context):
         isHoleOpen = hud.core.isHoleOpen(
-            context['hudImg'], context['radarCoordinate'], self.value['coordinate'])
+            context['hudImg'], context['coordinate'], self.value['coordinate'])
         return isHoleOpen
 
     def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
-            context['radarCoordinate'], self.value['coordinate'])
+            context['coordinate'], self.value['coordinate'])
         # TODO: replace by correct binds
         pyautogui.press('f9')
         hud.slot.clickSlot(slot, context['hudCoordinate'])
         return context
 
-    def did(self, _):
-        # TODO: check if hole is open
-        return True
+    def did(self, context):
+        did = hud.core.isHoleOpen(
+            context['hudImg'], context['coordinate'], self.value['coordinate'])
+        return did
 
     def shouldRestart(self, _):
         return False
 
-    def onDidNotComplete(self, context):
+    def onIgnored(self, context):
         return context
 
     def onDidComplete(self, context):

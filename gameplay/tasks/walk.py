@@ -11,6 +11,7 @@ class WalkTask:
     def __init__(self, value):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
         self.name = 'walk'
@@ -20,63 +21,62 @@ class WalkTask:
     def shouldIgnore(self, context):
         # TODO: improve clever code
         isStartingFromLastCoordinate = (context['lastCoordinateVisited'] is None or np.any(
-            context['radarCoordinate'] == context['lastCoordinateVisited']) == True) == False
+            context['coordinate'] == context['lastCoordinateVisited']) == True) == False
         return isStartingFromLastCoordinate
 
     def do(self, context):
-        copyOfContext = context.copy()
         walkpoint = self.value
         hasMoreWalkpointTasks = len(
-            copyOfContext['tasks']) > 1 and copyOfContext['tasks'][1]['type'] == 'walk'
-        direction = utils.coordinate.getDirectionBetweenRadarCoordinates(
-            copyOfContext['radarCoordinate'], walkpoint)
+            context['currentGroupTask'].tasks) > 1 and context['currentGroupTask'].tasks[1]['type'] == 'walk'
+        direction = utils.coordinate.getDirectionBetweenCoordinates(
+            context['coordinate'], walkpoint)
         hasNoNewDirection = direction is None
         if hasNoNewDirection:
-            return copyOfContext
+            return context
         futureDirection = None
         if hasMoreWalkpointTasks:
-            _, nextTask = copyOfContext['tasks'][1]
-            futureDirection = utils.coordinate.getDirectionBetweenRadarCoordinates(
+            _, nextTask = context['currentGroupTask'].tasks[1]
+            futureDirection = utils.coordinate.getDirectionBetweenCoordinates(
                 walkpoint, nextTask.value)
         if direction != futureDirection:
-            if copyOfContext['lastPressedKey'] is not None:
-                pyautogui.keyUp(copyOfContext['lastPressedKey'])
-                copyOfContext['lastPressedKey'] = None
+            if context['lastPressedKey'] is not None:
+                pyautogui.keyUp(context['lastPressedKey'])
+                context['lastPressedKey'] = None
             else:
                 pyautogui.press(direction)
-            return copyOfContext
+            return context
         else:
-            filterByWalkTasks = copyOfContext['tasks']['type'] == 'walk'
-            walkTasks = copyOfContext['tasks'][filterByWalkTasks]
+            filterByWalkTasks = context['currentGroupTask'].tasks['type'] == 'walk'
+            walkTasks = context['currentGroupTask'].tasks[filterByWalkTasks]
             walkTasksLength = len(walkTasks)
-            if direction != copyOfContext['lastPressedKey']:
+            if direction != context['lastPressedKey']:
                 if walkTasksLength > 2:
                     pyautogui.keyDown(direction)
-                    copyOfContext['lastPressedKey'] = direction
+                    context['lastPressedKey'] = direction
                 else:
                     pyautogui.press(direction)
             elif walkTasksLength == 1:
-                if copyOfContext['lastPressedKey'] is not None:
-                    pyautogui.keyUp(copyOfContext['lastPressedKey'])
-                    copyOfContext['lastPressedKey'] = None
-        return copyOfContext
+                if context['lastPressedKey'] is not None:
+                    pyautogui.keyUp(context['lastPressedKey'])
+                    context['lastPressedKey'] = None
+        return context
 
     def did(self, context):
         nextwalkpoint = self.value
-        response = np.all(context['radarCoordinate'] == nextwalkpoint)
+        response = np.all(context['coordinate'] == nextwalkpoint)
         did = response == True
         return did
 
     def shouldRestart(self, _):
         return False
 
-    def onDidNotComplete(self, context):
+    def onIgnored(self, context):
         return context
 
     def onDidComplete(self, context):
         if context['way'] == 'cavebot':
             return context
-        result = context['radarCoordinate'] == context['waypoints']['state']['checkInCoordinate']
+        result = context['coordinate'] == context['waypoints']['state']['checkInCoordinate']
         didReachWaypoint = np.all(result) == True
         if didReachWaypoint:
             context['waypoints']['state'] = None

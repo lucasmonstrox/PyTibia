@@ -6,6 +6,7 @@ class SetNextWaypointTask:
     def __init__(self, value):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
         self.name = 'setNextWaypoint'
@@ -23,14 +24,14 @@ class SetNextWaypointTask:
 
     def did(self, context):
         waypoint = self.value
-        response = np.all(context['radarCoordinate'] == waypoint['coordinate'])
+        response = np.all(context['coordinate'] == waypoint['coordinate'])
         did = response == True
         return True
 
     def shouldRestart(self, _):
         return False
 
-    def onDidNotComplete(self, context):
+    def onIgnored(self, context):
         return context
 
     def onDidComplete(self, context):

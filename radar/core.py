@@ -2,7 +2,7 @@ import numpy as np
 import pyautogui
 from scipy.spatial import distance
 from time import sleep
-from radar import config, extractors, locators
+from . import config, extractors, locators
 import utils.core
 import utils.image
 import utils.mouse
@@ -10,7 +10,7 @@ import utils.mouse
 
 # TODO: add unit tests
 # TODO: get by cached images coordinates hashes
-def getCoordinate(screenshot, previousRadarCoordinate=None):
+def getCoordinate(screenshot, previousCoordinate=None):
     floorLevel = getFloorLevel(screenshot)
     cannotGetFloorLevel = floorLevel is None
     if cannotGetFloorLevel:
@@ -24,26 +24,26 @@ def getCoordinate(screenshot, previousRadarCoordinate=None):
     shouldGetCoordinateByCachedRadarHashedImg = radarHashedImg in config.coordinates
     if shouldGetCoordinateByCachedRadarHashedImg:
         return config.coordinates[radarHashedImg]
-    shouldGetCoordinateByPreviousRadarCoordinateArea = previousRadarCoordinate is not None
-    if shouldGetCoordinateByPreviousRadarCoordinateArea:
-        (previousRadarCoordinateXPixel, previousRadarCoordinateYPixel) = utils.core.getPixelFromCoordinate(
-            previousRadarCoordinate)
+    shouldGetCoordinateByPreviousCoordinateArea = previousCoordinate is not None
+    if shouldGetCoordinateByPreviousCoordinateArea:
+        (previousCoordinateXPixel, previousCoordinateYPixel) = utils.core.getPixelFromCoordinate(
+            previousCoordinate)
         paddingSize = 20
-        yStart = previousRadarCoordinateYPixel - \
+        yStart = previousCoordinateYPixel - \
             (config.dimensions["halfHeight"] + paddingSize)
-        yEnd = previousRadarCoordinateYPixel + \
+        yEnd = previousCoordinateYPixel + \
             (config.dimensions["halfHeight"] + 1 + paddingSize)
-        xStart = previousRadarCoordinateXPixel - \
+        xStart = previousCoordinateXPixel - \
             (config.dimensions["halfWidth"] + paddingSize)
-        xEnd = previousRadarCoordinateXPixel + \
+        xEnd = previousCoordinateXPixel + \
             (config.dimensions["halfWidth"] + paddingSize)
         areaImgToCompare = config.floorsImgs[floorLevel][yStart:yEnd, xStart:xEnd]
         areaFoundImg = utils.core.locate(
             areaImgToCompare, radarImg, confidence=0.9)
         if areaFoundImg:
-            currentCoordinateXPixel = previousRadarCoordinateXPixel - \
+            currentCoordinateXPixel = previousCoordinateXPixel - \
                 paddingSize + areaFoundImg[0]
-            currentCoordinateYPixel = previousRadarCoordinateYPixel - \
+            currentCoordinateYPixel = previousCoordinateYPixel - \
                 paddingSize + areaFoundImg[1]
             (currentCoordinateX, currentCoordinateY) = utils.core.getCoordinateFromPixel(
                 (currentCoordinateXPixel, currentCoordinateYPixel))
@@ -147,7 +147,7 @@ def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
 
 
 # TODO: add unit tests
-def getTileFrictionByRadarCoordinate(coordinate):
+def getTileFrictionByCoordinate(coordinate):
     xOfPixelCoordinate, yOfPixelCoordinate = utils.core.getPixelFromCoordinate(
         coordinate)
     floorLevel = coordinate[2]
@@ -157,14 +157,14 @@ def getTileFrictionByRadarCoordinate(coordinate):
 
 
 # TODO: add unit tests
-def goToCoordinate(screenshot, currentRadarCoordinate, nextRadarCoordinate):
+def goToCoordinate(screenshot, currentCoordinate, nextCoordinate):
     (radarToolsPosX, radarToolsPosY, _, _) = locators.getRadarToolsPos(screenshot)
     x0 = radarToolsPosX - config.dimensions['width'] - 11
     y0 = radarToolsPosY - 50
     radarCenterX = x0 + config.dimensions['halfWidth']
     radarCenterY = y0 + config.dimensions['halfHeight']
-    xdiff = nextRadarCoordinate[0] - currentRadarCoordinate[0]
-    ydiff = nextRadarCoordinate[1] - currentRadarCoordinate[1]
+    xdiff = nextCoordinate[0] - currentCoordinate[0]
+    ydiff = nextCoordinate[1] - currentCoordinate[1]
     x = xdiff + radarCenterX
     y = ydiff + radarCenterY
     pyautogui.click(x, y)

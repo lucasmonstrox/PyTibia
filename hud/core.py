@@ -53,12 +53,12 @@ def getRightSidebarArrows(screenshot):
     return utils.core.locate(screenshot, rightHudImg)
 
 
-def getSlotFromCoordinate(currentRadarCoordinate, coordinate):
-    diffX = coordinate[0] - currentRadarCoordinate[0]
+def getSlotFromCoordinate(currentCoordinate, coordinate):
+    diffX = coordinate[0] - currentCoordinate[0]
     diffXAbs = abs(diffX)
     if diffXAbs > 7:
         return None
-    diffY = coordinate[1] - currentRadarCoordinate[1]
+    diffY = coordinate[1] - currentCoordinate[1]
     diffYAbs = abs(diffY)
     if diffYAbs > 5:
         return None
@@ -78,8 +78,8 @@ def getSlotImg(hudImg, slot):
 
 
 # TODO: add unit tests
-def isHoleOpen(hudImg, radarCoordinate, targetCoordinate):
-    slot = getSlotFromCoordinate(radarCoordinate, targetCoordinate)
+def isHoleOpen(hudImg, coordinate, targetCoordinate):
+    slot = getSlotFromCoordinate(coordinate, targetCoordinate)
     slotImg = getSlotImg(hudImg, slot)
     holeOpenImg = utils.image.RGBtoGray(
         utils.image.load('hud/images/waypoint/holeOpenImg.png'))

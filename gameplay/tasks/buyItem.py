@@ -6,14 +6,15 @@ class BuyItemTask:
     def __init__(self, itemNameWithQuantity):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 2
         self.delayAfterComplete = 2
         self.name = 'buyItem'
         self.status = 'notStarted'
         self.value = itemNameWithQuantity
 
-    def shouldIgnore(self, context):
-        return True
+    def shouldIgnore(self, _):
+        return False
 
     def do(self, context):
         core.buyItem(context['screenshot'],
@@ -23,13 +24,14 @@ class BuyItemTask:
     def shouldRestart(self, _):
         return False
 
-    def did(self, context):
+    def did(self, _):
         return True
 
-    def onDidNotComplete(self, context):
+    def onIgnored(self, context):
         return context
 
     def onDidComplete(self, context):
+        # TODO: fix this
         context['waypoints']['currentIndex'] += 1
         context['waypoints']['state'] = None
         return context

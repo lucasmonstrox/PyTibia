@@ -8,6 +8,7 @@ class UseRopeTask:
     def __init__(self, value):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 2
         self.delayAfterComplete = 2
         self.name = 'useRope'
@@ -19,7 +20,7 @@ class UseRopeTask:
 
     def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
-            context['radarCoordinate'], self.value['coordinate'])
+            context['coordinate'], self.value['coordinate'])
         # TODO: replace by correct bindings
         pyautogui.press('f8')
         hud.slot.clickSlot(slot, context['hudCoordinate'])
@@ -32,7 +33,7 @@ class UseRopeTask:
     def shouldRestart(self, _):
         return False
 
-    def onDidNotComplete(self, context):
+    def onIgnored(self, context):
         return context
 
     def onDidComplete(self, context):

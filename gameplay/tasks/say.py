@@ -6,6 +6,7 @@ class SayTask:
     def __init__(self, phrase):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 2
         self.delayAfterComplete = 2
         self.name = 'say'
@@ -13,7 +14,7 @@ class SayTask:
         self.value = phrase
 
     def shouldIgnore(self, context):
-        return True
+        return False
 
     def do(self, context):
         chat.core.sendMessage(context['screenshot'], self.value)
@@ -26,7 +27,7 @@ class SayTask:
     def shouldRestart(self, _):
         return False
 
-    def onDidNotComplete(self, context):
+    def onIgnored(self, context):
         return context
 
     def onDidComplete(self, context):

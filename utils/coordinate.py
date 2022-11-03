@@ -43,12 +43,12 @@ def getAvailableAroundCoordinates(coordinate, walkableFloorSqms):
 
 
 # TODO: add unit tests
-def getClosestCoordinate(radarCoordinate, coordinates):
-    xOfRadarCoordinate, yOfRadarCoordinate, _ = radarCoordinate
-    radarCoordinateWithoutFloor = [xOfRadarCoordinate, yOfRadarCoordinate]
+def getClosestCoordinate(coordinate, coordinates):
+    xOfCoordinate, yOfCoordinate, _ = coordinate
+    coordinateWithoutFloor = [xOfCoordinate, yOfCoordinate]
     coordinatesWithoutFloor = coordinates[:, [0, 1]]
     distancesOfCoordinates = distance.cdist(
-        [radarCoordinateWithoutFloor], coordinatesWithoutFloor)[0]
+        [coordinateWithoutFloor], coordinatesWithoutFloor)[0]
     sortedDistancesOfCoordinates = np.argsort(distancesOfCoordinates)
     closestCoordinateIndex = sortedDistancesOfCoordinates[0]
     closestCoordinate = coordinates[closestCoordinateIndex]
@@ -56,7 +56,7 @@ def getClosestCoordinate(radarCoordinate, coordinates):
 
 
 # TODO: add unit tests
-def getDirectionBetweenRadarCoordinates(coordinate, nextCoordinate):
+def getDirectionBetweenCoordinates(coordinate, nextCoordinate):
     (xOfCurrentCoordinate, yOfCurrentCoordinate, _) = coordinate
     (xOfNextWaypointCoordinate, yOfNextWaypointCoordinate, _) = nextCoordinate
     if xOfCurrentCoordinate < xOfNextWaypointCoordinate:
