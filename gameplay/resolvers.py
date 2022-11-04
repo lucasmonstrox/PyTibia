@@ -1,47 +1,26 @@
-import numpy as np
-import gameplay.baseTasks
-import gameplay.tasks.check
-import gameplay.tasks.moveDownNorth
-import gameplay.tasks.moveDownSouth
-import gameplay.tasks.moveUpNorth
-import gameplay.tasks.moveUpSouth
-import gameplay.tasks.useRope
-import gameplay.tasks.useShovel
+from gameplay.groupTasks.groupOfDepositItemsTasks import GroupOfDepositItemsTasks
+from gameplay.groupTasks.groupOfRefillCheckerTasks import GroupOfRefillCheckerTasks
+from gameplay.groupTasks.groupOfRefillTasks import GroupOfRefillTasks
+from gameplay.groupTasks.groupOfSingleWalkTasks import GroupOfSingleWalkTasks
+from gameplay.groupTasks.groupOfUseRopeTasks import GroupOfUseRopeTasks
+from gameplay.groupTasks.groupOfUseShovelTasks import GroupOfUseShovelTasks
+from gameplay.groupTasks.groupOfWalkTasks import GroupOfWalkTasks
 
 
 def resolveTasksByWaypointType(context, waypoint):
-    if waypoint['type'] == 'check':
-        tasks = gameplay.tasks.check.makeCheckTasks(waypoint)
-        return tasks
-    elif waypoint['type'] == 'floor':
-        tasks = gameplay.baseTasks.makeWalkpointTasks(
-            context, waypoint['coordinate'])
-        return tasks
-    elif waypoint['type'] == 'moveDownNorth':
-        tasks = gameplay.tasks.moveDownNorth.makeMoveDownNorthTasks(
-            context, context['waypoints']['state']['goalCoordinate'], waypoint['coordinate'])
-        return tasks
-    elif waypoint['type'] == 'moveDownSouth':
-        tasks = gameplay.tasks.moveDownSouth.makeMoveDownSouthTasks(
-            context, context['waypoints']['state']['goalCoordinate'], waypoint['coordinate'])
-        return tasks
-    elif waypoint['type'] == 'moveUpNorth':
-        tasks = gameplay.tasks.moveUpNorth.makeMoveUpNorthTasks(
-            context, context['waypoints']['state']['goalCoordinate'], waypoint['coordinate'])
-        return tasks
-    elif waypoint['type'] == 'moveUpSouth':
-        tasks = gameplay.tasks.moveUpSouth.makeMoveUpSouthTasks(
-            context, context['waypoints']['state']['goalCoordinate'], waypoint['coordinate'])
-        return tasks
+    if waypoint['type'] == 'depositItems':
+        return GroupOfDepositItemsTasks(context, waypoint)
+    if waypoint['type'] == 'moveDownEast' or waypoint['type'] == 'moveDownNorth' or waypoint['type'] == 'moveDownSouth' or waypoint['type'] == 'moveDownWest':
+        return GroupOfSingleWalkTasks(context, context['waypoints']['state']['checkInCoordinate'])
+    elif waypoint['type'] == 'moveUpNorth' or waypoint['type'] == 'moveUpSouth' or waypoint['type'] == 'moveUpWest' or waypoint['type'] == 'moveUpEast':
+        return GroupOfSingleWalkTasks(context, context['waypoints']['state']['checkInCoordinate'])
+    elif waypoint['type'] == 'refill':
+        return GroupOfRefillTasks(context, waypoint)
+    elif waypoint['type'] == 'refillChecker':
+        return GroupOfRefillCheckerTasks(waypoint)
     elif waypoint['type'] == 'useRope':
-        tasks = gameplay.tasks.useRope.makeUseRopeTasks(
-            context, context['waypoints']['state']['goalCoordinate'], waypoint)
-        for task in tasks:
-            context['tasks'] = np.append(context['tasks'], [task])
-        return tasks
+        return GroupOfUseRopeTasks(context, waypoint)
     elif waypoint['type'] == 'useShovel':
-        tasks = gameplay.tasks.useShovel.makeUseShovelTasks(
-            context, context['waypoints']['state']['goalCoordinate'], waypoint)
-        for task in tasks:
-            context['tasks'] = np.append(context['tasks'], [task])
-        return tasks
+        return GroupOfUseShovelTasks(context, waypoint)
+    elif waypoint['type'] == 'walk':
+        return GroupOfWalkTasks(context, waypoint['coordinate'])

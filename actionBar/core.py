@@ -1,11 +1,14 @@
+import easyocr
 import numpy as np
 import pathlib
+from PIL import Image
 from actionBar.locators import getSlot1Pos, getSlot2Pos, getSlot3Pos, getSlot4Pos, getSlot5Pos, getSlot6Pos, getSlot7Pos, getSlot8Pos, getSlot9Pos
 from actionBar import extractors
 from utils.core import locate
-from utils.image import loadAsGrey, loadFromRGBToGray, save
-from utils.matrix import hasMatrixInsideOther
+from utils.image import loadFromRGBToGray
 
+
+reader = easyocr.Reader(['en'])
 currentPath = pathlib.Path(__file__).parent.resolve()
 imagesPath = f'{currentPath}/images'
 attackCooldownImg = loadFromRGBToGray(f'{imagesPath}/cooldowns/attack.png')
@@ -15,35 +18,6 @@ exoriGranCooldownImg = loadFromRGBToGray(
 exoriMasCooldownImg = loadFromRGBToGray(f'{imagesPath}/cooldowns/exoriMas.png')
 hasteCooldownImg = loadFromRGBToGray(f'{imagesPath}/cooldowns/haste.png')
 supportCooldownImg = loadFromRGBToGray(f'{imagesPath}/cooldowns/support.png')
-numbersAsArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-numbersAsImg = [
-    loadAsGrey(f'{imagesPath}/slotDigits/0.png'),
-    loadAsGrey(f'{imagesPath}/slotDigits/1.png'),
-    loadAsGrey(f'{imagesPath}/slotDigits/2.png'),
-    loadAsGrey(f'{imagesPath}/slotDigits/3.png'),
-    loadAsGrey(f'{imagesPath}/slotDigits/4.png'),
-    loadAsGrey(f'{imagesPath}/slotDigits/5.png'),
-    loadAsGrey(f'{imagesPath}/slotDigits/6.png'),
-    loadAsGrey(f'{imagesPath}/slotDigits/7.png'),
-    loadAsGrey(f'{imagesPath}/slotDigits/8.png'),
-    loadAsGrey(f'{imagesPath}/slotDigits/9.png'),
-]
-
-
-# TODO: add unit tests
-def getNumberFromDigitSlot(digitIndex, digits):
-    digitWidth = 6
-    x0 = digitIndex * digitWidth
-    x1 = x0 + digitWidth
-    digitImg = digits[:, x0:x1]
-    result = np.array([hasMatrixInsideOther(digitImg, numberAsImg)
-                      for numberAsImg in numbersAsImg])
-    digit = np.nonzero(result == True)
-    cannotGetNumber = len(digit[0]) == 0
-    if cannotGetNumber:
-        return None
-    number = digit[0][0]
-    return number
 
 
 # TODO: add unit tests
@@ -66,22 +40,16 @@ def getSlotCount(screenshot, key):
     y1 = y0 + 8
     digits = screenshot[y0:y1, x0:x1]
     digits = digits[:, 6:30]
-    digits = np.where(digits <= 30, 0, digits)
-    digits = np.where(digits != 0, 255, digits)
-    numberOfDigits = 4
-    digits = np.array([getNumberFromDigitSlot(digitIndex, digits)
-                      for digitIndex in np.arange(numberOfDigits)])
-    digits = digits[digits != None]
-    hasNoCount = len(digits) == 0
-    if hasNoCount:
-        return 0
-    digits = digits[::-1]
-    numberOfDigits = len(digits)
-    sequentialVector = np.arange(numberOfDigits)
-    vectorOf10 = np.full(numberOfDigits, 10)
-    result = np.power(vectorOf10, sequentialVector)
-    number = np.sum(digits * result)
-    return number
+    basewidth = 24 * 5
+    digits = np.where(digits <= 100, 0, digits)
+    img = Image.fromarray(digits)
+    wpercent = (basewidth/float(img.size[0]))
+    hsize = int((float(img.size[1]) * float(wpercent)))
+    img = img.resize((basewidth, hsize))
+    img = np.array(img)
+    res2 = reader.readtext(img, detail=0)
+    res2 = int(res2[0])
+    return res2
 
 
 def hasCooldownByImg(screenshot, cooldownImg):

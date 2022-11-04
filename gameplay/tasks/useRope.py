@@ -1,45 +1,40 @@
-import numpy as np
 import pyautogui
-import time
+from time import time
 import hud.core
 import hud.slot
-import gameplay.baseTasks
 
 
-def doUseRope(context, roleRadarCoordinate):
-    slot = hud.core.getSlotFromCoordinate(
-        context['radarCoordinate'], roleRadarCoordinate)
-    pyautogui.press('f8')
-    hud.slot.clickSlot(slot, context['hudCoordinate'])
-    return context
+class UseRopeTask:
+    def __init__(self, value):
+        self.createdAt = time()
+        self.startedAt = None
+        self.finishedAt = None
+        self.delayBeforeStart = 1
+        self.delayAfterComplete = 1
+        self.name = 'useRope'
+        self.status = 'notStarted'
+        self.value = value
 
+    def shouldIgnore(self, _):
+        return False
 
-def makeUseRopeTask(waypoint):
-    task = {
-        'createdAt': time.time(),
-        'startedAt': None,
-        'finishedAt': None,
-        'delayBeforeStart': 2,
-        'delayAfterComplete': 2,
-        'shouldExec': lambda context: True,
-        'do': lambda context: doUseRope(context, waypoint['coordinate']),
-        'did': lambda _: True,
-        'didNotComplete': lambda context: context,
-        'shouldRestart': lambda context: False,
-        'status': 'notStarted',
-        'value': waypoint,
-    }
-    return ('useRope', task)
+    def do(self, context):
+        slot = hud.core.getSlotFromCoordinate(
+            context['coordinate'], self.value['coordinate'])
+        # TODO: replace by correct bindings
+        pyautogui.press('f8')
+        hud.slot.clickSlot(slot, context['hudCoordinate'])
+        return context
 
+    def did(self, _):
+        # TODO: check if char is in upper coordinate
+        return True
 
-def makeUseRopeTasks(context, goalCoordinate, waypoint):
-    tasks = np.array([], dtype=gameplay.baseTasks.taskType)
-    floorTasks = gameplay.baseTasks.makeWalkpointTasks(context, goalCoordinate)
-    for floorTask in floorTasks:
-        taskToAppend = np.array([floorTask], dtype=gameplay.baseTasks.taskType)
-        tasks = np.append(tasks, [taskToAppend])
-    tasksToAppend = np.array([
-        makeUseRopeTask(waypoint),
-    ], dtype=gameplay.baseTasks.taskType)
-    tasks = np.append(tasks, [tasksToAppend])
-    return tasks
+    def shouldRestart(self, _):
+        return False
+
+    def onIgnored(self, context):
+        return context
+
+    def onDidComplete(self, context):
+        return context
