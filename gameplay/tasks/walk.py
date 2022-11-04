@@ -1,19 +1,25 @@
 import numpy as np
 import pyautogui
 from time import time
-import gameplay.typings
-import gameplay.waypoint
+from gameplay.typings import taskType
+from radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
+from skills.core import getSpeed
 import utils.coordinate
 import utils.array
 
 
 class WalkTask:
-    def __init__(self, value):
+    def __init__(self, context, value):
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
+        charSpeed = getSpeed(context['screenshot'])
+        tileFriction = getTileFrictionByCoordinate(value)
+        movementSpeed = getBreakpointTileMovementSpeed(
+            charSpeed, tileFriction)
+        self.delayOfTimeout = (movementSpeed * 2) / 1000
         self.name = 'walk'
         self.status = 'notStarted'
         self.value = value
@@ -80,5 +86,10 @@ class WalkTask:
         didReachWaypoint = np.all(result) == True
         if didReachWaypoint:
             context['waypoints']['state'] = None
-            context['tasks'] = np.array([], dtype=gameplay.typings.taskType)
+            context['tasks'] = np.array([], dtype=taskType)
+        return context
+
+    def onDidTimeout(self, context):
+        context['currentGroupTask'].status = 'completed'
+        context['currentGroupTask'].finishedAt = time()
         return context

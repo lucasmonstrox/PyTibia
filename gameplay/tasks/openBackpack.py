@@ -1,6 +1,7 @@
 from time import time
 from inventory.core import isBackpackOpen, openBackpack
 
+
 class OpenBackpackTask:
     def __init__(self, backpack):
         self.createdAt = time()
@@ -8,6 +9,7 @@ class OpenBackpackTask:
         self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
+        self.delayOfTimeout = None
         self.name = 'openBackpack'
         self.status = 'notStarted'
         self.value = backpack
@@ -29,4 +31,7 @@ class OpenBackpackTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context

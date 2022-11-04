@@ -10,6 +10,7 @@ class GroupOfFollowTargetCreatureTasks(GroupTaskExecutor):
     def __init__(self, context, targetCreature):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
         self.name = 'groupOfFollowTargetCreature'
@@ -25,7 +26,7 @@ class GroupOfFollowTargetCreatureTasks(GroupTaskExecutor):
         if hasWalkpoints:
             walkpoints.pop()
         for walkpoint in walkpoints:
-            walkpointTask = makeWalkTask(walkpoint)
+            walkpointTask = makeWalkTask(context, walkpoint)
             taskToAppend = np.array([walkpointTask], dtype=taskType)
             tasks = np.append(tasks, [taskToAppend])
         return tasks

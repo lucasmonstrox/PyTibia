@@ -13,6 +13,7 @@ class GroupOfRefillTasks(GroupTaskExecutor):
     def __init__(self, context, waypoint):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
         self.name = 'groupOfRefill'

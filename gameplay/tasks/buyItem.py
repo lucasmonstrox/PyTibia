@@ -9,6 +9,7 @@ class BuyItemTask:
         self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
+        self.delayOfTimeout = None
         self.name = 'buyItem'
         self.status = 'notStarted'
         self.value = itemNameWithQuantity
@@ -30,4 +31,7 @@ class BuyItemTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context

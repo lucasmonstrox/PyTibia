@@ -10,6 +10,7 @@ class GroupOfWalkTasks(GroupTaskExecutor):
     def __init__(self, context, waypointCoordinate):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
         self.name = 'groupOfWalk'
@@ -22,7 +23,7 @@ class GroupOfWalkTasks(GroupTaskExecutor):
             context['coordinate'], waypointCoordinate)
         tasks = np.array([], dtype=taskType)
         for walkpoint in walkpoints:
-            walkpointTask = makeWalkTask(walkpoint)
+            walkpointTask = makeWalkTask(context, walkpoint)
             taskToAppend = np.array([walkpointTask], dtype=taskType)
             tasks = np.append(tasks, [taskToAppend])
         return tasks

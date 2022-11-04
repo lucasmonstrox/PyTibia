@@ -15,7 +15,8 @@ login = None
 loginScreenImg = utils.image.loadAsGrey('setup/images/login-screen.png')
 tibiaIconImg = utils.image.loadAsGrey('setup/images/tibia-icon.png')
 emptyFieldImg = utils.image.loadAsGrey('setup/images/empty-field.png')
-selectCharWindowImg = utils.image.loadAsGrey('setup/images/select-char-window.png')
+selectCharWindowImg = utils.image.loadAsGrey(
+    'setup/images/select-char-window.png')
 wrongCredImg = utils.image.loadAsGrey('setup/images/wrong-cred.png')
 deadScreenImg = utils.image.loadAsGrey('setup/images/dead-screen.png')
 
@@ -42,7 +43,8 @@ def isEmailEmpty(screenshot):
     (x, y, w, h) = getLoginWindowCoord(screenshot)
     x = x + 91
     y = y + 28
-    result = utils.core.locate(utils.image.crop(screenshot, x, y, 13, 22), emptyFieldImg, confidence=0.99)
+    result = utils.core.locate(utils.image.crop(
+        screenshot, x, y, 13, 22), emptyFieldImg, confidence=0.99)
 
     if result is None:
         return False
@@ -65,7 +67,8 @@ def isPasswordEmpty(screenshot):
     x = x + 91
     y = y + 58
 
-    result = utils.core.locate(utils.image.crop(screenshot, x, y, 13, 22), emptyFieldImg, confidence=0.99)
+    result = utils.core.locate(utils.image.crop(
+        screenshot, x, y, 13, 22), emptyFieldImg, confidence=0.99)
 
     if result is None:
         return False
@@ -126,7 +129,7 @@ def logIn():
         screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
         elapsedLoginTime = time() - loginStartTime
         charScreenPos = getCharacterWindowCoord(screenshot)
-        wrongCredPos = utils.core.locate(wrongCredImg,screenshot)
+        wrongCredPos = utils.core.locate(wrongCredImg, screenshot)
 
         if wrongCredPos is not None:
             print('Wrong login credentials')

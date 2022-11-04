@@ -10,6 +10,7 @@ class CloseNpcTradeBoxTask:
         self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.5
+        self.delayOfTimeout = None
         self.name = 'closeNpcTradeBox'
         self.status = 'notStarted'
         self.value = None
@@ -37,4 +38,7 @@ class CloseNpcTradeBoxTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context

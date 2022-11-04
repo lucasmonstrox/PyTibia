@@ -11,6 +11,7 @@ class UseRopeTask:
         self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
+        self.delayOfTimeout = None
         self.name = 'useRope'
         self.status = 'notStarted'
         self.value = value
@@ -37,4 +38,7 @@ class UseRopeTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context

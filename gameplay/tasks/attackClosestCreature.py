@@ -8,7 +8,8 @@ class AttackClosestCreatureTask:
         self.startedAt = None
         self.finishedAt = None
         self.delayBeforeStart = 0
-        self.delayAfterComplete = 0.1
+        self.delayAfterComplete = 0
+        self.delayOfTimeout = 2
         self.name = 'attackClosestCreature'
         self.status = 'notStarted'
         self.value = closestCreature
@@ -22,9 +23,9 @@ class AttackClosestCreatureTask:
         pyautogui.rightClick(x, y)
         return context
 
-    def did(self, _):
-        # TODO: check if closest creature is being attacked
-        return True
+    def did(self, context):
+        hasTargetCreature = context['targetCreature'] is not None
+        return hasTargetCreature
 
     def shouldRestart(self, _):
         return False
@@ -33,4 +34,7 @@ class AttackClosestCreatureTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context

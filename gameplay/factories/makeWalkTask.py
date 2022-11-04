@@ -1,6 +1,6 @@
 from gameplay.tasks.walk import WalkTask
 
 
-def makeWalkTask(waypoint):
-    task = WalkTask(waypoint)
+def makeWalkTask(context, waypoint):
+    task = WalkTask(context, waypoint)
     return ('walk', task)

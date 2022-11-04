@@ -10,6 +10,7 @@ class UseHoleTask:
         self.finishedAt = None
         self.delayBeforeStart = 2
         self.delayAfterComplete = 2
+        self.delayOfTimeout = None
         self.name = 'useHole'
         self.status = 'notStarted'
         self.value = value
@@ -34,4 +35,7 @@ class UseHoleTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context

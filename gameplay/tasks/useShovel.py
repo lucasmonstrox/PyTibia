@@ -11,6 +11,7 @@ class UseShovelTask:
         self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.5
+        self.delayOfTimeout = None
         self.name = 'useShovel'
         self.status = 'notStarted'
         self.value = value
@@ -40,4 +41,7 @@ class UseShovelTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context

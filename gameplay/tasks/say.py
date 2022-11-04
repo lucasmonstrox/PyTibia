@@ -9,6 +9,7 @@ class SayTask:
         self.finishedAt = None
         self.delayBeforeStart = 2
         self.delayAfterComplete = 2
+        self.delayOfTimeout = None
         self.name = 'say'
         self.status = 'notStarted'
         self.value = phrase
@@ -31,4 +32,7 @@ class SayTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context

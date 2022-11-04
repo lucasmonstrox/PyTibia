@@ -11,6 +11,7 @@ class ClickInCoordinateTask:
         self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.5
+        self.delayOfTimeout = None
         self.name = 'clickInCoordinate'
         self.status = 'notStarted'
         self.value = value
@@ -36,4 +37,7 @@ class ClickInCoordinateTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context

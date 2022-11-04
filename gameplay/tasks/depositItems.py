@@ -12,6 +12,7 @@ class DepositItemsTask:
         self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
+        self.delayOfTimeout = None
         self.name = 'depositItems'
         self.status = 'notStarted'
         self.value = None
@@ -49,4 +50,7 @@ class DepositItemsTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context

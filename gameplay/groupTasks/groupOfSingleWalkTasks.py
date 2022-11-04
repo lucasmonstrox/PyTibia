@@ -9,6 +9,7 @@ class GroupOfSingleWalkTasks(GroupTaskExecutor):
     def __init__(self, context, checkInCoordinate):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
         self.name = 'groupOfSingleWalk'
@@ -18,7 +19,7 @@ class GroupOfSingleWalkTasks(GroupTaskExecutor):
 
     def generateTasks(self, context, checkInCoordinate):
         tasks = np.array([], dtype=taskType)
-        walkpointTask = makeWalkTask(checkInCoordinate)
+        walkpointTask = makeWalkTask(context, checkInCoordinate)
         taskToAppend = np.array([walkpointTask], dtype=taskType)
         tasks = np.append(tasks, [taskToAppend])
         return tasks

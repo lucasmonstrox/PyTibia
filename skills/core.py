@@ -1,4 +1,5 @@
-from skills import config, locators
+import numpy as np
+from . import config, locators
 import utils.core
 import utils.image
 
@@ -62,6 +63,10 @@ def getValuesCount(screenshot, position):
     capacityHundredsCountsImage = screenshot[y:y + 8, x + 144 - 22:x + 144]
     capacityHundredsCountsImage = utils.image.convertGraysToBlack(
         capacityHundredsCountsImage)
+    capacityHundredsCountsImage = np.where(
+        np.logical_or(capacityHundredsCountsImage == 126, capacityHundredsCountsImage == 192), 192, 0)
+    capacityHundredsCountsImage = np.array(
+        capacityHundredsCountsImage, dtype=np.uint8)
     capacityHundredsCountsHashKey = utils.core.hashit(
         capacityHundredsCountsImage)
     capacityHundredsCount = 0
@@ -70,6 +75,10 @@ def getValuesCount(screenshot, position):
     capacityThousandsCountsImage = screenshot[y:y + 8, x + 116 - 22:x + 116]
     capacityThousandsCountsImage = utils.image.convertGraysToBlack(
         capacityThousandsCountsImage)
+    capacityThousandsCountsImage = np.where(
+        np.logical_or(capacityThousandsCountsImage == 126, capacityThousandsCountsImage == 192), 192, 0)
+    capacityThousandsCountsImage = np.array(
+        capacityThousandsCountsImage, dtype=np.uint8)
     capacityThousandsCountsHashKey = utils.core.hashit(
         capacityThousandsCountsImage)
     capacityThousandsCount = 0

@@ -9,6 +9,7 @@ class SetChatOffTask:
         self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
+        self.delayOfTimeout = None
         self.name = 'setChatOff'
         self.status = 'notStarted'
         self.value = None
@@ -30,4 +31,7 @@ class SetChatOffTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context

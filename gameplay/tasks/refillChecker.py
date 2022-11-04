@@ -11,6 +11,7 @@ class RefillCheckerTask:
         self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 1
+        self.delayOfTimeout = None
         self.name = 'refillChecker'
         self.status = 'notStarted'
         self.value = value
@@ -20,7 +21,8 @@ class RefillCheckerTask:
         quantityOfHealthPotions = getSlotCount(context['screenshot'], '1')
         # TODO: get correct binds for mana potion
         quantityOfManaPotions = getSlotCount(context['screenshot'], '2')
-        hasEnoughHealthPotions = quantityOfHealthPotions > self.value['options']['minimumOfHealthPotions']
+        hasEnoughHealthPotions = quantityOfHealthPotions > self.value[
+            'options']['minimumOfHealthPotions']
         hasEnoughManaPotions = quantityOfManaPotions > self.value['options']['minimumOfManaPotions']
         capacity = getCapacity(context['screenshot'])
         hasEnoughCapacity = capacity > self.value['options']['minimumOfCapacity']
@@ -46,4 +48,7 @@ class RefillCheckerTask:
             context['waypoints']['points'], context['waypoints']['currentIndex'])
         context['waypoints']['currentIndex'] = nextWaypointIndex
         context['waypoints']['state'] = None
+        return context
+
+    def onDidTimeout(self, context):
         return context

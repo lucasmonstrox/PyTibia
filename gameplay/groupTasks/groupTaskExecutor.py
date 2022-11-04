@@ -12,7 +12,6 @@ class GroupTaskExecutor:
                     break
             if freeTaskIndex == None:
                 return context
-            # TODO: se estiver tudo feito, dar como terminado
             taskName, task = self.tasks[freeTaskIndex]
             if task.status == 'notStarted':
                 if task.startedAt == None:
@@ -32,6 +31,15 @@ class GroupTaskExecutor:
             elif task.status == 'running':
                 shouldNotRestart = not task.shouldRestart(context)
                 if shouldNotRestart:
+                    hasDelayOfTimeout = task.delayOfTimeout is not None
+                    if hasDelayOfTimeout:
+                        passedTimeSinceLastCheck = time() - task.startedAt
+                        didTimeout = passedTimeSinceLastCheck >= task.delayOfTimeout
+                        if didTimeout:
+                            task.status = 'completed'
+                            context = task.onDidTimeout(context)
+                            self.tasks[freeTaskIndex] = (taskName, task)
+                            return context
                     didTask = task.did(context)
                     if didTask:
                         task.finishedAt = time()

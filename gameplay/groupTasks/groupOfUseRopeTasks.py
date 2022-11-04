@@ -10,6 +10,7 @@ class GroupOfUseRopeTasks(GroupTaskExecutor):
     def __init__(self, _, waypoint):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
         self.name = 'groupOfUseRope'

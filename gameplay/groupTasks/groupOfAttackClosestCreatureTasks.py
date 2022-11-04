@@ -11,6 +11,7 @@ class GroupOfAttackClosestCreatureTasks(GroupTaskExecutor):
     def __init__(self, context, closestCreature):
         self.createdAt = time()
         self.startedAt = None
+        self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
         self.name = 'groupOfAttackClosestCreature'

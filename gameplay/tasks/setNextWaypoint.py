@@ -10,6 +10,7 @@ class SetNextWaypointTask:
         self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
+        self.delayOfTimeout = None
         self.name = 'setNextWaypoint'
         self.status = 'notStarted'
         self.value = value
@@ -34,4 +35,7 @@ class SetNextWaypointTask:
         return context
 
     def onDidComplete(self, context):
+        return context
+
+    def onDidTimeout(self, context):
         return context
