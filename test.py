@@ -39,7 +39,7 @@ def main():
     nonGrayScreenshot = utils.core.getScreenshot()
     screenshot = utils.image.RGBtoGray(nonGrayScreenshot)
 
-    backpackSlotImg = getBackpackSlotImg(screenshot, 'fur backpack', 5)
+    backpackSlotImg = getBackpackSlotImg(screenshot, 'fur backpack', 1)
     # utils.image.save(backpackSlotImg, 'backpackSlotImg.png')
     # battleListCreatures = battleList.core.getCreatures(screenshot)
     # hudCoordinate = hud.core.getCoordinate(screenshot)
@@ -64,7 +64,6 @@ def main():
     #     radarImg = radar.extractors.getRadarImg(screenshot, radarToolsPos)
     #     radarHashedImg = utils.core.hashitHex(radarImg)
     # res2 = timeit.repeat(lambda: cenas(screenshot), repeat=10, number=1)
-    # print(res2)
     # utils.image.save(screenshot, 'screenshot.png')
     # count2 = actionBar.core.getSlotCount(screenshot, '2')
     # if count2 == 7:

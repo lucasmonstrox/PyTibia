@@ -9,8 +9,8 @@ class UseRopeTask:
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
-        self.delayBeforeStart = 2
-        self.delayAfterComplete = 2
+        self.delayBeforeStart = 1
+        self.delayAfterComplete = 1
         self.name = 'useRope'
         self.status = 'notStarted'
         self.value = value

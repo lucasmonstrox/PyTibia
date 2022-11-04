@@ -63,11 +63,22 @@ gameContext = {
         'currentIndex': None,
         'points': np.array([
             # yalahar
-            ('walk', (32741, 31294, 11), 0, {}),
-            ('walk', (32704, 31270, 11), 0, {}),
-            ('walk', (32685, 31286, 11), 0, {}),
-            ('walk', (32713, 31305, 11), 0, {}),
-            ('walk', (32741, 31295, 11), 0, {}),
+            # ('walk', (32741, 31294, 11), 0, {}),
+            # ('walk', (32704, 31270, 11), 0, {}),
+            # ('walk', (32685, 31286, 11), 0, {}),
+            # ('walk', (32713, 31305, 11), 0, {}),
+            # ('walk', (32741, 31295, 11), 0, {}),
+
+
+            # troll
+            ('walk', (31977, 32206, 9), 0, {}),
+            ('useShovel', (31976, 32206, 9), 0, {}),
+            ('walk', (31979, 32207, 10), 0, {}),
+            ('walk', (31976, 32206, 10), 0, {}),
+            ('useRope', (31976, 32206, 10), 0, {}),
+            ('walk', (31977, 32213, 9), 0, {}),
+
+
             # verificar se tem items pra depositar
             # ('walk', (33127, 32830, 7), 0, {}),
             # ('walk', (33126, 32834, 7), 0, {}),
@@ -124,7 +135,6 @@ gameContext = {
         'state': None
     },
     'screenshot': None,
-    # 'tasks': np.array([], dtype=gameplay.typings.taskType),
     'way': None,
 }
 hudCreatures = np.array([], dtype=hud.creatures.creatureType)
@@ -281,10 +291,8 @@ def main():
             copyOfContext['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
                 copyOfContext['coordinate'], copyOfContext['waypoints']['points'])
         currentWaypointIndex = copyOfContext['waypoints']['currentIndex']
-        print('handleTasks.currentWaypointIndex', currentWaypointIndex)
         nextWaypointIndex = utils.array.getNextArrayIndex(
             copyOfContext['waypoints']['points'], currentWaypointIndex)
-        print('handleTasks.nextWaypointIndex', nextWaypointIndex)
         currentWaypoint = copyOfContext['waypoints']['points'][currentWaypointIndex]
         nextWaypoint = copyOfContext['waypoints']['points'][nextWaypointIndex]
         waypointsStateIsEmpty = copyOfContext['waypoints']['state'] == None
@@ -297,30 +305,28 @@ def main():
             copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(
                 copyOfContext, currentWaypoint)
         if copyOfContext['way'] == 'cavebot':
-            isTryingToAttackClosestCreature = len(
-                copyOfContext['tasks']) > 0 and copyOfContext['tasks'][0]['type'] == 'attackClosestCreature'
+            isTryingToAttackClosestCreature = copyOfContext[
+                'currentGroupTask'] is not None and copyOfContext['currentGroupTask'].name == 'groupOfAttackClosestCreature'
             if isTryingToAttackClosestCreature:
                 print('to tentando atacar')
             else:
-                tasks = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
-                if tasks is not None:
+                currentGroupTask = gameplay.cavebot.resolveCavebotTasks(
+                    copyOfContext)
+                if currentGroupTask is not None:
                     if copyOfContext['lastPressedKey'] is not None:
                         pyautogui.keyUp(copyOfContext['lastPressedKey'])
                         copyOfContext['lastPressedKey'] = None
-                    copyOfContext['tasks'] = tasks
+                    copyOfContext['currentGroupTask'] = currentGroupTask
         if copyOfContext['currentGroupTask']:
             print('nome da task é', copyOfContext['currentGroupTask'].name)
             print(copyOfContext['currentGroupTask'].tasks)
         if didReachWaypoint:
             allowedTasks = np.array(
-                ['groupOfDepositItems', 'groupOfRefill', 'groupOfRefillChecker', 'groupOfUseShovel'])
+                ['groupOfDepositItems', 'groupOfRefill', 'groupOfRefillChecker', 'groupOfUseShovel', 'groupOfUseRope'])
             if copyOfContext['currentGroupTask'] == None or np.any(copyOfContext['currentGroupTask'].name == allowedTasks) == False:
-                # print('chegou no waypoint e vamo embora')
                 copyOfContext['waypoints']['currentIndex'] = nextWaypointIndex
                 copyOfContext['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
                     copyOfContext['coordinate'], nextWaypoint)
-                # print('currentIndex',
-                #       copyOfContext['waypoints']['currentIndex'])
         gameContext = copyOfContext
         return copyOfContext
 

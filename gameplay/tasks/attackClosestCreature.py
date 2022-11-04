@@ -1,6 +1,5 @@
 import pyautogui
 from time import time
-from refill import core
 
 
 class AttackClosestCreatureTask:
@@ -8,13 +7,13 @@ class AttackClosestCreatureTask:
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
-        self.delayBeforeStart = 2
-        self.delayAfterComplete = 2
+        self.delayBeforeStart = 0
+        self.delayAfterComplete = 0.1
         self.name = 'attackClosestCreature'
         self.status = 'notStarted'
         self.value = closestCreature
 
-    def shouldIgnore(self, context):
+    def shouldIgnore(self, _):
         return False
 
     def do(self, context):

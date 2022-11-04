@@ -209,7 +209,6 @@ def getBackpackSlotImg(screenshot, backpackName, slot):
     slotSize = 32
     slotRow = (slot % 4)
     slotColumn = (slot // 5)
-    print('slotRow', slotRow)
     # slotY = (slot) + y
     # screenshot = 123
     # pass

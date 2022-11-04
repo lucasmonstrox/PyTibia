@@ -7,12 +7,9 @@ class GroupTaskExecutor:
             freeTaskIndex = None
             for taskIndex, taskWithName in enumerate(self.tasks):
                 _, possibleFreeTask = taskWithName
-                # print('possibleFreeTask.name', possibleFreeTask.name)
-                # print('possibleFreeTask.status', possibleFreeTask.status)
                 if possibleFreeTask.status != 'completed':
                     freeTaskIndex = taskIndex
                     break
-            # print('freeTaskIndex', freeTaskIndex)
             if freeTaskIndex == None:
                 return context
             # TODO: se estiver tudo feito, dar como terminado

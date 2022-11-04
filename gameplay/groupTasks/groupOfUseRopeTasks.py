@@ -1,6 +1,7 @@
 import numpy as np
 from time import time
 from gameplay.factories.makeUseRopeTask import makeUseRopeTask
+from gameplay.factories.makeSetNextWaypointTask import makeSetNextWaypointTask
 from gameplay.groupTasks.groupTaskExecutor import GroupTaskExecutor
 from gameplay.typings import taskType
 
@@ -20,6 +21,7 @@ class GroupOfUseRopeTasks(GroupTaskExecutor):
         tasks = np.array([], dtype=taskType)
         tasksToAppend = np.array([
             makeUseRopeTask(waypoint),
+            makeSetNextWaypointTask(waypoint),
         ], dtype=taskType)
         tasks = np.append(tasks, [tasksToAppend])
         return tasks

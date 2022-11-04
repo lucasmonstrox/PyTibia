@@ -1,19 +1,7 @@
-import numpy as np
 import battleList.core
-from gameplay.groupTasks.makeGroupOfAttackClosestCreatureTasks import makeAttackClosestCreatureTasks
-# from gameplay.groupTasks.makeGroupOfWalkpointTasks import makeGroupOfWalkpointTasks
+from gameplay.groupTasks.groupOfAttackClosestCreatureTasks import GroupOfAttackClosestCreatureTasks
+from gameplay.groupTasks.groupOfFollowTargetCreatureTasks import GroupOfFollowTargetCreatureTasks
 import hud.creatures
-from gameplay.typings import taskType
-
-
-def makeFollowCreatureTasks(context, closestCreature):
-    tasksArray = np.array([], dtype=taskType)
-    # floorTasks = makeGroupOfWalkpointTasks(
-    #     context, closestCreature['coordinate'])
-    # for floorTask in floorTasks:
-    #     taskToAppend = np.array([floorTask], dtype=taskType)
-    #     tasksArray = np.append(tasksArray, [taskToAppend])
-    return tasksArray
 
 
 def resolveCavebotTasks(context):
@@ -35,14 +23,11 @@ def resolveCavebotTasks(context):
             if hasNoTargetCreature:
                 print('hasNoTargetCreature 2')
                 return None
-        # - regenerar tasks se for preciso para seguir a criatura
-        tasks = makeFollowCreatureTasks(context, targetCreature)
-        return tasks
+        return GroupOfFollowTargetCreatureTasks(context, targetCreature)
     targetCreature = hud.creatures.getClosestCreature(
         context['monsters'], context['coordinate'])
     hasNoTargetCreature = targetCreature == None
     if hasNoTargetCreature:
         print('hasNoTargetCreature 3')
         return None
-    tasks = makeAttackClosestCreatureTasks(context, targetCreature)
-    return tasks
+    return GroupOfAttackClosestCreatureTasks(context, targetCreature)
