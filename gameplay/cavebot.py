@@ -21,6 +21,7 @@ def resolveCavebotTasks(context):
             hasNoTargetCreature = targetCreature == None
             if hasNoTargetCreature:
                 return targetCreature, None
+            return targetCreature, GroupOfAttackClosestCreatureTasks(context, targetCreature)
         return targetCreature, GroupOfFollowTargetCreatureTasks(context, targetCreature)
     targetCreature = hud.creatures.getClosestCreature(
         context['monsters'], context['coordinate'])
