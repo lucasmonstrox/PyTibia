@@ -317,9 +317,6 @@ def main():
                         pyautogui.keyUp(copyOfContext['lastPressedKey'])
                         copyOfContext['lastPressedKey'] = None
                     copyOfContext['currentGroupTask'] = currentGroupTask
-        if copyOfContext['currentGroupTask']:
-            print('nome da task é', copyOfContext['currentGroupTask'].name)
-            print(copyOfContext['currentGroupTask'].tasks)
         if didReachWaypoint:
             allowedTasks = np.array(
                 ['groupOfDepositItems', 'groupOfRefill', 'groupOfRefillChecker', 'groupOfUseShovel', 'groupOfUseRope'])
@@ -355,10 +352,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# abrir bp principal
-# abrir bp que está setada para loot
-# se houver loots
-# -- abrir depot
-# -- abrir chest setado para itens
-# -- arrastar item a item para o chest e paginar nas backpacks

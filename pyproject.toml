@@ -18,7 +18,6 @@ ahocorapy = "^1.6.1"
 dxcam = {git = "https://github.com/ra1nty/DXcam.git"}
 scipy = "^1.9.1"
 tcod = "^13.8.1"
-easyocr = {git = "https://github.com/JaidedAI/EasyOCR.git"}
 
 
 [tool.poetry.group.test.dependencies]
