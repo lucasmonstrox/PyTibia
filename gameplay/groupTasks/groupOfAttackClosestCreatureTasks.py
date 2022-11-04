@@ -24,13 +24,6 @@ class GroupOfAttackClosestCreatureTasks(GroupTaskExecutor):
             makeAttackClosestCreatureTask(closestCreature),
         ], dtype=taskType)
         tasks = np.append(tasks, [tasksToAppend])
-        walkpoints = generateFloorWalkpoints(
-            context['coordinate'], closestCreature['coordinate'])
-        walkpoints.pop()
-        for walkpoint in walkpoints:
-            walkpointTask = makeWalkTask(walkpoint)
-            taskToAppend = np.array([walkpointTask], dtype=taskType)
-            tasks = np.append(tasks, [taskToAppend])
         return tasks
 
     def shouldIgnore(self, _):
