@@ -113,6 +113,7 @@ def enableChatOn(screenshot):
 
 def enableChatOff(screenshot):
     (_, chatIsOn) = getChatStatus(screenshot)
+    print('chatIsOn', chatIsOn)
     if chatIsOn:
         utils.core.press('enter')
 

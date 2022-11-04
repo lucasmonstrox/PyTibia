@@ -1,27 +1,26 @@
 from time import time
-import chat.core
+from chat.core import enableChatOff
 
 
-class SayTask:
-    def __init__(self, phrase):
+class SetChatOffTask:
+    def __init__(self):
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
-        self.delayBeforeStart = 2
-        self.delayAfterComplete = 2
-        self.name = 'say'
+        self.delayBeforeStart = 1
+        self.delayAfterComplete = 1
+        self.name = 'setChatOff'
         self.status = 'notStarted'
-        self.value = phrase
+        self.value = None
 
-    def shouldIgnore(self, context):
+    def shouldIgnore(self, _):
         return False
 
     def do(self, context):
-        chat.core.sendMessage(context['screenshot'], self.value)
+        enableChatOff(context['screenshot'])
         return context
 
     def did(self, _):
-        # TODO: check if phrase is spelled in the chat
         return True
 
     def shouldRestart(self, _):

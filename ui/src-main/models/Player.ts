@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
-export default class Player {
+export class Player {
   @PrimaryGeneratedColumn()
   id!: string;
 

@@ -1,7 +1,7 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import { positions, Provider as AlertProvider } from 'react-alert';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import AlertTemplate from './components/AlertTemplate';
+import { AlertTemplate } from './components/AlertTemplate';
 import { ContextProvider } from './components/Context';
 import { Cavebot } from './modules/cavebot/pages/Cavebot';
 import { Healing } from './modules/healing/pages/Healing';

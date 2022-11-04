@@ -1,6 +1,6 @@
 from gameplay.tasks.buyItem import BuyItemTask
 
 
-def makeBuyItemTask(phrase):
-    task = BuyItemTask(phrase)
-    return ('say', task)
+def makeBuyItemTask(itemWithQuantity):
+    task = BuyItemTask(itemWithQuantity)
+    return ('buyItem', task)

@@ -22,7 +22,7 @@ def getTradeBottomPos(screenshot):
 
 def findItem(screenshot, itemName):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
-    utils.mouse.leftClick(bx+160, by-75)
+    utils.mouse.leftClick(bx + 160, by - 75)
     sleep(0.2)
     utils.mouse.leftClick(bx + 16, by - 75)
     sleep(0.2)
@@ -47,7 +47,7 @@ def setAmount(screenshot, amount):
     pyautogui.typewrite(str(amount))
 
 
-def buyItem(screenshot):
+def confirmBuyItem(screenshot):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     utils.mouse.leftClick(bx + 150, by - 18)
 
@@ -73,7 +73,7 @@ def buyItem(screenshot, itemAndQuantity):
     sleep(1)
     setAmount(screenshot, quantity)
     sleep(1)
-    buyItem(screenshot)
+    confirmBuyItem(screenshot)
     sleep(1)
     clearSearchBox(screenshot)
     sleep(1)

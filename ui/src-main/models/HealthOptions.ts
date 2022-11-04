@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
-export default class HealthOptions {
+export class HealthOptions {
   @PrimaryGeneratedColumn()
   id!: number;
 

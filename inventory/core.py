@@ -4,6 +4,19 @@ import utils.image
 import utils.core
 import utils.mouse
 
+
+backpacksImages = {
+    'beach backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/beachBackpack.png'),
+    'brocade backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/brocadeBackpack.png'),
+    'fur backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/furBackpack.png'),
+}
+
+backpacksBarsImages = {
+    'beach backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/beachBackpackBar.png'),
+    'brocade backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/brocadeBackpackBar.png'),
+    'fur backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/furBackpackBar.png'),
+}
+
 backpackBarImg = utils.image.loadAsGrey('inventory/images/backpackBar.png')
 jewelledBackpackBarImg = utils.image.loadAsGrey(
     'inventory/images/jewelledBackpackBar.png')
@@ -134,6 +147,24 @@ itemsImgs = [
 ]
 
 
+def isBackpackOpen(screenshot, name):
+    backpackBarImg = backpacksBarsImages[name]
+    backpackBarPos = utils.core.locate(screenshot, backpackBarImg)
+    isOpen = backpackBarPos is not None
+    return isOpen
+
+
+def openBackpack(screenshot, name):
+    backpackImg = backpacksImages[name]
+    backpackPos = utils.core.locate(screenshot, backpackImg)
+    if backpackPos is None:
+        return
+    (x, y, _, __) = backpackPos
+    backpackX = x + 5
+    backpackY = y + 5
+    pyautogui.rightClick(backpackX, backpackY)
+
+
 def getWindowTopPos(screenshot, img):
     return utils.core.locate(screenshot, img)
 
@@ -168,6 +199,20 @@ def isWindowOpen(screenshot, windowBar):
     if backpackPos is None:
         return False
     return True
+
+
+def getBackpackSlotImg(screenshot, backpackName, slot):
+    backpackBarImg = backpacksBarsImages[backpackName]
+    backpackPos = utils.core.locate(screenshot, backpackBarImg)
+    x = 4
+    y = 13
+    slotSize = 32
+    slotRow = (slot % 4)
+    slotColumn = (slot // 5)
+    print('slotRow', slotRow)
+    # slotY = (slot) + y
+    # screenshot = 123
+    # pass
 
 
 def openMainBackpack(window, squares):

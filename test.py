@@ -23,6 +23,7 @@ import dxcam
 import scipy.fft
 import gameplay.waypoint
 from PIL import Image
+from inventory.core import getBackpackSlotImg, openBackpack
 
 
 def main():
@@ -37,14 +38,17 @@ def main():
     # while True:
     nonGrayScreenshot = utils.core.getScreenshot()
     screenshot = utils.image.RGBtoGray(nonGrayScreenshot)
-    battleListCreatures = battleList.core.getCreatures(screenshot)
-    hudCoordinate = hud.core.getCoordinate(screenshot)
-    hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
-    coordinate = radar.core.getCoordinate(screenshot)
-    hudCreatures = hud.creatures.getCreatures(
-        battleListCreatures, 'left', hudCoordinate, hudImg, coordinate)
-    monsters = hud.creatures.getCreatureByType(hudCreatures, 'creature')
-    players = hud.creatures.getCreatureByType(hudCreatures, 'player')
+
+    backpackSlotImg = getBackpackSlotImg(screenshot, 'fur backpack', 5)
+    # utils.image.save(backpackSlotImg, 'backpackSlotImg.png')
+    # battleListCreatures = battleList.core.getCreatures(screenshot)
+    # hudCoordinate = hud.core.getCoordinate(screenshot)
+    # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
+    # coordinate = radar.core.getCoordinate(screenshot)
+    # hudCreatures = hud.creatures.getCreatures(
+    #     battleListCreatures, 'left', hudCoordinate, hudImg, coordinate)
+    # monsters = hud.creatures.getCreatureByType(hudCreatures, 'creature')
+    # players = hud.creatures.getCreatureByType(hudCreatures, 'player')
     # closestCreature = hud.creatures.getClosestCreature(
     #     hudCreatures, coordinate)
     # radar.core.goToCoordinate(screenshot, coordinate, [33094, 32790, 7])

@@ -6,7 +6,7 @@ from gameplay.typings import taskType
 
 
 class DepositItemsTask:
-    def __init__(self, itemNameWithQuantity):
+    def __init__(self):
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
@@ -14,24 +14,25 @@ class DepositItemsTask:
         self.delayAfterComplete = 1
         self.name = 'depositItems'
         self.status = 'notStarted'
-        self.value = itemNameWithQuantity
+        self.value = None
 
     def shouldIgnore(self, _):
+        # getBackpackSlotImg(0)
         return False
 
     def do(self, context):
-        players = context['players']
-        playersCoordinates = players['coordinate']
-        currentCity = 'ankrahmun'
-        depotCoordinates = cities.cities[currentCity]['depotCoordinates'].copy(
-        )
-        occupiedDepositCoordinatesIndexes = np.nonzero(np.all(
-            depotCoordinates == playersCoordinates, axis=1))[0]
-        freeDepositCoordinates = np.delete(
-            depotCoordinates, occupiedDepositCoordinatesIndexes, axis=0)
-        # TODO: get closest coordinate
-        freeCoordinate = freeDepositCoordinates[0]
-        context['freeDepotCoordinates'] = freeCoordinate
+        # players = context['players']
+        # playersCoordinates = players['coordinate']
+        # currentCity = 'ankrahmun'
+        # depotCoordinates = cities.cities[currentCity]['depotCoordinates'].copy(
+        # )
+        # occupiedDepositCoordinatesIndexes = np.nonzero(np.all(
+        #     depotCoordinates == playersCoordinates, axis=1))[0]
+        # freeDepositCoordinates = np.delete(
+        #     depotCoordinates, occupiedDepositCoordinatesIndexes, axis=0)
+        # # TODO: get closest coordinate
+        # freeCoordinate = freeDepositCoordinates[0]
+        # context['freeDepotCoordinates'] = freeCoordinate
         # floorTasks = makeGroupOfWalkpointTasks(context, freeCoordinate)
         # for floorTask in floorTasks:
         #     taskToAppend = np.array([floorTask], dtype=taskType)

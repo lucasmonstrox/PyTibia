@@ -5,8 +5,8 @@ import installExtension, {
 } from 'electron-devtools-installer';
 import path from 'path';
 import { createConnection } from 'typeorm';
-import HealthOptions from './models/HealthOptions';
-import Player from './models/Player';
+import { HealthOptions } from './models/HealthOptions';
+import { Player } from './models/Player';
 
 const isDev = process.env.NODE_ENV === 'development';
 

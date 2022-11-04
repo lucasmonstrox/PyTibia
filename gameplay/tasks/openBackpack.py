@@ -1,30 +1,29 @@
 from time import time
-from refill import core
+from inventory.core import isBackpackOpen, openBackpack
 
-
-class BuyItemTask:
-    def __init__(self, itemNameWithQuantity):
+class OpenBackpackTask:
+    def __init__(self, backpack):
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
-        self.name = 'buyItem'
+        self.name = 'openBackpack'
         self.status = 'notStarted'
-        self.value = itemNameWithQuantity
+        self.value = backpack
 
-    def shouldIgnore(self, _):
-        return False
+    def shouldIgnore(self, context):
+        return isBackpackOpen(context['screenshot'], self.value)
 
     def do(self, context):
-        core.buyItem(context['screenshot'], self.value)
+        openBackpack(context['screenshot'], self.value)
         return context
 
     def shouldRestart(self, _):
         return False
 
-    def did(self, _):
-        return True
+    def did(self, context):
+        return isBackpackOpen(context['screenshot'], self.value)
 
     def onIgnored(self, context):
         return context

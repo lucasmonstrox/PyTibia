@@ -1,5 +1,6 @@
 import numpy as np
 from time import time
+from utils.array import getNextArrayIndex
 
 
 class SetNextWaypointTask:
@@ -17,15 +18,13 @@ class SetNextWaypointTask:
         return False
 
     def do(self, context):
-        # TODO: fix this
-        context['waypoints']['currentIndex'] += 1
+        nextWaypointIndex = getNextArrayIndex(
+            context['waypoints']['points'], context['waypoints']['currentIndex'])
+        context['waypoints']['currentIndex'] = nextWaypointIndex
         context['waypoints']['state'] = None
         return context
 
-    def did(self, context):
-        waypoint = self.value
-        response = np.all(context['coordinate'] == waypoint['coordinate'])
-        did = response == True
+    def did(self, _):
         return True
 
     def shouldRestart(self, _):

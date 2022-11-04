@@ -1,4 +1,3 @@
-
 from gameplay.tasks.walk import WalkTask
 
 

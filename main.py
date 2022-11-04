@@ -29,6 +29,11 @@ pyautogui.PAUSE = 0
 
 
 gameContext = {
+    'backpacks': {
+        'main': 'brocade backpack',
+        'gold': 'beach backpack',
+        'loot': 'fur backpack',
+    },
     'battleListCreatures': np.array([], dtype=battleList.typing.creatureType),
     'beingAttackedCreature': None,
     'cavebot': {'status': None},
@@ -57,50 +62,64 @@ gameContext = {
     'waypoints': {
         'currentIndex': None,
         'points': np.array([
+            # yalahar
+            ('walk', (32741, 31294, 11), 0, {}),
+            ('walk', (32704, 31270, 11), 0, {}),
+            ('walk', (32685, 31286, 11), 0, {}),
+            ('walk', (32713, 31305, 11), 0, {}),
+            ('walk', (32741, 31295, 11), 0, {}),
             # verificar se tem items pra depositar
-            ('walk', (33127, 32830, 7), 0, {}),
-            ('walk', (33126, 32834, 7), 0, {}),
+            # ('walk', (33127, 32830, 7), 0, {}),
+            # ('walk', (33126, 32834, 7), 0, {}),
             # ('depositItems', (33126, 32841, 7), 0, {}),
             # verificar se tem dinheiro pra depositar
             # verificar se precisa de comprar potions
-            ('walk', (33125, 32833, 7), 0, {}),
-            ('walk', (33114, 32830, 7), 0, {}),
-            ('walk', (33098, 32830, 7), 0, {}),
-            ('walk', (33098, 32793, 7), 0, {}),
-            ('walk', (33088, 32788, 7), 0, {}),
-            ('moveUpNorth', (33088, 32788, 7), 0, {}),
-            ('walk', (33088, 32785, 6), 0, {}),
-            ('moveDownNorth', (33088, 32785, 6), 0, {}),
-            ('walk', (33073, 32760, 7), 0, {}),
-            ('useShovel', (33072, 32760, 7), 0, {}),
-            ('walk', (33095, 32761, 8), 0, {}),
-            ('walk', (33084, 32770, 8), 0, {}),
-            ('walk', (33062, 32762, 8), 0, {}),
-            ('walk', (33072, 32760, 8), 0, {}),
-            ('walk', (33076, 32757, 8), 0, {}),
-            ('walk', (33072, 32759, 8), 0, {}),
-            ('refillChecker', (33072, 32760, 8), 0, {
-                'minimumOfManaPotions': 100,
-                'minimumOfHealthPotions': 100,
-                'minimumOfCapacity': 200,
-                'successIndex': 12,
-            }),
-            ('walk', (33072, 32760, 8), 0, {}),
-            ('useRope', (33072, 32760, 8), 0, {}),
-            ('walk', (33088, 32783, 7), 0, {}),
-            ('moveUpSouth', (33088, 32783, 7), 0, {}),
-            ('walk', (33088, 32786, 6), 0, {}),
-            ('moveDownSouth', (33088, 32786, 6), 0, {}),
-            ('walk', (33098, 32793, 7), 0, {}),
-            ('walk', (33099, 32830, 7), 0, {}),
-            ('walk', (33125, 32833, 7), 0, {}),
-            # # ('refillChecker', (33127, 32834, 7), 0, {}),
+            # ('walk', (33125, 32833, 7), 0, {}),
+            # ('walk', (33114, 32830, 7), 0, {}),
+            # ('walk', (33098, 32830, 7), 0, {}),
+            # ('walk', (33098, 32793, 7), 0, {}),
+            # ('walk', (33088, 32788, 7), 0, {}),
+            # ('moveUpNorth', (33088, 32788, 7), 0, {}),
+            # ('walk', (33088, 32785, 6), 0, {}),
+            # ('moveDownNorth', (33088, 32785, 6), 0, {}),
+            # ('walk', (33073, 32760, 7), 0, {}),
+            # ('useShovel', (33072, 32760, 7), 0, {}),
+            # ('walk', (33095, 32761, 8), 0, {}),
+            # ('walk', (33084, 32770, 8), 0, {}),
+            # ('walk', (33062, 32762, 8), 0, {}),
+            # ('walk', (33072, 32760, 8), 0, {}),
+            # ('walk', (33076, 32757, 8), 0, {}),
+            # ('walk', (33072, 32759, 8), 0, {}),
+            # ('refillChecker', (33072, 32760, 8), 0, {
+            #     'minimumOfManaPotions': 100,
+            #     'minimumOfHealthPotions': 100,
+            #     'minimumOfCapacity': 200,
+            #     'successIndex': 12,
+            # }),
+            # ('walk', (33072, 32760, 8), 0, {}),
+            # ('useRope', (33072, 32760, 8), 0, {}),
+            # ('walk', (33088, 32783, 7), 0, {}),
+            # ('moveUpSouth', (33088, 32783, 7), 0, {}),
+            # ('walk', (33088, 32786, 6), 0, {}),
+            # ('moveDownSouth', (33088, 32786, 6), 0, {}),
+            # ('walk', (33098, 32793, 7), 0, {}),
+            # ('walk', (33099, 32830, 7), 0, {}),
+            # ('walk', (33125, 32833, 7), 0, {}),
+
+            # ('walk', (33126, 32834, 7), 0, {}),
+            # ('depositItems', (33126, 32834, 7), 0, {}),
+
+            # ('refillChecker', (33127, 32834, 7), 0, {}),
+            # ('walk', (33128, 32827, 7), 0, {}),
             # ('moveUpNorth', (33128, 32827, 7), 0, {}),
-            # ('moveUpNorth', (33131, 32817, 6), 0, {}),
+            # ('walk', (33130, 32817, 6), 0, {}),
+            # ('moveUpNorth', (33130, 32817, 6), 0, {}),
             # ('walk', (33128, 32811, 5), 0, {}),
-            # # ('refill', (33128, 32810, 5), 0, {}),
-            # # ('moveDownSouth', (33130, 32815, 5), 0, {}),
-            # # ('moveDownWest', (33124, 32814, 6), 0, {}),
+            # ('refill', (33128, 32810, 5), 0, {}),
+            # ('walk', (33130, 32815, 5), 0, {}),
+            # ('moveDownSouth', (33130, 32815, 5), 0, {}),
+            # ('walk', (33124, 32814, 6), 0, {}),
+            # ('moveDownWest', (33124, 32814, 6), 0, {}),
         ], dtype=waypointType),
         'state': None
     },
@@ -277,24 +296,24 @@ def main():
         if copyOfContext['currentGroupTask'] == None:
             copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(
                 copyOfContext, currentWaypoint)
-        # if copyOfContext['way'] == 'cavebot':
-        #     isTryingToAttackClosestCreature = len(
-        #         copyOfContext['tasks']) > 0 and copyOfContext['tasks'][0]['type'] == 'attackClosestCreature'
-        #     if isTryingToAttackClosestCreature:
-        #         print('to tentando atacar')
-        #     else:
-        #         tasks = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
-        #         if tasks is not None:
-        #             if copyOfContext['lastPressedKey'] is not None:
-        #                 pyautogui.keyUp(copyOfContext['lastPressedKey'])
-        #                 copyOfContext['lastPressedKey'] = None
-        #             copyOfContext['tasks'] = tasks
-        # if copyOfContext['currentGroupTask']:
-            # print('nome da task é', copyOfContext['currentGroupTask'].name)
-            # print(copyOfContext['currentGroupTask'].tasks)
+        if copyOfContext['way'] == 'cavebot':
+            isTryingToAttackClosestCreature = len(
+                copyOfContext['tasks']) > 0 and copyOfContext['tasks'][0]['type'] == 'attackClosestCreature'
+            if isTryingToAttackClosestCreature:
+                print('to tentando atacar')
+            else:
+                tasks = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
+                if tasks is not None:
+                    if copyOfContext['lastPressedKey'] is not None:
+                        pyautogui.keyUp(copyOfContext['lastPressedKey'])
+                        copyOfContext['lastPressedKey'] = None
+                    copyOfContext['tasks'] = tasks
+        if copyOfContext['currentGroupTask']:
+            print('nome da task é', copyOfContext['currentGroupTask'].name)
+            print(copyOfContext['currentGroupTask'].tasks)
         if didReachWaypoint:
             allowedTasks = np.array(
-                ['groupOfRefillChecker', 'groupOfUseShovel'])
+                ['groupOfDepositItems', 'groupOfRefill', 'groupOfRefillChecker', 'groupOfUseShovel'])
             if copyOfContext['currentGroupTask'] == None or np.any(copyOfContext['currentGroupTask'].name == allowedTasks) == False:
                 # print('chegou no waypoint e vamo embora')
                 copyOfContext['waypoints']['currentIndex'] = nextWaypointIndex

@@ -6,8 +6,8 @@ import { ManaPotions } from '../../../../types/mana.types';
 import { HealingPotionForm } from '../../components/HealingPotionForm';
 import { HealingPotionFormInput } from '../../components/HealingPotionForm/types';
 import { HEALTH_POTIONS_OPTIONS } from '../../../../components/HealthPotionsSelect/HealthPotionsOptions';
-import setHealingHealthOptions from './services/setHealingHealthOptions';
-import setHealingManaOptions from './services/setHealingManaOptions';
+import { setHealingHealthOptions } from './services/setHealingHealthOptions';
+import { setHealingManaOptions } from './services/setHealingManaOptions';
 import { MANA_POTIONS_OPTIONS } from '../../../../components/ManaPotionsSelect/ManaPotionsOptions';
 
 export const Healing = () => {

@@ -1,6 +1,6 @@
 from gameplay.tasks.depositItems import DepositItemsTask
 
 
-def makeDepositItemsTask(phrase):
-    task = DepositItemsTask(phrase)
+def makeDepositItemsTask():
+    task = DepositItemsTask()
     return ('depositItems', task)
