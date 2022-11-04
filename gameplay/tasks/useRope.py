@@ -22,8 +22,7 @@ class UseRopeTask:
     def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
             context['coordinate'], self.value['coordinate'])
-        # TODO: replace by correct bindings
-        pyautogui.press('f8')
+        pyautogui.press(context['hotkeys']['rope'])
         hud.slot.clickSlot(slot, context['hudCoordinate'])
         return context
 

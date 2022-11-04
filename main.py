@@ -40,6 +40,12 @@ gameContext = {
     'comingFromDirection': None,
     'corpsesToLoot': np.array([], dtype=hud.creatures.creatureType),
     'currentGroupTask': None,
+    'hotkeys': {
+        'healthPotion': 'f1',
+        'manaPotion': 'f2',
+        'rope': 'f8',
+        'shovel': 'f9',
+    },
     'hudCoordinate': None,
     'hudImg': None,
     'lastCoordinateVisited': None,
@@ -63,22 +69,6 @@ gameContext = {
     'waypoints': {
         'currentIndex': None,
         'points': np.array([
-            # yalahar
-            # ('walk', (32741, 31294, 11), 0, {}),
-            # ('walk', (32704, 31270, 11), 0, {}),
-            # ('walk', (32685, 31286, 11), 0, {}),
-            # ('walk', (32713, 31305, 11), 0, {}),
-            # ('walk', (32741, 31295, 11), 0, {}),
-
-            # troll
-            # ('walk', (31977, 32206, 9), 0, {}),
-            # ('useShovel', (31976, 32206, 9), 0, {}),
-            # ('walk', (31979, 32207, 10), 0, {}),
-            # ('walk', (31976, 32206, 10), 0, {}),
-            # ('useRope', (31976, 32206, 10), 0, {}),
-            # ('walk', (31977, 32213, 9), 0, {}),
-
-            # lava
             # ('walk', (33127, 32830, 7), 0, {}),
             # ('walk', (33126, 32834, 7), 0, {}),
             # ('depositItems', (33126, 32841, 7), 0, {}),
@@ -113,10 +103,8 @@ gameContext = {
             # ('walk', (33098, 32793, 7), 0, {}),
             # ('walk', (33099, 32830, 7), 0, {}),
             # ('walk', (33125, 32833, 7), 0, {}),
-
             # ('walk', (33126, 32834, 7), 0, {}),
             # ('depositItems', (33126, 32834, 7), 0, {}),
-
             # ('refillChecker', (33127, 32834, 7), 0, {}),
             # ('walk', (33128, 32827, 7), 0, {}),
             # ('moveUpNorth', (33128, 32827, 7), 0, {}),
