@@ -21,7 +21,9 @@ class GroupOfFollowTargetCreatureTasks(GroupTaskExecutor):
         tasks = np.array([], dtype=taskType)
         walkpoints = generateFloorWalkpoints(
             context['coordinate'], targetCreature['coordinate'])
-        walkpoints.pop()
+        hasWalkpoints = len(walkpoints) > 0
+        if hasWalkpoints:
+            walkpoints.pop()
         for walkpoint in walkpoints:
             walkpointTask = makeWalkTask(walkpoint)
             taskToAppend = np.array([walkpointTask], dtype=taskType)
