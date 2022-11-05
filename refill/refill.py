@@ -1,3 +1,4 @@
+import pathlib
 import pyautogui
 import utils.image
 import utils.core
@@ -5,8 +6,10 @@ import utils.mouse
 import chat.chat
 from time import sleep
 
-npcTradeBarImg = utils.image.loadAsGrey('refill/images/npcTradeBar.png')
-npcTradeOkImg = utils.image.loadAsGrey('refill/images/npcTradeOk.png')
+
+currentPath = pathlib.Path(__file__).parent.resolve()
+npcTradeBarImg = utils.image.loadAsGrey(f'{currentPath}/images/npcTradeBar.png')
+npcTradeOkImg = utils.image.loadAsGrey(f'{currentPath}/images/npcTradeOk.png')
 
 
 @utils.core.cacheObjectPos

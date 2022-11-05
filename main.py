@@ -5,6 +5,7 @@ from rx import interval, of, operators, pipe, timer
 from rx.scheduler import ThreadPoolScheduler
 from rx.subject import Subject
 import time
+import zerorpc
 import battleList.core
 import battleList.typing
 from chat import core
@@ -23,9 +24,19 @@ import utils.array
 import utils.core
 import utils.image
 
-
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
+
+
+def hello(name):
+    return f'Hello from the other side, {name}'
+
+
+# server = zerorpc.Server({'hello': hello})
+# server.bind('tcp://0.0.0.0:4242')
+# server.run()
+
+print(111)
 
 
 gameContext = {
@@ -124,6 +135,9 @@ gameContext = {
 }
 hudCreatures = np.array([], dtype=hud.creatures.creatureType)
 taskExecutor = TaskExecutor()
+
+
+print(222)
 
 
 def main():
@@ -329,10 +343,18 @@ def main():
 
     taskObserver.subscribe(taskObservable)
 
+    print('cheguei aki')
+
     while True:
         time.sleep(10)
         continue
 
 
+print(333)
+print('__name__', __name__)
+
 if __name__ == '__main__':
+    print(444)
     main()
+
+print(555)

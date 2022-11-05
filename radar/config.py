@@ -1,6 +1,9 @@
 import numpy as np
+import pathlib
 import utils.core
 import utils.image
+
+currentPath = pathlib.Path(__file__).parent.resolve()
 
 coordinates = {}
 
@@ -16,53 +19,85 @@ floors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 floorsConfidence = [0.85, 0.85, 0.9, 0.95, 0.95, 0.95,
                     0.95, 0.85, 0.95, 0.95, 0.95, 0.95, 0.95, 0.9, 0.85, 0.85]
 
-# floorsImgs = np.load('radar/npys/floorsImgs.npy', allow_pickle=True)
+# floorsImgs = np.load(f'{currentPath}/npys/floorsImgs.npy', allow_pickle=True)
 
 floorsImgs = [
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-0.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-1.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-2.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-3.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-4.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-5.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-6.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-7.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-8.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-9.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-10.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-11.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-12.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-13.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-14.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/floor-15.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-0.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-1.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-2.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-3.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-4.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-5.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-6.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-7.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-8.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-9.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-10.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-11.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-12.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-13.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-14.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/floor-15.png')),
 ]
 
 floorsPathsImgs = [
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-0.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-1.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-2.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-3.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-4.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-5.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-6.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-7.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-8.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-9.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-10.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-11.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-12.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-13.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-14.png')),
-    utils.image.RGBtoGray(utils.image.load('radar/images/paths/floor-15.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-0.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-1.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-2.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-3.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-4.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-5.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-6.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-7.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-8.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-9.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-10.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-11.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-12.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-13.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-14.png')),
+    utils.image.RGBtoGray(utils.image.load(
+        f'{currentPath}/images/paths/floor-15.png')),
 ]
 
-floorsPathsSqms = np.load('radar/npys/floorsPathsSqms.npy')
+floorsPathsSqms = np.load(f'{currentPath}/npys/floorsPathsSqms.npy')
 
 images = {
-    "tools": utils.image.loadAsGrey('radar/images/radar-tools.png')
+    "tools": utils.image.loadAsGrey(f'{currentPath}/images/radar-tools.png')
 }
 
-floorsLevelsImgs = np.load('radar/npys/floorsLevelsImgs.npy')
+floorsLevelsImgs = np.load(f'{currentPath}/npys/floorsLevelsImgs.npy')
 floorsLevelsImgsHashes = {}
 pixelsColorsValues = {
     'accessPoint': 226,
@@ -99,9 +134,6 @@ for floor in floors:
     walkableFloorSqms = np.where(
         np.isin(floorsPathsImgs[floor], [105, 226]), 0, 1)
     walkableFloorsSqms[floor] = walkableFloorSqms
-    # fa = np.array(
-    #     np.where(walkableFloorsSqms[floor].copy() == 0, 255, 100), dtype=np.uint8)
-    # utils.image.save(fa, f'floor-{floor}.png')
 
-# radarImagesCoordinates = np.load('radar/npys/radarImagesCoordinates.npy', allow_pickle=True)
-# walkableFloorsSqms = np.load('radar/npys/walkableFloorsSqms.npy')
+# radarImagesCoordinates = np.load(f'{currentPath}/npys/radarImagesCoordinates.npy', allow_pickle=True)
+# walkableFloorsSqms = np.load(f'{currentPath}/npys/walkableFloorsSqms.npy')

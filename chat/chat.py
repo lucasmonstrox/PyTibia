@@ -1,23 +1,25 @@
 from ahocorapy.keywordtree import KeywordTree
 from hud.core import getLeftSidebarArrows
+import pathlib
 import utils.core
 import utils.image
 import utils.mouse
 
 
-chatMenuImg = utils.image.loadAsGrey('chat/images/chatMenu.png')
-chatOnImg = utils.image.loadAsGrey('chat/images/chatOn.png')
-chatOnImgTemp = utils.image.loadAsGrey('chat/images/chatOnTemp.png')
-chatOffImg = utils.image.loadAsGrey('chat/images/chatOff.png')
-chatOffImg = utils.image.loadAsGrey('chat/images/chatOff.png')
-lootOfTextImg = utils.image.loadAsGrey('chat/images/lootOfText.png')
-nothingTextImg = utils.image.loadAsGrey('chat/images/nothingText.png')
+currentPath = pathlib.Path(__file__).parent.resolve()
+chatMenuImg = utils.image.loadAsGrey(f'{currentPath}/images/chatMenu.png')
+chatOnImg = utils.image.loadAsGrey(f'{currentPath}/images/chatOn.png')
+chatOnImgTemp = utils.image.loadAsGrey(f'{currentPath}/images/chatOnTemp.png')
+chatOffImg = utils.image.loadAsGrey(f'{currentPath}/images/chatOff.png')
+chatOffImg = utils.image.loadAsGrey(f'{currentPath}/images/chatOff.png')
+lootOfTextImg = utils.image.loadAsGrey(f'{currentPath}/images/lootOfText.png')
+nothingTextImg = utils.image.loadAsGrey(f'{currentPath}/images/nothingText.png')
 
 chatTabs = [
-    ('loot', (utils.image.loadAsGrey('chat/images/loot.png'), utils.image.loadAsGrey('chat/images/selectedLootTab.png'))),
-    ('npcs', (utils.image.loadAsGrey('chat/images/NPCs.png'), utils.image.loadAsGrey('chat/images/selectedNPCsTab.png'))),
-    ('localChat', (utils.image.loadAsGrey('chat/images/localChat.png'),
-     utils.image.loadAsGrey('chat/images/selectedLocalChatTab.png')))]
+    ('loot', (utils.image.loadAsGrey(f'{currentPath}/images/loot.png'), utils.image.loadAsGrey(f'{currentPath}/images/selectedLootTab.png'))),
+    ('npcs', (utils.image.loadAsGrey(f'{currentPath}/images/NPCs.png'), utils.image.loadAsGrey(f'{currentPath}/images/selectedNPCsTab.png'))),
+    ('localChat', (utils.image.loadAsGrey(f'{currentPath}/images/localChat.png'),
+     utils.image.loadAsGrey(f'{currentPath}/images/selectedLocalChatTab.png')))]
 
 chatTabs = dict(chatTabs)
 

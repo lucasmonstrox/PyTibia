@@ -1,6 +1,6 @@
 import battleList.core
-from gameplay.groupTasks.groupOfAttackClosestCreatureTasks import GroupOfAttackClosestCreatureTasks
-from gameplay.groupTasks.groupOfFollowTargetCreatureTasks import GroupOfFollowTargetCreatureTasks
+from .groupTasks.groupOfAttackClosestCreatureTasks import GroupOfAttackClosestCreatureTasks
+from .groupTasks.groupOfFollowTargetCreatureTasks import GroupOfFollowTargetCreatureTasks
 import hud.creatures
 
 

@@ -1,10 +1,8 @@
 import numpy as np
 from time import time
 from gameplay.factories.makeAttackClosestCreature import makeAttackClosestCreatureTask
-from gameplay.factories.makeWalkTask import makeWalkTask
 from gameplay.groupTasks.groupTaskExecutor import GroupTaskExecutor
 from gameplay.typings import taskType
-from gameplay.waypoint import generateFloorWalkpoints
 
 
 class GroupOfAttackClosestCreatureTasks(GroupTaskExecutor):

@@ -1,34 +1,37 @@
-import time
+import pathlib
 import pyautogui
+import time
 import utils.image
 import utils.core
 import utils.mouse
 
 
+currentPath = pathlib.Path(__file__).parent.resolve()
+
 backpacksImages = {
-    'beach backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/beachBackpack.png'),
-    'brocade backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/brocadeBackpack.png'),
-    'fur backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/furBackpack.png'),
+    'beach backpack': utils.image.loadFromRGBToGray(f'{currentPath}/images/backpacks/beachBackpack.png'),
+    'brocade backpack': utils.image.loadFromRGBToGray(f'{currentPath}/images/backpacks/brocadeBackpack.png'),
+    'fur backpack': utils.image.loadFromRGBToGray(f'{currentPath}/images/backpacks/furBackpack.png'),
 }
 
 backpacksBarsImages = {
-    'beach backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/beachBackpackBar.png'),
-    'brocade backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/brocadeBackpackBar.png'),
-    'fur backpack': utils.image.loadFromRGBToGray('inventory/images/backpacks/furBackpackBar.png'),
+    'beach backpack': utils.image.loadFromRGBToGray(f'{currentPath}/images/backpacks/beachBackpackBar.png'),
+    'brocade backpack': utils.image.loadFromRGBToGray(f'{currentPath}/images/backpacks/brocadeBackpackBar.png'),
+    'fur backpack': utils.image.loadFromRGBToGray(f'{currentPath}/images/backpacks/furBackpackBar.png'),
 }
 
-backpackBarImg = utils.image.loadAsGrey('inventory/images/backpackBar.png')
+backpackBarImg = utils.image.loadAsGrey(f'{currentPath}/images/backpackBar.png')
 jewelledBackpackBarImg = utils.image.loadAsGrey(
-    'inventory/images/jewelledBackpackBar.png')
+    f'{currentPath}/images/jewelledBackpackBar.png')
 blueBackpackBarImg = utils.image.loadAsGrey(
-    'inventory/images/blueBackpackBar.png')
+    f'{currentPath}/images/blueBackpackBar.png')
 orangeBackpackBarImg = utils.image.loadAsGrey(
-    'inventory/images/orangeBackpackBar.png')
+    f'{currentPath}/images/orangeBackpackBar.png')
 backpackBottomImg = utils.image.loadAsGrey(
-    'inventory/images/backpackBottom.png')
-mainBackpackImg = utils.image.loadAsGrey('inventory/images/mainBackpack.png')
-lockerBarImg = utils.image.loadAsGrey('inventory/images/lockerBar.png')
-depotBarImg = utils.image.loadAsGrey('inventory/images/depotBar.png')
+    f'{currentPath}/images/backpackBottom.png')
+mainBackpackImg = utils.image.loadAsGrey(f'{currentPath}/images/mainBackpack.png')
+lockerBarImg = utils.image.loadAsGrey(f'{currentPath}/images/lockerBar.png')
+depotBarImg = utils.image.loadAsGrey(f'{currentPath}/images/depotBar.png')
 
 jewelledBpItems = [
     'great-health-potion',
@@ -45,105 +48,105 @@ jewelledBpItems = [
 
 itemsImgs = [
     ('great-health-potion',
-     utils.image.load('inventory/images/items/great-health-potion.png')),
-    ('great-mana-potion', utils.image.load('inventory/images/items/great-mana-potion.png')),
+     utils.image.load(f'{currentPath}/images/items/great-health-potion.png')),
+    ('great-mana-potion', utils.image.load(f'{currentPath}/images/items/great-mana-potion.png')),
     ('great-spirit-potion',
-     utils.image.load('inventory/images/items/great-spirit-potion.png')),
-    ('health-potion', utils.image.load('inventory/images/items/health-potion.png')),
-    ('mana-potion', utils.image.load('inventory/images/items/mana-potion.png')),
+     utils.image.load(f'{currentPath}/images/items/great-spirit-potion.png')),
+    ('health-potion', utils.image.load(f'{currentPath}/images/items/health-potion.png')),
+    ('mana-potion', utils.image.load(f'{currentPath}/images/items/mana-potion.png')),
     ('strong-health-potion',
-     utils.image.load('inventory/images/items/strong-health-potion.png')),
-    ('strong-mana-potion', utils.image.load('inventory/images/items/strong-mana-potion.png')),
+     utils.image.load(f'{currentPath}/images/items/strong-health-potion.png')),
+    ('strong-mana-potion', utils.image.load(f'{currentPath}/images/items/strong-mana-potion.png')),
     ('ultimate-health-potion',
-     utils.image.load('inventory/images/items/ultimate-health-potion-1.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-health-potion-1.png')),
     ('ultimate-health-potion',
-     utils.image.load('inventory/images/items/ultimate-health-potion-2.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-health-potion-2.png')),
     ('ultimate-health-potion',
-     utils.image.load('inventory/images/items/ultimate-health-potion-3.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-health-potion-3.png')),
     ('ultimate-health-potion',
-     utils.image.load('inventory/images/items/ultimate-health-potion-4.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-health-potion-4.png')),
     ('ultimate-health-potion',
-     utils.image.load('inventory/images/items/ultimate-health-potion-5.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-health-potion-5.png')),
     ('ultimate-health-potion',
-     utils.image.load('inventory/images/items/ultimate-health-potion-6.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-health-potion-6.png')),
     ('ultimate-health-potion',
-     utils.image.load('inventory/images/items/ultimate-health-potion-7.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-health-potion-7.png')),
     ('ultimate-mana-potion',
-     utils.image.load('inventory/images/items/ultimate-mana-potion-1.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-mana-potion-1.png')),
     ('ultimate-mana-potion',
-     utils.image.load('inventory/images/items/ultimate-mana-potion-2.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-mana-potion-2.png')),
     ('ultimate-mana-potion',
-     utils.image.load('inventory/images/items/ultimate-mana-potion-3.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-mana-potion-3.png')),
     ('ultimate-mana-potion',
-     utils.image.load('inventory/images/items/ultimate-mana-potion-4.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-mana-potion-4.png')),
     ('ultimate-mana-potion',
-     utils.image.load('inventory/images/items/ultimate-mana-potion-5.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-mana-potion-5.png')),
     ('ultimate-mana-potion',
-     utils.image.load('inventory/images/items/ultimate-mana-potion-6.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-mana-potion-6.png')),
     ('ultimate-spirit-potion',
-     utils.image.load('inventory/images/items/ultimate-spirit-potion-1.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-spirit-potion-1.png')),
     ('ultimate-spirit-potion',
-     utils.image.load('inventory/images/items/ultimate-spirit-potion-2.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-spirit-potion-2.png')),
     ('ultimate-spirit-potion',
-     utils.image.load('inventory/images/items/ultimate-spirit-potion-3.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-spirit-potion-3.png')),
     ('ultimate-spirit-potion',
-     utils.image.load('inventory/images/items/ultimate-spirit-potion-4.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-spirit-potion-4.png')),
     ('ultimate-spirit-potion',
-     utils.image.load('inventory/images/items/ultimate-spirit-potion-5.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-spirit-potion-5.png')),
     ('ultimate-spirit-potion',
-     utils.image.load('inventory/images/items/ultimate-spirit-potion-6.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-spirit-potion-6.png')),
     ('ultimate-spirit-potion',
-     utils.image.load('inventory/images/items/ultimate-spirit-potion-7.png')),
+     utils.image.load(f'{currentPath}/images/items/ultimate-spirit-potion-7.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-1.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-1.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-2.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-2.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-3.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-3.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-4.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-4.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-5.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-5.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-6.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-6.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-7.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-7.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-8.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-8.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-9.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-9.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-10.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-10.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-11.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-11.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-12.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-12.png')),
     ('supreme-health-potion',
-     utils.image.load('inventory/images/items/supreme-health-potion-13.png')),
-    ('brown-backpack', utils.image.load('inventory/images/items/brown-backpack.png')),
-    ('blue-backpack', utils.image.load('inventory/images/items/blue-backpack.png')),
-    ('orange-backpack', utils.image.load('inventory/images/items/orange-backpack.png')),
-    ('jewelled-backpack', utils.image.load('inventory/images/items/jewelled-backpack.png')),
-    ('shopping-bag', utils.image.load('inventory/images/items/shopping-bag.png')),
-    ('depot-chest-1', utils.image.load('inventory/images/items/depot-chest-1.png')),
-    ('depot-chest-2', utils.image.load('inventory/images/items/depot-chest-2.png')),
-    ('depot-chest-3', utils.image.load('inventory/images/items/depot-chest-3.png')),
-    ('depot-chest-4', utils.image.load('inventory/images/items/depot-chest-4.png')),
-    ('depot-chest-5', utils.image.load('inventory/images/items/depot-chest-5.png')),
-    ('depot-chest-6', utils.image.load('inventory/images/items/depot-chest-6.png')),
-    ('depot-chest-7', utils.image.load('inventory/images/items/depot-chest-7.png')),
-    ('depot-chest-8', utils.image.load('inventory/images/items/depot-chest-8.png')),
-    ('depot-chest-9', utils.image.load('inventory/images/items/depot-chest-9.png')),
-    ('depot-chest-10', utils.image.load('inventory/images/items/depot-chest-10.png')),
-    ('depot-chest-11', utils.image.load('inventory/images/items/depot-chest-11.png')),
-    ('depot-chest-12', utils.image.load('inventory/images/items/depot-chest-12.png')),
-    ('depot-chest-13', utils.image.load('inventory/images/items/depot-chest-13.png')),
-    ('depot-chest-14', utils.image.load('inventory/images/items/depot-chest-14.png')),
-    ('depot-chest-15', utils.image.load('inventory/images/items/depot-chest-15.png')),
-    ('depot-chest-16', utils.image.load('inventory/images/items/depot-chest-16.png')),
-    ('depot-chest-17', utils.image.load('inventory/images/items/depot-chest-17.png')),
-    ('depot-chest-18', utils.image.load('inventory/images/items/depot-chest-18.png')),
-    ('empty', utils.image.load('inventory/images/items/empty.png')),
+     utils.image.load(f'{currentPath}/images/items/supreme-health-potion-13.png')),
+    ('brown-backpack', utils.image.load(f'{currentPath}/images/items/brown-backpack.png')),
+    ('blue-backpack', utils.image.load(f'{currentPath}/images/items/blue-backpack.png')),
+    ('orange-backpack', utils.image.load(f'{currentPath}/images/items/orange-backpack.png')),
+    ('jewelled-backpack', utils.image.load(f'{currentPath}/images/items/jewelled-backpack.png')),
+    ('shopping-bag', utils.image.load(f'{currentPath}/images/items/shopping-bag.png')),
+    ('depot-chest-1', utils.image.load(f'{currentPath}/images/items/depot-chest-1.png')),
+    ('depot-chest-2', utils.image.load(f'{currentPath}/images/items/depot-chest-2.png')),
+    ('depot-chest-3', utils.image.load(f'{currentPath}/images/items/depot-chest-3.png')),
+    ('depot-chest-4', utils.image.load(f'{currentPath}/images/items/depot-chest-4.png')),
+    ('depot-chest-5', utils.image.load(f'{currentPath}/images/items/depot-chest-5.png')),
+    ('depot-chest-6', utils.image.load(f'{currentPath}/images/items/depot-chest-6.png')),
+    ('depot-chest-7', utils.image.load(f'{currentPath}/images/items/depot-chest-7.png')),
+    ('depot-chest-8', utils.image.load(f'{currentPath}/images/items/depot-chest-8.png')),
+    ('depot-chest-9', utils.image.load(f'{currentPath}/images/items/depot-chest-9.png')),
+    ('depot-chest-10', utils.image.load(f'{currentPath}/images/items/depot-chest-10.png')),
+    ('depot-chest-11', utils.image.load(f'{currentPath}/images/items/depot-chest-11.png')),
+    ('depot-chest-12', utils.image.load(f'{currentPath}/images/items/depot-chest-12.png')),
+    ('depot-chest-13', utils.image.load(f'{currentPath}/images/items/depot-chest-13.png')),
+    ('depot-chest-14', utils.image.load(f'{currentPath}/images/items/depot-chest-14.png')),
+    ('depot-chest-15', utils.image.load(f'{currentPath}/images/items/depot-chest-15.png')),
+    ('depot-chest-16', utils.image.load(f'{currentPath}/images/items/depot-chest-16.png')),
+    ('depot-chest-17', utils.image.load(f'{currentPath}/images/items/depot-chest-17.png')),
+    ('depot-chest-18', utils.image.load(f'{currentPath}/images/items/depot-chest-18.png')),
+    ('empty', utils.image.load(f'{currentPath}/images/items/empty.png')),
 ]
 
 

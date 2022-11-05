@@ -1,12 +1,14 @@
 import numpy as np
+import pathlib
 import utils.core
 import utils.image
 import utils.core
 import utils.image
 
 
-leftHudImg = utils.image.loadAsGrey('hud/images/leftHud.png')
-rightHudImg = utils.image.loadAsGrey('hud/images/rightHud.png')
+currentPath = pathlib.Path(__file__).parent.resolve()
+leftHudImg = utils.image.loadAsGrey(f'{currentPath}/images/leftHud.png')
+rightHudImg = utils.image.loadAsGrey(f'{currentPath}/images/rightHud.png')
 hudSize = (960, 704)
 
 
@@ -82,7 +84,7 @@ def isHoleOpen(hudImg, coordinate, targetCoordinate):
     slot = getSlotFromCoordinate(coordinate, targetCoordinate)
     slotImg = getSlotImg(hudImg, slot)
     holeOpenImg = utils.image.RGBtoGray(
-        utils.image.load('hud/images/waypoint/holeOpenImg.png'))
+        utils.image.load(f'{currentPath}/images/waypoint/holeOpenImg.png'))
     holeOpenLocation = utils.core.locate(slotImg, holeOpenImg)
     isOpen = holeOpenLocation is not None
     return isOpen

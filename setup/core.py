@@ -1,5 +1,6 @@
 import pyautogui
 import hud.core
+import pathlib
 import utils.core
 import utils.image
 import configparser
@@ -8,23 +9,22 @@ import utils.mouse
 from time import sleep, time
 
 
+currentPath = pathlib.Path(__file__).parent.resolve()
 default = None
 login = None
-
-
-loginScreenImg = utils.image.loadAsGrey('setup/images/login-screen.png')
-tibiaIconImg = utils.image.loadAsGrey('setup/images/tibia-icon.png')
-emptyFieldImg = utils.image.loadAsGrey('setup/images/empty-field.png')
+loginScreenImg = utils.image.loadAsGrey(f'{currentPath}/setup/images/login-screen.png')
+tibiaIconImg = utils.image.loadAsGrey(f'{currentPath}/setup/images/tibia-icon.png')
+emptyFieldImg = utils.image.loadAsGrey(f'{currentPath}/setup/images/empty-field.png')
 selectCharWindowImg = utils.image.loadAsGrey(
-    'setup/images/select-char-window.png')
-wrongCredImg = utils.image.loadAsGrey('setup/images/wrong-cred.png')
-deadScreenImg = utils.image.loadAsGrey('setup/images/dead-screen.png')
+    f'{currentPath}/setup/images/select-char-window.png')
+wrongCredImg = utils.image.loadAsGrey(f'{currentPath}/setup/images/wrong-cred.png')
+deadScreenImg = utils.image.loadAsGrey(f'{currentPath}/setup/images/dead-screen.png')
 
 
 def loadConfigs():
     global default, login
     config = configparser.ConfigParser()
-    config.read('setup/pytibia.ini')
+    config.read(f'{currentPath}/setup/pytibia.ini')
     default = config['DEFAULT']
     login = config['LOGIN']
 

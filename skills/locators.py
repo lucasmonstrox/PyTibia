@@ -1,10 +1,17 @@
+import pathlib
 import utils.core
 import utils.image
 
-capacityImage = utils.image.loadFromRGBToGray('skills/images/capacity.png')
-hitPointsImage = utils.image.loadFromRGBToGray('skills/images/hitPoints.png')
-speedImage = utils.image.loadFromRGBToGray('skills/images/speed.png')
-staminaImage = utils.image.loadFromRGBToGray('skills/images/stamina.png')
+
+currentPath = pathlib.Path(__file__).parent.resolve()
+
+capacityImage = utils.image.loadFromRGBToGray(
+    f'{currentPath}/images/capacity.png')
+hitPointsImage = utils.image.loadFromRGBToGray(
+    f'{currentPath}/images/hitPoints.png')
+speedImage = utils.image.loadFromRGBToGray(f'{currentPath}/images/speed.png')
+staminaImage = utils.image.loadFromRGBToGray(
+    f'{currentPath}/images/stamina.png')
 
 
 @utils.core.cacheObjectPos

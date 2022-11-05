@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import pathlib
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 import hud.core
@@ -11,6 +12,7 @@ import utils.matrix
 import wiki.creatures
 
 
+currentPath = pathlib.Path(__file__).parent.resolve()
 hudWidth = 960
 hudWidthDouble = hudWidth * 2
 hudWidthTriple = hudWidth * 3
@@ -32,7 +34,7 @@ lifeBarFlattenedImg = np.zeros(lifeBarBlackPixelsMapper.size)
 creaturesNamesHashes = {}
 for monster in wiki.creatures.creatures:
     creaturesNamesHashes[monster] = utils.image.loadAsGrey(
-        'hud/images/monsters/{}.png'.format(monster))
+        f'{currentPath}/images/monsters/{monster}.png')
 creatureType = np.dtype([
     ('name', np.str_, 64),
     ('type', np.str_, 64),
