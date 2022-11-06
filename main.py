@@ -5,7 +5,6 @@ from rx import interval, of, operators, pipe, timer
 from rx.scheduler import ThreadPoolScheduler
 from rx.subject import Subject
 import time
-import zerorpc
 import battleList.core
 import battleList.typing
 from chat import core
