@@ -67,7 +67,7 @@ gameContext = {
             'quantity': 30,
         },
     },
-    'resolution': 720,
+    'resolution': 1080,
     'targetCreature': None,
     'waypoints': {
         'currentIndex': None,
