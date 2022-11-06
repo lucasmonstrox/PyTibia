@@ -28,8 +28,7 @@ export const Healing = () => {
     healthOptions: HealingPotionFormInput
   ) => {
     // @ts-ignore
-    const res = await window.api.getHealthOptions();
-    console.log('res', res);
+    const res = await window.api.getContext();
     const isHotkeyAlreadyUsedByManaOptions =
       healthOptions.hotkey && healthOptions.hotkey === manaOptions.hotkey;
     if (isHotkeyAlreadyUsedByManaOptions) {

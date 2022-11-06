@@ -1,7 +1,6 @@
 import hud.creatures
 
 
-# TODO: add unit tests
 def getWay(corpsesToLoot, hudCreatures, coordinate):
     hasCorpsesToLoot = len(corpsesToLoot) > 0
     if hasCorpsesToLoot:

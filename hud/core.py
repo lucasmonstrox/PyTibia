@@ -9,12 +9,21 @@ import utils.image
 currentPath = pathlib.Path(__file__).parent.resolve()
 leftHudImg = utils.image.loadAsGrey(f'{currentPath}/images/leftHud.png')
 rightHudImg = utils.image.loadAsGrey(f'{currentPath}/images/rightHud.png')
-hudSize = (960, 704)
+images = {
+    720: {
+        'holeOpen': utils.image.loadFromRGBToGray(f'{currentPath}/images/waypoint/holeOpen720.png')
+    },
+    1080: {
+        'holeOpen': utils.image.loadFromRGBToGray(f'{currentPath}/images/waypoint/holeOpen1080.png')
+    }
+}
+hudSizes = {
+    720: (480, 352),
+    1080: (960, 704)
+}
 
 
-# TODO: cache it
-def getCoordinate(screenshot):
-    global hudSize
+def getCoordinate(screenshot, hudSize):
     leftSidebarArrows = getLeftSidebarArrows(screenshot)
     cannotGetLeftSidebarArrows = leftSidebarArrows is None
     if cannotGetLeftSidebarArrows:
@@ -38,11 +47,11 @@ def getCoordinate(screenshot):
         return bbox
 
 
-def getImgByCoordinate(screenshot, coordinates):
-    global hudSize
+def getImgByCoordinate(screenshot, coordinates, hudSize):
     (hudWidth, hudHeight) = hudSize
-    return screenshot[coordinates[1]:coordinates[1] +
-                      hudHeight, coordinates[0]:coordinates[0] + hudWidth]
+    img = screenshot[coordinates[1]:coordinates[1] +
+                     hudHeight, coordinates[0]:coordinates[0] + hudWidth]
+    return img
 
 
 @utils.core.cacheObjectPos
@@ -69,22 +78,24 @@ def getSlotFromCoordinate(currentCoordinate, coordinate):
     return hudCoordinateX, hudCoordinateY
 
 
-# TODO: add unit tests
-def getSlotImg(hudImg, slot):
+def getSlotImg(hudImg, slot, slotWidth):
     xOfSlot, yOfSlot = slot
-    slotWidth = 64
     x = xOfSlot * slotWidth
     y = yOfSlot * slotWidth
-    slotImg = hudImg[y:y+slotWidth, x:x+slotWidth]
+    print('xOfSlot', xOfSlot)
+    print('yOfSlot', yOfSlot)
+    print('x', x)
+    print('y ', y)
+    print('slotWidth', slotWidth)
+    slotImg = hudImg[y:y + slotWidth, x:x + slotWidth]
+    # utils.image.save(slotImg, 'slotImg.png')
     return slotImg
 
 
-# TODO: add unit tests
-def isHoleOpen(hudImg, coordinate, targetCoordinate):
+def isHoleOpen(hudImg, holeOpenImg, coordinate, targetCoordinate):
+    slotWidth = len(hudImg[1]) // 15
     slot = getSlotFromCoordinate(coordinate, targetCoordinate)
-    slotImg = getSlotImg(hudImg, slot)
-    holeOpenImg = utils.image.RGBtoGray(
-        utils.image.load(f'{currentPath}/images/waypoint/holeOpenImg.png'))
+    slotImg = getSlotImg(hudImg, slot, slotWidth)
     holeOpenLocation = utils.core.locate(slotImg, holeOpenImg)
     isOpen = holeOpenLocation is not None
     return isOpen

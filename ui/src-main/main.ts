@@ -7,10 +7,47 @@ import path from 'path';
 import { createConnection } from 'typeorm';
 import { HealthOptions } from './models/HealthOptions';
 import { Player } from './models/Player';
+import { io } from 'socket.io-client';
 
 const isDev = process.env.NODE_ENV === 'development';
 
 const createWindow = async () => {
+  const socket = io('http://0.0.0.0:5000');
+
+  ipcMain.handle('getContext', async () => {
+    return new Promise((resolve, reject) => {
+      socket.emit('getContext', (err, res) => {
+        if (err) return reject(err);
+        resolve(res);
+      });
+    });
+  });
+
+  ipcMain.handle('setContext', async (_, data) => {
+    return new Promise((resolve, reject) => {
+      socket.emit('setContext', data, (err, res) => {
+        if (err) return reject(err);
+        resolve(res);
+      });
+    });
+  });
+
+  // const pythonProcess = require('child_process').spawn('python', [
+  //   '../main.py',
+  // ]);
+
+  // pythonProcess.stdout.on('data', (data) => {
+  //   console.log(`stdout: ${data}`);
+  // });
+
+  // pythonProcess.stderr.on('data', (data) => {
+  //   console.error(`stderr: ${data}`);
+  // });
+
+  // pythonProcess.on('close', (code) => {
+  //   console.log(`child process exited with code ${code}`);
+  // });
+
   const connection = await createConnection({
     type: 'sqlite',
     database: './database.sql',
@@ -21,6 +58,7 @@ const createWindow = async () => {
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
+    darkTheme: true,
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
@@ -31,10 +69,10 @@ const createWindow = async () => {
     },
   });
 
-  ipcMain.handle('healthOptions', async () => {
-    const result = await connection.getRepository(HealthOptions).find();
-    return result;
-  });
+  // ipcMain.handle('healthOptions', async () => {
+  //   const result = await connection.getRepository(HealthOptions).find();
+  //   return result;
+  // });
 
   if (isDev) {
     installExtension([REACT_DEVELOPER_TOOLS])

@@ -21,7 +21,6 @@ def getCreatures(screenshot):
     return creatures
 
 
-# TODO: add unit tests
 # TODO: everything(upper border of creature icon, creature name) can be resolved using parallel code
 def getCreatureFromSlot(content, slotIndex):
     slotImg = extractors.getCreatureSlotImg(content, slotIndex)

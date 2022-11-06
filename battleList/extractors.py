@@ -60,7 +60,6 @@ def getFilledSlotsCount(content):
     return slotsCount
 
 
-# TODO: add unit tests
 def getUpperBorderOfCreatureIcon(slotImg):
     upperBorderOfCreatureIcon = slotImg[0:1, 0:19].flatten()
     return upperBorderOfCreatureIcon

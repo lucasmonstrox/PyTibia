@@ -18,6 +18,7 @@ ahocorapy = "^1.6.1"
 dxcam = {git = "https://github.com/ra1nty/DXcam.git"}
 scipy = "^1.9.1"
 tcod = "^13.8.1"
+python-socketio = {extras = ["client"], version = "^5.7.2"}
 
 
 [tool.poetry.group.test.dependencies]

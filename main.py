@@ -23,20 +23,11 @@ from gameplay.taskExecutor import TaskExecutor
 import utils.array
 import utils.core
 import utils.image
+import eventlet
+import socketio
 
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
-
-
-def hello(name):
-    return f'Hello from the other side, {name}'
-
-
-# server = zerorpc.Server({'hello': hello})
-# server.bind('tcp://0.0.0.0:4242')
-# server.run()
-
-print(111)
 
 
 gameContext = {
@@ -76,6 +67,7 @@ gameContext = {
             'quantity': 30,
         },
     },
+    'resolution': 720,
     'targetCreature': None,
     'waypoints': {
         'currentIndex': None,
@@ -137,22 +129,55 @@ hudCreatures = np.array([], dtype=hud.creatures.creatureType)
 taskExecutor = TaskExecutor()
 
 
-print(222)
-
-
 def main():
-    optimal_thread_count = multiprocessing.cpu_count()
-    threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
+    sio = socketio.Server()
+    app = socketio.WSGIApp(sio)
+
+    @sio.event
+    def connect(sid, environ):
+        print('connect ', sid)
+
+    @sio.on('getContext')
+    def handleGetContext(_):
+        global gameContext
+        waypoints = [[[int(waypoint['coordinate'][0]), int(waypoint['coordinate'][1]), int(waypoint['coordinate'][2])], int(waypoint['tolerance']), waypoint['options']]
+                     for waypoint in gameContext['waypoints']['points']]
+        return None, {
+            'backpacks': gameContext['backpacks'],
+            'hotkeys': gameContext['hotkeys'],
+            'refill': gameContext['refill'],
+            'waypoints': waypoints,
+        }
+
+    @sio.on('setContext')
+    def handleSetContext(_, data):
+        global gameContext
+        gameContext['backpacks'] = data['backpacks']
+        gameContext['hotkeys'] = data['hotkeys']
+        gameContext['refill'] = data['refill']
+        waypoints = [[[int(waypoint['coordinate'][0]), int(waypoint['coordinate'][1]), int(waypoint['coordinate'][2])], int(waypoint['tolerance']), waypoint['options']]
+                     for waypoint in gameContext['waypoints']['points']]
+        return None, {
+            'backpacks': gameContext['backpacks'],
+            'hotkeys': gameContext['hotkeys'],
+            'refill': gameContext['refill'],
+            'waypoints': waypoints,
+        }
+
+    @sio.event
+    def disconnect(sid):
+        print('disconnect ', sid)
+
+    # optimal_thread_count = multiprocessing.cpu_count()
+    # threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
     thirteenFps = 0.00833333333
     fpsObserver = interval(thirteenFps)
 
     def handleScreenshot(_):
         global gameContext
-        copyOfContext = gameContext.copy()
         screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
-        copyOfContext['screenshot'] = screenshot
-        gameContext = copyOfContext
-        return copyOfContext
+        gameContext['screenshot'] = screenshot
+        return gameContext
 
     fpsWithScreenshot = fpsObserver.pipe(
         operators.map(handleScreenshot),
@@ -160,12 +185,11 @@ def main():
 
     def handleCoordinate(context):
         global gameContext
-        copyOfContext = context.copy()
-        copyOfContext['coordinate'] = radar.core.getCoordinate(
-            copyOfContext['screenshot'], previousCoordinate=copyOfContext['previousCoordinate'])
-        copyOfContext['previousCoordinate'] = copyOfContext['coordinate']
-        gameContext = copyOfContext
-        return copyOfContext
+        context['coordinate'] = radar.core.getCoordinate(
+            context['screenshot'], previousCoordinate=context['previousCoordinate'])
+        context['previousCoordinate'] = context['coordinate']
+        gameContext = context
+        return context
 
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.filter(lambda result: result['screenshot'] is not None),
@@ -187,8 +211,9 @@ def main():
     def handleHudCoordinate(context):
         global gameContext
         copyOfContext = context.copy()
+        hudSize = hud.core.hudSizes[copyOfContext['resolution']]
         copyOfContext['hudCoordinate'] = hud.core.getCoordinate(
-            copyOfContext['screenshot'])
+            copyOfContext['screenshot'], hudSize)
         gameContext = copyOfContext
         return copyOfContext
 
@@ -200,8 +225,9 @@ def main():
     def handleHudImg(context):
         global gameContext
         copyOfContext = context.copy()
+        hudSize = hud.core.hudSizes[copyOfContext['resolution']]
         copyOfContext['hudImg'] = hud.core.getImgByCoordinate(
-            copyOfContext['screenshot'], copyOfContext['hudCoordinate'])
+            copyOfContext['screenshot'], copyOfContext['hudCoordinate'], hudSize)
         gameContext = copyOfContext
         return copyOfContext
 
@@ -240,7 +266,7 @@ def main():
         global gameContext, hudCreatures
         copyOfContext = context.copy()
         hudCreatures = hud.creatures.getCreatures(
-            copyOfContext['battleListCreatures'], copyOfContext['comingFromDirection'], copyOfContext['hudCoordinate'], copyOfContext['hudImg'], copyOfContext['coordinate'])
+            copyOfContext['battleListCreatures'], copyOfContext['comingFromDirection'], copyOfContext['hudCoordinate'], copyOfContext['hudImg'], copyOfContext['coordinate'], copyOfContext['resolution'])
         monsters = hud.creatures.getCreatureByType(hudCreatures, 'monster')
         players = hud.creatures.getCreatureByType(hudCreatures, 'player')
         copyOfContext['monsters'] = monsters
@@ -343,18 +369,8 @@ def main():
 
     taskObserver.subscribe(taskObservable)
 
-    print('cheguei aki')
+    eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
 
-    while True:
-        time.sleep(10)
-        continue
-
-
-print(333)
-print('__name__', __name__)
 
 if __name__ == '__main__':
-    print(444)
     main()
-
-print(555)

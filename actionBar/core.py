@@ -20,7 +20,6 @@ hasteCooldownImg = loadFromRGBToGray(f'{imagesPath}/cooldowns/haste.png')
 supportCooldownImg = loadFromRGBToGray(f'{imagesPath}/cooldowns/support.png')
 
 
-# TODO: add unit tests
 def getSlotCount(screenshot, key):
     slotPosFunc = {
         '1': getSlot1Pos,

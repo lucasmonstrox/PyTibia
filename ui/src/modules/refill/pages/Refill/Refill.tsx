@@ -5,29 +5,36 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { set } from 'lodash';
 import { ReactNode, useContext } from 'react';
 import { Context } from '../../../../components/Context';
 import { HealthPotionsSelect } from '../../../../components/HealthPotionsSelect';
 import { ManaPotionsSelect } from '../../../../components/ManaPotionsSelect';
 import { HealthPotions } from '../../../../types/health.types';
-import { ManaPotions } from '../../../../types/mana.types';
 
 export const Refill = () => {
-  const {
-    refill,
-    setHealthPotion,
-    setQuantityOfHealthPotionsToRefill,
-    setManaPotion,
-    setQuantityOfManaPotionsToRefill,
-  } = useContext(Context);
-  const handleHealthPotionChange = (
+  const { context, setContext } = useContext(Context);
+  const handleHealthPotionChange = async (
     event: SelectChangeEvent<unknown>,
     _: ReactNode
-  ) => setHealthPotion(event.target.value as HealthPotions);
+  ) => {
+    try {
+      const newContext = set(context, 'refill.health.item', event.target.value);
+      console.log(`🚀 ~ event.target.value`, event.target.value);
+      // @ts-ignore
+      const res = await window.api.setContext(newContext);
+      console.log(`🚀 ~ res`, res);
+      setContext(res);
+    } catch (err) {
+      console.log(`🚀 ~ err`, err);
+    }
+  };
   const handleManaPotionChange = (
     event: SelectChangeEvent<unknown>,
     _: ReactNode
-  ) => setManaPotion(event.target.value as ManaPotions);
+  ) => {
+    // setManaPotion(event.target.value as ManaPotions);
+  };
   return (
     <Stack direction='column'>
       <Typography>Desired health potions quantity to refill</Typography>
@@ -35,7 +42,7 @@ export const Refill = () => {
         <Grid item xs={4}>
           <HealthPotionsSelect
             selectProps={{
-              value: refill.health.item,
+              value: context.refill.health.item,
               onChange: handleHealthPotionChange,
             }}
           />
@@ -44,10 +51,10 @@ export const Refill = () => {
           <TextField
             label='Quantity'
             inputProps={{ type: 'number' }}
-            value={refill.health.quantity}
-            onChange={(evt) =>
-              setQuantityOfHealthPotionsToRefill(+evt.target.value)
-            }
+            value={context.refill.health.quantity}
+            // onChange={(evt) =>
+            //   setQuantityOfHealthPotionsToRefill(+evt.target.value)
+            // }
           />
         </Grid>
       </Grid>
@@ -58,7 +65,7 @@ export const Refill = () => {
         <Grid item xs={4}>
           <ManaPotionsSelect
             selectProps={{
-              value: refill.mana.item,
+              value: context.refill.mana.item,
               onChange: handleManaPotionChange,
             }}
           />
@@ -67,10 +74,10 @@ export const Refill = () => {
           <TextField
             label='Quantity'
             inputProps={{ type: 'number' }}
-            value={refill.mana.quantity}
-            onChange={(evt) =>
-              setQuantityOfManaPotionsToRefill(+evt.target.value)
-            }
+            value={context.refill.mana.quantity}
+            // onChange={(evt) =>
+            //   setQuantityOfManaPotionsToRefill(+evt.target.value)
+            // }
           />
         </Grid>
       </Grid>

@@ -1,40 +1,24 @@
-import { createContext, useState } from 'react';
-import { HealthPotions } from '../types/health.types';
-import { ManaPotions } from '../types/mana.types';
+import { createContext, useEffect, useState } from 'react';
 
 export const Context = createContext({} as any);
 
 export const ContextProvider = ({ children }: any) => {
-  const [healthPotion, setHealthPotion] = useState<HealthPotions>(
-    HealthPotions.HealthPotion
-  );
-  const [quantityOfHealthPotionsToRefill, setQuantityOfHealthPotionsToRefill] =
-    useState<number>(10);
-  const [manaPotion, setManaPotion] = useState<ManaPotions>(
-    ManaPotions.ManaPotion
-  );
-  const [quantityOfManaPotionsToRefill, setQuantityOfManaPotionsToRefill] =
-    useState<number>(10);
+  const [context, setContext] = useState();
+  useEffect(() => {
+    async function initContext() {
+      try {
+        // @ts-ignore
+        const res = await window.api.getContext();
+        setContext(res);
+      } catch (err) {
+        console.log(`🚀 ~ err`, err);
+      }
+    }
+    initContext();
+  }, []);
   return (
-    <Context.Provider
-      value={{
-        refill: {
-          health: {
-            item: healthPotion,
-            quantity: quantityOfHealthPotionsToRefill,
-          },
-          mana: {
-            item: manaPotion,
-            quantity: quantityOfManaPotionsToRefill,
-          },
-        },
-        setHealthPotion,
-        setQuantityOfHealthPotionsToRefill,
-        setManaPotion,
-        setQuantityOfManaPotionsToRefill,
-      }}
-    >
-      {children}
+    <Context.Provider value={{ context, setContext }}>
+      {context ? children : null}
     </Context.Provider>
   );
 };

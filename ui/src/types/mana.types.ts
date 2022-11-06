@@ -1,6 +1,6 @@
 export enum ManaPotions {
-  ManaPotion = 'manaPotion',
-  StrongManaPotion = 'strongManaPotion',
-  GreatManaPotion = 'greatManaPotion',
-  UltimateManaPotion = 'ultimateManaPotion',
+  ManaPotion = 'mana potion',
+  StrongManaPotion = 'strong mana potion',
+  GreatManaPotion = 'great mana potion',
+  UltimateManaPotion = 'ultimate mana potion',
 }

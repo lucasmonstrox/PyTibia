@@ -38,13 +38,13 @@ def main():
     # while True:
     nonGrayScreenshot = utils.core.getScreenshot()
     screenshot = utils.image.RGBtoGray(nonGrayScreenshot)
-
-    backpackSlotImg = getBackpackSlotImg(screenshot, 'fur backpack', 1)
+    # backpackSlotImg = getBackpackSlotImg(screenshot, 'fur backpack', 1)
     # utils.image.save(backpackSlotImg, 'backpackSlotImg.png')
-    # battleListCreatures = battleList.core.getCreatures(screenshot)
-    # hudCoordinate = hud.core.getCoordinate(screenshot)
+    battleListCreatures = battleList.core.getCreatures(screenshot)
+    hudCoordinate = hud.core.getCoordinate(screenshot)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
-    # coordinate = radar.core.getCoordinate(screenshot)
+    coordinate = radar.core.getCoordinate(screenshot)
+    # print('coordinate', coordinate)
     # hudCreatures = hud.creatures.getCreatures(
     #     battleListCreatures, 'left', hudCoordinate, hudImg, coordinate)
     # monsters = hud.creatures.getCreatureByType(hudCreatures, 'creature')
@@ -65,7 +65,11 @@ def main():
     #     radarHashedImg = utils.core.hashitHex(radarImg)
     # res2 = timeit.repeat(lambda: cenas(screenshot), repeat=10, number=1)
     # utils.image.save(screenshot, 'screenshot.png')
-    # count2 = actionBar.core.getSlotCount(screenshot, '2')
+    # count2 = actionBar.core.getSlotCount(screenshot, '1')
+    # print('cap', skills.core.getCapacity(screenshot))
+    # print('hp', skills.core.getHitPoints(screenshot))
+    # print('speed', skills.core.getSpeed(screenshot))
+    # print('stamina', skills.core.getStamina(screenshot))
     # if count2 == 7:
     #     utils.image.save(screenshot, 'screenshot-7.png')
     #     return

@@ -17,8 +17,9 @@ class UseShovelTask:
         self.value = value
 
     def shouldIgnore(self, context):
+        holeOpenImg = hud.core.images[context['resolution']]['holeOpen']
         isHoleOpen = hud.core.isHoleOpen(
-            context['hudImg'], context['coordinate'], self.value['coordinate'])
+            context['hudImg'], holeOpenImg, context['coordinate'], self.value['coordinate'])
         return isHoleOpen
 
     def do(self, context):
@@ -29,8 +30,9 @@ class UseShovelTask:
         return context
 
     def did(self, context):
+        holeOpenImg = hud.core.images[context['resolution']]['holeOpen']
         did = hud.core.isHoleOpen(
-            context['hudImg'], context['coordinate'], self.value['coordinate'])
+            context['hudImg'], holeOpenImg, context['coordinate'], self.value['coordinate'])
         return did
 
     def shouldRestart(self, _):

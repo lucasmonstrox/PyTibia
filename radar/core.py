@@ -8,7 +8,6 @@ import utils.image
 import utils.mouse
 
 
-# TODO: add unit tests
 # TODO: get by cached images coordinates hashes
 def getCoordinate(screenshot, previousCoordinate=None):
     floorLevel = getFloorLevel(screenshot)
@@ -60,7 +59,6 @@ def getCoordinate(screenshot, previousCoordinate=None):
     return [xCoordinate, yCoordinate, floorLevel]
 
 
-# TODO: add unit tests
 def getFloorLevel(screenshot):
     radarToolsPos = locators.getRadarToolsPos(screenshot)
     radarToolsPosIsEmpty = radarToolsPos is None
@@ -96,7 +94,6 @@ def getClosestWaypointIndexFromCoordinate(coordinate, waypoints):
     return lowestWaypointIndexOfCurrentFloor
 
 
-# TODO: add unit tests
 def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
     breakpointTileMovementSpeed = {
         1: 850,
@@ -146,7 +143,6 @@ def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
     return speed
 
 
-# TODO: add unit tests
 def getTileFrictionByCoordinate(coordinate):
     xOfPixelCoordinate, yOfPixelCoordinate = utils.core.getPixelFromCoordinate(
         coordinate)
@@ -156,7 +152,6 @@ def getTileFrictionByCoordinate(coordinate):
     return tileFriction
 
 
-# TODO: add unit tests
 def goToCoordinate(screenshot, currentCoordinate, nextCoordinate):
     (radarToolsPosX, radarToolsPosY, _, _) = locators.getRadarToolsPos(screenshot)
     x0 = radarToolsPosX - config.dimensions['width'] - 11

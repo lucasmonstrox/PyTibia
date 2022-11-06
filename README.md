@@ -71,7 +71,6 @@ poetry run python -m pytest
 
 # ✅ TODO
 
-- Add 720p resolution
 - Add api docs
 - Add mypy
 - Add e2e tests into the tibia client

@@ -1,4 +1,3 @@
-# TODO: add unit tests
 def getNextArrayIndex(items, currentIndex):
     lengthOfItems = len(items)
     lastItemIndex = lengthOfItems - 1
