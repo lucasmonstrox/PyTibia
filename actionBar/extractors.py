@@ -1,13 +1,13 @@
-import actionBar.locators
+from .locators import getLeftSideArrowsPos, getRightSideArrowsPos
 
 
 def getCooldownsImg(screenshot):
-    leftSideArrowsPos = actionBar.locators.getLeftSideArrowsPos(screenshot)
+    leftSideArrowsPos = getLeftSideArrowsPos(screenshot)
     cannotGetLeftSideArrowsPos = leftSideArrowsPos is None
     if cannotGetLeftSideArrowsPos:
         return None
     (x0, y0, _, _) = leftSideArrowsPos
-    rightSideArrowsPos = actionBar.locators.getRightSideArrowsPos(screenshot)
+    rightSideArrowsPos = getRightSideArrowsPos(screenshot)
     cannotGetRightSideArrowsPos = rightSideArrowsPos is None
     if cannotGetRightSideArrowsPos:
         return None
