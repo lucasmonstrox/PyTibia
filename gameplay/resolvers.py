@@ -11,9 +11,9 @@ def resolveTasksByWaypointType(context, waypoint):
     if waypoint['type'] == 'depositItems':
         return GroupOfDepositItemsTasks(context, waypoint)
     if waypoint['type'] == 'moveDownEast' or waypoint['type'] == 'moveDownNorth' or waypoint['type'] == 'moveDownSouth' or waypoint['type'] == 'moveDownWest':
-        return GroupOfSingleWalkTasks(context, context['waypoints']['state']['checkInCoordinate'])
+        return GroupOfSingleWalkTasks(context, context['cavebot']['waypoints']['state']['checkInCoordinate'])
     elif waypoint['type'] == 'moveUpNorth' or waypoint['type'] == 'moveUpSouth' or waypoint['type'] == 'moveUpWest' or waypoint['type'] == 'moveUpEast':
-        return GroupOfSingleWalkTasks(context, context['waypoints']['state']['checkInCoordinate'])
+        return GroupOfSingleWalkTasks(context, context['cavebot']['waypoints']['state']['checkInCoordinate'])
     elif waypoint['type'] == 'refill':
         return GroupOfRefillTasks(context, waypoint)
     elif waypoint['type'] == 'refillChecker':

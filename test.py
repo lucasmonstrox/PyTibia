@@ -40,13 +40,25 @@ def main():
     screenshot = utils.image.RGBtoGray(nonGrayScreenshot)
     # backpackSlotImg = getBackpackSlotImg(screenshot, 'fur backpack', 1)
     # utils.image.save(backpackSlotImg, 'backpackSlotImg.png')
-    battleListCreatures = battleList.core.getCreatures(screenshot)
-    hudCoordinate = hud.core.getCoordinate(screenshot)
-    # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate)
-    coordinate = radar.core.getCoordinate(screenshot)
-    # print('coordinate', coordinate)
+    hudSize = (960, 704)
+    resolution = 1080
+    # battleListCreatures = battleList.core.getCreatures(screenshot)
+    # print(battleListCreatures)
+    # hudCoordinate = hud.core.getCoordinate(screenshot, hudSize)
+    # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate, hudSize)
+    # coordinate = radar.core.getCoordinate(screenshot)
     # hudCreatures = hud.creatures.getCreatures(
-    #     battleListCreatures, 'left', hudCoordinate, hudImg, coordinate)
+    #     battleListCreatures, 'left', hudCoordinate, hudImg, coordinate, resolution)
+    # print(hudCreatures)
+
+    def getBattleListCreatures():
+        battleList.core.getCreatures(screenshot)
+
+    # def getHudCreatures():
+    #     hud.creatures.getCreatures(
+    #         battleListCreatures, 'left', hudCoordinate, hudImg, coordinate, resolution)
+    res2 = timeit.repeat(lambda: getBattleListCreatures(), repeat=10, number=1)
+    print(res2)
     # monsters = hud.creatures.getCreatureByType(hudCreatures, 'creature')
     # players = hud.creatures.getCreatureByType(hudCreatures, 'player')
     # closestCreature = hud.creatures.getClosestCreature(

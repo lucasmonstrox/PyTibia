@@ -39,15 +39,15 @@ class RefillCheckerTask:
         return False
 
     def onIgnored(self, context):
-        context['waypoints']['currentIndex'] = self.value['options']['successIndex']
-        context['waypoints']['state'] = None
+        context['cavebot']['waypoints']['currentIndex'] = self.value['options']['successIndex']
+        context['cavebot']['waypoints']['state'] = None
         return context
 
     def onDidComplete(self, context):
         nextWaypointIndex = getNextArrayIndex(
-            context['waypoints']['points'], context['waypoints']['currentIndex'])
-        context['waypoints']['currentIndex'] = nextWaypointIndex
-        context['waypoints']['state'] = None
+            context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])
+        context['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex
+        context['cavebot']['waypoints']['state'] = None
         return context
 
     def onDidTimeout(self, context):

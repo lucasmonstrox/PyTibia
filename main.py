@@ -37,7 +37,62 @@ gameContext = {
     },
     'battleListCreatures': np.array([], dtype=battleList.typing.creatureType),
     'beingAttackedCreature': None,
-    'cavebot': {'status': None},
+    'cavebot': {
+        'running': False,
+        'waypoints': {
+            'currentIndex': None,
+            'points': np.array([
+                # ('walk', (33127, 32830, 7), 0, {}),
+                # ('walk', (33126, 32834, 7), 0, {}),
+                # ('depositItems', (33126, 32841, 7), 0, {}),
+                ('walk', (33125, 32833, 7), 0, {}),
+                ('walk', (33114, 32830, 7), 0, {}),
+                ('walk', (33098, 32830, 7), 0, {}),
+                ('walk', (33098, 32793, 7), 0, {}),
+                ('walk', (33088, 32788, 7), 0, {}),
+                ('moveUpNorth', (33088, 32788, 7), 0, {}),
+                ('walk', (33088, 32785, 6), 0, {}),
+                ('moveDownNorth', (33088, 32785, 6), 0, {}),
+                ('walk', (33073, 32760, 7), 0, {}),
+                ('useShovel', (33072, 32760, 7), 0, {}),
+                ('walk', (33095, 32761, 8), 0, {}),
+                ('walk', (33084, 32770, 8), 0, {}),
+                ('walk', (33062, 32762, 8), 0, {}),
+                ('walk', (33072, 32760, 8), 0, {}),
+                ('walk', (33076, 32757, 8), 0, {}),
+                ('walk', (33072, 32759, 8), 0, {}),
+                ('refillChecker', (33072, 32760, 8), 0, {
+                    'minimumOfManaPotions': 1,
+                    'minimumOfHealthPotions': 1,
+                    'minimumOfCapacity': 200,
+                    'successIndex': 10,
+                }),
+                # ('walk', (33072, 32760, 8), 0, {}),
+                # ('useRope', (33072, 32760, 8), 0, {}),
+                # ('walk', (33088, 32783, 7), 0, {}),
+                # ('moveUpSouth', (33088, 32783, 7), 0, {}),
+                # ('walk', (33088, 32786, 6), 0, {}),
+                # ('moveDownSouth', (33088, 32786, 6), 0, {}),
+                # ('walk', (33098, 32793, 7), 0, {}),
+                # ('walk', (33099, 32830, 7), 0, {}),
+                # ('walk', (33125, 32833, 7), 0, {}),
+                # ('walk', (33126, 32834, 7), 0, {}),
+                # ('depositItems', (33126, 32834, 7), 0, {}),
+                # ('refillChecker', (33127, 32834, 7), 0, {}),
+                # ('walk', (33128, 32827, 7), 0, {}),
+                # ('moveUpNorth', (33128, 32827, 7), 0, {}),
+                # ('walk', (33130, 32817, 6), 0, {}),
+                # ('moveUpNorth', (33130, 32817, 6), 0, {}),
+                # ('walk', (33128, 32811, 5), 0, {}),
+                # ('refill', (33128, 32810, 5), 0, {}),
+                # ('walk', (33130, 32815, 5), 0, {}),
+                # ('moveDownSouth', (33130, 32815, 5), 0, {}),
+                # ('walk', (33124, 32814, 6), 0, {}),
+                # ('moveDownWest', (33124, 32814, 6), 0, {}),
+            ], dtype=waypointType),
+            'state': None
+        },
+    },
     'comingFromDirection': None,
     'corpsesToLoot': np.array([], dtype=hud.creatures.creatureType),
     'currentGroupTask': None,
@@ -47,8 +102,10 @@ gameContext = {
         'rope': 'f8',
         'shovel': 'f9',
     },
-    'hudCoordinate': None,
-    'hudImg': None,
+    'hud': {
+        'coordinate': None,
+        'img': None, 
+    },
     'lastCoordinateVisited': None,
     'lastPressedKey': None,
     'lastWay': 'waypoint',
@@ -68,59 +125,6 @@ gameContext = {
     },
     'resolution': 1080,
     'targetCreature': None,
-    'waypoints': {
-        'currentIndex': None,
-        'points': np.array([
-            # ('walk', (33127, 32830, 7), 0, {}),
-            # ('walk', (33126, 32834, 7), 0, {}),
-            # ('depositItems', (33126, 32841, 7), 0, {}),
-            ('walk', (33125, 32833, 7), 0, {}),
-            ('walk', (33114, 32830, 7), 0, {}),
-            ('walk', (33098, 32830, 7), 0, {}),
-            ('walk', (33098, 32793, 7), 0, {}),
-            ('walk', (33088, 32788, 7), 0, {}),
-            ('moveUpNorth', (33088, 32788, 7), 0, {}),
-            ('walk', (33088, 32785, 6), 0, {}),
-            ('moveDownNorth', (33088, 32785, 6), 0, {}),
-            ('walk', (33073, 32760, 7), 0, {}),
-            ('useShovel', (33072, 32760, 7), 0, {}),
-            ('walk', (33095, 32761, 8), 0, {}),
-            ('walk', (33084, 32770, 8), 0, {}),
-            ('walk', (33062, 32762, 8), 0, {}),
-            ('walk', (33072, 32760, 8), 0, {}),
-            ('walk', (33076, 32757, 8), 0, {}),
-            ('walk', (33072, 32759, 8), 0, {}),
-            ('refillChecker', (33072, 32760, 8), 0, {
-                'minimumOfManaPotions': 1,
-                'minimumOfHealthPotions': 1,
-                'minimumOfCapacity': 200,
-                'successIndex': 10,
-            }),
-            # ('walk', (33072, 32760, 8), 0, {}),
-            # ('useRope', (33072, 32760, 8), 0, {}),
-            # ('walk', (33088, 32783, 7), 0, {}),
-            # ('moveUpSouth', (33088, 32783, 7), 0, {}),
-            # ('walk', (33088, 32786, 6), 0, {}),
-            # ('moveDownSouth', (33088, 32786, 6), 0, {}),
-            # ('walk', (33098, 32793, 7), 0, {}),
-            # ('walk', (33099, 32830, 7), 0, {}),
-            # ('walk', (33125, 32833, 7), 0, {}),
-            # ('walk', (33126, 32834, 7), 0, {}),
-            # ('depositItems', (33126, 32834, 7), 0, {}),
-            # ('refillChecker', (33127, 32834, 7), 0, {}),
-            # ('walk', (33128, 32827, 7), 0, {}),
-            # ('moveUpNorth', (33128, 32827, 7), 0, {}),
-            # ('walk', (33130, 32817, 6), 0, {}),
-            # ('moveUpNorth', (33130, 32817, 6), 0, {}),
-            # ('walk', (33128, 32811, 5), 0, {}),
-            # ('refill', (33128, 32810, 5), 0, {}),
-            # ('walk', (33130, 32815, 5), 0, {}),
-            # ('moveDownSouth', (33130, 32815, 5), 0, {}),
-            # ('walk', (33124, 32814, 6), 0, {}),
-            # ('moveDownWest', (33124, 32814, 6), 0, {}),
-        ], dtype=waypointType),
-        'state': None
-    },
     'screenshot': None,
     'way': None,
 }
@@ -140,7 +144,7 @@ def main():
     def handleGetContext(_):
         global gameContext
         waypoints = [[[int(waypoint['coordinate'][0]), int(waypoint['coordinate'][1]), int(waypoint['coordinate'][2])], int(waypoint['tolerance']), waypoint['options']]
-                     for waypoint in gameContext['waypoints']['points']]
+                     for waypoint in gameContext['cavebot']['waypoints']['points']]
         return None, {
             'backpacks': gameContext['backpacks'],
             'hotkeys': gameContext['hotkeys'],
@@ -155,7 +159,7 @@ def main():
         gameContext['hotkeys'] = data['hotkeys']
         gameContext['refill'] = data['refill']
         waypoints = [[[int(waypoint['coordinate'][0]), int(waypoint['coordinate'][1]), int(waypoint['coordinate'][2])], int(waypoint['tolerance']), waypoint['options']]
-                     for waypoint in gameContext['waypoints']['points']]
+                     for waypoint in gameContext['cavebot']['waypoints']['points']]
         return None, {
             'backpacks': gameContext['backpacks'],
             'hotkeys': gameContext['hotkeys'],
@@ -192,6 +196,8 @@ def main():
 
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.filter(lambda result: result['screenshot'] is not None),
+        operators.filter(
+            lambda result: gameContext['cavebot']['running'] == True),
         operators.map(handleCoordinate)
     )
 
@@ -211,7 +217,7 @@ def main():
         global gameContext
         copyOfContext = context.copy()
         hudSize = hud.core.hudSizes[copyOfContext['resolution']]
-        copyOfContext['hudCoordinate'] = hud.core.getCoordinate(
+        copyOfContext['hud']['coordinate'] = hud.core.getCoordinate(
             copyOfContext['screenshot'], hudSize)
         gameContext = copyOfContext
         return copyOfContext
@@ -226,7 +232,7 @@ def main():
         copyOfContext = context.copy()
         hudSize = hud.core.hudSizes[copyOfContext['resolution']]
         copyOfContext['hudImg'] = hud.core.getImgByCoordinate(
-            copyOfContext['screenshot'], copyOfContext['hudCoordinate'], hudSize)
+            copyOfContext['screenshot'], copyOfContext['hud']['coordinate'], hudSize)
         gameContext = copyOfContext
         return copyOfContext
 
@@ -265,7 +271,7 @@ def main():
         global gameContext, hudCreatures
         copyOfContext = context.copy()
         hudCreatures = hud.creatures.getCreatures(
-            copyOfContext['battleListCreatures'], copyOfContext['comingFromDirection'], copyOfContext['hudCoordinate'], copyOfContext['hudImg'], copyOfContext['coordinate'], copyOfContext['resolution'])
+            copyOfContext['battleListCreatures'], copyOfContext['comingFromDirection'], copyOfContext['hud']['coordinate'], copyOfContext['hudImg'], copyOfContext['coordinate'], copyOfContext['resolution'])
         monsters = hud.creatures.getCreatureByType(hudCreatures, 'monster')
         players = hud.creatures.getCreatureByType(hudCreatures, 'player')
         copyOfContext['monsters'] = monsters
@@ -311,19 +317,19 @@ def main():
     def handleTasks(context):
         global gameContext
         copyOfContext = context.copy()
-        if copyOfContext['waypoints']['currentIndex'] == None:
-            copyOfContext['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
-                copyOfContext['coordinate'], copyOfContext['waypoints']['points'])
-        currentWaypointIndex = copyOfContext['waypoints']['currentIndex']
+        if copyOfContext['cavebot']['waypoints']['currentIndex'] == None:
+            copyOfContext['cavebot']['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
+                copyOfContext['coordinate'], copyOfContext['cavebot']['waypoints']['points'])
+        currentWaypointIndex = copyOfContext['cavebot']['waypoints']['currentIndex']
         nextWaypointIndex = utils.array.getNextArrayIndex(
-            copyOfContext['waypoints']['points'], currentWaypointIndex)
-        currentWaypoint = copyOfContext['waypoints']['points'][currentWaypointIndex]
-        nextWaypoint = copyOfContext['waypoints']['points'][nextWaypointIndex]
-        waypointsStateIsEmpty = copyOfContext['waypoints']['state'] == None
+            copyOfContext['cavebot']['waypoints']['points'], currentWaypointIndex)
+        currentWaypoint = copyOfContext['cavebot']['waypoints']['points'][currentWaypointIndex]
+        nextWaypoint = copyOfContext['cavebot']['waypoints']['points'][nextWaypointIndex]
+        waypointsStateIsEmpty = copyOfContext['cavebot']['waypoints']['state'] == None
         if waypointsStateIsEmpty:
-            copyOfContext['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
+            copyOfContext['cavebot']['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
                 copyOfContext['coordinate'], currentWaypoint)
-        result = copyOfContext['coordinate'] == copyOfContext['waypoints']['state']['checkInCoordinate']
+        result = copyOfContext['coordinate'] == copyOfContext['cavebot']['waypoints']['state']['checkInCoordinate']
         didReachWaypoint = np.all(result) == True
         if copyOfContext['currentGroupTask'] == None:
             copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(
@@ -344,8 +350,8 @@ def main():
                     copyOfContext['currentGroupTask'] = currentGroupTask
         if didReachWaypoint:
             if copyOfContext['currentGroupTask'] == None or copyOfContext['currentGroupTask'].name == 'groupOfWalk':
-                copyOfContext['waypoints']['currentIndex'] = nextWaypointIndex
-                copyOfContext['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
+                copyOfContext['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex
+                copyOfContext['cavebot']['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
                     copyOfContext['coordinate'], nextWaypoint)
         gameContext = copyOfContext
         return copyOfContext

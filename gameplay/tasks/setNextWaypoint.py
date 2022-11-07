@@ -20,9 +20,9 @@ class SetNextWaypointTask:
 
     def do(self, context):
         nextWaypointIndex = getNextArrayIndex(
-            context['waypoints']['points'], context['waypoints']['currentIndex'])
-        context['waypoints']['currentIndex'] = nextWaypointIndex
-        context['waypoints']['state'] = None
+            context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])
+        context['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex
+        context['cavebot']['waypoints']['state'] = None
         return context
 
     def did(self, _):

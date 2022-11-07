@@ -82,10 +82,10 @@ class WalkTask:
     def onDidComplete(self, context):
         if context['way'] == 'cavebot':
             return context
-        result = context['coordinate'] == context['waypoints']['state']['checkInCoordinate']
+        result = context['coordinate'] == context['cavebot']['waypoints']['state']['checkInCoordinate']
         didReachWaypoint = np.all(result) == True
         if didReachWaypoint:
-            context['waypoints']['state'] = None
+            context['cavebot']['waypoints']['state'] = None
             context['tasks'] = np.array([], dtype=taskType)
         return context
 

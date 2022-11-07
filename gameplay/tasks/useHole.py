@@ -21,7 +21,7 @@ class UseHoleTask:
     def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
             context['coordinate'], self.value['coordinate'])
-        hud.slot.rightClickSlot(slot, context['hudCoordinate'])
+        hud.slot.rightClickSlot(slot, context['hud']['coordinate'])
         return context
 
     def did(self, _):

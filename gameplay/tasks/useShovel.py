@@ -26,7 +26,7 @@ class UseShovelTask:
         slot = hud.core.getSlotFromCoordinate(
             context['coordinate'], self.value['coordinate'])
         pyautogui.press(context['hotkeys']['shovel'])
-        hud.slot.clickSlot(slot, context['hudCoordinate'])
+        hud.slot.clickSlot(slot, context['hud']['coordinate'])
         return context
 
     def did(self, context):

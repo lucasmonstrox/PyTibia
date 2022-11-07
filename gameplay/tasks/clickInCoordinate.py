@@ -22,11 +22,11 @@ class ClickInCoordinateTask:
     def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
             context['coordinate'], self.value['coordinate'])
-        hud.slot.clickSlot(slot, context['hudCoordinate'])
+        hud.slot.clickSlot(slot, context['hud']['coordinate'])
         return context
 
     def did(self, context):
-        res = context['coordinate'] == context['waypoints']['state']['checkInCoordinate']
+        res = context['coordinate'] == context['cavebot']['waypoints']['state']['checkInCoordinate']
         did = np.all(res) == True
         return did
 
