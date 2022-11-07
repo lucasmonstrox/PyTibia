@@ -1,23 +1,13 @@
-import easyocr
+from easyocr import Reader
 import numpy as np
-import pathlib
 from PIL import Image
-from actionBar.locators import getSlot1Pos, getSlot2Pos, getSlot3Pos, getSlot4Pos, getSlot5Pos, getSlot6Pos, getSlot7Pos, getSlot8Pos, getSlot9Pos
-from actionBar import extractors
+from .config import images
+from .extractors import getCooldownsImg
+from .locators import getSlot1Pos, getSlot2Pos, getSlot3Pos, getSlot4Pos, getSlot5Pos, getSlot6Pos, getSlot7Pos, getSlot8Pos, getSlot9Pos
 from utils.core import locate
-from utils.image import loadFromRGBToGray
 
 
-reader = easyocr.Reader(['en'])
-currentPath = pathlib.Path(__file__).parent.resolve()
-imagesPath = f'{currentPath}/images'
-attackCooldownImg = loadFromRGBToGray(f'{imagesPath}/cooldowns/attack.png')
-exoriCooldownImg = loadFromRGBToGray(f'{imagesPath}/cooldowns/exori.png')
-exoriGranCooldownImg = loadFromRGBToGray(
-    f'{imagesPath}/cooldowns/exoriGran.png')
-exoriMasCooldownImg = loadFromRGBToGray(f'{imagesPath}/cooldowns/exoriMas.png')
-hasteCooldownImg = loadFromRGBToGray(f'{imagesPath}/cooldowns/haste.png')
-supportCooldownImg = loadFromRGBToGray(f'{imagesPath}/cooldowns/support.png')
+reader = Reader(['en'])
 
 
 def getSlotCount(screenshot, key):
@@ -52,7 +42,7 @@ def getSlotCount(screenshot, key):
 
 
 def hasCooldownByImg(screenshot, cooldownImg):
-    listOfCooldownsImg = extractors.getCooldownsImg(screenshot)
+    listOfCooldownsImg = getCooldownsImg(screenshot)
     cannotGetListOfCooldownsImg = listOfCooldownsImg is None
     if cannotGetListOfCooldownsImg:
         return None
@@ -69,24 +59,24 @@ def hasCooldownByImg(screenshot, cooldownImg):
 
 
 def hasAttackCooldown(screenshot):
-    return hasCooldownByImg(screenshot, attackCooldownImg)
+    return hasCooldownByImg(screenshot, images['attackCooldown'])
 
 
 def hasExoriCooldown(screenshot):
-    return hasCooldownByImg(screenshot, exoriCooldownImg)
+    return hasCooldownByImg(screenshot, images['exoriCooldown'])
 
 
 def hasExoriGranCooldown(screenshot):
-    return hasCooldownByImg(screenshot, exoriGranCooldownImg)
+    return hasCooldownByImg(screenshot, images['exoriGranCooldown'])
 
 
 def hasExoriMasCooldown(screenshot):
-    return hasCooldownByImg(screenshot, exoriMasCooldownImg)
+    return hasCooldownByImg(screenshot, images['exoriMasCooldown'])
 
 
 def hasHasteCooldown(screenshot):
-    return hasCooldownByImg(screenshot, hasteCooldownImg)
+    return hasCooldownByImg(screenshot, images['hasteCooldown'])
 
 
 def hasSupportCooldown(screenshot):
-    return hasCooldownByImg(screenshot, supportCooldownImg)
+    return hasCooldownByImg(screenshot, images['supportCooldown'])
