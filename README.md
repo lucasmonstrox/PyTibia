@@ -71,6 +71,7 @@ poetry run python -m pytest
 
 # ✅ TODO
 
+- Translate README for Portuguese/Spanish language
 - Add api docs
 - Add mypy
 - Add e2e tests into the tibia client
