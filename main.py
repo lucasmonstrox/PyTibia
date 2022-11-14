@@ -4,7 +4,7 @@ import pyautogui
 from rx import interval, of, operators, pipe, timer
 from rx.scheduler import ThreadPoolScheduler
 from rx.subject import Subject
-import time
+from time import sleep
 import battleList.core
 import battleList.typing
 from chat import core
@@ -17,8 +17,10 @@ import hud.creatures
 import hud.core
 import hud.slot
 import radar.core
+import player.core
 from radar.types import waypointType
 from gameplay.taskExecutor import TaskExecutor
+from gameplay.groupTasks.groupOfLootCorpseTasks import GroupOfLootCorpseTasks
 import utils.array
 import utils.core
 import utils.image
@@ -43,41 +45,74 @@ gameContext = {
         'waypoints': {
             'currentIndex': None,
             'points': np.array([
+                # # mino dar
+                # ('walk', (33214, 32459, 8), 0, {}),
+                # ('walk', (33214, 32456, 8), 0, {}),
+                # ('moveUpNorth', (33214, 32456, 8), 0, {}),
+                # #indo para cave
+                # ('walk', (33214, 32453, 7), 0, {}),
+                # ('walk', (33217, 32445, 7), 0, {}),
+                # ('walk', (33216, 32419, 7), 0, {}),
+                # ('walk', (33271, 32324, 7), 0, {}),
+                # ('walk', (33299, 32292, 7), 0, {}),
+                # ('walk', (33271, 32324, 7), 0, {}),
+                # #chegou na cave
+                # ('walk', (33300, 32291, 7), 0, {}),
+                # ('walk', (33300, 32277, 7), 0, {}),
+                # ('walk', (33313, 32277, 7), 0, {}),
+                # ('walk', (33319, 32283, 7), 0, {}),
+                # ('walk', (33308, 32289, 7), 0, {}),
+                # ('walk', (33309, 32285, 7), 0, {}),
+                # # andar +1
+                # ('moveUpNorth', (33309, 32285, 7), 0, {}),
+                # ('walk', (33310, 32292, 6), 0, {}),
+                # ('walk', (33300, 32277, 6), 0, {}),
+                # #desce andar de cima
+                # ('moveDownSouth', (33309, 32283, 6), 0, {}),
+
+                # ('refillChecker', (33309, 32283, 6), 0, {
+                #     'minimumOfManaPotions': 1,
+                #     'minimumOfHealthPotions': 1,
+                #     'minimumOfCapacity': 200,
+                #     'successIndex': 7,
+                # }),
+                
+                # lava ank
                 # ('walk', (33127, 32830, 7), 0, {}),
                 # ('walk', (33126, 32834, 7), 0, {}),
                 # ('depositItems', (33126, 32841, 7), 0, {}),
-                ('walk', (33125, 32833, 7), 0, {}),
-                ('walk', (33114, 32830, 7), 0, {}),
-                ('walk', (33098, 32830, 7), 0, {}),
-                ('walk', (33098, 32793, 7), 0, {}),
-                ('walk', (33088, 32788, 7), 0, {}),
-                ('moveUpNorth', (33088, 32788, 7), 0, {}),
-                ('walk', (33088, 32785, 6), 0, {}),
-                ('moveDownNorth', (33088, 32785, 6), 0, {}),
-                ('walk', (33073, 32760, 7), 0, {}),
-                ('useShovel', (33072, 32760, 7), 0, {}),
-                ('walk', (33095, 32761, 8), 0, {}),
-                ('walk', (33084, 32770, 8), 0, {}),
-                ('walk', (33062, 32762, 8), 0, {}),
-                ('walk', (33072, 32760, 8), 0, {}),
-                ('walk', (33076, 32757, 8), 0, {}),
-                ('walk', (33072, 32759, 8), 0, {}),
-                ('refillChecker', (33072, 32760, 8), 0, {
-                    'minimumOfManaPotions': 10,
-                    'minimumOfHealthPotions': 10,
-                    'minimumOfCapacity': 200,
-                    'successIndex': 10,
-                }),
-                ('walk', (33072, 32760, 8), 0, {}),
-                ('useRope', (33072, 32760, 8), 0, {}),
-                ('walk', (33088, 32783, 7), 0, {}),
-                ('moveUpSouth', (33088, 32783, 7), 0, {}),
-                ('walk', (33088, 32786, 6), 0, {}),
-                ('moveDownSouth', (33088, 32786, 6), 0, {}),
-                ('walk', (33098, 32793, 7), 0, {}),
-                ('walk', (33099, 32830, 7), 0, {}),
-                ('walk', (33125, 32833, 7), 0, {}),
-                ('walk', (33126, 32834, 7), 0, {}),
+                # ('walk', (33125, 32833, 7), 0, {}),
+                # ('walk', (33114, 32830, 7), 0, {}),
+                # ('walk', (33098, 32830, 7), 0, {}),
+                # ('walk', (33098, 32793, 7), 0, {}),
+                # ('walk', (33088, 32788, 7), 0, {}),
+                # ('moveUpNorth', (33088, 32788, 7), 0, {}),
+                # ('walk', (33088, 32785, 6), 0, {}),
+                # ('moveDownNorth', (33088, 32785, 6), 0, {}),
+                # ('walk', (33073, 32760, 7), 0, {}),
+                # ('useShovel', (33072, 32760, 7), 0, {}),
+                # ('walk', (33095, 32761, 8), 0, {}),
+                # ('walk', (33084, 32770, 8), 0, {}),
+                # ('walk', (33062, 32762, 8), 0, {}),
+                # ('walk', (33072, 32760, 8), 0, {}),
+                # ('walk', (33076, 32757, 8), 0, {}),
+                # ('walk', (33072, 32759, 8), 0, {}),
+                # ('refillChecker', (33072, 32760, 8), 0, {
+                #     'minimumOfManaPotions': 1,
+                #     'minimumOfHealthPotions': 1,
+                #     'minimumOfCapacity': 200,
+                #     'successIndex': 10,
+                # }),
+                # ('walk', (33072, 32760, 8), 0, {}),
+                # ('useRope', (33072, 32760, 8), 0, {}),
+                # ('walk', (33088, 32783, 7), 0, {}),
+                # ('moveUpSouth', (33088, 32783, 7), 0, {}),
+                # ('walk', (33088, 32786, 6), 0, {}),
+                # ('moveDownSouth', (33088, 32786, 6), 0, {}),
+                # ('walk', (33098, 32793, 7), 0, {}),
+                # ('walk', (33099, 32830, 7), 0, {}),
+                # ('walk', (33125, 32833, 7), 0, {}),
+                # ('walk', (33126, 32834, 7), 0, {}),
                 # ('depositItems', (33126, 32834, 7), 0, {}),
                 # ('refillChecker', (33127, 32834, 7), 0, {}),
                 # ('walk', (33128, 32827, 7), 0, {}),
@@ -90,6 +125,16 @@ gameContext = {
                 # ('moveDownSouth', (33130, 32815, 5), 0, {}),
                 # ('walk', (33124, 32814, 6), 0, {}),
                 # ('moveDownWest', (33124, 32814, 6), 0, {}),
+                
+                ('walk', (33257, 32234, 10), 0, {}),
+                ('walk', (33225, 32206, 10), 0, {}),
+                ('walk', (33229, 32246, 10), 0, {}),
+                ('walk', (33229, 32266, 10), 0, {}),
+                ('walk', (33216, 32287, 10), 0, {}),
+                ('walk', (33255, 32283, 10), 0, {}),
+                
+                
+                
             ], dtype=waypointType),
             'state': None
         },
@@ -97,15 +142,21 @@ gameContext = {
     'comingFromDirection': None,
     'corpsesToLoot': np.array([], dtype=hud.creatures.creatureType),
     'currentGroupTask': None,
+    'healing': {
+        'minimumToBeHealedUsingPotion': 60,
+        'minimumToBeHealedUsingSpell': 85,
+        'cureSpell': 'exura med ico',
+    },
     'hotkeys': {
         'healthPotion': 'f1',
         'manaPotion': 'f2',
+        'cure': 'f3',
         'rope': 'f8',
         'shovel': 'f9',
     },
     'hud': {
         'coordinate': None,
-        'img': None, 
+        'img': None,
     },
     'lastCoordinateVisited': None,
     'lastPressedKey': None,
@@ -128,6 +179,7 @@ gameContext = {
     'targetCreature': None,
     'screenshot': None,
     'way': None,
+    'window': None
 }
 hudCreatures = np.array([], dtype=hud.creatures.creatureType)
 taskExecutor = TaskExecutor()
@@ -172,8 +224,8 @@ def main():
     def disconnect(sid):
         pass
 
-    # optimal_thread_count = multiprocessing.cpu_count()
-    # threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
+    optimal_thread_count = multiprocessing.cpu_count()
+    threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
     thirteenFps = 0.00833333333
     fpsObserver = interval(thirteenFps)
 
@@ -286,18 +338,16 @@ def main():
     def handleLoot(context):
         global gameContext
         copyOfContext = context.copy()
-        corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
         beingAttackedIndexes = np.where(
             hudCreatures['isBeingAttacked'] == True)[0]
         hasCreatureBeingAttacked = len(beingAttackedIndexes) > 0
         if core.hasNewLoot(copyOfContext['screenshot']) and copyOfContext['beingAttackedCreature']:
-            corpsesToLoot = np.append(copyOfContext['corpsesToLoot'], [
+            copyOfContext['corpsesToLoot'] = np.append(copyOfContext['corpsesToLoot'], [
                                       copyOfContext['beingAttackedCreature']], axis=0)
         beingAttackedCreature = None
         if hasCreatureBeingAttacked:
             beingAttackedCreature = hudCreatures[beingAttackedIndexes[0]]
         copyOfContext['beingAttackedCreature'] = beingAttackedCreature
-        copyOfContext['corpsesToLoot'] = corpsesToLoot
         gameContext = copyOfContext
         return copyOfContext
 
@@ -320,7 +370,7 @@ def main():
             return False
         if context['currentGroupTask'] is None:
             return True
-        endlessTasks = ['groupOfUseRope', 'groupOfUseShovel']
+        endlessTasks = ['groupOfLootCorpse', 'groupOfUseRope', 'groupOfUseShovel']
         should = context['currentGroupTask'].name in endlessTasks
         should = not should
         return should
@@ -359,6 +409,9 @@ def main():
                         pyautogui.keyUp(copyOfContext['lastPressedKey'])
                         copyOfContext['lastPressedKey'] = None
                     copyOfContext['currentGroupTask'] = currentGroupTask
+        elif copyOfContext['way'] == 'lootCorpses':
+            if copyOfContext['currentGroupTask'] is None:
+                copyOfContext['currentGroupTask'] = GroupOfLootCorpseTasks(copyOfContext, copyOfContext['corpsesToLoot'][0])
         elif copyOfContext['currentGroupTask'] == None:
             copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(
                 copyOfContext, currentWaypoint)
@@ -379,6 +432,7 @@ def main():
     taskObserver = decisionObserver.pipe(
         operators.map(handleTasks),
         operators.filter(hasTaskToExecute),
+        operators.subscribe_on(threadPoolScheduler),
     )
 
     def taskObservable(context):
@@ -388,7 +442,56 @@ def main():
         copyOfContext['lastCoordinateVisited'] = context['coordinate']
         gameContext = copyOfContext
         
+    healingObserver = fpsWithScreenshot.pipe(
+        operators.subscribe_on(threadPoolScheduler)
+    )
+
+    def healingObservable(context):
+        cures = {
+            'exura infir ico': 10,
+            'exura ico': 40,
+            'exura med ico': 90,
+            'exura gran ico': 200,
+            'utura': 40,
+            'utura gran': 165,
+        }
+        hp = player.core.getHealthPercentage(context['screenshot'])
+        mana = player.core.getManaPercentage(context['screenshot'])
+        couldntGetHp = hp is None
+        if couldntGetHp:
+            return
+        shouldHealUsingPotion = context['healing']['minimumToBeHealedUsingPotion'] >= hp
+        if shouldHealUsingPotion:
+            pyautogui.press(context['hotkeys']['healthPotion'])
+            sleep(0.25)
+            return
+        shouldHealUsingSpell = context['healing']['minimumToBeHealedUsingSpell'] >= hp
+        if shouldHealUsingSpell:
+            hasEnoughMana = mana >= cures[context['healing']['cureSpell']]
+            if hasEnoughMana:
+                pyautogui.press(context['hotkeys']['cure'])
+                sleep(0.25)
+                return
+
+
+    spellObserver = fpsWithScreenshot.pipe(
+        operators.subscribe_on(threadPoolScheduler)
+    )
+    
+    def spellObservable(context):
+        # TODO:
+        # exori ico = 1
+        # exori hur = 1
+        # exori >= 2
+        # exori mas >= 2
+        # exori >= 2
+        # exori gran >= 2
+        pass
+    
+        
     try:
+        spellObserver.subscribe(spellObservable)
+        healingObserver.subscribe(healingObservable)
         taskObserver.subscribe(taskObservable)
         eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
     except KeyboardInterrupt:
