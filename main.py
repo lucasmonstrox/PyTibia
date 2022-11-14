@@ -25,6 +25,7 @@ import utils.image
 import eventlet
 import socketio
 
+
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
 
@@ -38,7 +39,7 @@ gameContext = {
     'battleListCreatures': np.array([], dtype=battleList.typing.creatureType),
     'beingAttackedCreature': None,
     'cavebot': {
-        'running': False,
+        'running': True,
         'waypoints': {
             'currentIndex': None,
             'points': np.array([
@@ -138,7 +139,7 @@ def main():
 
     @sio.event
     def connect(sid, environ):
-        print('connect ', sid)
+        pass
 
     @sio.on('getContext')
     def handleGetContext(_):
@@ -169,7 +170,7 @@ def main():
 
     @sio.event
     def disconnect(sid):
-        print('disconnect ', sid)
+        pass
 
     # optimal_thread_count = multiprocessing.cpu_count()
     # threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
@@ -313,7 +314,23 @@ def main():
     decisionObserver = lootObserver.pipe(
         operators.map(handleDecision)
     )
-
+    
+    def shouldAskForCavebotTasks(context):
+        if context['way'] != 'cavebot':
+            return False
+        if context['currentGroupTask'] is None:
+            return True
+        endlessTasks = ['groupOfUseRope', 'groupOfUseShovel']
+        should = context['currentGroupTask'].name in endlessTasks
+        should = not should
+        return should
+    
+    
+    def isTypeOfChangeableWaypointTask(taskName):
+        changeableWaypointTasksType = ['groupOfSingleWalk', 'groupOfUseRope', 'groupOfWalk']
+        isIn = taskName in changeableWaypointTasksType
+        return isIn
+    
     def handleTasks(context):
         global gameContext
         copyOfContext = context.copy()
@@ -329,12 +346,7 @@ def main():
         if waypointsStateIsEmpty:
             copyOfContext['cavebot']['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
                 copyOfContext['coordinate'], currentWaypoint)
-        result = copyOfContext['coordinate'] == copyOfContext['cavebot']['waypoints']['state']['checkInCoordinate']
-        didReachWaypoint = np.all(result) == True
-        if copyOfContext['currentGroupTask'] == None:
-            copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(
-                copyOfContext, currentWaypoint)
-        if copyOfContext['way'] == 'cavebot':
+        if shouldAskForCavebotTasks(context):
             isTryingToAttackClosestCreature = copyOfContext[
                 'currentGroupTask'] is not None and copyOfContext['currentGroupTask'].name == 'groupOfAttackClosestCreature'
             if isTryingToAttackClosestCreature:
@@ -348,11 +360,16 @@ def main():
                         pyautogui.keyUp(copyOfContext['lastPressedKey'])
                         copyOfContext['lastPressedKey'] = None
                     copyOfContext['currentGroupTask'] = currentGroupTask
+        elif copyOfContext['currentGroupTask'] == None:
+            copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(
+                copyOfContext, currentWaypoint)
+        result = copyOfContext['coordinate'] == copyOfContext['cavebot']['waypoints']['state']['checkInCoordinate']
+        didReachWaypoint = np.all(result) == True
         if didReachWaypoint:
-            if copyOfContext['currentGroupTask'] == None or copyOfContext['currentGroupTask'].name == 'groupOfWalk' or copyOfContext['currentGroupTask'].name == 'groupOfSingleWalk'::
+            if copyOfContext['currentGroupTask'] == None or isTypeOfChangeableWaypointTask(copyOfContext['currentGroupTask'].name):
                 copyOfContext['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex
                 copyOfContext['cavebot']['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
-                    copyOfContext['coordinate'], nextWaypoint)
+                        copyOfContext['coordinate'], nextWaypoint)
         gameContext = copyOfContext
         return copyOfContext
 
@@ -371,10 +388,13 @@ def main():
         copyOfContext = taskExecutor.exec(copyOfContext)
         copyOfContext['lastCoordinateVisited'] = context['coordinate']
         gameContext = copyOfContext
-
-    taskObserver.subscribe(taskObservable)
-
-    eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+        
+    try:
+        taskObserver.subscribe(taskObservable)
+        eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+    except KeyboardInterrupt:
+        print("Program terminated manually!")
+        raise SystemExit
 
 
 if __name__ == '__main__':
