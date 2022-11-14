@@ -349,7 +349,7 @@ def main():
                         copyOfContext['lastPressedKey'] = None
                     copyOfContext['currentGroupTask'] = currentGroupTask
         if didReachWaypoint:
-            if copyOfContext['currentGroupTask'] == None or copyOfContext['currentGroupTask'].name == 'groupOfWalk':
+            if copyOfContext['currentGroupTask'] == None or copyOfContext['currentGroupTask'].name == 'groupOfWalk' or copyOfContext['currentGroupTask'].name == 'groupOfSingleWalk'::
                 copyOfContext['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex
                 copyOfContext['cavebot']['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
                     copyOfContext['coordinate'], nextWaypoint)
