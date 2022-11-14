@@ -63,21 +63,21 @@ gameContext = {
                 ('walk', (33076, 32757, 8), 0, {}),
                 ('walk', (33072, 32759, 8), 0, {}),
                 ('refillChecker', (33072, 32760, 8), 0, {
-                    'minimumOfManaPotions': 1,
-                    'minimumOfHealthPotions': 1,
+                    'minimumOfManaPotions': 300,
+                    'minimumOfHealthPotions': 300,
                     'minimumOfCapacity': 200,
                     'successIndex': 10,
                 }),
-                # ('walk', (33072, 32760, 8), 0, {}),
-                # ('useRope', (33072, 32760, 8), 0, {}),
-                # ('walk', (33088, 32783, 7), 0, {}),
-                # ('moveUpSouth', (33088, 32783, 7), 0, {}),
-                # ('walk', (33088, 32786, 6), 0, {}),
-                # ('moveDownSouth', (33088, 32786, 6), 0, {}),
-                # ('walk', (33098, 32793, 7), 0, {}),
-                # ('walk', (33099, 32830, 7), 0, {}),
-                # ('walk', (33125, 32833, 7), 0, {}),
-                # ('walk', (33126, 32834, 7), 0, {}),
+                ('walk', (33072, 32760, 8), 0, {}),
+                ('useRope', (33072, 32760, 8), 0, {}),
+                ('walk', (33088, 32783, 7), 0, {}),
+                ('moveUpSouth', (33088, 32783, 7), 0, {}),
+                ('walk', (33088, 32786, 6), 0, {}),
+                ('moveDownSouth', (33088, 32786, 6), 0, {}),
+                ('walk', (33098, 32793, 7), 0, {}),
+                ('walk', (33099, 32830, 7), 0, {}),
+                ('walk', (33125, 32833, 7), 0, {}),
+                ('walk', (33126, 32834, 7), 0, {}),
                 # ('depositItems', (33126, 32834, 7), 0, {}),
                 # ('refillChecker', (33127, 32834, 7), 0, {}),
                 # ('walk', (33128, 32827, 7), 0, {}),
@@ -327,7 +327,7 @@ def main():
     
     
     def isTypeOfChangeableWaypointTask(taskName):
-        changeableWaypointTasksType = ['groupOfSingleWalk', 'groupOfUseRope', 'groupOfWalk']
+        changeableWaypointTasksType = ['groupOfSingleWalk', 'groupOfWalk']
         isIn = taskName in changeableWaypointTasksType
         return isIn
     
