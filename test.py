@@ -43,13 +43,11 @@ def main():
     hudSize = (960, 704)
     resolution = 1080
     # battleListCreatures = battleList.core.getCreatures(screenshot)
-    # print(battleListCreatures)
     # hudCoordinate = hud.core.getCoordinate(screenshot, hudSize)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate, hudSize)
     # coordinate = radar.core.getCoordinate(screenshot)
     # hudCreatures = hud.creatures.getCreatures(
     #     battleListCreatures, 'left', hudCoordinate, hudImg, coordinate, resolution)
-    # print(hudCreatures)
 
     def getBattleListCreatures():
         battleList.core.getCreatures(screenshot)
@@ -58,7 +56,6 @@ def main():
     #     hud.creatures.getCreatures(
     #         battleListCreatures, 'left', hudCoordinate, hudImg, coordinate, resolution)
     res2 = timeit.repeat(lambda: getBattleListCreatures(), repeat=10, number=1)
-    print(res2)
     # monsters = hud.creatures.getCreatureByType(hudCreatures, 'creature')
     # players = hud.creatures.getCreatureByType(hudCreatures, 'player')
     # closestCreature = hud.creatures.getClosestCreature(
@@ -78,10 +75,6 @@ def main():
     # res2 = timeit.repeat(lambda: cenas(screenshot), repeat=10, number=1)
     # utils.image.save(screenshot, 'screenshot.png')
     # count2 = actionBar.core.getSlotCount(screenshot, '1')
-    # print('cap', skills.core.getCapacity(screenshot))
-    # print('hp', skills.core.getHitPoints(screenshot))
-    # print('speed', skills.core.getSpeed(screenshot))
-    # print('stamina', skills.core.getStamina(screenshot))
     # if count2 == 7:
     #     utils.image.save(screenshot, 'screenshot-7.png')
     #     return

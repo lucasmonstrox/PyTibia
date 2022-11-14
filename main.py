@@ -63,8 +63,8 @@ gameContext = {
                 ('walk', (33076, 32757, 8), 0, {}),
                 ('walk', (33072, 32759, 8), 0, {}),
                 ('refillChecker', (33072, 32760, 8), 0, {
-                    'minimumOfManaPotions': 300,
-                    'minimumOfHealthPotions': 300,
+                    'minimumOfManaPotions': 10,
+                    'minimumOfHealthPotions': 10,
                     'minimumOfCapacity': 200,
                     'successIndex': 10,
                 }),
@@ -325,7 +325,6 @@ def main():
         should = not should
         return should
     
-    
     def isTypeOfChangeableWaypointTask(taskName):
         changeableWaypointTasksType = ['groupOfSingleWalk', 'groupOfWalk']
         isIn = taskName in changeableWaypointTasksType
@@ -348,7 +347,7 @@ def main():
                 copyOfContext['coordinate'], currentWaypoint)
         if shouldAskForCavebotTasks(context):
             isTryingToAttackClosestCreature = copyOfContext[
-                'currentGroupTask'] is not None and copyOfContext['currentGroupTask'].name == 'groupOfAttackClosestCreature'
+                'currentGroupTask'] is not None and (copyOfContext['currentGroupTask'].name == 'groupOfAttackClosestCreature' or copyOfContext['currentGroupTask'].name == 'groupOfFollowTargetCreature')
             if isTryingToAttackClosestCreature:
                 print('to tentando atacar')
             else:
