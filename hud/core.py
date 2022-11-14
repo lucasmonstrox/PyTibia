@@ -82,13 +82,7 @@ def getSlotImg(hudImg, slot, slotWidth):
     xOfSlot, yOfSlot = slot
     x = xOfSlot * slotWidth
     y = yOfSlot * slotWidth
-    print('xOfSlot', xOfSlot)
-    print('yOfSlot', yOfSlot)
-    print('x', x)
-    print('y ', y)
-    print('slotWidth', slotWidth)
     slotImg = hudImg[y:y + slotWidth, x:x + slotWidth]
-    # utils.image.save(slotImg, 'slotImg.png')
     return slotImg
 
 
