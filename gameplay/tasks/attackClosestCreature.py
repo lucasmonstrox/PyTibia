@@ -1,5 +1,6 @@
 import pyautogui
 from time import time
+from battleList.core import isAttackingSomeCreature
 
 
 class AttackClosestCreatureTask:
@@ -24,8 +25,7 @@ class AttackClosestCreatureTask:
         return context
 
     def did(self, context):
-        hasTargetCreature = context['targetCreature'] is not None
-        return hasTargetCreature
+        return isAttackingSomeCreature(context['battleListCreatures'])
 
     def shouldRestart(self, _):
         return False

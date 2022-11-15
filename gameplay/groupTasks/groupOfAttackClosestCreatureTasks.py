@@ -1,8 +1,10 @@
 import numpy as np
 from time import time
 from gameplay.factories.makeAttackClosestCreature import makeAttackClosestCreatureTask
+from gameplay.factories.makeWalkTask import makeWalkTask
 from gameplay.groupTasks.groupTaskExecutor import GroupTaskExecutor
 from gameplay.typings import taskType
+from gameplay.waypoint import generateFloorWalkpoints
 
 
 class GroupOfAttackClosestCreatureTasks(GroupTaskExecutor):
@@ -23,6 +25,15 @@ class GroupOfAttackClosestCreatureTasks(GroupTaskExecutor):
             makeAttackClosestCreatureTask(closestCreature),
         ], dtype=taskType)
         tasks = np.append(tasks, [tasksToAppend])
+        walkpoints = generateFloorWalkpoints(
+            context['coordinate'], closestCreature['coordinate'])
+        hasWalkpoints = len(walkpoints) > 0
+        if hasWalkpoints:
+            walkpoints.pop()
+        for walkpoint in walkpoints:
+            walkpointTask = makeWalkTask(context, walkpoint)
+            taskToAppend = np.array([walkpointTask], dtype=taskType)
+            tasks = np.append(tasks, [taskToAppend])
         return tasks
 
     def shouldIgnore(self, _):

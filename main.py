@@ -45,37 +45,35 @@ gameContext = {
         'waypoints': {
             'currentIndex': None,
             'points': np.array([
-                # # mino dar
-                # ('walk', (33214, 32459, 8), 0, {}),
-                # ('walk', (33214, 32456, 8), 0, {}),
-                # ('moveUpNorth', (33214, 32456, 8), 0, {}),
-                # #indo para cave
-                # ('walk', (33214, 32453, 7), 0, {}),
-                # ('walk', (33217, 32445, 7), 0, {}),
-                # ('walk', (33216, 32419, 7), 0, {}),
-                # ('walk', (33271, 32324, 7), 0, {}),
-                # ('walk', (33299, 32292, 7), 0, {}),
-                # ('walk', (33271, 32324, 7), 0, {}),
-                # #chegou na cave
-                # ('walk', (33300, 32291, 7), 0, {}),
-                # ('walk', (33300, 32277, 7), 0, {}),
-                # ('walk', (33313, 32277, 7), 0, {}),
-                # ('walk', (33319, 32283, 7), 0, {}),
-                # ('walk', (33308, 32289, 7), 0, {}),
-                # ('walk', (33309, 32285, 7), 0, {}),
-                # # andar +1
-                # ('moveUpNorth', (33309, 32285, 7), 0, {}),
-                # ('walk', (33310, 32292, 6), 0, {}),
-                # ('walk', (33300, 32277, 6), 0, {}),
-                # #desce andar de cima
-                # ('moveDownSouth', (33309, 32283, 6), 0, {}),
-
-                # ('refillChecker', (33309, 32283, 6), 0, {
-                #     'minimumOfManaPotions': 1,
-                #     'minimumOfHealthPotions': 1,
-                #     'minimumOfCapacity': 200,
-                #     'successIndex': 7,
-                # }),
+                ('walk', (33214, 32459, 8), 0, {}),
+                ('walk', (33214, 32456, 8), 0, {}),
+                ('moveUpNorth', (33214, 32456, 8), 0, {}),
+                ('walk', (33214, 32450, 7), 0, {}),  #indo para cave
+                ('walk', (33220, 32428, 7), 0, {}),
+                ('walk', (33216, 32392, 7), 0, {}),
+                ('walk', (33251, 32364, 7), 0, {}),
+                ('walk', (33277, 32329, 7), 0, {}),
+                ('walk', (33301, 32291, 7), 0, {}),
+                ('walk', (33302, 32289, 7), 0, {}),  #chegou na cave
+                ('walk', (33301, 32278, 7), 0, {}),
+                ('walk', (33312, 32278, 7), 0, {}),
+                ('walk', (33318, 32283, 7), 0, {}),
+                ('walk', (33309, 32285, 7), 0, {}),
+                ('moveUpNorth', (33309, 32285, 7), 0, {}),
+                # andar +1
+                ('walk', (33310, 32292, 6), 0, {}),
+                ('walk', (33302, 32277, 6), 0, {}),
+                ('walk', (33309, 32283, 6), 0, {}),
+                #desce andar de cima
+                ('moveDownSouth', (33309, 32283, 6), 0, {}),
+                ('walk', (33305, 32289, 7), 0, {}),
+                ('refillChecker', (33306, 32289, 7), 0, {
+                    'minimumOfManaPotions': 1,
+                    'minimumOfHealthPotions': 1,
+                    'minimumOfCapacity': 200,
+                    'successIndex': 10,
+                }),
+                ('walk', (33264,32321,7), 0, {}),
                 
                 # lava ank
                 # ('walk', (33127, 32830, 7), 0, {}),
@@ -126,12 +124,13 @@ gameContext = {
                 # ('walk', (33124, 32814, 6), 0, {}),
                 # ('moveDownWest', (33124, 32814, 6), 0, {}),
                 
-                ('walk', (33257, 32234, 10), 0, {}),
-                ('walk', (33225, 32206, 10), 0, {}),
-                ('walk', (33229, 32246, 10), 0, {}),
-                ('walk', (33229, 32266, 10), 0, {}),
-                ('walk', (33216, 32287, 10), 0, {}),
-                ('walk', (33255, 32283, 10), 0, {}),
+                
+                # ('walk', (33257, 32234, 10), 0, {}),
+                # ('walk', (33225, 32206, 10), 0, {}),
+                # ('walk', (33229, 32246, 10), 0, {}),
+                # ('walk', (33229, 32266, 10), 0, {}),
+                # ('walk', (33216, 32287, 10), 0, {}),
+                # ('walk', (33255, 32283, 10), 0, {}),
                 
                 
                 
@@ -370,7 +369,7 @@ def main():
             return False
         if context['currentGroupTask'] is None:
             return True
-        endlessTasks = ['groupOfLootCorpse', 'groupOfUseRope', 'groupOfUseShovel']
+        endlessTasks = ['groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfUseRope', 'groupOfUseShovel']
         should = context['currentGroupTask'].name in endlessTasks
         should = not should
         return should
@@ -401,20 +400,28 @@ def main():
             if isTryingToAttackClosestCreature:
                 print('to tentando atacar')
             else:
-                targetCreature, currentGroupTask = gameplay.cavebot.resolveCavebotTasks(
-                    copyOfContext)
+                targetCreature, currentGroupTask = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
                 copyOfContext['targetCreature'] = targetCreature
-                if currentGroupTask is not None:
-                    if copyOfContext['lastPressedKey'] is not None:
-                        pyautogui.keyUp(copyOfContext['lastPressedKey'])
-                        copyOfContext['lastPressedKey'] = None
-                    copyOfContext['currentGroupTask'] = currentGroupTask
+                if copyOfContext['currentGroupTask'] is not None:
+                    if targetCreature is not None:
+                        if copyOfContext['lastPressedKey'] is not None:
+                            pyautogui.keyUp(copyOfContext['lastPressedKey'])
+                            copyOfContext['lastPressedKey'] = None
+                        copyOfContext['currentGroupTask'] = currentGroupTask
+                else:
+                    if currentGroupTask is not None:
+                        if copyOfContext['lastPressedKey'] is not None:
+                            pyautogui.keyUp(copyOfContext['lastPressedKey'])
+                            copyOfContext['lastPressedKey'] = None
+                        copyOfContext['currentGroupTask'] = currentGroupTask
         elif copyOfContext['way'] == 'lootCorpses':
             if copyOfContext['currentGroupTask'] is None:
                 copyOfContext['currentGroupTask'] = GroupOfLootCorpseTasks(copyOfContext, copyOfContext['corpsesToLoot'][0])
         elif copyOfContext['currentGroupTask'] == None:
             copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(
                 copyOfContext, currentWaypoint)
+        # print('currentWaypointIndex', currentWaypointIndex)
+        print('currentGroupTask', copyOfContext['currentGroupTask'])
         result = copyOfContext['coordinate'] == copyOfContext['cavebot']['waypoints']['state']['checkInCoordinate']
         didReachWaypoint = np.all(result) == True
         if didReachWaypoint:
@@ -487,7 +494,6 @@ def main():
         # exori >= 2
         # exori gran >= 2
         pass
-    
         
     try:
         spellObserver.subscribe(spellObservable)
