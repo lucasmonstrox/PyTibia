@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.spatial import distance
 from time import time
 from gameplay.factories.makeLootCorpse import makeLootCorpseTask
 from gameplay.factories.makeWalkTask import makeWalkTask
@@ -26,6 +27,15 @@ class GroupOfLootCorpseTasks(GroupTaskExecutor):
         hasWalkpoints = len(walkpoints) > 0
         if hasWalkpoints:
             walkpoints.pop()
+        targetWaypoint = None
+        if len(walkpoints) == 1:
+            targetWaypoint = walkpoints[0]
+        elif len(walkpoints) >= 2:
+            targetWaypoint = walkpoints[1]
+        if targetWaypoint:
+            dist = distance.cdist([context['coordinate']], [targetWaypoint]).flatten()[0]
+            if dist < 1.42:
+                walkpoints.pop()
         for walkpoint in walkpoints:
             walkpointTask = makeWalkTask(context, walkpoint)
             taskToAppend = np.array([walkpointTask], dtype=taskType)
