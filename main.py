@@ -5,6 +5,7 @@ from rx import interval, of, operators, pipe, timer
 from rx.scheduler import ThreadPoolScheduler
 from rx.subject import Subject
 from time import sleep
+import actionBar.core
 import battleList.core
 import battleList.typing
 from chat import core
@@ -374,10 +375,10 @@ def main():
         should = not should
         return should
     
-    def isTypeOfChangeableWaypointTask(taskName):
-        changeableWaypointTasksType = ['groupOfSingleWalk', 'groupOfWalk']
-        isIn = taskName in changeableWaypointTasksType
-        return isIn
+    # def isTypeOfChangeableWaypointTask(taskName):
+    #     changeableWaypointTasksType = ['groupOfSingleWalk', 'groupOfWalk']
+    #     isIn = taskName in changeableWaypointTasksType
+    #     return isIn
     
     def handleTasks(context):
         global gameContext
@@ -386,10 +387,7 @@ def main():
             copyOfContext['cavebot']['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
                 copyOfContext['coordinate'], copyOfContext['cavebot']['waypoints']['points'])
         currentWaypointIndex = copyOfContext['cavebot']['waypoints']['currentIndex']
-        nextWaypointIndex = utils.array.getNextArrayIndex(
-            copyOfContext['cavebot']['waypoints']['points'], currentWaypointIndex)
         currentWaypoint = copyOfContext['cavebot']['waypoints']['points'][currentWaypointIndex]
-        nextWaypoint = copyOfContext['cavebot']['waypoints']['points'][nextWaypointIndex]
         waypointsStateIsEmpty = copyOfContext['cavebot']['waypoints']['state'] == None
         if waypointsStateIsEmpty:
             copyOfContext['cavebot']['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
@@ -420,15 +418,8 @@ def main():
         elif copyOfContext['currentGroupTask'] == None:
             copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(
                 copyOfContext, currentWaypoint)
-        # print('currentWaypointIndex', currentWaypointIndex)
         print('currentGroupTask', copyOfContext['currentGroupTask'])
-        result = copyOfContext['coordinate'] == copyOfContext['cavebot']['waypoints']['state']['checkInCoordinate']
-        didReachWaypoint = np.all(result) == True
-        if didReachWaypoint:
-            if copyOfContext['currentGroupTask'] == None or isTypeOfChangeableWaypointTask(copyOfContext['currentGroupTask'].name):
-                copyOfContext['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex
-                copyOfContext['cavebot']['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
-                        copyOfContext['coordinate'], nextWaypoint)
+        print('waypointINdex', copyOfContext['cavebot']['waypoints']['currentIndex'])
         gameContext = copyOfContext
         return copyOfContext
 
@@ -486,14 +477,14 @@ def main():
     )
     
     def spellObservable(context):
-        # TODO:
-        # exori ico = 1
-        # exori hur = 1
-        # exori >= 2
-        # exori mas >= 2
-        # exori >= 2
-        # exori gran >= 2
-        pass
+        global hudCreatures
+        mana = player.core.getManaPercentage(context['screenshot'])
+        if mana > 60 and not player.core.hasSpecialCondition(context['screenshot'], 'haste'):
+            pyautogui.press('f6')
+            return
+        if mana >= 115 and hud.creatures.getNearestCreaturesCount(hudCreatures) > 2 and not actionBar.core.hasExoriCooldown(context['screenshot']):
+            pyautogui.press('f4')
+            return
         
     try:
         spellObserver.subscribe(spellObservable)
