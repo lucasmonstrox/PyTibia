@@ -10,8 +10,8 @@ class LootCorpseTask:
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
-        self.delayBeforeStart = 1
-        self.delayAfterComplete = 0.5
+        self.delayBeforeStart = 0.25
+        self.delayAfterComplete = 0.25
         self.delayOfTimeout = None
         self.name = 'lootCorpse'
         self.status = 'notStarted'
