@@ -9,6 +9,7 @@ capacityImage = utils.image.loadFromRGBToGray(
     f'{currentPath}/images/capacity.png')
 hitPointsImage = utils.image.loadFromRGBToGray(
     f'{currentPath}/images/hitPoints.png')
+manaImage = utils.image.loadFromRGBToGray(f'{currentPath}/images/mana.png')
 speedImage = utils.image.loadFromRGBToGray(f'{currentPath}/images/speed.png')
 staminaImage = utils.image.loadFromRGBToGray(
     f'{currentPath}/images/stamina.png')
@@ -22,6 +23,11 @@ def getCapacityPosition(screenshot):
 @utils.core.cacheObjectPos
 def getHitPointsPosition(screenshot):
     return utils.core.locate(screenshot, hitPointsImage)
+
+
+@utils.core.cacheObjectPos
+def getManaPosition(screenshot):
+    return utils.core.locate(screenshot, manaImage)
 
 
 @utils.core.cacheObjectPos

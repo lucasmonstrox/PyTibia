@@ -22,6 +22,15 @@ def getHitPoints(screenshot):
     return count
 
 
+def getMana(screenshot):
+    speedPosition = locators.getManaPosition(screenshot)
+    didntFoundSpeedPosition = speedPosition is None
+    if didntFoundSpeedPosition:
+        return None
+    count = getValuesCount(screenshot, speedPosition)
+    return count
+
+
 def getSpeed(screenshot):
     speedPosition = locators.getSpeedPosition(screenshot)
     didntFoundSpeedPosition = speedPosition is None
