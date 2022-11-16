@@ -1,7 +1,6 @@
 import numpy as np
 import pyautogui
 from time import time
-from gameplay.typings import taskType
 from radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from skills.core import getSpeed
 import utils.coordinate
@@ -32,14 +31,14 @@ class WalkTask:
 
     def do(self, context):
         walkpoint = self.value
-        hasMoreWalkpointTasks = len(
-            context['currentGroupTask'].tasks) > 1 and context['currentGroupTask'].tasks[1]['type'] == 'walk'
         direction = utils.coordinate.getDirectionBetweenCoordinates(
             context['coordinate'], walkpoint)
         hasNoNewDirection = direction is None
         if hasNoNewDirection:
             return context
         futureDirection = None
+        hasMoreWalkpointTasks = len(
+            context['currentGroupTask'].tasks) > 1 and context['currentGroupTask'].tasks[1]['type'] == 'walk'
         if hasMoreWalkpointTasks:
             _, nextTask = context['currentGroupTask'].tasks[1]
             futureDirection = utils.coordinate.getDirectionBetweenCoordinates(

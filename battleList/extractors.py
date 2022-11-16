@@ -1,8 +1,6 @@
 import math
 import numpy as np
 from . import config, locators
-import utils.core
-import utils.image
 
 
 def getContent(screenshot):
@@ -23,8 +21,8 @@ def getContent(screenshot):
 
 
 def getCreatureNameImg(slotImg):
-    creatureNameImg = slotImg[3:11 + 3, 23:23 + 131]
-    creatureNameImg = utils.image.convertGraysToBlack(creatureNameImg)
+    creatureNameImg = slotImg[3:11 + 3, 23:23 + 115]
+    creatureNameImg = np.where(creatureNameImg <= 191, 0, creatureNameImg)
     creatureNameImg = np.array(creatureNameImg, dtype=np.uint8)
     highlightedNamePixelColorIndexes = np.nonzero(
         creatureNameImg == config.creatures["highlightedNamePixelColor"],)

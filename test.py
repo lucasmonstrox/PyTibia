@@ -36,26 +36,28 @@ def main():
     #     utils.image.load('radar/images/paths/floor-11.png'))
     # reader = easyocr.Reader(['en'])
     # while True:
-    nonGrayScreenshot = utils.core.getScreenshot()
+    # nonGrayScreenshot = utils.core.getScreenshot()
+    nonGrayScreenshot = utils.image.load('image.png')
     screenshot = utils.image.RGBtoGray(nonGrayScreenshot)
     # backpackSlotImg = getBackpackSlotImg(screenshot, 'fur backpack', 1)
-    # utils.image.save(backpackSlotImg, 'backpackSlotImg.png')
+    # utils.image.save(screenshot, 'screenshot.png')
     hudSize = (960, 704)
     resolution = 1080
-    # battleListCreatures = battleList.core.getCreatures(screenshot)
+    battleListCreatures = battleList.core.getCreatures(screenshot)
+    print(battleListCreatures)
     # hudCoordinate = hud.core.getCoordinate(screenshot, hudSize)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate, hudSize)
     # coordinate = radar.core.getCoordinate(screenshot)
     # hudCreatures = hud.creatures.getCreatures(
     #     battleListCreatures, 'left', hudCoordinate, hudImg, coordinate, resolution)
 
-    def getBattleListCreatures():
-        battleList.core.getCreatures(screenshot)
+    # def getBattleListCreatures():
+    #     battleList.core.getCreatures(screenshot)
 
     # def getHudCreatures():
     #     hud.creatures.getCreatures(
     #         battleListCreatures, 'left', hudCoordinate, hudImg, coordinate, resolution)
-    res2 = timeit.repeat(lambda: getBattleListCreatures(), repeat=10, number=1)
+    # res2 = timeit.repeat(lambda: getBattleListCreatures(), repeat=10, number=1)
     # monsters = hud.creatures.getCreatureByType(hudCreatures, 'creature')
     # players = hud.creatures.getCreatureByType(hudCreatures, 'player')
     # closestCreature = hud.creatures.getClosestCreature(
