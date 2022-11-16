@@ -22,7 +22,7 @@ class GroupOfUseRopeTasks(GroupTaskExecutor):
         tasks = np.array([], dtype=taskType)
         tasksToAppend = np.array([
             makeUseRopeTask(waypoint),
-            makeSetNextWaypointTask(waypoint),
+            makeSetNextWaypointTask(),
         ], dtype=taskType)
         tasks = np.append(tasks, [tasksToAppend])
         return tasks

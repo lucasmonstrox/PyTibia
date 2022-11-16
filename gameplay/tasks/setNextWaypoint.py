@@ -4,7 +4,7 @@ from utils.array import getNextArrayIndex
 
 
 class SetNextWaypointTask:
-    def __init__(self, value):
+    def __init__(self):
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
@@ -13,7 +13,7 @@ class SetNextWaypointTask:
         self.delayOfTimeout = None
         self.name = 'setNextWaypoint'
         self.status = 'notStarted'
-        self.value = value
+        self.value = None
 
     def shouldIgnore(self, _):
         return False

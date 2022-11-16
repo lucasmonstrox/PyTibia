@@ -1,5 +1,6 @@
 import numpy as np
 from time import time
+from gameplay.factories.makeSetNextWaypointTask import makeSetNextWaypointTask
 from gameplay.factories.makeWalkTask import makeWalkTask
 from gameplay.groupTasks.groupTaskExecutor import GroupTaskExecutor
 from gameplay.typings import taskType
@@ -26,6 +27,10 @@ class GroupOfWalkTasks(GroupTaskExecutor):
             walkpointTask = makeWalkTask(context, walkpoint)
             taskToAppend = np.array([walkpointTask], dtype=taskType)
             tasks = np.append(tasks, [taskToAppend])
+        tasksToAppend = np.array([
+            makeSetNextWaypointTask(),
+        ], dtype=taskType)
+        tasks = np.append(tasks, [tasksToAppend])
         return tasks
 
     def shouldIgnore(self, _):

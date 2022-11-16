@@ -24,7 +24,7 @@ class GroupOfUseShovelTasks(GroupTaskExecutor):
         tasksToAppend = np.array([
             makeUseShovelTask(waypoint),
             makeClickInCoordinateTask(waypoint),
-            makeSetNextWaypointTask(waypoint),
+            makeSetNextWaypointTask(),
         ], dtype=taskType)
         tasks = np.append(tasks, [tasksToAppend])
         return tasks

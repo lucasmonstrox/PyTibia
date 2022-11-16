@@ -57,7 +57,7 @@ class GroupOfRefillTasks(GroupTaskExecutor):
             makeBuyItemTask((context['refill']['health']
                             ['item'], amountOfHealthPotionsToBuy)),
             makeCloseNpcTradeBoxTask(),
-            makeSetNextWaypointTask(waypoint),
+            makeSetNextWaypointTask(),
         ], dtype=taskType)
         tasks = np.append(tasks, [tasksToAppend])
         return tasks

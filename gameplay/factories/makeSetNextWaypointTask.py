@@ -1,6 +1,6 @@
 from gameplay.tasks.setNextWaypoint import SetNextWaypointTask
 
 
-def makeSetNextWaypointTask(waypoint):
-    task = SetNextWaypointTask(waypoint)
+def makeSetNextWaypointTask():
+    task = SetNextWaypointTask()
     return ('setNextWaypoint', task)
