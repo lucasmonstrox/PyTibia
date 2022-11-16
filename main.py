@@ -27,6 +27,7 @@ import utils.core
 import utils.image
 import eventlet
 import socketio
+import skills.core
 
 
 pyautogui.FAILSAFE = False
@@ -478,8 +479,9 @@ def main():
     
     def spellObservable(context):
         global hudCreatures
-        mana = player.core.getManaPercentage(context['screenshot'])
-        if mana > 60 and not player.core.hasSpecialCondition(context['screenshot'], 'haste'):
+        mana = skills.core.getMana(context['screenshot'])
+        canHaste = not player.core.hasSpecialCondition(context['screenshot'], 'haste')
+        if mana > 60 and canHaste:
             pyautogui.press('f6')
             return
         if mana >= 115 and hud.creatures.getNearestCreaturesCount(hudCreatures) > 2 and not actionBar.core.hasExoriCooldown(context['screenshot']):
