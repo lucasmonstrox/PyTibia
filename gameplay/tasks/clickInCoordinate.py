@@ -24,6 +24,9 @@ class ClickInCoordinateTask:
             context['coordinate'], self.value['coordinate'])
         hud.slot.clickSlot(slot, context['hud']['coordinate'])
         return context
+    
+    def ping(self, context):
+        return context
 
     def did(self, context):
         res = context['coordinate'] == context['cavebot']['waypoints']['state']['checkInCoordinate']

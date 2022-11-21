@@ -20,12 +20,15 @@ class OpenBackpackTask:
     def do(self, context):
         openBackpack(context['screenshot'], self.value)
         return context
-
-    def shouldRestart(self, _):
-        return False
+    
+    def ping(self, context):
+        return context
 
     def did(self, context):
         return isBackpackOpen(context['screenshot'], self.value)
+    
+    def shouldRestart(self, _):
+        return False
 
     def onIgnored(self, context):
         return context

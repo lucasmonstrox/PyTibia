@@ -44,7 +44,6 @@ def main():
     hudSize = (960, 704)
     resolution = 1080
     battleListCreatures = battleList.core.getCreatures(screenshot)
-    print(battleListCreatures)
     # hudCoordinate = hud.core.getCoordinate(screenshot, hudSize)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate, hudSize)
     # coordinate = radar.core.getCoordinate(screenshot)

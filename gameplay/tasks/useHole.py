@@ -23,6 +23,9 @@ class UseHoleTask:
             context['coordinate'], self.value['coordinate'])
         hud.slot.rightClickSlot(slot, context['hud']['coordinate'])
         return context
+    
+    def ping(self, context):
+        return context
 
     def did(self, _):
         # TODO: check if char is in upper coordinate

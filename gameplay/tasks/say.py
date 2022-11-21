@@ -20,6 +20,9 @@ class SayTask:
     def do(self, context):
         chat.core.sendMessage(context['screenshot'], self.value)
         return context
+    
+    def ping(self, context):
+        return context
 
     def did(self, _):
         # TODO: check if phrase is spelled in the chat

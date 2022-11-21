@@ -27,6 +27,9 @@ class CloseNpcTradeBoxTask:
         closeIconY = y + 7
         pyautogui.click(closeIconX, closeIconY)
         return context
+    
+    def ping(self, context):
+        return context
 
     def did(self, _):
         return True

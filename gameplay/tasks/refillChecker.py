@@ -31,6 +31,9 @@ class RefillCheckerTask:
 
     def do(self, context):
         return context
+    
+    def ping(self, context):
+        return context
 
     def did(self, _):
         return True

@@ -10,7 +10,7 @@ class AttackClosestCreatureTask:
         self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
-        self.delayOfTimeout = 2
+        self.delayOfTimeout = 1
         self.name = 'attackClosestCreature'
         self.status = 'notStarted'
         self.value = closestCreature
@@ -22,6 +22,9 @@ class AttackClosestCreatureTask:
         closestCreature = self.value
         x, y = closestCreature['windowCoordinate']
         pyautogui.rightClick(x, y)
+        return context
+
+    def ping(self, context):
         return context
 
     def did(self, context):

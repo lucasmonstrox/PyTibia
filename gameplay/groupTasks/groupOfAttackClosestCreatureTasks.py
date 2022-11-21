@@ -27,7 +27,7 @@ class GroupOfAttackClosestCreatureTasks(GroupTaskExecutor):
         ], dtype=taskType)
         tasks = np.append(tasks, [tasksToAppend])
         walkpoints = generateFloorWalkpoints(
-            context['coordinate'], closestCreature['coordinate'])
+            context['coordinate'], closestCreature['coordinate'], nonWalkableCoordinates=context['cavebot']['holesOrStairs'])
         hasWalkpoints = len(walkpoints) > 0
         if hasWalkpoints:
             walkpoints.pop()

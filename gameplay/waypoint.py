@@ -1,3 +1,4 @@
+import numpy as np
 import tcod
 import radar.config
 import radar.core
@@ -10,18 +11,27 @@ import utils.matrix
 import utils.mouse
 
 
-def generateFloorWalkpoints(coordinate, goalCoordinate):
+def generateFloorWalkpoints(coordinate, goalCoordinate, nonWalkableCoordinates=None):
     pixelCoordinate = utils.core.getPixelFromCoordinate(coordinate)
     xFromTheStartOfRadar = pixelCoordinate[0] - 53
     xFromTheEndOfRadar = pixelCoordinate[0] + 53
     yFromTheStartOfRadar = pixelCoordinate[1] - 54
     yFromTheEndOfRadar = pixelCoordinate[1] + 55
     xOfCoordinate, yOfCoordinate, level = coordinate
-    walkableFloorsSqms = radar.config.walkableFloorsSqms[level].copy()
-    walkableFloorsSqms = walkableFloorsSqms[
+    walkableFloorSqms = radar.config.walkableFloorsSqms[level].copy()
+    hasNonWalkableCoordinates = nonWalkableCoordinates is not None
+    if hasNonWalkableCoordinates:
+        floorLevel = coordinate[2]
+        nonWalkableCoordinatesIndexes = nonWalkableCoordinates['z'] == floorLevel
+        nonWalkableCoordinatesByCurrentFloorLevel = nonWalkableCoordinates[nonWalkableCoordinatesIndexes]
+        for coordinate in nonWalkableCoordinatesByCurrentFloorLevel:
+            nonWalkableCoordinateInPixel = utils.core.getPixelFromCoordinate(coordinate)
+            x = nonWalkableCoordinateInPixel[1]
+            y = nonWalkableCoordinateInPixel[0]
+            walkableFloorSqms[x, y] = 0
+    walkableFloorSqms = walkableFloorSqms[
         yFromTheStartOfRadar:yFromTheEndOfRadar, xFromTheStartOfRadar:xFromTheEndOfRadar]
-    # TODO: colocar os players, monstros e buracos/escadas
-    pf = tcod.path.AStar(walkableFloorsSqms, 0)
+    pf = tcod.path.AStar(walkableFloorSqms, 0)
     xOfGoalCoordinate, yOfGoalCoordinate, _ = goalCoordinate
     x = xOfGoalCoordinate - xOfCoordinate + 53
     y = yOfGoalCoordinate - yOfCoordinate + 54

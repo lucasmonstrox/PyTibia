@@ -1,4 +1,5 @@
 import numpy as np
+from ..types import coordinateHashType
 import radar.core
 import radar.config
 import utils.core
@@ -7,9 +8,7 @@ import utils.image
 
 def main():
     floorLevel = 7
-    coordinateType = np.dtype(
-        [('hash', str, 16), ('coordinate', np.uint16, (3,))])
-    coordinatesAsArray = np.array([], dtype=coordinateType)
+    coordinatesAsArray = np.array([], dtype=coordinateHashType)
     startingXCoordinate = 31744
     startingYCoordinate = 30976
     pixels = utils.image.loadAsGrey('radar/images/floor-7.png')
@@ -57,7 +56,7 @@ def main():
             coordinateScreenshot[57, 54] = crossPixelColor
             coordinateHash = utils.core.hashitHex(coordinateScreenshot)
             coordinatesToAppend = np.array(
-                [(coordinateHash, coordinate)], dtype=coordinateType)
+                [(coordinateHash, coordinate)], dtype=coordinateHashType)
             coordinatesAsArray = np.append(
                 coordinatesAsArray, coordinatesToAppend)
     np.save('radar/npys/radarImagesCoordinates.npy', coordinatesAsArray)

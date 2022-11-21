@@ -71,6 +71,9 @@ poetry run python -m pytest
 
 # ✅ TODO
 
+- Add thread to eat food
+- Add training way
+- Add fishing way
 - Translate README for Portuguese/Spanish language
 - Add api docs
 - Add mypy

@@ -1,9 +1,11 @@
+import eventlet
 import multiprocessing
 import numpy as np
 import pyautogui
 from rx import interval, of, operators, pipe, timer
 from rx.scheduler import ThreadPoolScheduler
 from rx.subject import Subject
+import socketio
 from time import sleep
 import actionBar.core
 import battleList.core
@@ -14,24 +16,31 @@ import gameplay.decision
 import gameplay.resolvers
 import gameplay.typings
 import gameplay.waypoint
-import hud.creatures
 import hud.core
+import hud.creatures
 import hud.slot
-import radar.core
 import player.core
+import radar.core
+from radar.types import coordinateType
 from radar.types import waypointType
 from gameplay.taskExecutor import TaskExecutor
 from gameplay.groupTasks.groupOfLootCorpseTasks import GroupOfLootCorpseTasks
 import utils.array
 import utils.core
 import utils.image
-import eventlet
-import socketio
 import skills.core
 
 
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
+
+
+# Eu posso estar indo pra outra coordenada e cair num buraco que não pertence aos waypoints da hunt
+# Eu posso estar indo para outra coordenada e cair num buraco que pertence aos waypoints da hunt
+# Em ambos eu preciso recuperar e:
+# - Se eu desci uma escadaria sem querer, gerar task para subir a escadaria usando "WASD"
+# - Se eu desci uma escadote sem querer, gerar task para subir o escadote dando "USE"
+# - Se eu cai num buraco sem querer, gerar task para subir o buraco usando a shovel
 
 
 gameContext = {
@@ -43,6 +52,15 @@ gameContext = {
     'battleListCreatures': np.array([], dtype=battleList.typing.creatureType),
     'beingAttackedCreature': None,
     'cavebot': {
+        'holesOrStairs': np.array([
+            (33306, 32284, 5),
+            (33306, 32284, 6),
+            (33309, 32284, 6),
+            (33312, 32281, 7),
+            (33309, 32284, 7),
+            (33312, 32281, 8),
+            (33300, 32290, 8),
+        ], dtype=coordinateType),
         'running': True,
         'waypoints': {
             'currentIndex': None,
@@ -56,26 +74,35 @@ gameContext = {
                 ('walk', (33251, 32364, 7), 0, {}),
                 ('walk', (33277, 32329, 7), 0, {}),
                 ('walk', (33301, 32291, 7), 0, {}),
-                ('walk', (33302, 32289, 7), 0, {}),  #chegou na cave
-                ('walk', (33301, 32278, 7), 0, {}),
-                ('walk', (33312, 32278, 7), 0, {}),
-                ('walk', (33318, 32283, 7), 0, {}),
-                ('walk', (33309, 32285, 7), 0, {}),
-                ('moveUpNorth', (33309, 32285, 7), 0, {}),
-                # andar +1
-                ('walk', (33310, 32292, 6), 0, {}),
-                ('walk', (33302, 32277, 6), 0, {}),
-                ('walk', (33309, 32283, 6), 0, {}),
-                #desce andar de cima
-                ('moveDownSouth', (33309, 32283, 6), 0, {}),
-                ('walk', (33305, 32289, 7), 0, {}),
-                ('refillChecker', (33306, 32289, 7), 0, {
+                ('walk', (33302, 32289, 7), 0, {}), # chegou na cave
+                ('walk', (33301, 32278, 7), 0, {}), # 10
+                ('walk', (33312, 32278, 7), 0, {}), # 11
+                ('walk', (33318, 32283, 7), 0, {}), # 12
+                ('walk', (33312, 32280, 7), 0, {}), # 13
+                ('moveDownSouth', (33312, 32280, 7), 0, {}), # 14
+                ('walk', (33300, 32289, 8), 0, {}), # 15
+                ('moveDownSouth', (33300, 32289, 8), 0, {}), # 16
+                ('walk', (33302, 32281, 9), 0, {}), # 17
+                ('walk', (33312, 32280, 9), 0, {}), # 18
+                ('walk', (33312, 32289, 9), 0, {}), # 19
+                ('walk', (33300, 32291, 9), 0, {}), # 20
+                ('moveUpNorth', (33300, 32291, 9), 0, {}), # 21
+                ('walk', (33312, 32282, 8), 0, {}), # 22
+                ('moveUpNorth', (33312, 32282, 8), 0, {}), # 23
+                ('walk', (33309, 32285, 7), 0, {}), # 24
+                ('moveUpNorth', (33309, 32285, 7), 0, {}), # 25
+                ('walk', (33310, 32278, 6), 0, {}), # 26
+		        ('walk', (33309, 32283, 6), 0, {}), # 27
+                ('moveDownSouth', (33309, 32283, 6), 0, {}), # 28
+                ('walk', (33305, 32289, 7), 0, {}), # 29
+                ('refillChecker', (33306, 32289, 7), 0, { # 30
                     'minimumOfManaPotions': 1,
                     'minimumOfHealthPotions': 1,
                     'minimumOfCapacity': 200,
                     'successIndex': 10,
                 }),
-                ('walk', (33264,32321,7), 0, {}),
+                ('walk', (33264,32321,7), 0, {}), # 31
+                
                 
                 # lava ank
                 # ('walk', (33127, 32830, 7), 0, {}),
@@ -133,9 +160,6 @@ gameContext = {
                 # ('walk', (33229, 32266, 10), 0, {}),
                 # ('walk', (33216, 32287, 10), 0, {}),
                 # ('walk', (33255, 32283, 10), 0, {}),
-                
-                
-                
             ], dtype=waypointType),
             'state': None
         },
@@ -149,6 +173,7 @@ gameContext = {
         'cureSpell': 'exura med ico',
     },
     'hotkeys': {
+        'eatFood': 'f7',
         'healthPotion': 'f1',
         'manaPotion': 'f2',
         'cure': 'f3',
@@ -371,15 +396,9 @@ def main():
             return False
         if context['currentGroupTask'] is None:
             return True
-        endlessTasks = ['groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfUseRope', 'groupOfUseShovel']
-        should = context['currentGroupTask'].name in endlessTasks
-        should = not should
+        endlessTasks = ['groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfSingleWalk', 'groupOfUseRope', 'groupOfUseShovel']
+        should = not (context['currentGroupTask'].name in endlessTasks)
         return should
-    
-    # def isTypeOfChangeableWaypointTask(taskName):
-    #     changeableWaypointTasksType = ['groupOfSingleWalk', 'groupOfWalk']
-    #     isIn = taskName in changeableWaypointTasksType
-    #     return isIn
     
     def handleTasks(context):
         global gameContext
@@ -419,8 +438,6 @@ def main():
         elif copyOfContext['currentGroupTask'] == None:
             copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(
                 copyOfContext, currentWaypoint)
-        print('currentGroupTask', copyOfContext['currentGroupTask'])
-        print('waypointINdex', copyOfContext['cavebot']['waypoints']['currentIndex'])
         gameContext = copyOfContext
         return copyOfContext
 

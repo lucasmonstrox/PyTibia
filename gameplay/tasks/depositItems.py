@@ -39,12 +39,15 @@ class DepositItemsTask:
         #     taskToAppend = np.array([floorTask], dtype=taskType)
         #     context['tasks'] = np.append(context['tasks'], [taskToAppend])
         return context
+    
+    def ping(self, context):
+        return context
+    
+    def did(self, _):
+        return True
 
     def shouldRestart(self, _):
         return False
-
-    def did(self, _):
-        return True
 
     def onIgnored(self, context):
         return context

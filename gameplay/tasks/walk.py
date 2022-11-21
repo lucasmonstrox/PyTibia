@@ -3,8 +3,7 @@ import pyautogui
 from time import time
 from radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from skills.core import getSpeed
-import utils.coordinate
-import utils.array
+from utils.coordinate import getDirectionBetweenCoordinates
 
 
 class WalkTask:
@@ -31,8 +30,7 @@ class WalkTask:
 
     def do(self, context):
         walkpoint = self.value
-        direction = utils.coordinate.getDirectionBetweenCoordinates(
-            context['coordinate'], walkpoint)
+        direction = getDirectionBetweenCoordinates(context['coordinate'], walkpoint)
         hasNoNewDirection = direction is None
         if hasNoNewDirection:
             return context
@@ -41,8 +39,7 @@ class WalkTask:
             context['currentGroupTask'].tasks) > 1 and context['currentGroupTask'].tasks[1]['type'] == 'walk'
         if hasMoreWalkpointTasks:
             _, nextTask = context['currentGroupTask'].tasks[1]
-            futureDirection = utils.coordinate.getDirectionBetweenCoordinates(
-                walkpoint, nextTask.value)
+            futureDirection = getDirectionBetweenCoordinates(walkpoint, nextTask.value)
         if direction != futureDirection:
             if context['lastPressedKey'] is not None:
                 pyautogui.keyUp(context['lastPressedKey'])
@@ -64,6 +61,9 @@ class WalkTask:
                 if context['lastPressedKey'] is not None:
                     pyautogui.keyUp(context['lastPressedKey'])
                     context['lastPressedKey'] = None
+        return context
+
+    def ping(self, context):
         return context
 
     def did(self, context):

@@ -23,7 +23,7 @@ class GroupOfLootCorpseTasks(GroupTaskExecutor):
     def generateTasks(self, context, corpose):
         tasks = np.array([], dtype=taskType)
         walkpoints = generateFloorWalkpoints(
-            context['coordinate'], corpose['coordinate'])
+            context['coordinate'], corpose['coordinate'], nonWalkableCoordinates=context['cavebot']['holesOrStairs'])
         hasWalkpoints = len(walkpoints) > 0
         if hasWalkpoints:
             walkpoints.pop()

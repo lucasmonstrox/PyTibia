@@ -20,6 +20,9 @@ class SetChatOffTask:
     def do(self, context):
         enableChatOff(context['screenshot'])
         return context
+    
+    def ping(self, context):
+        return context
 
     def did(self, _):
         return True

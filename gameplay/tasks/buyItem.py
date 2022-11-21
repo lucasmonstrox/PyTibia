@@ -20,6 +20,9 @@ class BuyItemTask:
     def do(self, context):
         core.buyItem(context['screenshot'], self.value)
         return context
+    
+    def ping(self, context):
+        return context
 
     def shouldRestart(self, _):
         return False

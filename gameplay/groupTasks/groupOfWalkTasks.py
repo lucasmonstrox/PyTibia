@@ -21,7 +21,7 @@ class GroupOfWalkTasks(GroupTaskExecutor):
 
     def generateTasks(self, context, waypointCoordinate):
         walkpoints = generateFloorWalkpoints(
-            context['coordinate'], waypointCoordinate)
+            context['coordinate'], waypointCoordinate, nonWalkableCoordinates=context['cavebot']['holesOrStairs'])
         tasks = np.array([], dtype=taskType)
         for walkpoint in walkpoints:
             walkpointTask = makeWalkTask(context, walkpoint)

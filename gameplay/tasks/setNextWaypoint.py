@@ -1,4 +1,3 @@
-import numpy as np
 from time import time
 from utils.array import getNextArrayIndex
 
@@ -23,6 +22,9 @@ class SetNextWaypointTask:
             context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])
         context['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex
         context['cavebot']['waypoints']['state'] = None
+        return context
+    
+    def ping(self, context):
         return context
 
     def did(self, _):

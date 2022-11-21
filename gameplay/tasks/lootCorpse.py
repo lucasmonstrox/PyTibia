@@ -27,6 +27,9 @@ class LootCorpseTask:
         hud.slot.rightClickSlot(slot, context['hud']['coordinate'])
         pyautogui.keyUp('shift')
         return context
+    
+    def ping(self, context):
+        return context
 
     def did(self, _):
         # TODO: verificar se apareceu a msg de bicho lootead

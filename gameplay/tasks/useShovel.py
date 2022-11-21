@@ -28,6 +28,9 @@ class UseShovelTask:
         pyautogui.press(context['hotkeys']['shovel'])
         hud.slot.clickSlot(slot, context['hud']['coordinate'])
         return context
+    
+    def ping(self, context):
+        return context
 
     def did(self, context):
         holeOpenImg = hud.core.images[context['resolution']]['holeOpen']

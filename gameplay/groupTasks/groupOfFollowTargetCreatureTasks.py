@@ -22,7 +22,7 @@ class GroupOfFollowTargetCreatureTasks(GroupTaskExecutor):
     def generateTasks(self, context, targetCreature):
         tasks = np.array([], dtype=taskType)
         walkpoints = generateFloorWalkpoints(
-            context['coordinate'], targetCreature['coordinate'])
+            context['coordinate'], targetCreature['coordinate'], nonWalkableCoordinates=context['cavebot']['holesOrStairs'])
         hasWalkpoints = len(walkpoints) > 0
         if hasWalkpoints:
             walkpoints.pop()

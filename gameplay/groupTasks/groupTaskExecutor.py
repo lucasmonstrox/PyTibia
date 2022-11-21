@@ -45,6 +45,8 @@ class GroupTaskExecutor:
                         task.finishedAt = time()
                         task.status = 'almostComplete'
                         self.tasks[freeTaskIndex] = (taskName, task)
+                    else:
+                        context = task.ping(context)
             if task.status == 'almostComplete':
                 passedTimeSinceTaskCompleted = time() - task.finishedAt
                 didPassedEnoughDelayAfterTaskComplete = passedTimeSinceTaskCompleted > task.delayAfterComplete

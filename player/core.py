@@ -206,14 +206,20 @@ def isEquipmentEquipped(screenshot, equipment):
 
 
 def getSpecialConditionsContainer(screenshot):
-    (left, top, _, _) = getStopPos(screenshot)
+    stopPos = getStopPos(screenshot)
+    cannotGetStopPos = stopPos is None
+    if cannotGetStopPos:
+        return None
+    (left, top, _, _) = stopPos
     container = screenshot[top:top + 12, left - 118:left - 118 + 107]
     return container
 
 
 def hasSpecialCondition(screenshot, condition):
-    container = getSpecialConditionsContainer(screenshot)
-
+    specialConditionsContainer = getSpecialConditionsContainer(screenshot)
+    cannotGetSpecialConditionsContainer = specialConditionsContainer is None
+    if cannotGetSpecialConditionsContainer:
+        return None
     condList = {
         'bleeding': bleedingImg,
         'burning': burningImg,
@@ -229,9 +235,8 @@ def hasSpecialCondition(screenshot, condition):
         'slowed': slowedImg,
         'logoutBlock': logoutBlockImg
     }
-
-    compareImg = condList.get(condition, None)
-    pos = utils.core.locate(container, compareImg)
+    conditionImg = condList.get(condition, None)
+    pos = utils.core.locate(specialConditionsContainer, conditionImg)
     cond = pos is not None
     return cond
 
