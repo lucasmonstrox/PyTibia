@@ -71,6 +71,7 @@ poetry run python -m pytest
 
 # ✅ TODO
 
+- Add spells combos
 - Add thread to eat food
 - Add training way
 - Add fishing way
