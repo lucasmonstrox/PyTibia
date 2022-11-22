@@ -49,6 +49,8 @@ Install packages before continue
 
 ```bash
 poetry install
+poetry run task add-torch
+poetry run task add-easyocr
 ```
 
 # ⌨ Development
