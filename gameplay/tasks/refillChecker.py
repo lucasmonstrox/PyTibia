@@ -1,3 +1,4 @@
+import numpy as np
 from time import time
 from actionBar.core import getSlotCount
 from skills.core import getCapacity
@@ -42,7 +43,12 @@ class RefillCheckerTask:
         return False
 
     def onIgnored(self, context):
-        context['cavebot']['waypoints']['currentIndex'] = self.value['options']['successIndex']
+        labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.value['options']['waypointLabelToRedirect'])[0]
+        if len(labelIndexes) == 0:
+            # TODO: raise error
+            return context
+        indexToRedirect = labelIndexes[0]
+        context['cavebot']['waypoints']['currentIndex'] = indexToRedirect
         context['cavebot']['waypoints']['state'] = None
         return context
 

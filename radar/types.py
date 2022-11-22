@@ -9,8 +9,8 @@ coordinateType = np.dtype([
 waypointDistanceType = np.dtype(
     [('index', np.uint16), ('distance', np.float32)])
 waypointType = np.dtype([
+    ('label', np.str_, 64),
     ('type', np.str_, 64),
     ('coordinate', np.uint32, (3,)),
-    ('tolerance', np.uint8),
     ('options', object),
 ])

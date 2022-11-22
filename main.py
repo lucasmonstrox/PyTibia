@@ -63,103 +63,45 @@ gameContext = {
         ], dtype=coordinateType),
         'running': True,
         'waypoints': {
-            'currentIndex': None,
+            'currentIndex': 29,
             'points': np.array([
-                ('walk', (33214, 32459, 8), 0, {}),
-                ('walk', (33214, 32456, 8), 0, {}),
-                ('moveUpNorth', (33214, 32456, 8), 0, {}),
-                ('walk', (33214, 32450, 7), 0, {}),  #indo para cave
-                ('walk', (33220, 32428, 7), 0, {}),
-                ('walk', (33216, 32392, 7), 0, {}),
-                ('walk', (33251, 32364, 7), 0, {}),
-                ('walk', (33277, 32329, 7), 0, {}),
-                ('walk', (33301, 32291, 7), 0, {}),
-                ('walk', (33302, 32289, 7), 0, {}), # chegou na cave
-                ('walk', (33301, 32278, 7), 0, {}), # 10
-                ('walk', (33312, 32278, 7), 0, {}), # 11
-                ('walk', (33318, 32283, 7), 0, {}), # 12
-                ('walk', (33312, 32280, 7), 0, {}), # 13
-                ('moveDownSouth', (33312, 32280, 7), 0, {}), # 14
-                ('walk', (33300, 32289, 8), 0, {}), # 15
-                ('moveDownSouth', (33300, 32289, 8), 0, {}), # 16
-                ('walk', (33302, 32281, 9), 0, {}), # 17
-                ('walk', (33312, 32280, 9), 0, {}), # 18
-                ('walk', (33312, 32289, 9), 0, {}), # 19
-                ('walk', (33300, 32291, 9), 0, {}), # 20
-                ('moveUpNorth', (33300, 32291, 9), 0, {}), # 21
-                ('walk', (33312, 32282, 8), 0, {}), # 22
-                ('moveUpNorth', (33312, 32282, 8), 0, {}), # 23
-                ('walk', (33309, 32285, 7), 0, {}), # 24
-                ('moveUpNorth', (33309, 32285, 7), 0, {}), # 25
-                ('walk', (33310, 32278, 6), 0, {}), # 26
-		        ('walk', (33309, 32283, 6), 0, {}), # 27
-                ('moveDownSouth', (33309, 32283, 6), 0, {}), # 28
-                ('walk', (33305, 32289, 7), 0, {}), # 29
-                ('refillChecker', (33306, 32289, 7), 0, { # 30
+                ('', 'walk', (33214, 32459, 8), {}),
+                ('', 'walk', (33214, 32456, 8), {}),
+                ('', 'moveUpNorth', (33214, 32456, 8), {}),
+                ('', 'walk', (33214, 32450, 7), {}),  #indo para cave
+                ('', 'walk', (33220, 32428, 7), {}),
+                ('', 'walk', (33216, 32392, 7), {}),
+                ('', 'walk', (33251, 32364, 7), {}),
+                ('', 'walk', (33277, 32329, 7), {}),
+                ('', 'walk', (33301, 32291, 7), {}),
+                ('', 'walk', (33302, 32289, 7), {}), # chegou na cave
+                ('caveStart', 'walk', (33301, 32278, 7), {}), # 10
+                ('', 'walk', (33312, 32278, 7), {}), # 11
+                ('', 'walk', (33318, 32283, 7), {}), # 12
+                ('', 'walk', (33312, 32280, 7), {}), # 13
+                ('', 'moveDownSouth', (33312, 32280, 7), {}), # 14
+                ('', 'walk', (33300, 32289, 8), {}), # 15
+                ('', 'moveDownSouth', (33300, 32289, 8), {}), # 16
+                ('', 'walk', (33302, 32281, 9), {}), # 17
+                ('', 'walk', (33312, 32280, 9), {}), # 18
+                ('', 'walk', (33312, 32289, 9), {}), # 19
+                ('', 'walk', (33300, 32291, 9), {}), # 20
+                ('', 'moveUpNorth', (33300, 32291, 9), {}), # 21
+                ('', 'walk', (33312, 32282, 8), {}), # 22
+                ('', 'moveUpNorth', (33312, 32282, 8), {}), # 23
+                ('', 'walk', (33309, 32285, 7), {}), # 24
+                ('', 'moveUpNorth', (33309, 32285, 7), {}), # 25
+                ('', 'walk', (33310, 32278, 6), {}), # 26
+		        ('', 'walk', (33309, 32283, 6), {}), # 27
+                ('', 'moveDownSouth', (33309, 32283, 6), {}), # 28
+                ('', 'walk', (33305, 32289, 7), {}), # 29
+                ('', 'refillChecker', (33306, 32289, 7), { # 30
                     'minimumOfManaPotions': 1,
                     'minimumOfHealthPotions': 1,
                     'minimumOfCapacity': 200,
-                    'successIndex': 10,
+                    'waypointLabelToRedirect': 'caveStart',
                 }),
-                ('walk', (33264,32321,7), 0, {}), # 31
-                
-                
-                # lava ank
-                # ('walk', (33127, 32830, 7), 0, {}),
-                # ('walk', (33126, 32834, 7), 0, {}),
-                # ('depositItems', (33126, 32841, 7), 0, {}),
-                # ('walk', (33125, 32833, 7), 0, {}),
-                # ('walk', (33114, 32830, 7), 0, {}),
-                # ('walk', (33098, 32830, 7), 0, {}),
-                # ('walk', (33098, 32793, 7), 0, {}),
-                # ('walk', (33088, 32788, 7), 0, {}),
-                # ('moveUpNorth', (33088, 32788, 7), 0, {}),
-                # ('walk', (33088, 32785, 6), 0, {}),
-                # ('moveDownNorth', (33088, 32785, 6), 0, {}),
-                # ('walk', (33073, 32760, 7), 0, {}),
-                # ('useShovel', (33072, 32760, 7), 0, {}),
-                # ('walk', (33095, 32761, 8), 0, {}),
-                # ('walk', (33084, 32770, 8), 0, {}),
-                # ('walk', (33062, 32762, 8), 0, {}),
-                # ('walk', (33072, 32760, 8), 0, {}),
-                # ('walk', (33076, 32757, 8), 0, {}),
-                # ('walk', (33072, 32759, 8), 0, {}),
-                # ('refillChecker', (33072, 32760, 8), 0, {
-                #     'minimumOfManaPotions': 1,
-                #     'minimumOfHealthPotions': 1,
-                #     'minimumOfCapacity': 200,
-                #     'successIndex': 10,
-                # }),
-                # ('walk', (33072, 32760, 8), 0, {}),
-                # ('useRope', (33072, 32760, 8), 0, {}),
-                # ('walk', (33088, 32783, 7), 0, {}),
-                # ('moveUpSouth', (33088, 32783, 7), 0, {}),
-                # ('walk', (33088, 32786, 6), 0, {}),
-                # ('moveDownSouth', (33088, 32786, 6), 0, {}),
-                # ('walk', (33098, 32793, 7), 0, {}),
-                # ('walk', (33099, 32830, 7), 0, {}),
-                # ('walk', (33125, 32833, 7), 0, {}),
-                # ('walk', (33126, 32834, 7), 0, {}),
-                # ('depositItems', (33126, 32834, 7), 0, {}),
-                # ('refillChecker', (33127, 32834, 7), 0, {}),
-                # ('walk', (33128, 32827, 7), 0, {}),
-                # ('moveUpNorth', (33128, 32827, 7), 0, {}),
-                # ('walk', (33130, 32817, 6), 0, {}),
-                # ('moveUpNorth', (33130, 32817, 6), 0, {}),
-                # ('walk', (33128, 32811, 5), 0, {}),
-                # ('refill', (33128, 32810, 5), 0, {}),
-                # ('walk', (33130, 32815, 5), 0, {}),
-                # ('moveDownSouth', (33130, 32815, 5), 0, {}),
-                # ('walk', (33124, 32814, 6), 0, {}),
-                # ('moveDownWest', (33124, 32814, 6), 0, {}),
-                
-                
-                # ('walk', (33257, 32234, 10), 0, {}),
-                # ('walk', (33225, 32206, 10), 0, {}),
-                # ('walk', (33229, 32246, 10), 0, {}),
-                # ('walk', (33229, 32266, 10), 0, {}),
-                # ('walk', (33216, 32287, 10), 0, {}),
-                # ('walk', (33255, 32283, 10), 0, {}),
+                ('', 'walk', (33264,32321,7), {}), # 31
             ], dtype=waypointType),
             'state': None
         },
@@ -201,7 +143,7 @@ gameContext = {
             'quantity': 30,
         },
     },
-    'resolution': 1080,
+    'resolution': 720,
     'targetCreature': None,
     'screenshot': None,
     'way': None,
@@ -379,7 +321,7 @@ def main():
 
     lootObserver = hudCreaturesObserver.pipe(operators.map(handleLoot))
 
-    def handleDecision(context):
+    def mapDecision(context):
         global gameContext
         copyOfContext = context.copy()
         copyOfContext['way'] = gameplay.decision.getWay(
@@ -387,8 +329,25 @@ def main():
         gameContext = copyOfContext
         return copyOfContext
 
+    def mapCurrentWaypointIndex(context):
+        if context['cavebot']['waypoints']['currentIndex'] == None:
+            context['cavebot']['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
+                context['coordinate'], context['cavebot']['waypoints']['points'])
+        return context
+    
+    def mapWaypointState(context):
+        currentWaypointIndex = context['cavebot']['waypoints']['currentIndex']
+        currentWaypoint = context['cavebot']['waypoints']['points'][currentWaypointIndex]
+        waypointsStateIsEmpty = context['cavebot']['waypoints']['state'] == None
+        if waypointsStateIsEmpty:
+            context['cavebot']['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
+                context['coordinate'], currentWaypoint)
+        return context
+
     decisionObserver = lootObserver.pipe(
-        operators.map(handleDecision)
+        operators.map(mapDecision),
+        operators.map(mapCurrentWaypointIndex),
+        operators.map(mapWaypointState),
     )
     
     def shouldAskForCavebotTasks(context):
@@ -403,41 +362,44 @@ def main():
     def handleTasks(context):
         global gameContext
         copyOfContext = context.copy()
-        if copyOfContext['cavebot']['waypoints']['currentIndex'] == None:
-            copyOfContext['cavebot']['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
-                copyOfContext['coordinate'], copyOfContext['cavebot']['waypoints']['points'])
-        currentWaypointIndex = copyOfContext['cavebot']['waypoints']['currentIndex']
-        currentWaypoint = copyOfContext['cavebot']['waypoints']['points'][currentWaypointIndex]
-        waypointsStateIsEmpty = copyOfContext['cavebot']['waypoints']['state'] == None
-        if waypointsStateIsEmpty:
-            copyOfContext['cavebot']['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
-                copyOfContext['coordinate'], currentWaypoint)
         if shouldAskForCavebotTasks(context):
             isTryingToAttackClosestCreature = copyOfContext[
                 'currentGroupTask'] is not None and (copyOfContext['currentGroupTask'].name == 'groupOfAttackClosestCreature' or copyOfContext['currentGroupTask'].name == 'groupOfFollowTargetCreature')
             if isTryingToAttackClosestCreature:
                 print('to tentando atacar')
             else:
+                print('vou pegar alguma task de cavebot')
                 targetCreature, currentGroupTask = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
                 copyOfContext['targetCreature'] = targetCreature
                 if copyOfContext['currentGroupTask'] is not None:
+                    print('tem task de cavebot rolando')
                     if targetCreature is not None:
+                        print('a target creature é', targetCreature)
                         if copyOfContext['lastPressedKey'] is not None:
+                            print('tirei o keyup 2')
                             pyautogui.keyUp(copyOfContext['lastPressedKey'])
                             copyOfContext['lastPressedKey'] = None
                         copyOfContext['currentGroupTask'] = currentGroupTask
                 else:
+                    print('nao tem task de cavebot rolando')
                     if currentGroupTask is not None:
+                        print('a task nova é', currentGroupTask)
                         if copyOfContext['lastPressedKey'] is not None:
+                            print('tirei o keyup 2')
                             pyautogui.keyUp(copyOfContext['lastPressedKey'])
                             copyOfContext['lastPressedKey'] = None
                         copyOfContext['currentGroupTask'] = currentGroupTask
+                print('cavebot dps de tudo a task é', copyOfContext['currentGroupTask'])
         elif copyOfContext['way'] == 'lootCorpses':
             if copyOfContext['currentGroupTask'] is None:
-                copyOfContext['currentGroupTask'] = GroupOfLootCorpseTasks(copyOfContext, copyOfContext['corpsesToLoot'][0])
-        elif copyOfContext['currentGroupTask'] == None:
-            copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(
-                copyOfContext, currentWaypoint)
+                # TODO: get closest dead corpse
+                firstDeadCorpse = copyOfContext['corpsesToLoot'][0]
+                copyOfContext['currentGroupTask'] = GroupOfLootCorpseTasks(copyOfContext, firstDeadCorpse)
+        elif copyOfContext['way'] == 'waypoint':
+            if copyOfContext['currentGroupTask'] == None:
+                currentWaypointIndex = copyOfContext['cavebot']['waypoints']['currentIndex']
+                currentWaypoint = copyOfContext['cavebot']['waypoints']['points'][currentWaypointIndex]
+                copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(copyOfContext, currentWaypoint)
         gameContext = copyOfContext
         return copyOfContext
 
