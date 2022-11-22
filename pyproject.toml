@@ -10,7 +10,7 @@ ahocorapy = "^1.6.1"
 dxcam = {git = "https://github.com/ra1nty/DXcam"}
 eventlet = "^0.33.1"
 nptyping = "^2.3.1"
-numpy = "1.21.4"
+numpy = "1.22.0"
 opencv-python = "^4.6.0.66"
 pillow = "^9.1.1"
 pyautogui = "^0.9.53"
