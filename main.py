@@ -472,9 +472,12 @@ def main():
             'utura gran': 165,
         }
         hp = player.core.getHealthPercentage(context['screenshot'])
-        mana = player.core.getManaPercentage(context['screenshot'])
         couldntGetHp = hp is None
         if couldntGetHp:
+            return
+        mana = player.core.getManaPercentage(context['screenshot'])
+        couldntGetMana = mana is None
+        if couldntGetMana:
             return
         shouldHealUsingPotion = context['healing']['minimumToBeHealedUsingPotion'] >= hp
         if shouldHealUsingPotion:
@@ -497,6 +500,9 @@ def main():
     def spellObservable(context):
         global hudCreatures
         mana = skills.core.getMana(context['screenshot'])
+        couldntGetMana = mana is None
+        if couldntGetMana:
+            return
         canHaste = not player.core.hasSpecialCondition(context['screenshot'], 'haste')
         if mana > 60 and canHaste:
             pyautogui.press('f6')
