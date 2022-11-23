@@ -35,14 +35,6 @@ pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
 
 
-# Eu posso estar indo pra outra coordenada e cair num buraco que não pertence aos waypoints da hunt
-# Eu posso estar indo para outra coordenada e cair num buraco que pertence aos waypoints da hunt
-# Em ambos eu preciso recuperar e:
-# - Se eu desci uma escadaria sem querer, gerar task para subir a escadaria usando "WASD"
-# - Se eu desci uma escadote sem querer, gerar task para subir o escadote dando "USE"
-# - Se eu cai num buraco sem querer, gerar task para subir o buraco usando a shovel
-
-
 gameContext = {
     'backpacks': {
         'main': 'brocade backpack',
@@ -143,7 +135,7 @@ gameContext = {
             'quantity': 30,
         },
     },
-    'resolution': 1080,
+    'resolution': 720,
     'targetCreature': None,
     'screenshot': None,
     'way': None,
@@ -366,22 +358,27 @@ def main():
             isTryingToAttackClosestCreature = copyOfContext[
                 'currentGroupTask'] is not None and (copyOfContext['currentGroupTask'].name == 'groupOfAttackClosestCreature' or copyOfContext['currentGroupTask'].name == 'groupOfFollowTargetCreature')
             if isTryingToAttackClosestCreature:
-                print('to tentando atacar')
+                f = 1
             else:
-                targetCreature, currentGroupTask = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
+                targetCreature, newCurrentGroupTask = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
                 copyOfContext['targetCreature'] = targetCreature
-                if copyOfContext['currentGroupTask'] is not None:
-                    if targetCreature is not None:
-                        if copyOfContext['lastPressedKey'] is not None:
+                hasCurrentGroupTask = copyOfContext['currentGroupTask'] is not None
+                if hasCurrentGroupTask:
+                    hasTargetCreature = targetCreature is not None
+                    if hasTargetCreature:
+                        hasKeyPressed = copyOfContext['lastPressedKey'] is not None
+                        if hasKeyPressed:
                             pyautogui.keyUp(copyOfContext['lastPressedKey'])
                             copyOfContext['lastPressedKey'] = None
-                        copyOfContext['currentGroupTask'] = currentGroupTask
+                        copyOfContext['currentGroupTask'] = newCurrentGroupTask
                 else:
-                    if currentGroupTask is not None:
-                        if copyOfContext['lastPressedKey'] is not None:
+                    hasNewCurrentGroupTask = newCurrentGroupTask is not None
+                    if hasNewCurrentGroupTask:
+                        hasKeyPressed = copyOfContext['lastPressedKey'] is not None
+                        if hasKeyPressed:
                             pyautogui.keyUp(copyOfContext['lastPressedKey'])
                             copyOfContext['lastPressedKey'] = None
-                        copyOfContext['currentGroupTask'] = currentGroupTask
+                        copyOfContext['currentGroupTask'] = newCurrentGroupTask
         elif copyOfContext['way'] == 'lootCorpses':
             if copyOfContext['currentGroupTask'] is None:
                 # TODO: get closest dead corpse

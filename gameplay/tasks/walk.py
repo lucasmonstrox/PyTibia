@@ -35,11 +35,20 @@ class WalkTask:
         if hasNoNewDirection:
             return context
         futureDirection = None
-        hasMoreWalkpointTasks = len(
-            context['currentGroupTask'].tasks) > 1 and context['currentGroupTask'].tasks[1]['type'] == 'walk'
-        if hasMoreWalkpointTasks:
-            _, nextTask = context['currentGroupTask'].tasks[1]
-            futureDirection = getDirectionBetweenCoordinates(walkpoint, nextTask.value)
+        hasMoreTasks = len(context['currentGroupTask'].tasks) > 1
+        if hasMoreTasks:
+            tasks = context['currentGroupTask'].tasks['type']
+            freeTaskIndex = None
+            for taskIndex, taskWithName in enumerate(context['currentGroupTask'].tasks):
+                _, possibleFreeTask = taskWithName
+                if possibleFreeTask.status != 'completed':
+                    freeTaskIndex = taskIndex
+                    break
+            if freeTaskIndex != None and (freeTaskIndex + 1) < len(context['currentGroupTask'].tasks):
+                hasMoreWalkpointTasks = context['currentGroupTask'].tasks[freeTaskIndex + 1]['type'] == 'walk'
+                if hasMoreWalkpointTasks:
+                    _, nextTask = context['currentGroupTask'].tasks[freeTaskIndex + 1]
+                    futureDirection = getDirectionBetweenCoordinates(walkpoint, nextTask.value)
         if direction != futureDirection:
             if context['lastPressedKey'] is not None:
                 pyautogui.keyUp(context['lastPressedKey'])

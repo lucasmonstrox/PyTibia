@@ -1,10 +1,10 @@
 import numpy as np
 from scipy.spatial import distance
 from time import time
-from gameplay.factories.makeWalkTask import makeWalkTask
-from gameplay.groupTasks.groupTaskExecutor import GroupTaskExecutor
-from gameplay.typings import taskType
-from gameplay.waypoint import generateFloorWalkpoints
+from ..factories.makeWalkTask import makeWalkTask
+from ..groupTasks.groupTaskExecutor import GroupTaskExecutor
+from ..typings import taskType
+from ..waypoint import generateFloorWalkpoints
 
 
 class GroupOfFollowTargetCreatureTasks(GroupTaskExecutor):

@@ -1,31 +1,29 @@
-import battleList.core
+# from scipy.spatial import distance
+from battleList.core import isAttackingSomeCreature
+from hud.creatures import getClosestCreature, getTargetCreature, hasTargetToCreature
 from .groupTasks.groupOfAttackClosestCreatureTasks import GroupOfAttackClosestCreatureTasks
 from .groupTasks.groupOfFollowTargetCreatureTasks import GroupOfFollowTargetCreatureTasks
-import hud.creatures
 
 
 def resolveCavebotTasks(context):
-    isAttackingSomeCreature = battleList.core.isAttackingSomeCreature(
-        context['battleListCreatures'])
-    if isAttackingSomeCreature:
-        targetCreature = hud.creatures.getTargetCreature(
-            context['monsters'])
+    if isAttackingSomeCreature(context['battleListCreatures']):
+        targetCreature = getTargetCreature(context['monsters'])
         hasNoTargetCreature = targetCreature == None
         if hasNoTargetCreature:
             return targetCreature, None
-        hasNoTargetToTargetCreature = hud.creatures.hasTargetToCreature(
+        hasNoTargetToTargetCreature = hasTargetToCreature(
             context['monsters'], targetCreature, context['coordinate']) == False
         if hasNoTargetToTargetCreature:
-            targetCreature = hud.creatures.getClosestCreature(
-                context['monsters'], context['coordinate'])
+            targetCreature = getClosestCreature(context['monsters'], context['coordinate'])
             hasNoTargetCreature = targetCreature == None
             if hasNoTargetCreature:
                 return targetCreature, None
             return targetCreature, GroupOfAttackClosestCreatureTasks(context, targetCreature)
-        # TODO: check if follow target is really necessary to recalculate
+        # targetCreaturesDistance = distance.cdist([context['coordinate']], [targetCreature['coordinate']]).flatten()[0]
+        # targetCreatureIsClose = targetCreaturesDistance < 1.42
+        # TODO: recalculate route if something cross walkpoints
         return targetCreature, GroupOfFollowTargetCreatureTasks(context, targetCreature)
-    targetCreature = hud.creatures.getClosestCreature(
-        context['monsters'], context['coordinate'])
+    targetCreature = getClosestCreature(context['monsters'], context['coordinate'])
     hasNoTargetCreature = targetCreature == None
     if hasNoTargetCreature:
         return targetCreature, None
