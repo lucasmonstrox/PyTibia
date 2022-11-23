@@ -24,25 +24,23 @@ class GroupOfRefillTasks(GroupTaskExecutor):
     def generateTasks(self, context, waypoint):
         # TODO: inherit from context bindings
         itemSlot = {
-            'great health potion': '1',
-            'great mana potion': '2',
-            'great spirit potion': '1',
-            'health potion': '1',
-            'mana potion': '2',
-            'strong health potion': '1',
-            'strong mana potion': '2',
-            'supreme health potion': '1',
-            'ultimate health potion': '1',
-            'ultimate mana potion': '2',
-            'ultimate spirit potion': '1',
+            'great health potion': 1,
+            'great mana potion': 2,
+            'great spirit potion': 1,
+            'health potion': 1,
+            'mana potion': 2,
+            'strong health potion': 1,
+            'strong mana potion': 2,
+            'supreme health potion': 1,
+            'ultimate health potion': 1,
+            'ultimate mana potion': 2,
+            'ultimate spirit potion': 1,
         }
-        # TODO: take slot quantity automatically
         manaPotionSlot = itemSlot[context['refill']['mana']['item']]
         manaPotionsAmount = getSlotCount(
             context['screenshot'], manaPotionSlot)
         amountOfManaPotionsToBuy = context['refill']['mana']['quantity'] - \
             manaPotionsAmount
-        # TODO: take slot quantity automatically
         healthPotionSlot = itemSlot[context['refill']['health']['item']]
         healthPotionsAmount = getSlotCount(
             context['screenshot'], healthPotionSlot)

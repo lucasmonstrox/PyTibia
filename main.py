@@ -143,7 +143,7 @@ gameContext = {
             'quantity': 30,
         },
     },
-    'resolution': 720,
+    'resolution': 1080,
     'targetCreature': None,
     'screenshot': None,
     'way': None,
@@ -368,28 +368,20 @@ def main():
             if isTryingToAttackClosestCreature:
                 print('to tentando atacar')
             else:
-                print('vou pegar alguma task de cavebot')
                 targetCreature, currentGroupTask = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
                 copyOfContext['targetCreature'] = targetCreature
                 if copyOfContext['currentGroupTask'] is not None:
-                    print('tem task de cavebot rolando')
                     if targetCreature is not None:
-                        print('a target creature é', targetCreature)
                         if copyOfContext['lastPressedKey'] is not None:
-                            print('tirei o keyup 2')
                             pyautogui.keyUp(copyOfContext['lastPressedKey'])
                             copyOfContext['lastPressedKey'] = None
                         copyOfContext['currentGroupTask'] = currentGroupTask
                 else:
-                    print('nao tem task de cavebot rolando')
                     if currentGroupTask is not None:
-                        print('a task nova é', currentGroupTask)
                         if copyOfContext['lastPressedKey'] is not None:
-                            print('tirei o keyup 2')
                             pyautogui.keyUp(copyOfContext['lastPressedKey'])
                             copyOfContext['lastPressedKey'] = None
                         copyOfContext['currentGroupTask'] = currentGroupTask
-                print('cavebot dps de tudo a task é', copyOfContext['currentGroupTask'])
         elif copyOfContext['way'] == 'lootCorpses':
             if copyOfContext['currentGroupTask'] is None:
                 # TODO: get closest dead corpse
