@@ -37,19 +37,20 @@ def main():
     # reader = easyocr.Reader(['en'])
     # while True:
     # nonGrayScreenshot = utils.core.getScreenshot()
-    nonGrayScreenshot = utils.image.load('image.png')
+    nonGrayScreenshot = utils.image.load('screenshot.png')
     screenshot = utils.image.RGBtoGray(nonGrayScreenshot)
     # backpackSlotImg = getBackpackSlotImg(screenshot, 'fur backpack', 1)
     # utils.image.save(screenshot, 'screenshot.png')
     hudSize = (960, 704)
     resolution = 1080
     battleListCreatures = battleList.core.getCreatures(screenshot)
-    # hudCoordinate = hud.core.getCoordinate(screenshot, hudSize)
-    # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate, hudSize)
-    # coordinate = radar.core.getCoordinate(screenshot)
-    # hudCreatures = hud.creatures.getCreatures(
-    #     battleListCreatures, 'left', hudCoordinate, hudImg, coordinate, resolution)
-
+    hudCoordinate = hud.core.getCoordinate(screenshot, hudSize)
+    hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate, hudSize)
+    coordinate = radar.core.getCoordinate(screenshot)
+    hudCreatures = hud.creatures.getCreatures(
+        battleListCreatures, 'left', hudCoordinate, hudImg, coordinate, resolution)
+    targetCreature = hud.creatures.getTargetCreature(hudCreatures)
+    print(hudCreatures)
     # def getBattleListCreatures():
     #     battleList.core.getCreatures(screenshot)
 

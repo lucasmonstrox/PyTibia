@@ -385,6 +385,7 @@ def hasTargetToCreature(hudCreatures, hudCreature, coordinate):
     return hasTarget
 
 
+# TODO: Avoid creature target check when non target creature is different from battleList being attacked creature
 def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth):
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
     (x, y) = creatureBar
