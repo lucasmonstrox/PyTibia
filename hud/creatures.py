@@ -3,7 +3,6 @@ import numpy as np
 import pathlib
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
-import hud.core
 import radar.config
 import radar.core
 import utils.core
