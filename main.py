@@ -55,7 +55,7 @@ gameContext = {
         ], dtype=coordinateType),
         'running': True,
         'waypoints': {
-            'currentIndex': 29,
+            'currentIndex': None,
             'points': np.array([
                 ('', 'walk', (33214, 32459, 8), {}),
                 ('', 'walk', (33214, 32456, 8), {}),
@@ -135,7 +135,7 @@ gameContext = {
             'quantity': 30,
         },
     },
-    'resolution': 720,
+    'resolution': 1080,
     'targetCreature': None,
     'screenshot': None,
     'way': None,
