@@ -399,14 +399,15 @@ def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordina
     ySlot = round(yCoordinate / slotWidth)
     ySlot = min(ySlot, 10)
     ySlot = max(ySlot, 0)
+    borderX = max(x - distanceBetweenSlotPixelLifeBar, 0)
     borderedCreatureImg = hudImg[y + 5:y +
-                                 5 + slotWidth, x - distanceBetweenSlotPixelLifeBar:x - distanceBetweenSlotPixelLifeBar + slotWidth]
+                                 5 + slotWidth, borderX:borderX + slotWidth]
     borderGap = 4 if slotWidth == 64 else 2
     yOfBorder = slotWidth - borderGap
     borderedCreatureImg[borderGap:yOfBorder, borderGap:yOfBorder] = 0
     pixelsCount = np.sum(np.where(np.logical_or(
         borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
-    # TODO: fix me
+    # TODO: count by 720p resolution should be less than 1080p resolution
     isBeingAttacked = pixelsCount > 50
     slot = (xSlot, ySlot)
     coordinateX = coordinate[0] - 7 + xSlot
