@@ -20,12 +20,18 @@ class RefillCheckerTask:
     def shouldIgnore(self, context):
         # TODO: get correct binds for health potion
         quantityOfHealthPotions = getSlotCount(context['screenshot'], 1)
+        if quantityOfHealthPotions is None:
+            return False
         # TODO: get correct binds for mana potion
         quantityOfManaPotions = getSlotCount(context['screenshot'], 2)
+        if quantityOfManaPotions is None:
+            return False
         hasEnoughHealthPotions = quantityOfHealthPotions > self.value[
             'options']['minimumOfHealthPotions']
         hasEnoughManaPotions = quantityOfManaPotions > self.value['options']['minimumOfManaPotions']
         capacity = getCapacity(context['screenshot'])
+        if capacity is None:
+            return False
         hasEnoughCapacity = capacity > self.value['options']['minimumOfCapacity']
         shouldIgnore = hasEnoughHealthPotions and hasEnoughManaPotions and hasEnoughCapacity
         return shouldIgnore
