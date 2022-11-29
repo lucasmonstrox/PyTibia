@@ -8,7 +8,7 @@ import radar.core
 import utils.core
 import utils.image
 import utils.matrix
-import wiki.creatures
+from wiki.creatures import creatures
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
@@ -56,9 +56,9 @@ resolutions = {
 }
 
 creaturesNamesHashes = {}
-for monster in wiki.creatures.creatures:
-    creaturesNamesHashes[monster] = utils.image.loadAsGrey(
-        f'{currentPath}/images/monsters/{monster}.png')
+for creature in creatures:
+    creaturesNamesHashes[creature] = utils.image.loadAsGrey(
+        f'{currentPath}/images/monsters/{creature}.png')
 
 creatureType = np.dtype([
     ('name', np.str_, 64),
@@ -385,22 +385,29 @@ def hasTargetToCreature(hudCreatures, hudCreature, coordinate):
 
 
 # TODO: Avoid creature target check when non target creature is different from battleList being attacked creature
+# TODO: improve clean code
+# TODO: windowCoordinate should be improved for hud edges
 def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth):
+    isBigHud = slotWidth == 64
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
-    (x, y) = creatureBar
-    extraY = 0 if y <= 27 else 31
-    distanceBetweenSlotPixelLifeBar = 19 if slotWidth == 64 else 3
-    xCoordinate = x - distanceBetweenSlotPixelLifeBar
-    xSlot = round((xCoordinate) / slotWidth)
+    (xOfCreatureBar, yOfCreatureBar) = creatureBar
+    extraY = 0 if yOfCreatureBar <= 27 else 31
+    wikiCreature = creatures.get(creatureName)
+    hudMisalignment = wikiCreature.get('hudMisalignment', {'x': 0, 'y': 0})
+    hudMisalignmentX = hudMisalignment['x'] if isBigHud else hudMisalignment['x'] / 2
+    hudMisalignmentY = hudMisalignment['y'] if isBigHud else hudMisalignment['y'] / 2
+    distanceBetweenSlotPixelLifeBar = 19 if isBigHud else 3
+    xCoordinate = xOfCreatureBar - distanceBetweenSlotPixelLifeBar
+    xSlot = round((xCoordinate + hudMisalignmentX) / slotWidth)
     xSlot = min(xSlot, 14)
     xSlot = max(xSlot, 0)
-    yCoordinate = y + 5 + extraY
-    yCoordinate = 0 if y <= 14 else y + 5
-    ySlot = round(yCoordinate / slotWidth)
+    yCoordinate = yOfCreatureBar + 5 + extraY
+    yCoordinate = 0 if yOfCreatureBar <= 14 else yOfCreatureBar + 5
+    ySlot = round((yCoordinate + hudMisalignmentY) / slotWidth)
     ySlot = min(ySlot, 10)
     ySlot = max(ySlot, 0)
-    borderX = max(x - distanceBetweenSlotPixelLifeBar, 0)
-    borderedCreatureImg = hudImg[y + 5:y +
+    borderX = max(xOfCreatureBar - distanceBetweenSlotPixelLifeBar, 0)
+    borderedCreatureImg = hudImg[yOfCreatureBar + 5:yOfCreatureBar +
                                  5 + slotWidth, borderX:borderX + slotWidth]
     borderGap = 4 if slotWidth == 64 else 2
     yOfBorder = slotWidth - borderGap
