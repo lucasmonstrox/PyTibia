@@ -72,6 +72,7 @@ gameContext = {
                 ('', 'walk', (33318, 32283, 7), {}), # 12
                 ('', 'walk', (33312, 32280, 7), {}), # 13
                 ('', 'moveDownSouth', (33312, 32280, 7), {}), # 14
+                ('', 'walk', (33302, 32283, 8), {}), # 15
                 ('', 'walk', (33300, 32289, 8), {}), # 15
                 ('', 'moveDownSouth', (33300, 32289, 8), {}), # 16
                 ('', 'walk', (33302, 32281, 9), {}), # 17
@@ -326,24 +327,15 @@ def main():
             context['cavebot']['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
                 context['coordinate'], context['cavebot']['waypoints']['points'])
         return context
-    
-    def mapWaypointState(context):
-        currentWaypointIndex = context['cavebot']['waypoints']['currentIndex']
-        currentWaypoint = context['cavebot']['waypoints']['points'][currentWaypointIndex]
-        waypointsStateIsEmpty = context['cavebot']['waypoints']['state'] == None
-        if waypointsStateIsEmpty:
-            context['cavebot']['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
-                context['coordinate'], currentWaypoint)
-        return context
 
     decisionObserver = lootObserver.pipe(
         operators.map(mapDecision),
         operators.map(mapCurrentWaypointIndex),
-        operators.map(mapWaypointState),
     )
     
     def shouldAskForCavebotTasks(context):
-        if context['way'] != 'cavebot':
+        isNotCavebotWay = context['way'] != 'cavebot'
+        if isNotCavebotWay:
             return False
         if context['currentGroupTask'] is None:
             return True
