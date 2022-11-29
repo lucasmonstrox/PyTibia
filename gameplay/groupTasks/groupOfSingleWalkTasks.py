@@ -12,13 +12,14 @@ class GroupOfSingleWalkTasks(GroupTaskExecutor):
         self.startedAt = None
         self.finishedAt = None
         self.delayBeforeStart = 0
-        self.delayAfterComplete = 0
+        self.delayAfterComplete = 2
         self.name = 'groupOfSingleWalk'
         self.status = 'notStarted'
         self.tasks = self.generateTasks(context, checkInCoordinate)
         self.value = checkInCoordinate
 
     def generateTasks(self, context, checkInCoordinate):
+        print('gerando GroupOfSingleWalkTasks')
         tasks = np.array([], dtype=taskType)
         walkpointTask = makeWalkTask(context, checkInCoordinate)
         taskToAppend = np.array([walkpointTask], dtype=taskType)

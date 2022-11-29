@@ -73,22 +73,24 @@ gameContext = {
                 ('', 'walk', (33312, 32280, 7), {}), # 13
                 ('', 'moveDownSouth', (33312, 32280, 7), {}), # 14
                 ('', 'walk', (33302, 32283, 8), {}), # 15
-                ('', 'walk', (33300, 32289, 8), {}), # 15
-                ('', 'moveDownSouth', (33300, 32289, 8), {}), # 16
-                ('', 'walk', (33302, 32281, 9), {}), # 17
-                ('', 'walk', (33312, 32280, 9), {}), # 18
-                ('', 'walk', (33312, 32289, 9), {}), # 19
-                ('', 'walk', (33300, 32291, 9), {}), # 20
-                ('', 'moveUpNorth', (33300, 32291, 9), {}), # 21
-                ('', 'walk', (33312, 32282, 8), {}), # 22
-                ('', 'moveUpNorth', (33312, 32282, 8), {}), # 23
-                ('', 'walk', (33309, 32285, 7), {}), # 24
-                ('', 'moveUpNorth', (33309, 32285, 7), {}), # 25
-                ('', 'walk', (33310, 32278, 6), {}), # 26
-		        ('', 'walk', (33309, 32283, 6), {}), # 27
-                ('', 'moveDownSouth', (33309, 32283, 6), {}), # 28
-                ('', 'walk', (33305, 32289, 7), {}), # 29
-                ('', 'refillChecker', (33306, 32289, 7), { # 30
+                ('', 'walk', (33300, 32289, 8), {}), # 16
+                ('', 'moveDownSouth', (33300, 32289, 8), {}), # 17
+                ('', 'walk', (33302, 32281, 9), {}), # 18
+                ('', 'walk', (33312, 32280, 9), {}), # 19
+                ('', 'walk', (33312, 32289, 9), {}), # 20
+                ('', 'walk', (33300, 32291, 9), {}), # 21
+                ('', 'moveUpNorth', (33300, 32291, 9), {}), # 22
+                ('', 'walk', (33302, 32283, 8), {}), # 23
+                ('', 'walk', (33312, 32282, 8), {}), # 24
+                ('', 'moveUpNorth', (33312, 32282, 8), {}), # 25
+                ('', 'walk', (33311, 32285, 7), {}), # 26
+                ('', 'walk', (33309, 32285, 7), {}), # 27
+                ('', 'moveUpNorth', (33309, 32285, 7), {}), # 28
+                ('', 'walk', (33310, 32278, 6), {}), # 29
+		        ('', 'walk', (33309, 32283, 6), {}), # 30
+                ('', 'moveDownSouth', (33309, 32283, 6), {}), # 31
+                ('', 'walk', (33305, 32289, 7), {}), # 32
+                ('', 'refillChecker', (33306, 32289, 7), { # 33
                     'minimumOfManaPotions': 1,
                     'minimumOfHealthPotions': 1,
                     'minimumOfCapacity': 200,
@@ -136,7 +138,7 @@ gameContext = {
             'quantity': 30,
         },
     },
-    'resolution': 1080,
+    'resolution': 720,
     'targetCreature': None,
     'screenshot': None,
     'way': None,
@@ -335,18 +337,23 @@ def main():
     
     def shouldAskForCavebotTasks(context):
         isNotCavebotWay = context['way'] != 'cavebot'
+        print('isNotCavebotWay', isNotCavebotWay)
         if isNotCavebotWay:
             return False
+        print('currentGroupTask', context['currentGroupTask'])
         if context['currentGroupTask'] is None:
             return True
         endlessTasks = ['groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfSingleWalk', 'groupOfUseRope', 'groupOfUseShovel']
         should = not (context['currentGroupTask'].name in endlessTasks)
+        print('should', should)
         return should
     
     def handleTasks(context):
         global gameContext
         copyOfContext = context.copy()
-        if shouldAskForCavebotTasks(context):
+        hasCavebotTasks = shouldAskForCavebotTasks(context)
+        print('hasCavebotTasks', hasCavebotTasks)
+        if hasCavebotTasks:
             isTryingToAttackClosestCreature = copyOfContext[
                 'currentGroupTask'] is not None and (copyOfContext['currentGroupTask'].name == 'groupOfAttackClosestCreature' or copyOfContext['currentGroupTask'].name == 'groupOfFollowTargetCreature')
             if isTryingToAttackClosestCreature:
@@ -377,10 +384,16 @@ def main():
                 firstDeadCorpse = copyOfContext['corpsesToLoot'][0]
                 copyOfContext['currentGroupTask'] = GroupOfLootCorpseTasks(copyOfContext, firstDeadCorpse)
         elif copyOfContext['way'] == 'waypoint':
+            print('quero waypointar')
+            currentWaypointIndex = copyOfContext['cavebot']['waypoints']['currentIndex']
+            currentWaypoint = copyOfContext['cavebot']['waypoints']['points'][currentWaypointIndex]
+            print('currentWaypointIndex', currentWaypointIndex)
+            print('currentWaypoint', currentWaypoint)
             if copyOfContext['currentGroupTask'] == None:
-                currentWaypointIndex = copyOfContext['cavebot']['waypoints']['currentIndex']
-                currentWaypoint = copyOfContext['cavebot']['waypoints']['points'][currentWaypointIndex]
+                print('me da umas tasks de waypoint')
                 copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(copyOfContext, currentWaypoint)
+            else:
+                print('mas ja tou waypoitando')
         gameContext = copyOfContext
         return copyOfContext
 

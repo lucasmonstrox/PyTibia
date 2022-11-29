@@ -13,13 +13,14 @@ class GroupOfWalkTasks(GroupTaskExecutor):
         self.startedAt = None
         self.finishedAt = None
         self.delayBeforeStart = 0
-        self.delayAfterComplete = 0
+        self.delayAfterComplete = 1
         self.name = 'groupOfWalk'
         self.status = 'notStarted'
         self.tasks = self.generateTasks(context, waypointCoordinate)
         self.value = waypointCoordinate
 
     def generateTasks(self, context, waypointCoordinate):
+        print('gerando GroupOfWalkTasks')
         walkpoints = generateFloorWalkpoints(
             context['coordinate'], waypointCoordinate, nonWalkableCoordinates=context['cavebot']['holesOrStairs'])
         tasks = np.array([], dtype=taskType)
