@@ -42,7 +42,7 @@ Only available for knights
 
 ## Prerequisites
 
-- Python >=3.9.13
+- Python 3.9.13
 - Poetry >=1.2.0
 
 Install packages before continue
