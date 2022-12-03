@@ -138,7 +138,7 @@ gameContext = {
             'quantity': 30,
         },
     },
-    'resolution': 720,
+    'resolution': 1080,
     'targetCreature': None,
     'screenshot': None,
     'way': None,
@@ -159,7 +159,7 @@ def main():
     @sio.on('getContext')
     def handleGetContext(_):
         global gameContext
-        waypoints = [[[int(waypoint['coordinate'][0]), int(waypoint['coordinate'][1]), int(waypoint['coordinate'][2])], int(waypoint['tolerance']), waypoint['options']]
+        waypoints = [[[int(waypoint['coordinate'][0]), int(waypoint['coordinate'][1]), int(waypoint['coordinate'][2])], waypoint['options']]
                      for waypoint in gameContext['cavebot']['waypoints']['points']]
         return None, {
             'backpacks': gameContext['backpacks'],
@@ -174,7 +174,7 @@ def main():
         gameContext['backpacks'] = data['backpacks']
         gameContext['hotkeys'] = data['hotkeys']
         gameContext['refill'] = data['refill']
-        waypoints = [[[int(waypoint['coordinate'][0]), int(waypoint['coordinate'][1]), int(waypoint['coordinate'][2])], int(waypoint['tolerance']), waypoint['options']]
+        waypoints = [[[int(waypoint['coordinate'][0]), int(waypoint['coordinate'][1]), int(waypoint['coordinate'][2])], waypoint['options']]
                      for waypoint in gameContext['cavebot']['waypoints']['points']]
         return None, {
             'backpacks': gameContext['backpacks'],
