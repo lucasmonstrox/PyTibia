@@ -2,6 +2,8 @@
 
 > Fastest Tibia PixelBot developed in python to get unlocked fps.
 
+*Read this in other languages: [English](README.md), [Brazilian Portuguese](README.pt-BR.md).*
+
 This BOT works locating image around the screen and applies cache to avoid image redetection and thus avoid excessive cpu/gpu usage.
 
 This BOT is all based on matrix calculation, also applies parallelism and also pre-processing, as it is the only way to have maximum performance(nanoseconds/microseconds).
@@ -82,7 +84,7 @@ poetry run python -m pytest
 - Add thread to eat food
 - Add training way
 - Add fishing way
-- Translate README for Portuguese/Spanish language
+- Translate README for Spanish language
 - Add api docs
 - Add mypy
 - Add e2e tests into the tibia client
@@ -95,6 +97,7 @@ poetry run python -m pytest
 - [**augustocrmattos**](http://github.com/augustocrmattos)([**linkedin**](https://www.linkedin.com/in/augustocrmattos/)) - Developer
 - [**GuizinhoYT**](http://github.com/GuizinhoYT)([**linkedin**](https://www.linkedin.com/in/guilherme-gra%C3%A7a-3953231a2/)) - Tester
 - [**lelec0**](https://github.com/lelec0)([**linkedin**](https://www.linkedin.com/in/max-miranda/)) - Developer
+- [**evitarafadiga**](http://github.com/evitarafadiga) - Software Architecture
 
 See also the list of [contributors](../../graphs/contributors) who participated
 in this project.
@@ -109,5 +112,5 @@ You can check the bot development at [https://twitch.tv/lucasmonstrocs](https://
 
 # 📝 License
 
-Copyright © 2021 [**lucasmonstro**](https://github.com/lucasmonstro)  
+Copyright © 2023 [**lucasmonstro**](https://github.com/lucasmonstro)  
 This project is [MIT](https://opensource.org/licenses/MIT) licensed
