@@ -93,7 +93,7 @@ poetry run python -m pytest
 - [**augustocrmattos**](http://github.com/augustocrmattos)([**linkedin**](https://www.linkedin.com/in/augustocrmattos/)) - Developer
 - [**GuizinhoYT**](http://github.com/GuizinhoYT)([**linkedin**](https://www.linkedin.com/in/guilherme-gra%C3%A7a-3953231a2/)) - Tester
 - [**lelec0**](https://github.com/lelec0)([**linkedin**](https://www.linkedin.com/in/max-miranda/)) - Developer
-- [**evitarafadiga**](http://github.com/evitarafadiga) - Software Architecture
+- [**evitarafadiga**](http://github.com/evitarafadiga) - Software Architect
 
 See also the list of [contributors](../../graphs/contributors) who participated
 in this project.
