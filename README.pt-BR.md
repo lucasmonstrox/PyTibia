@@ -25,7 +25,7 @@ Apenas disponível para cavaleiros
 - Cura :heavy_check_mark:
 - Spell :heavy_check_mark:
 - Target :heavy_check_mark:
-- Gameplay via teclado :heavy_check_mark:
+- Jogabilidade pelo teclado :heavy_check_mark:
 - Interface de Usuário :warning:
 
 # ⚽ Metas
