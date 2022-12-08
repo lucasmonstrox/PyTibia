@@ -72,16 +72,16 @@ poetry run python -m pytest
 
 # ✅ TODO
 
-- Adicionar combos de spells
-- Adicionar funcionalidade para comer
-- Adicionar método de treino
-- Adicionar método de pesca
-- Traduzir o README para a língua espanhola
-- Adicionar a documentação da API
-- Adicionar mypy
-- Adicionar e2e testes no cliente Tibia
-- Adicionar pytest-cov
-- Adicionar python typings
+- Adicionar combos de spells.
+- Adicionar funcionalidade para comer.
+- Adicionar método de treino.
+- Adicionar método de pesca.
+- Traduzir o README para a língua espanhola.
+- Adicionar a documentação da API.
+- Adicionar mypy.
+- Adicionar e2e testes no cliente Tibia.
+- Adicionar pytest-cov.
+- Adicionar python typings.
 
 # 👷 Autores
 
