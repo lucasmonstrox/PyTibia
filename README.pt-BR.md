@@ -100,7 +100,7 @@ Gostaria de fazer parte da equipe? Me contate no [**linkedin**](https://www.link
 
 # ❤️ Inspiração
 
-Agradecimentos especiais ao idealista [**Murilo Chianfa**](https://github.com/MuriloChianfa), responsável pelo [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12). O robô inicia-se a partir do projeto [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12).
+Agradecimentos especiais ao [**Murilo Chianfa**](https://github.com/MuriloChianfa), responsável pelo [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12). Eu iniciei o bot para resolver problemas que não foram resolvidos no [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12).
 
 You can check the bot development at [https://twitch.tv/lucasmonstrocs](https://twitch.tv/lucasmonstrocs).
 
