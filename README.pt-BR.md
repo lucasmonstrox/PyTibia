@@ -30,7 +30,7 @@ Apenas disponível para cavaleiros
 
 # ⚽ Metas
 
-- Detecção de qualquer informação necessária no cliente em (mili/macro/nano) segundos.
+- Detecção de qualquer informação necessária no cliente em (mili/macro/nano) segundos
 - Controle total sob os píxeis do mouse para a movimentação humanizada.
 - Utilizar redes neurais convolucionais para detectar empecílios relevantes como objetos bloqueadores, *loot* soltas, etc.
 - Utilizar redes neurais subsequentes para o uso de linguagens naturais durante o processo de interação com outros jogadores.
