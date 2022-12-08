@@ -23,7 +23,7 @@ Apenas disponível para cavaleiros
 
 - Bot de Caverna :heavy_check_mark:
 - Cura :heavy_check_mark:
-- Magia :heavy_check_mark:
+- Spell :heavy_check_mark:
 - Alvo :heavy_check_mark:
 - Gameplay via teclado :heavy_check_mark:
 - Interface de Usuário :warning:
