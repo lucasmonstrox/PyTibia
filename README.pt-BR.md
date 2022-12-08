@@ -33,7 +33,7 @@ Apenas disponível para cavaleiros
 - Detecção de qualquer informação necessária no cliente em (mili/macro/nano) segundos
 - Controle total sob os píxeis do mouse para a movimentação humanizada.
 - Utilizar computação visional para detectar objetos que bloqueiam o caminho do char
-- Utilizar redes neurais subsequentes para o uso de linguagens naturais durante o processo de interação com outros jogadores.
+- Utilizar processamento de linguagem natural para falar com outros jogadores
 - *Crack* de kernel e/ou colocar o Tibia a trabalhar em um subsistema para evitar detecções BE.
 - Party gameplay
 - Guild gameplay, iniciar uma guerra e dominar um servidor
