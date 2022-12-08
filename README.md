@@ -66,9 +66,6 @@ poetry run task add-easyocr
 
 ```bash
 poetry run python main.py
-
-# to test last experiments with mess code
-poetry run python test.py
 ```
 
 ## 🧪 Running tests

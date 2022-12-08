@@ -30,14 +30,14 @@ Apenas disponível para cavaleiros
 
 # ⚽ Metas
 
-- Detecção de qualquer informação necessária no cliente em (mili/macro/nano) segundos
+- Detecção de qualquer informação necessária no cliente em (mili/macro/nano) segundos.
 - Controle total sob os píxeis do mouse para a movimentação humanizada.
-- Utilizar computação visional para detectar objetos que bloqueiam o caminho do char
-- Utilizar processamento de linguagem natural para falar com outros jogadores
-- *Crackear* o kernel e/ou colocar o Tibia a trabalhar em um subsistema para evitar detecções do BattleEye
-- Party gameplay
-- Guild gameplay, iniciar uma guerra e dominar um servidor
-- Levantar fundos e ajudar meus colegas venezuelanos que estão passando por momentos difíceis
+- Utilizar computação visional para detectar objetos que bloqueiam o caminho do char.
+- Utilizar processamento de linguagem natural para falar com outros jogadores.
+- *Crackear* o kernel e/ou colocar o Tibia a trabalhar em um subsistema para evitar detecções do BattleEye.
+- Party gameplay.
+- Guild gameplay, iniciar uma guerra e dominar um servidor.
+- Levantar fundos e ajudar meus colegas venezuelanos que estão passando por momentos difíceis.
 
 # 🧰 Instalação
 
@@ -61,9 +61,6 @@ poetry run task add-easyocr
 
 ```bash
 poetry run python main.py
-
-# to test last experiments with mess code
-poetry run python test.py
 ```
 
 ## 🧪 Testes de execução
