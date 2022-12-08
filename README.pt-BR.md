@@ -75,7 +75,7 @@ poetry run python -m pytest
 
 # ✅ TODO
 
-- Adicionar combos de magia
+- Adicionar combos de spells
 - Adicionar *thread* para comer
 - Adicionar método de treino
 - Adicionar método de pesca
