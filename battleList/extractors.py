@@ -21,13 +21,23 @@ def getContent(screenshot):
 
 
 def getCreatureNameImg(slotImg):
-    creatureNameImg = slotImg[3:11 + 3, 23:23 + 115]
-    creatureNameImg = np.where(creatureNameImg <= 191, 0, creatureNameImg)
-    creatureNameImg = np.array(creatureNameImg, dtype=np.uint8)
-    highlightedNamePixelColorIndexes = np.nonzero(
-        creatureNameImg == config.creatures["highlightedNamePixelColor"],)
-    creatureNameImg[highlightedNamePixelColorIndexes] = config.creatures["namePixelColor"]
+    creatureImg = slotImg[3:11 + 3, 23:23 + 131]
+    creatureNameColors = np.array(
+        [config.creatures["namePixelColor"], config.creatures["highlightedNamePixelColor"]], dtype=np.uint8)
+    indexes = np.where(np.isin(creatureImg, creatureNameColors))
+    creatureNameImg = np.zeros((11, 131), dtype=np.uint8)
+    creatureNameImg[indexes[0], indexes[1]
+                    ] = config.creatures["namePixelColor"]
     return creatureNameImg
+
+# def getCreatureNameImg(slotImg):
+#     creatureNameImg = slotImg[3:11 + 3, 23:23 + 115]
+#     creatureNameImg = np.where(creatureNameImg <= 191, 0, creatureNameImg)
+#     creatureNameImg = np.array(creatureNameImg, dtype=np.uint8)
+#     highlightedNamePixelColorIndexes = np.nonzero(
+#         creatureNameImg == config.creatures["highlightedNamePixelColor"],)
+#     creatureNameImg[highlightedNamePixelColorIndexes] = config.creatures["namePixelColor"]
+#     return creatureNameImg
 
 
 def getCreatureSlotImg(content, slot):

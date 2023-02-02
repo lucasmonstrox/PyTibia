@@ -1,34 +1,35 @@
-from os import walk
-import easyocr
+# from os import walk
+# import easyocr
 import numpy as np
-import cv2
+# import cv2
 from time import sleep, time
-import actionBar.core
+# import actionBar.core
 import actionBar.locators
 import battleList.core
-from chat import core
+import battleList.extractors
+# from chat import core
 import hud.core
 import hud.creatures
 import hud.slot
 import radar.core
 import radar.locators
 import radar.extractors
-import skills.core
+# import skills.core
 import utils.core
 import utils.image
-from PIL import Image, ImageOps
-import pathlib
+# from PIL import Image, ImageOps
+# import pathlib
 import timeit
-import dxcam
-import scipy.fft
-import gameplay.waypoint
+# import dxcam
+# import scipy.fft
+# import gameplay.waypoint
 from PIL import Image
-from inventory.core import getBackpackSlotImg, openBackpack
-
+import multiprocessing
+# from inventory.core import getBackpackSlotImg, openBackpack
 
 def main():
-    test = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-    coordinates = np.array([[1, 2]])
+    # test = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    # coordinates = np.array([[1, 2]])
     # fa = test[coordinates[-1:]]
     # beingAttackedCreature = None
     # corpsesToLoot = np.array([], dtype=hud.creatures.creatureType)
@@ -36,21 +37,22 @@ def main():
     #     utils.image.load('radar/images/paths/floor-11.png'))
     # reader = easyocr.Reader(['en'])
     # while True:
-    # nonGrayScreenshot = utils.core.getScreenshot()
-    nonGrayScreenshot = utils.image.load('screenshot.png')
+    nonGrayScreenshot = utils.core.getScreenshot()
+    # nonGrayScreenshot = utils.image.load('screenshot.png')
     screenshot = utils.image.RGBtoGray(nonGrayScreenshot)
+    # utils.image.save(screenshot, 'screenshot.png')
     # backpackSlotImg = getBackpackSlotImg(screenshot, 'fur backpack', 1)
     # utils.image.save(screenshot, 'screenshot.png')
-    hudSize = (960, 704)
-    resolution = 1080
-    battleListCreatures = battleList.core.getCreatures(screenshot)
-    hudCoordinate = hud.core.getCoordinate(screenshot, hudSize)
-    hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate, hudSize)
-    coordinate = radar.core.getCoordinate(screenshot)
-    hudCreatures = hud.creatures.getCreatures(
-        battleListCreatures, 'left', hudCoordinate, hudImg, coordinate, resolution)
-    targetCreature = hud.creatures.getTargetCreature(hudCreatures)
-    print(hudCreatures)
+    # hudSize = (960, 704)
+    # resolution = 1080
+    # battleListCreatures = battleList.core.getCreatures(screenshot)
+    # hudCoordinate = hud.core.getCoordinate(screenshot, hudSize)
+    # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate, hudSize)
+    # coordinate = radar.core.getCoordinate(screenshot)
+    # hudCreatures = hud.creatures.getCreatures(
+    #     battleListCreatures, 'left', hudCoordinate, hudImg, coordinate, resolution)
+    # targetCreature = hud.creatures.getTargetCreature(hudCreatures)
+    # print(hudCreatures)
     # def getBattleListCreatures():
     #     battleList.core.getCreatures(screenshot)
 
@@ -102,6 +104,33 @@ def main():
     # res1 = timeit.repeat(lambda: np.fft.fft(
     #     np.ascontiguousarray(lava3)), repeat=10, number=1)
     # res2 = timeit.repeat(lambda: utils.core.hashit(lava3), repeat=10, number=1)
+    
+    
+    # content = battleList.extractors.getContent(screenshot)
+    # cannotGetContent = content is None
+    # if cannotGetContent:
+    #     return None
+    # filledSlotsCount = battleList.extractors.getFilledSlotsCount(content)
+    # beingAttackedCreatures = battleList.core.getBeingAttackedCreatures(content, filledSlotsCount)
+    print(battleList.core.getCreatures(screenshot))
+    # res = timeit.repeat(lambda: battleList.core.getCreatures(screenshot), repeat=10, number=1)
+    # res = timeit.repeat(lambda: battleList.core.getBeingAttackedCreatures(content, filledSlotsCount), repeat=10, number=1)
+    # res = timeit.repeat(lambda: utils.core.hashit(screenshot), repeat=10, number=1)
+    # print(res)
+    
+#     res = func3(2)
+#     print(res)
+
+
+# @njit(forceobj=True)
+# def func3(n):
+#     my_array = np.zeros(n)
+#     for i in prange(1, n+1):
+#         my_array[i-1] = xxh64(np.ascontiguousarray(i), seed=20220605).intdigest()
+#     return my_array
+
+
+
 
 
 if __name__ == '__main__':
