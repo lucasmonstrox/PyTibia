@@ -38,6 +38,10 @@ Only available for knights
 - Make a guild gameplay, start a war and dominate a tibia server
 - Raise money and send $ to help my Venezuelan friends who are experiencing economic difficulties
 
+# 🦾 A great working bot until PyTibia is ready
+
+BearSharp is an excellent paid bot made by a friend, you can find him via discord through the link https://discord.gg/kaKgkNxNtD
+
 # 🧰 Installation
 
 ## Prerequisites
