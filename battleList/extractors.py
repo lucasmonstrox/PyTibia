@@ -1,6 +1,9 @@
 import math
 import numpy as np
 from . import config, locators
+from numba import njit, jit, types
+from numba.extending import overload, register_jitable
+from numba.core.errors import TypingError
 
 
 def getContent(screenshot):
@@ -49,22 +52,17 @@ def getCreatureSlotImg(content, slot):
     return slotImg
 
 
+@njit(cache=True, fastmath=True)
 def getFilledSlotsCount(content):
-    content = np.ravel(content[:, 23:24])
-    contentOfBooleans = np.where(
-        np.logical_or(
-            content == config.creatures["namePixelColor"],
-            content == config.creatures["highlightedNamePixelColor"]
-        ),
-        1, 0)
-    truePixelsIndexes = np.nonzero(contentOfBooleans)[0]
-    hasNoFilledSlots = len(truePixelsIndexes) == 0
+    newContent = content[:, 23:24]
+    flattenContent = np.ravel(newContent)
+    cenas = np.logical_or(flattenContent == 192, flattenContent == 247)
+    contentOfBooleans = np.nonzero(cenas)
+    hasNoFilledSlots = len(contentOfBooleans[0]) == 0
     if hasNoFilledSlots:
         return 0
-    lastIndexOfTruePixelsIndexes = len(truePixelsIndexes) - 1
-    lastTrueIndexOfPixelsIndexes = truePixelsIndexes[lastIndexOfTruePixelsIndexes]
-    slotsCount = math.ceil(
-        lastTrueIndexOfPixelsIndexes / (config.slot["dimensions"]["height"] + config.slot["grid"]["gap"]))
+    last = contentOfBooleans[0][-1]
+    slotsCount = math.ceil(last / 22)
     return slotsCount
 
 

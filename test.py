@@ -107,13 +107,18 @@ def main():
     
     
     # content = battleList.extractors.getContent(screenshot)
-    # cannotGetContent = content is None
-    # if cannotGetContent:
-    #     return None
-    # filledSlotsCount = battleList.extractors.getFilledSlotsCount(content)
-    # beingAttackedCreatures = battleList.core.getBeingAttackedCreatures(content, filledSlotsCount)
-    print(battleList.core.getCreatures(screenshot))
-    # res = timeit.repeat(lambda: battleList.core.getCreatures(screenshot), repeat=10, number=1)
+    content = utils.image.loadFromRGBToGray('content.png')
+    filledSlotsCount = battleList.extractors.getFilledSlotsCount(content)
+    beingAttackedCreatures = battleList.core.getCreatures(content, content)
+    # print(beingAttackedCreatures)
+
+    # res = battleList.extractors.getFilledSlotsCount(content)
+    # print(res)
+ 
+    res1 = timeit.repeat(lambda: battleList.core.getCreatures(content, content), repeat=10, number=1)
+    print(res1)
+
+    # res = timeit.repeat(lambda: battleList.core.getCreatures(screenshot, content), repeat=10, number=1)
     # res = timeit.repeat(lambda: battleList.core.getBeingAttackedCreatures(content, filledSlotsCount), repeat=10, number=1)
     # res = timeit.repeat(lambda: utils.core.hashit(screenshot), repeat=10, number=1)
     # print(res)
@@ -128,10 +133,6 @@ def main():
 #     for i in prange(1, n+1):
 #         my_array[i-1] = xxh64(np.ascontiguousarray(i), seed=20220605).intdigest()
 #     return my_array
-
-
-
-
 
 if __name__ == '__main__':
     main()

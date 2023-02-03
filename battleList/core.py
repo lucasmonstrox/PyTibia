@@ -1,12 +1,12 @@
+from numba import njit, types
+from numba.extending import overload, register_jitable
+from numba.core.errors import TypingError
 import numpy as np
 from . import config, extractors
 from battleList.typing import creatureType
 import utils.core
 import utils.image
 
-from numba import njit, types
-from numba.extending import overload, register_jitable
-from numba.core.errors import TypingError
 
 @overload(np.all)
 def np_all(x, axis=None):
@@ -78,23 +78,16 @@ def np_all(x, axis=None):
         return _np_all_impl
 
 
-def getCreatures(screenshot):
-    content = extractors.getContent(screenshot)
-    cannotGetContent = content is None
-    utils.image.save(content, 'content.png')
-    if cannotGetContent:
-        return None
+def getCreatures(screenshot, content):
+    # content = extractors.getContent(screenshot)
+    # cannotGetContent = content is None
+    # if cannotGetContent:
+    #     return None
     filledSlotsCount = extractors.getFilledSlotsCount(content)
-    # creatures = np.array([getCreatureFromSlot(content, slotIndex, isCreatureBeingAttacked)
-    #                       for slotIndex, isCreatureBeingAttacked in enumerate(fa2)], dtype=creatureType)
     beingAttackedCreatures = getBeingAttackedCreatures(content, filledSlotsCount)
-    print('beingAttackedCreatures', beingAttackedCreatures)
     creaturesNames = getCreaturesNames(content, filledSlotsCount)
-    print('creaturesNames', creaturesNames)
     creaturesWithoutType = np.column_stack((creaturesNames, beingAttackedCreatures))
-    print('creaturesWithoutType', creaturesWithoutType)
-    creatures = np.array(creaturesWithoutType, dtype=creatureType)
-    print(creatures['name'], creatures['isBeingAttacked'])
+    creatures = np.array(creaturesWithoutType)
     return creatures
 
 contentSize = 156
@@ -103,24 +96,22 @@ cenas = gapBetweenSlots * contentSize
 topBorderSizeOfCreatureIcon = 20
 xArray = np.arange(topBorderSizeOfCreatureIcon)
 
-def getCreaturesNames(content, filledSlotsCount):
-    return np.array(['Rat'])
 
-@njit(parallel=True)
+def getCreaturesNames(content, filledSlotsCount):
+    # TODO: parallelize
+    creaturesNames = [utils.core.hashit(np.ones((156, 20))) for i in range(filledSlotsCount)]
+    return np.array(creaturesNames)
+
+
+@njit(cache=True, fastmath=True)
 def getBeingAttackedCreatures(content, filledSlotsCount):
-    # coordinatesOfTopBordersOfCreaturesIcons = np.broadcast_to(
-    #     xArray, (filledSlotsCount, topBorderSizeOfCreatureIcon))
-    # print('coordinatesOfTopBordersOfCreaturesIcons', coordinatesOfTopBordersOfCreaturesIcons)
-    # yArray = np.arange(filledSlotsCount)
-    # print('yArray', yArray)
-    # yArray = np.broadcast_to(
-    #     yArray, (topBorderSizeOfCreatureIcon, filledSlotsCount))
-    # print('yArray', yArray)
-    # yArray1 = np.transpose(yArray)
-    # yArray2 = yArray1 * cenas
-    # indices = np.add(coordinatesOfTopBordersOfCreaturesIcons, yArray2)
-    # fa = np.take(content, indices)
-    fa = np.array([1, 2])
+    coordinatesOfTopBordersOfCreaturesIcons = np.broadcast_to(
+        xArray, (filledSlotsCount, topBorderSizeOfCreatureIcon))
+    yArray = np.arange(filledSlotsCount)
+    zArray = np.broadcast_to(yArray, (topBorderSizeOfCreatureIcon, filledSlotsCount))
+    yArray2 = zArray.T * cenas
+    indices = coordinatesOfTopBordersOfCreaturesIcons + yArray2
+    fa = np.take(content, indices)
     fe = np.logical_or(fa == 76, fa == 166)
     beingAttackedCreatures = np.all(fe, axis=1)
     return beingAttackedCreatures
@@ -142,13 +133,3 @@ def getCreatureFromSlot(content, slotIndex):
 def isAttackingSomeCreature(creatures):
     isAttackingSomeCreature = np.any(creatures['isBeingAttacked'] == True)
     return isAttackingSomeCreature
-
-
-def isCreatureBeingAttacked(slotImg):
-    attackColor = 76
-    highlightedAttackColor = 166
-    upperBorderOfCreatureIcon = extractors.getUpperBorderOfCreatureIcon(
-        slotImg)
-    isCreatureBeingAttacked = np.all(np.logical_or(
-        upperBorderOfCreatureIcon == attackColor, upperBorderOfCreatureIcon == highlightedAttackColor))
-    return isCreatureBeingAttacked
