@@ -1,3 +1,4 @@
+import numpy as np
 import pathlib
 import utils.core
 import utils.image
@@ -34,6 +35,6 @@ slot = {
 for creatureName in wiki.creatures.creatures:
     creatureNameImg = utils.image.loadAsGrey(
         f'{imagesPath}/monsters/{creatureName}.png')
-    creatureNameImg = creatureNameImg[:, 0:115]
+    creatureNameImg = np.ravel(creatureNameImg[8:9, 0:115])
     creatureNameImgHash = utils.core.hashit(creatureNameImg)
     creatures["nameImgHashes"][creatureNameImgHash] = creatureName

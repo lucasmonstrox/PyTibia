@@ -13,16 +13,17 @@ def RGBtoGray(screenshot):
 
 
 def loadFromRGBToGray(path):
-    img = RGBtoGray(load(path))
-    return img
+    loadedRgbImage = load(path)
+    grayImage = RGBtoGray(loadedRgbImage)
+    return grayImage
 
 
 def loadAsGrey(path):
-    return np.array(cv2.imread(path, cv2.IMREAD_GRAYSCALE))
+    return np.array(cv2.imread(path, cv2.IMREAD_GRAYSCALE), dtype=np.uint8)
 
 
 def load(path):
-    return np.array(cv2.imread(path))
+    return np.array(cv2.imread(path), dtype=np.uint8)
 
 
 def save(arr, name):
