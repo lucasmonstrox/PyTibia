@@ -1,9 +1,22 @@
 import math
+from numba import njit
 import numpy as np
 from . import config, locators
-from numba import njit, jit, types
-from numba.extending import overload, register_jitable
-from numba.core.errors import TypingError
+
+
+@njit(cache=True, fastmath=True)
+def getBeingAttackedCreatures(content, filledSlotsCount):
+    beingAttackedCreatures = np.full((filledSlotsCount), False, dtype=np.bool_)
+    size = 19
+    for i in range(filledSlotsCount):
+        y = (i * 22)
+        border = content[y, :size]
+        for j in range(size):
+            if border[j] != 76 and border[j] != 166:
+                break
+            if j == 18:
+                beingAttackedCreatures[i] = True
+    return beingAttackedCreatures
 
 
 def getContent(screenshot):
@@ -13,7 +26,7 @@ def getContent(screenshot):
         return None
     (contentLeft, contentTop, _, contentHeight) = containerTopBarPos
     startingY = contentTop + contentHeight
-    endingX = contentLeft + config.container["dimensions"]["width"]
+    endingX = contentLeft + config.container['dimensions']['width']
     content = screenshot[startingY:, contentLeft:endingX]
     containerBottomBarPos = locators.getContainerBottomBarPos(content)
     cannotGetContainerBottomBarPos = containerBottomBarPos is None
@@ -23,33 +36,16 @@ def getContent(screenshot):
     return content
 
 
-def getCreatureNameImg(slotImg):
-    creatureImg = slotImg[3:11 + 3, 23:23 + 131]
-    creatureNameColors = np.array(
-        [config.creatures["namePixelColor"], config.creatures["highlightedNamePixelColor"]], dtype=np.uint8)
-    indexes = np.where(np.isin(creatureImg, creatureNameColors))
-    creatureNameImg = np.zeros((11, 131), dtype=np.uint8)
-    creatureNameImg[indexes[0], indexes[1]
-                    ] = config.creatures["namePixelColor"]
-    return creatureNameImg
-
-# def getCreatureNameImg(slotImg):
-#     creatureNameImg = slotImg[3:11 + 3, 23:23 + 115]
-#     creatureNameImg = np.where(creatureNameImg <= 191, 0, creatureNameImg)
-#     creatureNameImg = np.array(creatureNameImg, dtype=np.uint8)
-#     highlightedNamePixelColorIndexes = np.nonzero(
-#         creatureNameImg == config.creatures["highlightedNamePixelColor"],)
-#     creatureNameImg[highlightedNamePixelColorIndexes] = config.creatures["namePixelColor"]
-#     return creatureNameImg
-
-
-def getCreatureSlotImg(content, slot):
-    isFirstSlot = slot == 0
-    startingY = 0 if isFirstSlot else slot * \
-        (config.slot["dimensions"]["height"] + config.slot["grid"]["gap"])
-    finishingY = startingY + config.slot["dimensions"]["height"]
-    slotImg = content[startingY:finishingY, :]
-    return slotImg
+@njit(cache=True, fastmath=True)
+def getCreaturesNamesImages(content, filledSlotsCount):
+    creaturesNamesImages = np.zeros((filledSlotsCount, 115), dtype=np.uint8)
+    for i in range(filledSlotsCount):
+        y = 11 + (i * 22)
+        img = content[y:y + 1, 23:138][0]
+        for j in range(img.shape[0]):
+            if img[j] == 192 or img[j] == 247:
+                creaturesNamesImages[i, j] = 192
+    return creaturesNamesImages
 
 
 @njit(cache=True, fastmath=True)
@@ -57,15 +53,11 @@ def getFilledSlotsCount(content):
     newContent = content[:, 23:24]
     flattenContent = np.ravel(newContent)
     cenas = np.logical_or(flattenContent == 192, flattenContent == 247)
-    contentOfBooleans = np.nonzero(cenas)
-    hasNoFilledSlots = len(contentOfBooleans[0]) == 0
+    contentOfBooleans = np.nonzero(cenas)[0]
+    hasNoFilledSlots = len(contentOfBooleans) == 0
     if hasNoFilledSlots:
         return 0
-    last = contentOfBooleans[0][-1]
-    slotsCount = math.ceil(last / 22)
-    return slotsCount
-
-
-def getUpperBorderOfCreatureIcon(slotImg):
-    upperBorderOfCreatureIcon = slotImg[0:1, 0:19].flatten()
-    return upperBorderOfCreatureIcon
+    lastIndex = contentOfBooleans[-1]
+    slotsCount = lastIndex / 22
+    slotsCountRounded = math.ceil(slotsCount)
+    return slotsCountRounded

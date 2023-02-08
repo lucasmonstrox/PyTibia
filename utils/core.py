@@ -5,10 +5,6 @@ import random
 import time
 from time import sleep
 import xxhash
-import dxcam
-
-
-camera = dxcam.create()
 
 
 def cacheObjectPos(func):
@@ -21,8 +17,7 @@ def cacheObjectPos(func):
     def inner(screenshot):
         nonlocal lastX, lastY, lastW, lastH, lastImgHash
         if lastX != None and lastY != None and lastW != None and lastH != None:
-            copiedImg = np.ascontiguousarray(screenshot[lastY:lastY +
-                                                        lastH, lastX:lastX + lastW])
+            copiedImg = screenshot[lastY:lastY + lastH, lastX:lastX + lastW]
             copiedImgHash = hashit(copiedImg)
             if copiedImgHash == lastImgHash:
                 return (lastX, lastY, lastW, lastH)
@@ -35,8 +30,7 @@ def cacheObjectPos(func):
         lastY = y
         lastW = w
         lastH = h
-        lastImg = np.ascontiguousarray(
-            screenshot[lastY:lastY + lastH, lastX:lastX + lastW])
+        lastImg = screenshot[lastY:lastY + lastH, lastX:lastX + lastW]
         lastImgHash = hashit(lastImg)
         return (x, y, w, h)
 
@@ -89,7 +83,9 @@ def locateMultiple(compareImg, img, confidence=0.85):
     return resultList
 
 
-def getScreenshot():
+def getScreenshot(camera):
+    if camera is None:
+        return None
     if not camera.is_capturing:
         camera.start(target_fps=180, video_mode=True)
     screenshot = camera.get_latest_frame()
@@ -97,7 +93,7 @@ def getScreenshot():
     return screenshot
 
 
-def stopScreenshotCamera():
+def stopScreenshotCamera(camera):
     camera.stop()
     camera.release()
 

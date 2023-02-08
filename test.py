@@ -1,6 +1,8 @@
 # from os import walk
 # import easyocr
 import numpy as np
+import sys
+# np.set_printoptions(threshold=sys.maxsize)
 # import cv2
 from time import sleep, time
 # import actionBar.core
@@ -26,6 +28,11 @@ import timeit
 from PIL import Image
 import multiprocessing
 # from inventory.core import getBackpackSlotImg, openBackpack
+import dxcam
+
+
+camera = dxcam.create()
+
 
 def main():
     # test = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
@@ -37,15 +44,15 @@ def main():
     #     utils.image.load('radar/images/paths/floor-11.png'))
     # reader = easyocr.Reader(['en'])
     # while True:
-    nonGrayScreenshot = utils.core.getScreenshot()
-    # nonGrayScreenshot = utils.image.load('screenshot.png')
+    # nonGrayScreenshot = utils.core.getScreenshot(camera)
+    nonGrayScreenshot = utils.image.load('screenshot.png')
     screenshot = utils.image.RGBtoGray(nonGrayScreenshot)
     # utils.image.save(screenshot, 'screenshot.png')
     # backpackSlotImg = getBackpackSlotImg(screenshot, 'fur backpack', 1)
     # utils.image.save(screenshot, 'screenshot.png')
     # hudSize = (960, 704)
     # resolution = 1080
-    # battleListCreatures = battleList.core.getCreatures(screenshot)
+    battleListCreatures = battleList.core.getCreatures(screenshot)
     # hudCoordinate = hud.core.getCoordinate(screenshot, hudSize)
     # hudImg = hud.core.getImgByCoordinate(screenshot, hudCoordinate, hudSize)
     # coordinate = radar.core.getCoordinate(screenshot)
@@ -105,23 +112,38 @@ def main():
     #     np.ascontiguousarray(lava3)), repeat=10, number=1)
     # res2 = timeit.repeat(lambda: utils.core.hashit(lava3), repeat=10, number=1)
     
+    # content = utils.image.loadFromRGBToGray('content.png')
+    # filledSlotsCount = battleList.extractors.getFilledSlotsCount(content)
+    # print('filledSlotsCount', filledSlotsCount)
+    # print('filledSlotsCount', filledSlotsCount)
+    # res = battleList.extractors.getBeingAttackedCreatures(content, filledSlotsCount)
+    # creaturesNamesImages = battleList.extractors.getCreaturesNamesImages(content, filledSlotsCount)
     
-    # content = battleList.extractors.getContent(screenshot)
-    content = utils.image.loadFromRGBToGray('content.png')
-    filledSlotsCount = battleList.extractors.getFilledSlotsCount(content)
-    beingAttackedCreatures = battleList.core.getCreatures(content, content)
-    # print(beingAttackedCreatures)
-
-    # res = battleList.extractors.getFilledSlotsCount(content)
-    # print(res)
- 
-    res1 = timeit.repeat(lambda: battleList.core.getCreatures(content, content), repeat=10, number=1)
-    print(res1)
-
-    # res = timeit.repeat(lambda: battleList.core.getCreatures(screenshot, content), repeat=10, number=1)
-    # res = timeit.repeat(lambda: battleList.core.getBeingAttackedCreatures(content, filledSlotsCount), repeat=10, number=1)
-    # res = timeit.repeat(lambda: utils.core.hashit(screenshot), repeat=10, number=1)
-    # print(res)
+    # print(previousResult)
+    # res = timeit.repeat(lambda: battleList.extractors.getFilledSlotsCount(content), repeat=10, number=1)
+    # print('res', res)
+    
+    # being attacked creatures
+    # print('being attacked creatures')
+    # parallel = timeit.repeat(lambda: battleList.extractors.getBeingAttackedCreatures_parallel(content, filledSlotsCount), repeat=10, number=1)
+    # print('parallel')
+    # print(parallel)
+    # numpy = timeit.repeat(lambda: battleList.extractors.getBeingAttackedCreatures_numpy(content, filledSlotsCount), repeat=10, number=1)
+    # print('numpy')
+    # print(numpy)
+    
+    # creatures names images
+    # print('creatures names images')
+    # parallel = timeit.repeat(lambda: battleList.extractors.getCreaturesNamesImages_parallel(content, filledSlotsCount), repeat=10, number=1)
+    # print('parallel')
+    # print(parallel)
+    # numpy = timeit.repeat(lambda: battleList.extractors.getCreaturesNamesImages_numpy(content, filledSlotsCount), repeat=10, number=1)
+    # print('numpy')
+    # print(numpy)
+    
+    res = timeit.repeat(lambda: battleList.core.getCreatures(screenshot), repeat=10, number=1)
+    print('get creatures', res)
+    
     
 #     res = func3(2)
 #     print(res)
