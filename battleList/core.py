@@ -22,8 +22,7 @@ def getCreatures(screenshot):
 
 
 def getCreatureName(creatureNameImg):
-    creatureNameImgNp = np.array(creatureNameImg, dtype=np.uint8)
-    creatureNameImgHash = utils.core.hashit(creatureNameImgNp)
+    creatureNameImgHash = utils.core.hashit(creatureNameImg)
     creatureName = config.creatures['nameImgHashes'].get(creatureNameImgHash, 'Unknown')
     return creatureName
 
