@@ -1,7 +1,6 @@
 import numpy as np
 from . import config, extractors
 from battleList.typing import creatureType
-import utils.image
 import utils.core
 
 
