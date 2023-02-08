@@ -50,14 +50,14 @@ def getCreaturesNamesImages(content, filledSlotsCount):
 
 @njit(cache=True, fastmath=True)
 def getFilledSlotsCount(content):
-    newContent = content[:, 23:24]
-    flattenContent = np.ravel(newContent)
-    cenas = np.logical_or(flattenContent == 192, flattenContent == 247)
-    contentOfBooleans = np.nonzero(cenas)[0]
+    firstPixelOfFirstLetters = content[:, 23:24]
+    firstPixelOfFirstLettersFlatten = np.ravel(firstPixelOfFirstLetters)
+    booleanIndexes = np.logical_or(firstPixelOfFirstLettersFlatten == 192, firstPixelOfFirstLettersFlatten == 247)
+    contentOfBooleans = np.nonzero(booleanIndexes)[0]
     hasNoFilledSlots = len(contentOfBooleans) == 0
     if hasNoFilledSlots:
         return 0
-    lastIndex = contentOfBooleans[-1]
-    slotsCount = lastIndex / 22
+    lastPaintedPixelIndex = contentOfBooleans[-1]
+    slotsCount = lastPaintedPixelIndex / 22
     slotsCountRounded = math.ceil(slotsCount)
     return slotsCountRounded
