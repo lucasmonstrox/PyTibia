@@ -1,3 +1,4 @@
+from numba import njit
 import numpy as np
 
 
@@ -26,10 +27,20 @@ def getAdjacencyMatrix(arr):
     return connections
 
 
+@njit(cache=True, fastmath=True)
 def hasMatrixInsideOther(matrix, other):
-    matrixFlattened = matrix.flatten()
-    otherFlattened = other.flatten()
-    blackPixelsIndexes = np.nonzero(otherFlattened == 0)[0]
+    for i in range(matrix.shape[0]):
+        for j in range(matrix.shape[1]):
+            if other[i][j] == 0 and matrix[i][j] != 0:
+                return False
+    return True
+
+
+@njit(cache=True, fastmath=True)
+def hasMatrixInsideOtherNp(matrix, other):
+    matrixFlattened = np.ravel(matrix)
+    otherFlattened = np.ravel(other)
+    blackPixelsIndexes = np.flatnonzero(otherFlattened == 0)
     blackPixels = np.take(matrixFlattened, blackPixelsIndexes)
     didMatch = np.all(blackPixels == 0)
-    return True if didMatch else False
+    return didMatch

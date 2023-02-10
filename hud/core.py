@@ -38,6 +38,7 @@ def getCoordinate(screenshot, hudSize):
     hudLeftPos = hudCenter - (hudWidth // 2) - 1
     hud = screenshot[leftSidebarArrows[1] + 5: leftSidebarArrows[1] +
                      5 + hudHeight, hudLeftPos:hudLeftPos + 1]
+    # TODO: improve code performance
     hud = np.where(np.logical_and(hud >= 18, hud <= 30), 1, 0)
     isHudDetected = np.all(hud == 1)
     if isHudDetected:

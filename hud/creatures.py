@@ -1,4 +1,5 @@
 import math
+from numba import njit
 import numpy as np
 import pathlib
 from scipy.sparse import csr_matrix
@@ -8,7 +9,7 @@ import radar.core
 import utils.core
 import utils.image
 import utils.matrix
-from wiki.creatures import creatures
+from wiki.creatures import creatures as wikiCreatures
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
@@ -56,7 +57,7 @@ resolutions = {
 }
 
 creaturesNamesHashes = {}
-for creature in creatures:
+for creature in wikiCreatures:
     creaturesNamesHashes[creature] = utils.image.loadAsGrey(
         f'{currentPath}/images/monsters/{creature}.png')
 
@@ -70,7 +71,28 @@ creatureType = np.dtype([
 ])
 
 
+@njit(cache=True, fastmath=True)
 def cleanCreatureName(creatureName):
+    for i in range(creatureName.shape[0]):
+        for j in range(creatureName.shape[1]):
+            if creatureName[i, j] == 29:
+                creatureName[i, j] = 0
+            if creatureName[i, j] == 57:
+                creatureName[i, j] = 0
+            if creatureName[i, j] == 91:
+                creatureName[i, j] = 0
+            if creatureName[i, j] == 113:
+                creatureName[i, j] = 0
+            if creatureName[i, j] == 152:
+                creatureName[i, j] = 0
+            if creatureName[i, j] == 170:
+                creatureName[i, j] = 0
+            if creatureName[i, j] == 192:
+                creatureName[i, j] = 0
+    return creatureName
+
+
+def cleanCreatureNameNp(creatureName):
     creatureName = np.where(creatureName == 29, 0, creatureName)
     creatureName = np.where(creatureName == 57, 0, creatureName)
     creatureName = np.where(creatureName == 91, 0, creatureName)
@@ -124,11 +146,9 @@ def getClosestCreature(hudCreatures, coordinate):
 def getCreaturesBars(hudImg, resolution):
     global resolutions
     flattenedHudImg = hudImg.flatten()
-    blackPixelsIndexes = np.nonzero(flattenedHudImg == 0)[0]
-    maxBlackPixelIndex = resolutions[resolution]['numberOfPixelsInHud'] - (
-        resolutions[resolution]['hudWidth'] * 4)
-    allowedBlackPixelsIndexes = np.nonzero(
-        blackPixelsIndexes < maxBlackPixelIndex)[0]
+    blackPixelsIndexes = np.flatnonzero(flattenedHudImg == 0)
+    maxBlackPixelIndex = resolutions[resolution]['numberOfPixelsInHud'] - (resolutions[resolution]['hudWidth'] * 4)
+    allowedBlackPixelsIndexes = np.flatnonzero(blackPixelsIndexes < maxBlackPixelIndex)
     blackPixelsIndexes = np.take(blackPixelsIndexes, allowedBlackPixelsIndexes)
     noBlackPixels = blackPixelsIndexes.size == 0
     if noBlackPixels:
@@ -136,10 +156,10 @@ def getCreaturesBars(hudImg, resolution):
     blackPixelsIndexesDiff = np.diff(blackPixelsIndexes)
     blackPixelsIndexesDiff = np.where(blackPixelsIndexesDiff == 1, 1, 0)
     cumulativeOfBlackPixelsIndexesDiff = np.cumsum(blackPixelsIndexesDiff)
-    corr = np.diff(np.hstack(
-        ((0,), cumulativeOfBlackPixelsIndexesDiff[blackPixelsIndexesDiff == 0])))
+    dk = blackPixelsIndexesDiff == 0
+    corr = np.diff(np.hstack(((0,), cumulativeOfBlackPixelsIndexesDiff[dk])))
     a2 = blackPixelsIndexesDiff.copy()
-    a2[blackPixelsIndexesDiff == 0] -= corr
+    a2[dk] -= corr
     f = a2.cumsum()
     h = np.where(f == 26)[0]
     h = h - 25
@@ -162,6 +182,8 @@ def getCreaturesBars(hudImg, resolution):
     return creaturesBarsXY
 
 
+# TODO: if last category is remaining, avoid calculating, return it immediatelly
+# TODO: add name missAlignment for each creature, it avoid possible 3 calculations
 def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordinate, resolution):
     """
     TODO:
@@ -186,6 +208,7 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
     sum = np.sum(power, axis=1)
     sqrt = np.sqrt(sum)
     creaturesBarsSortedInxes = np.argsort(sqrt)
+    hasCreaturesBeingAttacked = np.any(battleListCreatures['isBeingAttacked'] == True)
     for creatureBarSortedIndex in creaturesBarsSortedInxes:
         creatureBar = creaturesBars[creatureBarSortedIndex]
         nonCreaturesForCurrentBar = {}
@@ -195,12 +218,10 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
             creatureName = battleListCreature['name']
             isUnknownCreature = creatureName == 'Unknown'
             if isUnknownCreature:
-                creature = makeCreature(
-                    creatureName, 'player', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth)
+                creature = makeCreature(creatureName, 'player', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=hasCreaturesBeingAttacked)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
-                battleListCreatures = np.delete(
-                    battleListCreatures, battleListIndex)
+                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 continue
             creatureTypeAlreadyTried = creatureName in nonCreaturesForCurrentBar
             if creatureTypeAlreadyTried:
@@ -212,73 +233,48 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
             creatureNameImgHalfWidth = math.floor(creatureNameWidth / 2)
             leftDiff = max(creatureNameImgHalfWidth - 13, 0)
             gapLeft = 0 if creatureBarX > leftDiff else leftDiff - creatureBarX
-            gapInnerLeft = 0 if creatureNameWidth > 27 else math.ceil(
-                (27 - creatureNameWidth) / 2)
-            rightDiff = max(creatureNameWidth -
-                            creatureNameImgHalfWidth - 14, 0)
-            gapRight = 0 if hudWidth > (
-                creatureBarX + 27 + rightDiff) else creatureBarX + 27 + rightDiff - hudWidth
-            gapInnerRight = 0 if creatureNameWidth > 27 else math.floor(
-                (27 - creatureNameWidth) / 2)
-            startingX = max(0, creatureBarX - creatureNameImgHalfWidth +
-                            13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
-            endingX = min(960, creatureBarX + creatureNameImgHalfWidth +
-                          13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
+            gapInnerLeft = 0 if creatureNameWidth > 27 else math.ceil((27 - creatureNameWidth) / 2)
+            rightDiff = max(creatureNameWidth - creatureNameImgHalfWidth - 14, 0)
+            gapRight = 0 if hudWidth > (creatureBarX + 27 + rightDiff) else creatureBarX + 27 + rightDiff - hudWidth
+            gapInnerRight = 0 if creatureNameWidth > 27 else math.floor((27 - creatureNameWidth) / 2)
+            startingX = max(0, creatureBarX - creatureNameImgHalfWidth + 13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
+            endingX = min(960, creatureBarX + creatureNameImgHalfWidth + 13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight)
             creatureNameImg = creaturesNamesHashes[creatureName].copy()
-            creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1,
-                                             startingX:endingX]
+            creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1, startingX:endingX]
             if creatureNameImg.shape[1] != creatureWithDirtNameImg.shape[1]:
-                creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1,
-                                                 startingX:endingX + 1]
-            # TODO: avoid cleaning matrix, search directly by specific colours
-            creatureWithDirtNameImg = cleanCreatureName(
-                creatureWithDirtNameImg)
-            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
-                creatureWithDirtNameImg, creatureNameImg)
+                creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1, startingX:endingX + 1]
+            creatureWithDirtNameImg = cleanCreatureName(creatureWithDirtNameImg)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
-                creature = makeCreature(
-                    creatureName, 'monster', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth)
+                creature = makeCreature(creatureName, 'monster', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=hasCreaturesBeingAttacked)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
-                battleListCreatures = np.delete(
-                    battleListCreatures, battleListIndex)
+                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 break
             creatureNameImg2 = creaturesNamesHashes[creatureName].copy()
-            creatureWithDirtNameImg2 = hudImg[creatureBarY0:creatureBarY1,
-                                              startingX+1:endingX+1]
+            creatureWithDirtNameImg2 = hudImg[creatureBarY0:creatureBarY1, startingX+1:endingX+1]
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
-                creatureNameImg2 = creatureNameImg2[:,
-                                                    0:creatureNameImg2.shape[1] - 1]
-            creatureWithDirtNameImg2 = cleanCreatureName(
-                creatureWithDirtNameImg2)
-            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
-                creatureWithDirtNameImg2, creatureNameImg2)
+                creatureNameImg2 = creatureNameImg2[:, 0:creatureNameImg2.shape[1] - 1]
+            creatureWithDirtNameImg2 = cleanCreatureName(creatureWithDirtNameImg2)
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg2, creatureNameImg2)
             if creatureDidMatch:
-                creature = makeCreature(
-                    creatureName, 'monster', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth)
+                creature = makeCreature(creatureName, 'monster', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=hasCreaturesBeingAttacked)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
-                battleListCreatures = np.delete(
-                    battleListCreatures, battleListIndex)
+                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 break
-            creatureWithDirtNameImg3 = hudImg[creatureBarY0:creatureBarY1,
-                                              startingX:endingX - 1]
-            creatureWithDirtNameImg3 = cleanCreatureName(
-                creatureWithDirtNameImg3)
+            creatureWithDirtNameImg3 = hudImg[creatureBarY0:creatureBarY1, startingX:endingX - 1]
+            creatureWithDirtNameImg3 = cleanCreatureName(creatureWithDirtNameImg3)
             creatureNameImg3 = creaturesNamesHashes[creatureName].copy()
             creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
             if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
-                creatureNameImg3 = creatureNameImg3[:,
-                                                    0:creatureNameImg3.shape[1] - 1]
-            creatureDidMatch = utils.matrix.hasMatrixInsideOther(
-                creatureWithDirtNameImg3, creatureNameImg3)
+                creatureNameImg3 = creatureNameImg3[:, 0:creatureNameImg3.shape[1] - 1]
+            creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg3, creatureNameImg3)
             if creatureDidMatch:
-                creature = makeCreature(
-                    creatureName, 'monster', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth)
+                creature = makeCreature(creatureName, 'monster', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=hasCreaturesBeingAttacked)
                 creaturesToAppend = np.array([creature], dtype=creatureType)
                 creatures = np.append(creatures, creaturesToAppend)
-                battleListCreatures = np.delete(
-                    battleListCreatures, battleListIndex)
+                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 break
             nonCreaturesForCurrentBar[creatureName] = True
     return creatures
@@ -384,15 +380,15 @@ def hasTargetToCreature(hudCreatures, hudCreature, coordinate):
     return hasTarget
 
 
-# TODO: Avoid creature target check when non target creature is different from battleList being attacked creature
 # TODO: improve clean code
 # TODO: windowCoordinate should be improved for hud edges
-def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth):
+# TODO: avoid calculating if creature is target when some creature is already target
+def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=True):
     isBigHud = slotWidth == 64
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
     (xOfCreatureBar, yOfCreatureBar) = creatureBar
     extraY = 0 if yOfCreatureBar <= 27 else 31
-    wikiCreature = creatures.get(creatureName)
+    wikiCreature = wikiCreatures.get(creatureName)
     hudMisalignment = wikiCreature.get('hudMisalignment', {'x': 0, 'y': 0})
     hudMisalignmentX = hudMisalignment['x'] if isBigHud else hudMisalignment['x'] / 2
     hudMisalignmentY = hudMisalignment['y'] if isBigHud else hudMisalignment['y'] / 2
@@ -407,15 +403,17 @@ def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordina
     ySlot = min(ySlot, 10)
     ySlot = max(ySlot, 0)
     borderX = max(xOfCreatureBar - distanceBetweenSlotPixelLifeBar, 0)
-    borderedCreatureImg = hudImg[yOfCreatureBar + 5:yOfCreatureBar +
-                                 5 + slotWidth, borderX:borderX + slotWidth]
-    borderGap = 4 if slotWidth == 64 else 2
-    yOfBorder = slotWidth - borderGap
-    borderedCreatureImg[borderGap:yOfBorder, borderGap:yOfBorder] = 0
-    pixelsCount = np.sum(np.where(np.logical_or(
-        borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
-    # TODO: count by 720p resolution should be less than 1080p resolution
-    isBeingAttacked = pixelsCount > 50
+    isBeingAttacked = False
+    if discoverTarget:
+        borderedCreatureImg = hudImg[yOfCreatureBar + 5:yOfCreatureBar +
+                                    5 + slotWidth, borderX:borderX + slotWidth]
+        borderGap = 4 if slotWidth == 64 else 2
+        yOfBorder = slotWidth - borderGap
+        borderedCreatureImg[borderGap:yOfBorder, borderGap:yOfBorder] = 0
+        pixelsCount = np.sum(np.where(np.logical_or(
+            borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
+        # TODO: count by 720p resolution should be less than 1080p resolution
+        isBeingAttacked = pixelsCount > 50
     slot = (xSlot, ySlot)
     coordinateX = coordinate[0] - 7 + xSlot
     coordinateY = coordinate[1] - 5 + ySlot
