@@ -7,9 +7,9 @@ def convertGraysToBlack(arr):
     return np.where(np.logical_and(arr >= 50, arr <= 100), 0, arr)
 
 
-def RGBtoGray(screenshot):
-    screenshot = cv2.cvtColor(screenshot, cv2.COLOR_RGB2GRAY)
-    return screenshot
+def RGBtoGray(image):
+    grayImage = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    return grayImage
 
 
 def loadFromRGBToGray(path):
