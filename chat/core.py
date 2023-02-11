@@ -35,7 +35,7 @@ def readMessagesFromActiveChatTab(screenshot):
     messages = list(filter(None, messages))
     return messages
 
-
+# TODO: optimize this
 def hasNewLoot(screenshot):
     global oldListOfLootCheck
     lootLines = getLootLines(screenshot)
@@ -59,6 +59,7 @@ def hasNewLoot(screenshot):
     return False
 
 
+# TODO: optimize this
 def getLootLines(screenshot):
     (x, y, w, h) = getChatMessagesContainerPos(screenshot)
     messages = screenshot[y: y + h, x: x + w]
