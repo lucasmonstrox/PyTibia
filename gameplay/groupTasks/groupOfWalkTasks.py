@@ -20,7 +20,6 @@ class GroupOfWalkTasks(GroupTaskExecutor):
         self.value = waypointCoordinate
 
     def generateTasks(self, context, waypointCoordinate):
-        print('gerando GroupOfWalkTasks')
         walkpoints = generateFloorWalkpoints(
             context['coordinate'], waypointCoordinate, nonWalkableCoordinates=context['cavebot']['holesOrStairs'])
         tasks = np.array([], dtype=taskType)
