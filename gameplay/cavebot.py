@@ -20,8 +20,8 @@ def resolveCavebotTasks(context):
             return targetCreature, GroupOfAttackClosestCreatureTasks(context, targetCreature)
         # TODO: recalculate route if something cross walkpoints
         return targetCreature, GroupOfFollowTargetCreatureTasks(context, targetCreature)
-    targetCreature = getClosestCreature(context['monsters'], context['coordinate'])
-    hasNoTargetCreature = targetCreature == None
-    if hasNoTargetCreature:
-        return targetCreature, None
-    return targetCreature, GroupOfAttackClosestCreatureTasks(context, targetCreature)
+    closestCreature = getClosestCreature(context['monsters'], context['coordinate'])
+    hasNoClosestCreature = closestCreature == None
+    if hasNoClosestCreature:
+        return None, None
+    return closestCreature, GroupOfAttackClosestCreatureTasks(context, closestCreature)
