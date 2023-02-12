@@ -2,10 +2,8 @@ import eventlet
 import multiprocessing
 import numpy as np
 import pyautogui
-from rx import interval, of, operators, pipe, timer
+from rx import interval, operators
 from rx.scheduler import ThreadPoolScheduler
-from rx.subject import Subject
-import socketio
 from time import sleep
 import actionBar.core
 import battleList.core
@@ -29,10 +27,13 @@ import utils.array
 import utils.core
 import utils.image
 import skills.core
+import dxcam
 
 
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
+
+camera = dxcam.create()
 
 
 gameContext = {
@@ -57,16 +58,16 @@ gameContext = {
         'waypoints': {
             'currentIndex': None,
             'points': np.array([
-                ('', 'walk', (33214, 32459, 8), {}),
-                ('', 'walk', (33214, 32456, 8), {}),
-                ('', 'moveUpNorth', (33214, 32456, 8), {}),
-                ('', 'walk', (33214, 32450, 7), {}),  #indo para cave
-                ('', 'walk', (33220, 32428, 7), {}),
-                ('', 'walk', (33216, 32392, 7), {}),
-                ('', 'walk', (33251, 32364, 7), {}),
-                ('', 'walk', (33277, 32329, 7), {}),
-                ('', 'walk', (33301, 32291, 7), {}),
-                ('', 'walk', (33302, 32289, 7), {}), # chegou na cave
+                # ('', 'walk', (33214, 32459, 8), {}),
+                # ('', 'walk', (33214, 32456, 8), {}),
+                # ('', 'moveUpNorth', (33214, 32456, 8), {}),
+                # ('', 'walk', (33214, 32450, 7), {}),  #indo para cave
+                # ('', 'walk', (33220, 32428, 7), {}),
+                # ('', 'walk', (33216, 32392, 7), {}),
+                # ('', 'walk', (33251, 32364, 7), {}),
+                # ('', 'walk', (33277, 32329, 7), {}),
+                # ('', 'walk', (33301, 32291, 7), {}),
+                # ('', 'walk', (33302, 32289, 7), {}), # chegou na cave
                 ('caveStart', 'walk', (33301, 32278, 7), {}), # 10
                 ('', 'walk', (33312, 32278, 7), {}), # 11
                 ('', 'walk', (33318, 32283, 7), {}), # 12
@@ -149,44 +150,6 @@ taskExecutor = TaskExecutor()
 
 
 def main():
-    sio = socketio.Server()
-    app = socketio.WSGIApp(sio)
-
-    @sio.event
-    def connect(sid, environ):
-        pass
-
-    @sio.on('getContext')
-    def handleGetContext(_):
-        global gameContext
-        waypoints = [[[int(waypoint['coordinate'][0]), int(waypoint['coordinate'][1]), int(waypoint['coordinate'][2])], waypoint['options']]
-                     for waypoint in gameContext['cavebot']['waypoints']['points']]
-        return None, {
-            'backpacks': gameContext['backpacks'],
-            'hotkeys': gameContext['hotkeys'],
-            'refill': gameContext['refill'],
-            'waypoints': waypoints,
-        }
-
-    @sio.on('setContext')
-    def handleSetContext(_, data):
-        global gameContext
-        gameContext['backpacks'] = data['backpacks']
-        gameContext['hotkeys'] = data['hotkeys']
-        gameContext['refill'] = data['refill']
-        waypoints = [[[int(waypoint['coordinate'][0]), int(waypoint['coordinate'][1]), int(waypoint['coordinate'][2])], waypoint['options']]
-                     for waypoint in gameContext['cavebot']['waypoints']['points']]
-        return None, {
-            'backpacks': gameContext['backpacks'],
-            'hotkeys': gameContext['hotkeys'],
-            'refill': gameContext['refill'],
-            'waypoints': waypoints,
-        }
-
-    @sio.event
-    def disconnect(sid):
-        pass
-
     optimal_thread_count = multiprocessing.cpu_count()
     threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
     thirteenFps = 0.00833333333
@@ -194,7 +157,7 @@ def main():
 
     def handleScreenshot(_):
         global gameContext
-        screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
+        screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(camera))
         gameContext['screenshot'] = screenshot
         return gameContext
 
@@ -337,22 +300,18 @@ def main():
     
     def shouldAskForCavebotTasks(context):
         isNotCavebotWay = context['way'] != 'cavebot'
-        print('isNotCavebotWay', isNotCavebotWay)
         if isNotCavebotWay:
             return False
-        print('currentGroupTask', context['currentGroupTask'])
         if context['currentGroupTask'] is None:
             return True
         endlessTasks = ['groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfSingleWalk', 'groupOfUseRope', 'groupOfUseShovel']
         should = not (context['currentGroupTask'].name in endlessTasks)
-        print('should', should)
         return should
     
     def handleTasks(context):
         global gameContext
         copyOfContext = context.copy()
         hasCavebotTasks = shouldAskForCavebotTasks(context)
-        print('hasCavebotTasks', hasCavebotTasks)
         if hasCavebotTasks:
             isTryingToAttackClosestCreature = copyOfContext[
                 'currentGroupTask'] is not None and (copyOfContext['currentGroupTask'].name == 'groupOfAttackClosestCreature' or copyOfContext['currentGroupTask'].name == 'groupOfFollowTargetCreature')
@@ -384,16 +343,10 @@ def main():
                 firstDeadCorpse = copyOfContext['corpsesToLoot'][0]
                 copyOfContext['currentGroupTask'] = GroupOfLootCorpseTasks(copyOfContext, firstDeadCorpse)
         elif copyOfContext['way'] == 'waypoint':
-            print('quero waypointar')
             currentWaypointIndex = copyOfContext['cavebot']['waypoints']['currentIndex']
             currentWaypoint = copyOfContext['cavebot']['waypoints']['points'][currentWaypointIndex]
-            print('currentWaypointIndex', currentWaypointIndex)
-            print('currentWaypoint', currentWaypoint)
             if copyOfContext['currentGroupTask'] == None:
-                print('me da umas tasks de waypoint')
                 copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(copyOfContext, currentWaypoint)
-            else:
-                print('mas ja tou waypoitando')
         gameContext = copyOfContext
         return copyOfContext
 
@@ -448,7 +401,6 @@ def main():
                 sleep(0.25)
                 return
 
-
     spellObserver = fpsWithScreenshot.pipe(
         operators.subscribe_on(threadPoolScheduler)
     )
@@ -471,7 +423,9 @@ def main():
         spellObserver.subscribe(spellObservable)
         healingObserver.subscribe(healingObservable)
         taskObserver.subscribe(taskObservable)
-        eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+        while True:
+            sleep(1)
+            continue
     except KeyboardInterrupt:
         print("Program terminated manually!")
         raise SystemExit
