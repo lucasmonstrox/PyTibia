@@ -4,7 +4,6 @@ import numpy as np
 import pathlib
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
-import tcod
 import radar.config
 import radar.core
 import utils.core
@@ -30,14 +29,12 @@ lifeBarBlackPixelsMapperOf1080 = np.array([
     22, hudWidthTriple + 23, hudWidthTriple +
     24, hudWidthTriple + 25, hudWidthTriple + 26
 ])
-
 lifeBarBlackPixelsMapperOf720 = np.array([
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
     480, 506,
     960, 986,
     1440, 1441, 1442, 1443, 1444, 1445, 1446, 1447, 1448, 1449, 1450, 1451, 1452, 1453, 1454, 1455, 1456, 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466
 ])
-
 resolutions = {
     720: {
         'lifeBarblackPixelsMapper': lifeBarBlackPixelsMapperOf720,
@@ -56,12 +53,10 @@ resolutions = {
         'slotWidth': 64,
     },
 }
-
 creaturesNamesHashes = {}
 for creature in wikiCreatures:
     creaturesNamesHashes[creature] = utils.image.loadAsGrey(
         f'{currentPath}/images/monsters/{creature}.png')
-
 creatureType = np.dtype([
     ('name', np.str_, 64),
     ('type', np.str_, 64),
@@ -150,8 +145,7 @@ def getBlackPixels(hudImg):
     return blackPixelsIndexes
 
 
-# TODO: improve clean code
-def getCreaturesBars(hudImg, resolution):
+def getCreaturesBarsNp(hudImg, resolution):
     global resolutions
     lifeBarblackPixelsMapper = resolutions[resolution]['lifeBarblackPixelsMapper']
     numberOfPixelsInHud = resolutions[resolution]['numberOfPixelsInHud']
@@ -187,7 +181,31 @@ def getCreaturesBars(hudImg, resolution):
     creaturesBarsX = creaturesBars % hudWidth
     creaturesBarsY = creaturesBars // hudWidth
     creaturesBarsXY = np.column_stack((creaturesBarsX, creaturesBarsY))
-    return creaturesBarsXY
+    return 
+
+
+@njit(cache=True, fastmath=True)
+def getCreaturesBars(hudImg, battleListCreaturesCount):
+    creaturesBars = np.zeros((battleListCreaturesCount, 2), dtype=np.uint32)
+    curr = 0
+    hudImgFlattened = np.ravel(hudImg)
+    teste = np.ravel(lifeBarBlackPixelsMapperOf1080)
+    for i in range(hudImgFlattened.shape[0]):
+        if curr == battleListCreaturesCount:
+            break
+        max = hudImgFlattened.shape[0] - hudImg.shape[0] * 4
+        if hudImgFlattened[i] == 0 and i < max:
+            imgCoordinates = teste + i
+            img = np.take(hudImgFlattened, imgCoordinates)
+            lifeBarDetected = np.all(img == 0)
+            if lifeBarDetected:
+                x = i % 960
+                y = i // 960
+                creaturesBars[curr] = [x, y]
+                curr += 1
+                if curr == battleListCreaturesCount:
+                    break
+    return creaturesBars
 
 
 # TODO: if last category is remaining, avoid calculating, return it immediatelly
@@ -199,10 +217,11 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
     - Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars
     """
     creatures = np.array([], dtype=creatureType)
-    hasNoBattleListCreatures = len(battleListCreatures) == 0
+    battleListCreaturesCount = len(battleListCreatures)
+    hasNoBattleListCreatures = battleListCreaturesCount == 0
     if hasNoBattleListCreatures:
         return creatures
-    creaturesBars = getCreaturesBars(hudImg, resolution)
+    creaturesBars = getCreaturesBars(hudImg, battleListCreaturesCount)
     hasNoCreaturesBars = len(creaturesBars) == 0
     if hasNoCreaturesBars:
         return creatures
@@ -396,10 +415,9 @@ def hasTargetToCreatureBySlot(hudCreatures, slot, coordinate):
     floorLevel = hudCreatures[0]['coordinate'][2]
     # TODO: improve this
     walkableFloorsSqms = radar.config.walkableFloorsSqms[floorLevel]
-    hudCreaturesSlots = hudCreatures['slot']
     hudWalkableFloorsSqms = getHudWalkableFloorsSqms(
         walkableFloorsSqms, coordinate)
-    creaturesSlots = hudCreaturesSlots[:, [1, 0]]
+    creaturesSlots = hudCreatures['slot'][:, [1, 0]]
     hudWalkableFloorsSqms[creaturesSlots[:, 0], creaturesSlots[:, 1]] = 0
     xOfSlot, yOfSlot = slot
     hudWalkableFloorsSqms[yOfSlot, xOfSlot] = 1
