@@ -19,7 +19,6 @@ class GroupOfSingleWalkTasks(GroupTaskExecutor):
         self.value = checkInCoordinate
 
     def generateTasks(self, context, checkInCoordinate):
-        print('gerando GroupOfSingleWalkTasks')
         tasks = np.array([], dtype=taskType)
         walkpointTask = makeWalkTask(context, checkInCoordinate)
         taskToAppend = np.array([walkpointTask], dtype=taskType)
