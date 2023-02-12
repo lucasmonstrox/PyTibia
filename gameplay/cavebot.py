@@ -1,4 +1,3 @@
-# from scipy.spatial import distance
 from battleList.core import isAttackingSomeCreature
 from hud.creatures import getClosestCreature, getTargetCreature, hasTargetToCreature
 from .groupTasks.groupOfAttackClosestCreatureTasks import GroupOfAttackClosestCreatureTasks
@@ -19,8 +18,6 @@ def resolveCavebotTasks(context):
             if hasNoTargetCreature:
                 return targetCreature, None
             return targetCreature, GroupOfAttackClosestCreatureTasks(context, targetCreature)
-        # targetCreaturesDistance = distance.cdist([context['coordinate']], [targetCreature['coordinate']]).flatten()[0]
-        # targetCreatureIsClose = targetCreaturesDistance < 1.42
         # TODO: recalculate route if something cross walkpoints
         return targetCreature, GroupOfFollowTargetCreatureTasks(context, targetCreature)
     targetCreature = getClosestCreature(context['monsters'], context['coordinate'])
