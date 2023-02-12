@@ -68,7 +68,8 @@ creatureType = np.dtype([
     ('isBeingAttacked', np.bool_),
     ('slot', np.uint8, (2,)),
     ('coordinate', np.uint16, (3,)),
-    ('windowCoordinate', np.uint32, (2,))
+    ('windowCoordinate', np.uint32, (2,)),
+    ('hudCoordinate', np.uint32, (2,)),
 ])
 
 
@@ -514,6 +515,7 @@ def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordina
     yCoordinate = min(yCoordinate, maxHudHeightForAttacking)
     windowCoordinate = (hudCoordinateX + xCoordinate,
                         hudCoordinateY + yCoordinate)
+    hudCoordinate = (xCoordinate + hudMisalignmentX, yCoordinate + hudMisalignmentY)
     creature = (creatureName, creatureType, isBeingAttacked, slot,
-                coordinate, windowCoordinate)
+                coordinate, windowCoordinate , hudCoordinate)
     return creature
