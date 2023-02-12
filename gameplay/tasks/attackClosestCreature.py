@@ -28,6 +28,7 @@ class AttackClosestCreatureTask:
         return context
 
     def did(self, context):
+        # TODO: check if creature from specific coordinate/slot is being attacked. Avoid checking on battle list
         return isAttackingSomeCreature(context['battleListCreatures'])
 
     def shouldRestart(self, _):
