@@ -138,7 +138,7 @@ def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
         breakpoints = tilesFrictionsBreakpoints[tileFriction]
     else:
         breakpoints = tilesFrictionsBreakpoints[140]
-    currentSpeedBreakpoint = np.nonzero(breakpoints >= charSpeed)[0][0]
+    currentSpeedBreakpoint = np.flatnonzero(breakpoints >= charSpeed)[0]
     speed = breakpointTileMovementSpeed[currentSpeedBreakpoint]
     return speed
 
