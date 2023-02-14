@@ -6,6 +6,7 @@ from gameplay.factories.makeWalkTask import makeWalkTask
 from gameplay.groupTasks.groupTaskExecutor import GroupTaskExecutor
 from gameplay.typings import taskType
 from gameplay.waypoint import generateFloorWalkpoints
+from radar.types import coordinateType
 
 
 class GroupOfAttackClosestCreatureTasks(GroupTaskExecutor):
@@ -26,19 +27,27 @@ class GroupOfAttackClosestCreatureTasks(GroupTaskExecutor):
             makeAttackClosestCreatureTask(closestCreature),
         ], dtype=taskType)
         tasks = np.append(tasks, [tasksToAppend])
-        walkpoints = generateFloorWalkpoints(
-            context['coordinate'], closestCreature['coordinate'], nonWalkableCoordinates=context['cavebot']['holesOrStairs'])
-        hasWalkpoints = len(walkpoints) > 0
-        if hasWalkpoints:
-            walkpoints.pop()
-        targetWaypoint = None
-        if len(walkpoints) == 1:
-            targetWaypoint = walkpoints[0]
-        elif len(walkpoints) >= 2:
-            targetWaypoint = walkpoints[1]
-        if targetWaypoint:
-            dist = distance.cdist([context['coordinate']], [targetWaypoint]).flatten()[0]
-            if dist < 1.42:
+        nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
+        for monster in context['monsters']:
+            if np.array_equal(monster['coordinate'], closestCreature['coordinate']) == False:
+                monsterCoordinateTuple = (monster['coordinate'][0], monster['coordinate'][1], monster['coordinate'][2])
+                coordinatesToAppend = np.array([monsterCoordinateTuple], dtype=coordinateType)
+                nonWalkableCoordinates = np.append(nonWalkableCoordinates, coordinatesToAppend)
+        hudHeight, hudWidth  = context['hudImg'].shape
+        hudCenter = (hudWidth // 2, hudHeight // 2)
+        monsterHudCoordinate = closestCreature['hudCoordinate']
+        moduleX = abs(hudCenter[0] - monsterHudCoordinate[0])
+        moduleY = abs(hudCenter[1] - monsterHudCoordinate[1])
+        dist = distance.cdist([context['coordinate']], [closestCreature['coordinate']]).flatten()[0]
+        walkpoints = []
+        if dist < 2:
+            if moduleX > 64 or moduleY > 64:
+                walkpoints.append(closestCreature['coordinate'])
+        else:
+            walkpoints = generateFloorWalkpoints(
+                context['coordinate'], closestCreature['coordinate'], nonWalkableCoordinates=nonWalkableCoordinates)
+            hasWalkpoints = len(walkpoints) > 0
+            if hasWalkpoints:
                 walkpoints.pop()
         for walkpoint in walkpoints:
             walkpointTask = makeWalkTask(context, walkpoint)
