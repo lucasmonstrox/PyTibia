@@ -1,4 +1,3 @@
-import eventlet
 import multiprocessing
 import numpy as np
 import pyautogui
