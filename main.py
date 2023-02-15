@@ -1,3 +1,4 @@
+import dxcam
 import multiprocessing
 import numpy as np
 import pyautogui
@@ -7,7 +8,7 @@ from time import sleep
 import actionBar.core
 import battleList.core
 import battleList.typing
-from chat import core
+import chat.core
 import gameplay.cavebot
 import gameplay.decision
 import gameplay.resolvers
@@ -18,15 +19,13 @@ import hud.creatures
 import hud.slot
 import player.core
 import radar.core
-from radar.types import coordinateType
-from radar.types import waypointType
+from radar.types import coordinateType, waypointType
 from gameplay.taskExecutor import TaskExecutor
 from gameplay.groupTasks.groupOfLootCorpseTasks import GroupOfLootCorpseTasks
 import utils.array
 import utils.core
 import utils.image
 import skills.core
-import dxcam
 
 
 pyautogui.FAILSAFE = False
@@ -265,7 +264,7 @@ def main():
         beingAttackedIndexes = np.where(
             hudCreatures['isBeingAttacked'] == True)[0]
         hasCreatureBeingAttacked = len(beingAttackedIndexes) > 0
-        if core.hasNewLoot(copyOfContext['screenshot']) and copyOfContext['beingAttackedCreature']:
+        if chat.core.hasNewLoot(copyOfContext['screenshot']) and copyOfContext['beingAttackedCreature']:
             copyOfContext['corpsesToLoot'] = np.append(copyOfContext['corpsesToLoot'], [
                                       copyOfContext['beingAttackedCreature']], axis=0)
         beingAttackedCreature = None
