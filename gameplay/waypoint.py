@@ -48,7 +48,7 @@ def resolveFloorCoordinate(_, nextCoordinate):
     }
 
 
-def resolveMoveDownWestCoordinate(_, nextCoordinate):
+def resolveMoveDownEastCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     checkInCoordinate = [x + 2, y, floorLevel + 1]
     return {
@@ -143,9 +143,9 @@ def resolveGoalCoordinate(coordinate, waypoint):
     elif waypoint['type'] == 'useShovel':
         goalCoordinate = resolveUseShovelWaypointCoordinate(
             coordinate, waypoint['coordinate'])
-    # elif waypoint['type'] == 'moveDownEast':
-    #     goalCoordinate = resolveMoveDownEastCoordinate(
-    #         coordinate, waypoint['coordinate'])
+    elif waypoint['type'] == 'moveDownEast':
+        goalCoordinate = resolveMoveDownEastCoordinate(
+            coordinate, waypoint['coordinate'])
     elif waypoint['type'] == 'moveDownNorth':
         goalCoordinate = resolveMoveDownNorthCoordinate(
             coordinate, waypoint['coordinate'])
