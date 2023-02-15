@@ -32,9 +32,8 @@ import dxcam
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
 
+
 camera = dxcam.create()
-
-
 gameContext = {
     'backpacks': {
         'main': 'brocade backpack',
