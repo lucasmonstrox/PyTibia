@@ -1,6 +1,6 @@
 # TODO: Add Gray Beach
 cities = {
-    'abdendriel': {
+    'AbDendriel': {
         'depotCoordinates': [
             [32679, 31683, 8],
             [32679, 31685, 8],
@@ -28,7 +28,7 @@ cities = {
             [32679, 31689, 3],
         ],
     },
-    'ankrahmun': {
+    'Ankrahmun': {
         'depotCoordinates': [
             [33121, 32837, 7],
             [33121, 32839, 7],
@@ -54,7 +54,7 @@ cities = {
             [33127, 32842, 5],
         ]
     },
-    'carlin': {
+    'Carlin': {
         'depotCoordinates': [
             [32326, 31775, 8],
             [32326, 31777, 8],
@@ -96,7 +96,7 @@ cities = {
             [32338, 31785, 5],
         ],
     },
-    'darashia': {
+    'Darashia': {
         'depotCoordinates': [
             [33205, 32456, 8],
             [33207, 32456, 8],
@@ -118,7 +118,7 @@ cities = {
             [33223, 32465, 8],
         ]
     },
-    'edron': {
+    'Edron': {
         'depotCoordinates': [
             [33161, 31796, 8],
             [33163, 31796, 8],
@@ -158,7 +158,7 @@ cities = {
             [33173, 31813, 10],
         ]
     },
-    'farmine': {
+    'Farmine': {
         'depotCoordinates': [
             [33025, 31444, 11],
             [33027, 31444, 11],
@@ -174,7 +174,7 @@ cities = {
             [33030, 31461, 11],
         ],
     },
-    'issavi': {
+    'Issavi': {
         'depotCoordinates': [
             [33916, 31475, 7],
             [33918, 31475, 7],
@@ -190,7 +190,7 @@ cities = {
             [33926, 31485, 7],
         ],
     },
-    'kazoordon': {
+    'Kazoordon': {
         'depotCoordinates': [
             [32648, 31911, 8],
             [32648, 31913, 8],
@@ -212,8 +212,7 @@ cities = {
             [32664, 31918, 8],
         ],
     },
-    
-    'svargrond': {
+    'Svargrond': {
         'depotCoordinates': [
             [32253, 31138, 7],
             [32255, 31138, 7],
@@ -237,7 +236,7 @@ cities = {
             [32271, 31144, 7],
         ]
     },
-    'thais': {
+    'Thais': {
         'depotCoordinates': [
             [32341, 32222, 8],
             [32343, 32222, 8],
@@ -260,7 +259,7 @@ cities = {
         ]
        
     },
-    'venore': {
+    'Venore': {
         'depotCoordinates': [
             [32911, 32072, 7],
             [32913, 32072, 7],
@@ -284,7 +283,7 @@ cities = {
             [32930, 32081, 7],
         ]
     },
-    'yalahar': {
+    'Yalahar': {
         'depotCoordinates': [
             [32777,31244,7],
             [32779,31244,7],
