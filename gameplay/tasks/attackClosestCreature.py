@@ -21,7 +21,9 @@ class AttackClosestCreatureTask:
     def do(self, context):
         closestCreature = self.value
         x, y = closestCreature['windowCoordinate']
-        pyautogui.rightClick(x, y)
+        pyautogui.keyDown('alt')
+        pyautogui.click(x, y)
+        pyautogui.keyUp('alt')
         return context
 
     def ping(self, context):
