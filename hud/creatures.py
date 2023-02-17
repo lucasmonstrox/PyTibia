@@ -181,7 +181,7 @@ def getCreaturesBarsNp(hudImg, resolution):
     creaturesBarsX = creaturesBars % hudWidth
     creaturesBarsY = creaturesBars // hudWidth
     creaturesBarsXY = np.column_stack((creaturesBarsX, creaturesBarsY))
-    return 
+    return creaturesBarsXY
 
 
 @njit(cache=True, fastmath=True)
@@ -445,7 +445,6 @@ def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordina
     isBigHud = slotWidth == 64
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
     (xOfCreatureBar, yOfCreatureBar) = creatureBar
-    extraY = 0 if yOfCreatureBar <= 27 else 31
     wikiCreature = wikiCreatures.get(creatureName)
     hudMisalignment = wikiCreature.get('hudMisalignment', {'x': 0, 'y': 0})
     hudMisalignmentX = hudMisalignment['x'] if isBigHud else hudMisalignment['x'] / 2
@@ -455,7 +454,6 @@ def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordina
     xSlot = round((xCoordinate + hudMisalignmentX) / slotWidth)
     xSlot = min(xSlot, 14)
     xSlot = max(xSlot, 0)
-    yCoordinate = yOfCreatureBar + 5 + extraY
     yCoordinate = 0 if yOfCreatureBar <= 14 else yOfCreatureBar + 5
     ySlot = round((yCoordinate + hudMisalignmentY) / slotWidth)
     ySlot = min(ySlot, 10)
