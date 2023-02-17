@@ -2,7 +2,7 @@
 
 > Fastest Tibia PixelBot developed in python to get unlocked fps.
 
-*Read this in other languages: [English](README.md), [Brazilian Portuguese](README.pt-BR.md).*
+_Read this in other languages: [English](README.md), [Brazilian Portuguese](README.pt-BR.md)._
 
 This BOT works locating image around the screen and applies cache to avoid image redetection and thus avoid excessive cpu/gpu usage.
 
@@ -77,6 +77,7 @@ poetry run python -m pytest
 
 # ✅ TODO
 
+- Add recursive tasks
 - Add spells combos
 - Add thread to eat food
 - Add training way
