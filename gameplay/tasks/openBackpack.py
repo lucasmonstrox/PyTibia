@@ -15,7 +15,8 @@ class OpenBackpackTask:
         self.value = backpack
 
     def shouldIgnore(self, context):
-        return isBackpackOpen(context['screenshot'], self.value)
+        shouldIgnore = isBackpackOpen(context['screenshot'], self.value)
+        return shouldIgnore
 
     def do(self, context):
         openBackpack(context['screenshot'], self.value)
@@ -25,7 +26,8 @@ class OpenBackpackTask:
         return context
 
     def did(self, context):
-        return isBackpackOpen(context['screenshot'], self.value)
+        did = isBackpackOpen(context['screenshot'], self.value)
+        return did
     
     def shouldRestart(self, _):
         return False
