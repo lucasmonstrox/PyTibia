@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pytibia"
+name = "PyTibia"
 version = "0.1.0"
 description = ""
 authors = ["lucasmonstro <joao.galiano.silva@gmail.com>"]
