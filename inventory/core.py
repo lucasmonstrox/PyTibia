@@ -43,7 +43,7 @@ jewelledBpItems = [
     'mana-potion',
     'strong-health-potion',
     'strong-mana-potion',
-    'ultimate-health-potion'
+    'ultimate-health-potion',
     'ultimate-mana-potion',
     'ultimate-spirit-potion'
 ]
@@ -231,18 +231,6 @@ def isWindowOpen(screenshot, windowBar):
     if backpackPos is None:
         return False
     return True
-
-
-def getBackpackSlotImg(screenshot, backpackName, slot):
-    backpackBarImg = backpacksBarsImages[backpackName]
-    backpackPos = utils.core.locate(screenshot, backpackBarImg)
-    x = 4
-    y = 13
-    slotRow = (slot % 4)
-    slotColumn = (slot // 5)
-    # slotY = (slot) + y
-    # screenshot = 123
-    # pass
 
 
 def openMainBackpack(window, squares):
