@@ -6,6 +6,7 @@ from .extractors import getCooldownsImg
 from .locators import getLeftSideArrowsPos
 from utils.core import locate
 
+
 reader = Reader(['en'])
 
 
