@@ -1,16 +1,16 @@
-from .locators import getLeftSideArrowsPos, getRightSideArrowsPos
+from .locators import getLeftArrowsPos, getRightArrowsPos
 
 
-def getCooldownsImg(screenshot):
-    leftSideArrowsPos = getLeftSideArrowsPos(screenshot)
-    cannotGetLeftSideArrowsPos = leftSideArrowsPos is None
-    if cannotGetLeftSideArrowsPos:
+def getCooldownsImage(screenshot):
+    leftArrowsPos = getLeftArrowsPos(screenshot)
+    cannotGetLeftArrowsPos = leftArrowsPos is None
+    if cannotGetLeftArrowsPos:
         return None
-    (x0, y0, _, _) = leftSideArrowsPos
-    rightSideArrowsPos = getRightSideArrowsPos(screenshot)
-    cannotGetRightSideArrowsPos = rightSideArrowsPos is None
-    if cannotGetRightSideArrowsPos:
+    rightArrowsPos = getRightArrowsPos(screenshot)
+    cannotGetRightArrowsPos = rightArrowsPos is None
+    if cannotGetRightArrowsPos:
         return None
-    (x1, _, _, _) = rightSideArrowsPos
-    cooldownsImg = screenshot[y0 + 37: y0 + 37 + 22, x0:x1]
-    return cooldownsImg
+    x0, y0, _, _ = leftArrowsPos
+    x1, _, _, _ = rightArrowsPos
+    cooldownsImage = screenshot[y0 + 37: y0 + 37 + 22, x0:x1]
+    return cooldownsImage

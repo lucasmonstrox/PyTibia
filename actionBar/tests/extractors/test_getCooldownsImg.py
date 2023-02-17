@@ -1,6 +1,6 @@
 import numpy as np
 import pathlib
-from actionBar.extractors import getCooldownsImg
+from actionBar.extractors import getCooldownsImage
 from utils.image import load, RGBtoGray
 
 
@@ -10,27 +10,27 @@ listOfCooldownsImg = RGBtoGray(load(f'{currentPath}/listOfCooldownsImg.png'))
 
 
 def test_should_return_None_when_cannot_get_left_side_arrows_pos(mocker):
-    getLeftSideArrowsPosSpy = mocker.patch(
-        'actionBar.locators.getLeftSideArrowsPos', return_value=None)
-    getRightSideArrowsPosSpy = mocker.patch(
-        'actionBar.locators.getRightSideArrowsPos', return_value=None)
-    result = getCooldownsImg(screenshotImg)
+    getLeftArrowsPosSpy = mocker.patch(
+        'actionBar.locators.getLeftArrowsPos', return_value=None)
+    getRightArrowsPosSpy = mocker.patch(
+        'actionBar.locators.getRightArrowsPos', return_value=None)
+    result = getCooldownsImage(screenshotImg)
     assert result == None
-    getLeftSideArrowsPosSpy.assert_called_once_with(screenshotImg)
-    getRightSideArrowsPosSpy.assert_not_called()
+    getLeftArrowsPosSpy.assert_called_once_with(screenshotImg)
+    getRightArrowsPosSpy.assert_not_called()
 
 
 def test_should_return_None_when_cannot_get_right_side_arrows_pos(mocker):
-    getLeftSideArrowsPosSpy = mocker.patch(
-        'actionBar.locators.getLeftSideArrowsPos', return_value=(0, 392, 17, 34))
-    getRightSideArrowsPosSpy = mocker.patch(
-        'actionBar.locators.getRightSideArrowsPos', return_value=None)
-    result = getCooldownsImg(screenshotImg)
+    getLeftArrowsPosSpy = mocker.patch(
+        'actionBar.locators.getLeftArrowsPos', return_value=(0, 392, 17, 34))
+    getRightArrowsPosSpy = mocker.patch(
+        'actionBar.locators.getRightArrowsPos', return_value=None)
+    result = getCooldownsImage(screenshotImg)
     assert result == None
-    getLeftSideArrowsPosSpy.assert_called_once_with(screenshotImg)
-    getRightSideArrowsPosSpy.assert_called_once_with(screenshotImg)
+    getLeftArrowsPosSpy.assert_called_once_with(screenshotImg)
+    getRightArrowsPosSpy.assert_called_once_with(screenshotImg)
 
 
 def test_should_get_cooldowns_img():
-    cooldownsImgAfterExtraction = getCooldownsImg(screenshotImg)
+    cooldownsImgAfterExtraction = getCooldownsImage(screenshotImg)
     np.testing.assert_array_equal(listOfCooldownsImg, cooldownsImgAfterExtraction)

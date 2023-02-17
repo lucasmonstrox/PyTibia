@@ -10,10 +10,10 @@ rightSideArrowsImg = loadFromRGBToGray(f'{imagesPath}/rightSideArrowsImg.png')
 
 
 @cacheObjectPos
-def getLeftSideArrowsPos(screenshot):
+def getLeftArrowsPos(screenshot):
     return locate(screenshot, leftSideArrowsImg)
 
 
 @cacheObjectPos
-def getRightSideArrowsPos(screenshot):
+def getRightArrowsPos(screenshot):
     return locate(screenshot, rightSideArrowsImg)

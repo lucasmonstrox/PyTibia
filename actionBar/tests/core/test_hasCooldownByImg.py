@@ -9,16 +9,16 @@ listOfCooldownsImg = RGBtoGray(load(f'{currentPath}/listOfCooldownsImg.png'))
 cooldownImg = RGBtoGray(load(f'{actionBarPath}/images/cooldowns/exori.png'))
 
 
-def test_should_return_None_when_getCooldownsImg_return_None(mocker):
-    getCooldownsImgSpy = mocker.patch(
-        'actionBar.extractors.getCooldownsImg', return_value=None)
+def test_should_return_None_when_getCooldownsImage_return_None(mocker):
+    getCooldownsImageSpy = mocker.patch(
+        'actionBar.extractors.getCooldownsImage', return_value=None)
     result = hasCooldownByImg(screenshotImg, cooldownImg)
-    getCooldownsImgSpy.assert_called_with(screenshotImg)
+    getCooldownsImageSpy.assert_called_with(screenshotImg)
     assert result == None
 
 
 def test_should_return_False_when_locate_return_None(mocker):
-    mocker.patch('actionBar.extractors.getCooldownsImg',
+    mocker.patch('actionBar.extractors.getCooldownsImage',
                  return_value=listOfCooldownsImg)
     locateSpy = mocker.patch('utils.core.locate', return_value=None)
     result = hasCooldownByImg(screenshotImg, cooldownImg)
@@ -27,7 +27,7 @@ def test_should_return_False_when_locate_return_None(mocker):
 
 
 def test_should_return_True_when_has_cooldown_by_img(mocker):
-    mocker.patch('actionBar.extractors.getCooldownsImg',
+    mocker.patch('actionBar.extractors.getCooldownsImage',
                  return_value=listOfCooldownsImg)
     mocker.patch('utils.core.locate', return_value=(209, 0, 20, 20))
     result = hasCooldownByImg(screenshotImg, cooldownImg)

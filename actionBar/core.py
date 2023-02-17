@@ -2,8 +2,8 @@ from easyocr import Reader
 import numpy as np
 from PIL import Image
 from .config import images
-from .extractors import getCooldownsImg
-from .locators import getLeftSideArrowsPos
+from .extractors import getCooldownsImage
+from .locators import getLeftArrowsPos
 from utils.core import locate
 
 
@@ -11,7 +11,7 @@ reader = Reader(['en'])
 
 
 def getSlotCount(screenshot, slot):
-    leftSideArrowsPos = getLeftSideArrowsPos(screenshot)
+    leftSideArrowsPos = getLeftArrowsPos(screenshot)
     cannotGetLeftSideArrowsPos = leftSideArrowsPos is None
     if cannotGetLeftSideArrowsPos:
         return None
@@ -39,7 +39,7 @@ def getSlotCount(screenshot, slot):
 
 
 def hasCooldownByImg(screenshot, cooldownImg):
-    listOfCooldownsImg = getCooldownsImg(screenshot)
+    listOfCooldownsImg = getCooldownsImage(screenshot)
     cannotGetListOfCooldownsImg = listOfCooldownsImg is None
     if cannotGetListOfCooldownsImg:
         return None
