@@ -1,4 +1,3 @@
-import numpy as np
 import tcod
 import radar.config
 import radar.core

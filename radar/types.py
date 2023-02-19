@@ -1,5 +1,6 @@
 import numpy as np
 
+
 coordinateHashType = np.dtype([('hash', str, 16), ('coordinate', np.uint16, (3,))])
 coordinateType = np.dtype([
     ('x', np.uint16),

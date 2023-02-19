@@ -40,7 +40,7 @@ def getCharacterWindowCoord(screenshot):
 
 
 def isEmailEmpty(screenshot):
-    (x, y, w, h) = getLoginWindowCoord(screenshot)
+    (x, y, _, _) = getLoginWindowCoord(screenshot)
     x = x + 91
     y = y + 28
     result = utils.core.locate(utils.image.crop(
@@ -59,7 +59,6 @@ def setEmail(screenshot):
         pyautogui.hotkey('ctrl', 'a')
         pyautogui.press('backspace')
     pyautogui.typewrite(login['Email'])
-    return
 
 
 def isPasswordEmpty(screenshot):

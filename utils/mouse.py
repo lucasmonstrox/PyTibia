@@ -1,5 +1,5 @@
-from time import sleep
 import pyautogui
+from time import sleep
 from hud.core import getCoordinate
 
 

@@ -1,6 +1,6 @@
 import pathlib
-import time
 import pyautogui
+import time
 import utils.core
 import utils.image
 import utils.mouse
@@ -28,7 +28,7 @@ jewelledBpItems = [
     'mana-potion',
     'strong-health-potion',
     'strong-mana-potion',
-    'ultimate-health-potion'
+    'ultimate-health-potion',
     'ultimate-mana-potion',
     'ultimate-spirit-potion'
 ]
