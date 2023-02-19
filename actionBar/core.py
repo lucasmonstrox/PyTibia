@@ -1,10 +1,10 @@
 from easyocr import Reader
 import numpy as np
 from PIL import Image
+from utils.core import locate
 from .config import images
 from .extractors import getCooldownsImage
 from .locators import getLeftArrowsPos
-from utils.core import locate
 
 
 reader = Reader(['en'])

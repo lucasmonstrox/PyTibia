@@ -1,6 +1,6 @@
-from . import config
 import utils.core
 import utils.image
+from . import config
 
 
 @utils.core.cacheObjectPos

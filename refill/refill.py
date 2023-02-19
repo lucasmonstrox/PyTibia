@@ -1,10 +1,10 @@
 import pathlib
 import pyautogui
-import utils.image
-import utils.core
-import utils.mouse
-import chat.chat
 from time import sleep
+import chat.chat
+import utils.core
+import utils.image
+import utils.mouse
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()

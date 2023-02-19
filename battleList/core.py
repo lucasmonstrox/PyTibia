@@ -1,7 +1,6 @@
 import numpy as np
-from . import config, extractors
-from battleList.typing import creatureType
 import utils.core
+from . import config, extractors, typing
 
 
 def getCreatures(screenshot):
@@ -12,12 +11,12 @@ def getCreatures(screenshot):
     filledSlotsCount = extractors.getFilledSlotsCount(content)
     hasNoCreatures = filledSlotsCount == 0
     if hasNoCreatures:
-        return np.array([], dtype=creatureType)
+        return np.array([], dtype=typing.creatureType)
     beingAttackedCreatures = extractors.getBeingAttackedCreatures(content, filledSlotsCount)
     creaturesNamesImages = extractors.getCreaturesNamesImages(content, filledSlotsCount)
     creatures = [(getCreatureName(creatureNameImage), beingAttackedCreatures[slotIndex])
                            for slotIndex, creatureNameImage in enumerate(creaturesNamesImages)]
-    creaturesNp = np.array(creatures, dtype=creatureType)
+    creaturesNp = np.array(creatures, dtype=typing.creatureType)
     return creaturesNp
 
 

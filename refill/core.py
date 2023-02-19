@@ -1,6 +1,6 @@
 import pyautogui
-import utils.image
 import utils.core
+import utils.image
 import utils.mouse
 from time import sleep
 from . import config

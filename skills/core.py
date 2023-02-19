@@ -1,7 +1,7 @@
 import numpy as np
-from . import config, locators
 import utils.core
 import utils.image
+from . import config, locators
 
 
 def getCapacity(screenshot):

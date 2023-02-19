@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import pyautogui
 import random
-import time
 from time import sleep
 import xxhash
 
@@ -107,9 +106,9 @@ def press(key, delay=150):
 def typeKeyboard(phrase):
     words = list(phrase)
     for word in words:
-        time.sleep(random.randrange(70, 190) / 1000)
+        sleep(random.randrange(70, 190) / 1000)
         press(word)
-    time.sleep(random.randrange(70, 190) / 1000)
+    sleep(random.randrange(70, 190) / 1000)
     press('enter')
 
 

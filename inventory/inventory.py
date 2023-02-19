@@ -1,8 +1,8 @@
-import time
 import pathlib
+import time
 import pyautogui
-import utils.image
 import utils.core
+import utils.image
 import utils.mouse
 
 

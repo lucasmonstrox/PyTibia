@@ -2,10 +2,10 @@ import numpy as np
 import pyautogui
 from scipy.spatial import distance
 from time import sleep
-from . import config, extractors, locators
 import utils.core
 import utils.image
 import utils.mouse
+from . import config, extractors, locators
 
 
 # TODO: get by cached images coordinates hashes

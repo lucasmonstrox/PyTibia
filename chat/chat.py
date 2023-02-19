@@ -1,6 +1,6 @@
 from ahocorapy.keywordtree import KeywordTree
-from hud.core import getLeftSidebarArrows
 import pathlib
+from hud.core import getLeftSidebarArrows
 import utils.core
 import utils.image
 import utils.mouse

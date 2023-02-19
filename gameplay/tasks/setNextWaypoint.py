@@ -1,6 +1,6 @@
 from time import time
 from utils.array import getNextArrayIndex
-import gameplay.waypoint
+from ..waypoint import resolveGoalCoordinate
 
 
 class SetNextWaypointTask:
@@ -23,8 +23,7 @@ class SetNextWaypointTask:
             context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])
         context['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex
         currentWaypoint = context['cavebot']['waypoints']['points'][context['cavebot']['waypoints']['currentIndex']]
-        context['cavebot']['waypoints']['state'] = gameplay.waypoint.resolveGoalCoordinate(
-                context['coordinate'], currentWaypoint)
+        context['cavebot']['waypoints']['state'] = resolveGoalCoordinate(context['coordinate'], currentWaypoint)
         return context
     
     def ping(self, context):
