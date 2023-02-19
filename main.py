@@ -11,7 +11,9 @@ import battleList.typing
 import chat.core
 import gameplay.cavebot
 import gameplay.decision
+from gameplay.groupTasks.groupOfLootCorpseTasks import GroupOfLootCorpseTasks
 import gameplay.resolvers
+from gameplay.taskExecutor import TaskExecutor
 import gameplay.typings
 import gameplay.waypoint
 import hud.core
@@ -20,8 +22,6 @@ import hud.slot
 import player.core
 import radar.core
 from radar.types import coordinateType, waypointType
-from gameplay.taskExecutor import TaskExecutor
-from gameplay.groupTasks.groupOfLootCorpseTasks import GroupOfLootCorpseTasks
 import utils.array
 import utils.core
 import utils.image
