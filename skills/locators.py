@@ -4,7 +4,6 @@ import utils.image
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
-
 capacityImage = utils.image.loadFromRGBToGray(
     f'{currentPath}/images/capacity.png')
 hitPointsImage = utils.image.loadFromRGBToGray(
