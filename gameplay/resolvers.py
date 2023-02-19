@@ -1,10 +1,10 @@
-from gameplay.groupTasks.groupOfDepositItemsTasks import GroupOfDepositItemsTasks
-from gameplay.groupTasks.groupOfRefillCheckerTasks import GroupOfRefillCheckerTasks
-from gameplay.groupTasks.groupOfRefillTasks import GroupOfRefillTasks
-from gameplay.groupTasks.groupOfSingleWalkTasks import GroupOfSingleWalkTasks
-from gameplay.groupTasks.groupOfUseRopeTasks import GroupOfUseRopeTasks
-from gameplay.groupTasks.groupOfUseShovelTasks import GroupOfUseShovelTasks
-from gameplay.groupTasks.groupOfWalkTasks import GroupOfWalkTasks
+from .groupTasks.groupOfDepositItemsTasks import GroupOfDepositItemsTasks
+from .groupTasks.groupOfRefillCheckerTasks import GroupOfRefillCheckerTasks
+from .groupTasks.groupOfRefillTasks import GroupOfRefillTasks
+from .groupTasks.groupOfSingleWalkTasks import GroupOfSingleWalkTasks
+from .groupTasks.groupOfUseRopeTasks import GroupOfUseRopeTasks
+from .groupTasks.groupOfUseShovelTasks import GroupOfUseShovelTasks
+from .groupTasks.groupOfWalkTasks import GroupOfWalkTasks
 
 
 def resolveTasksByWaypointType(context, waypoint):
