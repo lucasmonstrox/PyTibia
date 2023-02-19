@@ -1,9 +1,9 @@
 import numpy as np
 from time import time
-from gameplay.factories.makeSetNextWaypointTask import makeSetNextWaypointTask
-from gameplay.factories.makeWalkTask import makeWalkTask
-from gameplay.groupTasks.groupTaskExecutor import GroupTaskExecutor
-from gameplay.typings import taskType
+from ..factories.makeSetNextWaypointTask import makeSetNextWaypointTask
+from ..factories.makeWalkTask import makeWalkTask
+from ..typings import taskType
+from .groupTaskExecutor import GroupTaskExecutor
 
 
 class GroupOfSingleWalkTasks(GroupTaskExecutor):

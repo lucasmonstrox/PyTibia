@@ -1,8 +1,8 @@
 import numpy as np
 from time import time
-from gameplay.factories.makeRefillCheckerTask import makeRefillCheckerTask
-from gameplay.groupTasks.groupTaskExecutor import GroupTaskExecutor
-from gameplay.typings import taskType
+from ..factories.makeRefillCheckerTask import makeRefillCheckerTask
+from ..typings import taskType
+from .groupTaskExecutor import GroupTaskExecutor
 
 
 class GroupOfRefillCheckerTasks(GroupTaskExecutor):

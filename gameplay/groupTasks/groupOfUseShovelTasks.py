@@ -1,10 +1,10 @@
 import numpy as np
 from time import time
-from gameplay.factories.makeClickInCoordinateTask import makeClickInCoordinateTask
-from gameplay.factories.makeSetNextWaypointTask import makeSetNextWaypointTask
-from gameplay.factories.makeUseShovelTask import makeUseShovelTask
-from gameplay.groupTasks.groupTaskExecutor import GroupTaskExecutor
-from gameplay.typings import taskType
+from ..factories.makeClickInCoordinateTask import makeClickInCoordinateTask
+from ..factories.makeSetNextWaypointTask import makeSetNextWaypointTask
+from ..factories.makeUseShovelTask import makeUseShovelTask
+from ..typings import taskType
+from .groupTaskExecutor import GroupTaskExecutor
 
 
 class GroupOfUseShovelTasks(GroupTaskExecutor):

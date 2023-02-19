@@ -1,12 +1,12 @@
 import numpy as np
 from time import time
 from actionBar.core import getSlotCount
-from gameplay.factories.makeBuyItemTask import makeBuyItemTask
-from gameplay.factories.makeCloseNpcTradeBox import makeCloseNpcTradeBoxTask
-from gameplay.factories.makeSayTask import makeSayTask
-from gameplay.factories.makeSetNextWaypointTask import makeSetNextWaypointTask
-from gameplay.groupTasks.groupTaskExecutor import GroupTaskExecutor
-from gameplay.typings import taskType
+from ..factories.makeBuyItemTask import makeBuyItemTask
+from ..factories.makeCloseNpcTradeBox import makeCloseNpcTradeBoxTask
+from ..factories.makeSayTask import makeSayTask
+from ..factories.makeSetNextWaypointTask import makeSetNextWaypointTask
+from ..typings import taskType
+from .groupTaskExecutor import GroupTaskExecutor
 
 
 class GroupOfRefillTasks(GroupTaskExecutor):

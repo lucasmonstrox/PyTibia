@@ -1,9 +1,8 @@
 import numpy as np
 from time import time
-from gameplay.factories.makeDepositItemsTask import makeDepositItemsTask
-from gameplay.factories.makeOpenBackpackTask import makeOpenBackpackTask
-from gameplay.groupTasks.groupTaskExecutor import GroupTaskExecutor
-from gameplay.typings import taskType
+from ..factories.makeOpenBackpackTask import makeOpenBackpackTask
+from ..typings import taskType
+from .groupTaskExecutor import GroupTaskExecutor
 
 
 class GroupOfDepositItemsTasks(GroupTaskExecutor):
@@ -27,7 +26,6 @@ class GroupOfDepositItemsTasks(GroupTaskExecutor):
             makeOpenBackpackTask(context['backpacks']['loot']),
             # - verificar se tem loot, se sim, ir até um free depot
             # - verificar se tem loot, se sim, depositar itens
-            makeDepositItemsTask(),
         ], dtype=taskType)
         tasks = np.append(tasks, [tasksToAppend])
         return tasks

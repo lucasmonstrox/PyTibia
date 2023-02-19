@@ -3,9 +3,9 @@ from scipy.spatial import distance
 from time import time
 from radar.types import coordinateType
 from ..factories.makeWalkTask import makeWalkTask
-from ..groupTasks.groupTaskExecutor import GroupTaskExecutor
 from ..typings import taskType
 from ..waypoint import generateFloorWalkpoints
+from .groupTaskExecutor import GroupTaskExecutor
 
 
 class GroupOfFollowTargetCreatureTasks(GroupTaskExecutor):
