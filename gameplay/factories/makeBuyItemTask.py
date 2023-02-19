@@ -1,4 +1,4 @@
-from gameplay.tasks.buyItem import BuyItemTask
+from ..tasks.buyItem import BuyItemTask
 
 
 def makeBuyItemTask(itemWithQuantity):

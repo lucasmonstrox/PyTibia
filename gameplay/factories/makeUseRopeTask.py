@@ -1,4 +1,4 @@
-from gameplay.tasks.useRope import UseRopeTask
+from ..tasks.useRope import UseRopeTask
 
 
 def makeUseRopeTask(waypoint):

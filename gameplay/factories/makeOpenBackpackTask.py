@@ -1,4 +1,4 @@
-from gameplay.tasks.openBackpack import OpenBackpackTask
+from ..tasks.openBackpack import OpenBackpackTask
 
 
 def makeOpenBackpackTask(backpack):

@@ -1,4 +1,4 @@
-from gameplay.tasks.lootCorpse import LootCorpseTask
+from ..tasks.lootCorpse import LootCorpseTask
 
 
 def makeLootCorpseTask(corpse):

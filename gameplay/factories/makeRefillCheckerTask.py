@@ -1,4 +1,4 @@
-from gameplay.tasks.refillChecker import RefillCheckerTask
+from ..tasks.refillChecker import RefillCheckerTask
 
 
 def makeRefillCheckerTask(phrase):

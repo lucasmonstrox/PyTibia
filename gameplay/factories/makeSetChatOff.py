@@ -1,4 +1,4 @@
-from gameplay.tasks.setChatOff import SetChatOffTask
+from ..tasks.setChatOff import SetChatOffTask
 
 
 def makeSetChatOffTask():

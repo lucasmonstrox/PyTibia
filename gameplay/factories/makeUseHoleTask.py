@@ -1,4 +1,4 @@
-from gameplay.tasks.useHole import UseHoleTask
+from ..tasks.useHole import UseHoleTask
 
 
 def makeUseHoleTask(waypoint):

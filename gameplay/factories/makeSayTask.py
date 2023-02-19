@@ -1,4 +1,4 @@
-from gameplay.tasks.say import SayTask
+from ..tasks.say import SayTask
 
 
 def makeSayTask(phrase):

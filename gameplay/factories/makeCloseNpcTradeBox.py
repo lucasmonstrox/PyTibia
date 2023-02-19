@@ -1,4 +1,4 @@
-from gameplay.tasks.closeNpcTradeBox import CloseNpcTradeBoxTask
+from ..tasks.closeNpcTradeBox import CloseNpcTradeBoxTask
 
 
 def makeCloseNpcTradeBoxTask():

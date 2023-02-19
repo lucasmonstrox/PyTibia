@@ -1,4 +1,4 @@
-from gameplay.tasks.attackClosestCreature import AttackClosestCreatureTask
+from ..tasks.attackClosestCreature import AttackClosestCreatureTask
 
 
 def makeAttackClosestCreatureTask(closestCreature):

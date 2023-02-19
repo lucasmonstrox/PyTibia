@@ -1,4 +1,4 @@
-from gameplay.tasks.clickInCoordinate import ClickInCoordinateTask
+from ..tasks.clickInCoordinate import ClickInCoordinateTask
 
 
 def makeClickInCoordinateTask(coordinate):

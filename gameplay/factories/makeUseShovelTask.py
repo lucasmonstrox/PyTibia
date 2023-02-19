@@ -1,4 +1,4 @@
-from gameplay.tasks.useShovel import UseShovelTask
+from ..tasks.useShovel import UseShovelTask
 
 
 def makeUseShovelTask(waypoint):
