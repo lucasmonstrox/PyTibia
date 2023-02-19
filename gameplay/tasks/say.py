@@ -14,7 +14,7 @@ class SayTask:
         self.status = 'notStarted'
         self.value = phrase
 
-    def shouldIgnore(self, context):
+    def shouldIgnore(self, _):
         return False
 
     def do(self, context):
