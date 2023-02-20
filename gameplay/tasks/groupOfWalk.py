@@ -9,13 +9,13 @@ from .groupTaskExecutor import GroupTaskExecutor
 
 class GroupOfWalkTasks(GroupTaskExecutor):
     def __init__(self, context, waypointCoordinate):
+        super().__init__()
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 1
         self.name = 'groupOfWalk'
-        self.status = 'notStarted'
         self.tasks = self.generateTasks(context, waypointCoordinate)
         self.value = waypointCoordinate
 

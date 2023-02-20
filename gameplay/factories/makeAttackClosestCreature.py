@@ -1,6 +1,6 @@
 from ..tasks.attackClosestCreature import AttackClosestCreatureTask
 
 
-def makeAttackClosestCreatureTask(closestCreature):
-    task = AttackClosestCreatureTask(closestCreature)
+def makeAttackClosestCreatureTask():
+    task = AttackClosestCreatureTask()
     return ('attackClosestCreature', task)

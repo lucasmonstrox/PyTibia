@@ -1,20 +1,16 @@
 import numpy as np
-from time import time
 from actionBar.core import getSlotCount
 from skills.core import getCapacity
 from utils.array import getNextArrayIndex
+from .baseTask import BaseTask
 
 
-class RefillCheckerTask:
+class RefillCheckerTask(BaseTask):
     def __init__(self, value):
-        self.createdAt = time()
-        self.startedAt = None
-        self.finishedAt = None
+        super().__init__()
         self.delayBeforeStart = 0
         self.delayAfterComplete = 1
-        self.delayOfTimeout = None
         self.name = 'refillChecker'
-        self.status = 'notStarted'
         self.value = value
 
     def shouldIgnore(self, context):
@@ -36,18 +32,6 @@ class RefillCheckerTask:
         shouldIgnore = hasEnoughHealthPotions and hasEnoughManaPotions and hasEnoughCapacity
         return shouldIgnore
 
-    def do(self, context):
-        return context
-    
-    def ping(self, context):
-        return context
-
-    def did(self, _):
-        return True
-
-    def shouldRestart(self, _):
-        return False
-
     def onIgnored(self, context):
         labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.value['options']['waypointLabelToRedirect'])[0]
         if len(labelIndexes) == 0:
@@ -63,7 +47,4 @@ class RefillCheckerTask:
             context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])
         context['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex
         context['cavebot']['waypoints']['state'] = None
-        return context
-
-    def onDidTimeout(self, context):
         return context

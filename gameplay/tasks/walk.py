@@ -4,22 +4,18 @@ from time import time
 from radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from skills.core import getSpeed
 from utils.coordinate import getDirectionBetweenCoordinates
+from .baseTask import BaseTask
 
 
-class WalkTask:
+class WalkTask(BaseTask):
     def __init__(self, context, value):
-        self.createdAt = time()
-        self.startedAt = None
-        self.finishedAt = None
-        self.delayBeforeStart = 0
-        self.delayAfterComplete = 0
+        super().__init__()
         charSpeed = getSpeed(context['screenshot'])
         tileFriction = getTileFrictionByCoordinate(value)
         movementSpeed = getBreakpointTileMovementSpeed(
             charSpeed, tileFriction)
         self.delayOfTimeout = (movementSpeed * 2) / 1000
         self.name = 'walk'
-        self.status = 'notStarted'
         self.value = value
 
     def shouldIgnore(self, context):
@@ -35,19 +31,18 @@ class WalkTask:
         if hasNoNewDirection:
             return context
         futureDirection = None
-        hasMoreTasks = len(context['currentGroupTask'].tasks) > 1
+        hasMoreTasks = len(context['currentTask'].tasks) > 1
         if hasMoreTasks:
-            tasks = context['currentGroupTask'].tasks['type']
             freeTaskIndex = None
-            for taskIndex, taskWithName in enumerate(context['currentGroupTask'].tasks):
+            for taskIndex, taskWithName in enumerate(context['currentTask'].tasks):
                 _, possibleFreeTask = taskWithName
                 if possibleFreeTask.status != 'completed':
                     freeTaskIndex = taskIndex
                     break
-            if freeTaskIndex != None and (freeTaskIndex + 1) < len(context['currentGroupTask'].tasks):
-                hasMoreWalkpointTasks = context['currentGroupTask'].tasks[freeTaskIndex + 1]['type'] == 'walk'
+            if freeTaskIndex != None and (freeTaskIndex + 1) < len(context['currentTask'].tasks):
+                hasMoreWalkpointTasks = context['currentTask'].tasks[freeTaskIndex + 1]['type'] == 'walk'
                 if hasMoreWalkpointTasks:
-                    _, nextTask = context['currentGroupTask'].tasks[freeTaskIndex + 1]
+                    _, nextTask = context['currentTask'].tasks[freeTaskIndex + 1]
                     futureDirection = getDirectionBetweenCoordinates(walkpoint, nextTask.value)
         if direction != futureDirection:
             if context['lastPressedKey'] is not None:
@@ -56,41 +51,27 @@ class WalkTask:
             else:
                 pyautogui.press(direction)
             return context
-        else:
-            filterByWalkTasks = context['currentGroupTask'].tasks['type'] == 'walk'
-            walkTasks = context['currentGroupTask'].tasks[filterByWalkTasks]
-            walkTasksLength = len(walkTasks)
-            if direction != context['lastPressedKey']:
-                if walkTasksLength > 2:
-                    pyautogui.keyDown(direction)
-                    context['lastPressedKey'] = direction
-                else:
-                    pyautogui.press(direction)
-            elif walkTasksLength == 1:
-                if context['lastPressedKey'] is not None:
-                    pyautogui.keyUp(context['lastPressedKey'])
-                    context['lastPressedKey'] = None
-        return context
-
-    def ping(self, context):
+        filterByWalkTasks = context['currentTask'].tasks['type'] == 'walk'
+        walkTasks = context['currentTask'].tasks[filterByWalkTasks]
+        walkTasksLength = len(walkTasks)
+        if direction != context['lastPressedKey']:
+            if walkTasksLength > 2:
+                pyautogui.keyDown(direction)
+                context['lastPressedKey'] = direction
+            else:
+                pyautogui.press(direction)
+            return context
+        if walkTasksLength == 1 and context['lastPressedKey'] is not None:
+            pyautogui.keyUp(context['lastPressedKey'])
+            context['lastPressedKey'] = None
         return context
 
     def did(self, context):
         nextWalkpoint = self.value
-        response = np.all(context['coordinate'] == nextWalkpoint)
-        did = response == True
+        did = np.all(context['coordinate'] == nextWalkpoint) == True
         return did
 
-    def shouldRestart(self, _):
-        return False
-
-    def onIgnored(self, context):
-        return context
-
-    def onDidComplete(self, context):
-        return context
-
     def onDidTimeout(self, context):
-        context['currentGroupTask'].status = 'completed'
-        context['currentGroupTask'].finishedAt = time()
+        context['currentTask'].status = 'completed'
+        context['currentTask'].finishedAt = time()
         return context

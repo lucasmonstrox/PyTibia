@@ -2,17 +2,15 @@ from time import time
 
 
 class GroupTaskExecutor:
+    def __init__(self):
+        self.currentTaskIndex = 0
+        self.status = 'notStarted'
+
     def exec(self, context):
-        if len(self.tasks) > 0:
-            freeTaskIndex = None
-            for taskIndex, taskWithName in enumerate(self.tasks):
-                _, possibleFreeTask = taskWithName
-                if possibleFreeTask.status != 'completed':
-                    freeTaskIndex = taskIndex
-                    break
-            if freeTaskIndex == None:
-                return context
-            taskName, task = self.tasks[freeTaskIndex]
+        hasTasks = len(self.tasks) > 0
+        if hasTasks:
+            self.status = 'running'
+            taskName, task = self.tasks[self.currentTaskIndex]
             if task.status == 'notStarted':
                 if task.startedAt == None:
                     task.startedAt = time()
@@ -22,29 +20,28 @@ class GroupTaskExecutor:
                     shouldExecResponse = task.shouldIgnore(context) == False
                     shouldNotExecTask = shouldExecResponse == False and task.status != 'running'
                     if shouldNotExecTask:
-                        task.status = 'completed'
                         context = task.onIgnored(context)
+                        self.markCurrentTaskAsCompleted()
                     else:
                         task.status = 'running'
                         context = task.do(context)
-                    self.tasks[freeTaskIndex] = (taskName, task)
+                    self.tasks[self.currentTaskIndex] = (taskName, task)
             elif task.status == 'running':
-                shouldNotRestart = not task.shouldRestart(context)
-                if shouldNotRestart:
+                if task.shouldRestart(context):
+                    self.tasks[self.currentTaskIndex][1].status = 'notStarted'
+                else:
                     hasDelayOfTimeout = task.delayOfTimeout is not None
                     if hasDelayOfTimeout:
                         passedTimeSinceLastCheck = time() - task.startedAt
                         didTimeout = passedTimeSinceLastCheck >= task.delayOfTimeout
                         if didTimeout:
-                            task.status = 'completed'
                             context = task.onDidTimeout(context)
-                            self.tasks[freeTaskIndex] = (taskName, task)
+                            self.markCurrentTaskAsCompleted()
                             return context
                     didTask = task.did(context)
                     if didTask:
                         task.finishedAt = time()
-                        task.status = 'almostComplete'
-                        self.tasks[freeTaskIndex] = (taskName, task)
+                        self.tasks[self.currentTaskIndex][1].status = 'almostComplete'
                     else:
                         context = task.ping(context)
             if task.status == 'almostComplete':
@@ -52,17 +49,13 @@ class GroupTaskExecutor:
                 didPassedEnoughDelayAfterTaskComplete = passedTimeSinceTaskCompleted > task.delayAfterComplete
                 if didPassedEnoughDelayAfterTaskComplete:
                     context = task.onDidComplete(context)
-                    task.status = 'completed'
-                    self.tasks[freeTaskIndex] = (taskName, task)
+                    self.markCurrentTaskAsCompleted()
         return context
 
-    def do(self, context):
-        context = self.exec(context)
-        return context
-
-    def did(self, _):
-        for taskWithName in self.tasks:
-            _, task = taskWithName
-            if task.status != 'completed':
-                return False
-        return True
+    def markCurrentTaskAsCompleted(self):
+        self.tasks[self.currentTaskIndex][1].status = 'completed'
+        isntLastTask = self.currentTaskIndex < len(self.tasks) - 1
+        if isntLastTask:
+            self.currentTaskIndex += 1
+        else:
+            self.status = 'completed'

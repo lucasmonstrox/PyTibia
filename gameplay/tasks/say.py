@@ -1,41 +1,15 @@
-from time import time
 import chat.core
+from .baseTask import BaseTask
 
 
-class SayTask:
+class SayTask(BaseTask):
     def __init__(self, phrase):
-        self.createdAt = time()
-        self.startedAt = None
-        self.finishedAt = None
+        super().__init__()
         self.delayBeforeStart = 2
         self.delayAfterComplete = 2
-        self.delayOfTimeout = None
         self.name = 'say'
-        self.status = 'notStarted'
         self.value = phrase
-
-    def shouldIgnore(self, _):
-        return False
 
     def do(self, context):
         chat.core.sendMessage(context['screenshot'], self.value)
-        return context
-    
-    def ping(self, context):
-        return context
-
-    def did(self, _):
-        # TODO: check if phrase is spelled in the chat
-        return True
-
-    def shouldRestart(self, _):
-        return False
-
-    def onIgnored(self, context):
-        return context
-
-    def onDidComplete(self, context):
-        return context
-
-    def onDidTimeout(self, context):
         return context

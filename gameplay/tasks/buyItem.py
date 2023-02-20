@@ -1,40 +1,16 @@
 from time import time
 from refill import core
+from .baseTask import BaseTask
 
 
-class BuyItemTask:
+class BuyItemTask(BaseTask):
     def __init__(self, itemNameWithQuantity):
-        self.createdAt = time()
-        self.startedAt = None
-        self.finishedAt = None
+        super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
-        self.delayOfTimeout = None
         self.name = 'buyItem'
-        self.status = 'notStarted'
         self.value = itemNameWithQuantity
-
-    def shouldIgnore(self, _):
-        return False
 
     def do(self, context):
         core.buyItem(context['screenshot'], self.value)
-        return context
-    
-    def ping(self, context):
-        return context
-
-    def shouldRestart(self, _):
-        return False
-
-    def did(self, _):
-        return True
-
-    def onIgnored(self, context):
-        return context
-
-    def onDidComplete(self, context):
-        return context
-
-    def onDidTimeout(self, context):
         return context

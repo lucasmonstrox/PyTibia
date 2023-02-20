@@ -7,17 +7,17 @@ from .groupTaskExecutor import GroupTaskExecutor
 
 class GroupOfDepositItemsTasks(GroupTaskExecutor):
     def __init__(self, context, waypoint):
+        super().__init__()
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
         self.name = 'groupOfDepositItems'
-        self.status = 'notStarted'
         self.tasks = self.generateTasks(context, waypoint)
         self.value = waypoint
 
-    def generateTasks(self, context, waypoint):
+    def generateTasks(self, context, _):
         tasks = np.array([], dtype=taskType)
         tasksToAppend = np.array([
             # - abrir a main backpack se estiver fechada

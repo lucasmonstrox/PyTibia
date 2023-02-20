@@ -4,16 +4,15 @@ import numpy as np
 import pyautogui
 from rx import interval, operators
 from rx.scheduler import ThreadPoolScheduler
-from time import sleep
+from time import sleep, time
 import actionBar.core
 import battleList.core
 import battleList.typing
 import chat.core
 import gameplay.cavebot
 import gameplay.decision
-from gameplay.groupTasks.groupOfLootCorpseTasks import GroupOfLootCorpseTasks
+from gameplay.tasks.groupOfLootCorpse import GroupOfLootCorpseTasks
 import gameplay.resolvers
-from gameplay.taskExecutor import TaskExecutor
 import gameplay.typings
 import gameplay.waypoint
 import hud.core
@@ -40,7 +39,6 @@ gameContext = {
         'loot': 'fur backpack',
     },
     'battleListCreatures': np.array([], dtype=battleList.typing.creatureType),
-    'beingAttackedCreature': None,
     'cavebot': {
         'holesOrStairs': np.array([
             (33306, 32284, 5),
@@ -51,19 +49,31 @@ gameContext = {
             (33312, 32281, 8),
             (33300, 32290, 8),
         ], dtype=coordinateType),
+        'isAttackingSomeCreature': False,
         'running': True,
+        'targetCreature': None,
         'waypoints': {
             'currentIndex': None,
             'points': np.array([
-                ('', 'walk', (33214, 32459, 8), {}),
-                ('', 'walk', (33214, 32456, 8), {}),
-                ('', 'moveUpNorth', (33214, 32456, 8), {}),
-                ('', 'walk', (33214, 32450, 7), {}),  #indo para cave
-                ('', 'walk', (33220, 32428, 7), {}),
-                ('', 'walk', (33216, 32392, 7), {}),
-                ('', 'walk', (33251, 32364, 7), {}),
-                ('', 'walk', (33277, 32329, 7), {}),
-                ('', 'walk', (33301, 32291, 7), {}),
+                # ('', 'walk', (33114,32831,7), {}),
+                # ('', 'walk', (33120,32831,7), {}),
+                # ('', 'walk', (33122,32831,7), {}),
+                # ('', 'walk', (33127,32830,7), {}),
+                # ('', 'walk', (33134,32831,7), {}),
+                # ('', 'walk', (33124,32833,7), {}),
+                # ('', 'walk', (33124,32833,7), {}),
+                # ('', 'walk', (33117,32833,7), {}),
+                
+                
+                # ('', 'walk', (33214, 32459, 8), {}),
+                # ('', 'walk', (33214, 32456, 8), {}),
+                # ('', 'moveUpNorth', (33214, 32456, 8), {}),
+                # ('', 'walk', (33214, 32450, 7), {}),  #indo para cave
+                # ('', 'walk', (33220, 32428, 7), {}),
+                # ('', 'walk', (33216, 32392, 7), {}),
+                # ('', 'walk', (33251, 32364, 7), {}),
+                # ('', 'walk', (33277, 32329, 7), {}),
+                # ('', 'walk', (33301, 32291, 7), {}),
                 ('', 'walk', (33302, 32289, 7), {}), # chegou na cave
                 ('caveStart', 'walk', (33301, 32278, 7), {}), # 10
                 ('', 'walk', (33312, 32278, 7), {}), # 11
@@ -85,7 +95,7 @@ gameContext = {
                 ('', 'walk', (33309, 32285, 7), {}), # 27
                 ('', 'moveUpNorth', (33309, 32285, 7), {}), # 28
                 ('', 'walk', (33310, 32278, 6), {}), # 29
-		        ('', 'walk', (33309, 32283, 6), {}), # 30
+                ('', 'walk', (33309, 32283, 6), {}), # 30
                 ('', 'moveDownSouth', (33309, 32283, 6), {}), # 31
                 ('', 'walk', (33305, 32289, 7), {}), # 32
                 ('', 'refillChecker', (33306, 32289, 7), { # 33
@@ -101,7 +111,7 @@ gameContext = {
     },
     'comingFromDirection': None,
     'corpsesToLoot': np.array([], dtype=hud.creatures.creatureType),
-    'currentGroupTask': None,
+    'currentTask': None,
     'healing': {
         'minimumToBeHealedUsingPotion': 60,
         'minimumToBeHealedUsingSpell': 85,
@@ -143,19 +153,36 @@ gameContext = {
     'window': None
 }
 hudCreatures = np.array([], dtype=hud.creatures.creatureType)
-taskExecutor = TaskExecutor()
+
+
+# 1. tira screenshot
+# 2. pega coordenada
+# 3. pega monstros da battleList
+# 4. pega a coordenada da hud
+# 5. pega a imagem da hud
+# 6. resolve da onde o bot ta vindo
+# 7. pego os monstros da hud
+# 8. verifico se tem loot
+# 9. mapeio o waypoint index se for vazio
+# 10. fazer algum tipo de tarefa:
+#     - atacar e seguir
+#     - fazer waypoint
+#     - coletar loot
+#     - ...
+#     - depositar
 
 
 def main():
     optimal_thread_count = multiprocessing.cpu_count()
     threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
-    thirteenFps = 0.00833333333
+    thirteenFps = 0.00416666666
     fpsObserver = interval(thirteenFps)
 
     def handleScreenshot(_):
         global gameContext
-        screenshot = utils.image.RGBtoGray(utils.core.getScreenshot(camera))
-        gameContext['screenshot'] = screenshot
+        rgbScreenshot = utils.core.getScreenshot(camera)
+        grayScreenshot = utils.image.RGBtoGray(rgbScreenshot)
+        gameContext['screenshot'] = grayScreenshot
         return gameContext
 
     fpsWithScreenshot = fpsObserver.pipe(
@@ -173,7 +200,7 @@ def main():
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.filter(lambda result: result['screenshot'] is not None),
         operators.filter(
-            lambda result: gameContext['cavebot']['running'] == True),
+            lambda _: gameContext['cavebot']['running'] == True),
         operators.map(handleCoordinate)
     )
 
@@ -182,6 +209,8 @@ def main():
         copyOfContext = context.copy()
         copyOfContext['battleListCreatures'] = battleList.core.getCreatures(
             copyOfContext['screenshot'])
+        hasBattleListCreatures = len(copyOfContext['battleListCreatures']) > 0
+        copyOfContext['cavebot']['isAttackingSomeCreature'] = battleList.core.isAttackingSomeCreature(context['battleListCreatures']) if hasBattleListCreatures else False
         gameContext = copyOfContext
         return copyOfContext
 
@@ -248,31 +277,18 @@ def main():
         copyOfContext = context.copy()
         hudCreatures = hud.creatures.getCreatures(
             copyOfContext['battleListCreatures'], copyOfContext['comingFromDirection'], copyOfContext['hud']['coordinate'], copyOfContext['hudImg'], copyOfContext['coordinate'], copyOfContext['resolution'])
-        monsters = hud.creatures.getCreatureByType(hudCreatures, 'monster')
-        players = hud.creatures.getCreatureByType(hudCreatures, 'player')
-        copyOfContext['monsters'] = monsters
-        copyOfContext['players'] = players
+        copyOfContext['monsters'] = hud.creatures.getCreatureByType(hudCreatures, 'monster')
+        copyOfContext['players'] = hud.creatures.getCreatureByType(hudCreatures, 'player')
+        copyOfContext['cavebot']['targetCreature'] = hud.creatures.getTargetCreature(copyOfContext['monsters'])
         gameContext = copyOfContext
         return copyOfContext
 
-    hudCreaturesObserver = directionObserver.pipe(
-        operators.map(resolveCreatures))
+    hudCreaturesObserver = directionObserver.pipe(operators.map(resolveCreatures))
 
     def handleLoot(context):
-        global gameContext
-        copyOfContext = context.copy()
-        beingAttackedIndexes = np.where(
-            hudCreatures['isBeingAttacked'] == True)[0]
-        hasCreatureBeingAttacked = len(beingAttackedIndexes) > 0
-        if chat.core.hasNewLoot(copyOfContext['screenshot']) and copyOfContext['beingAttackedCreature']:
-            copyOfContext['corpsesToLoot'] = np.append(copyOfContext['corpsesToLoot'], [
-                                      copyOfContext['beingAttackedCreature']], axis=0)
-        beingAttackedCreature = None
-        if hasCreatureBeingAttacked:
-            beingAttackedCreature = hudCreatures[beingAttackedIndexes[0]]
-        copyOfContext['beingAttackedCreature'] = beingAttackedCreature
-        gameContext = copyOfContext
-        return copyOfContext
+        if context['cavebot']['targetCreature'] is not None and chat.core.hasNewLoot(context['screenshot']):
+            context['corpsesToLoot'] = np.append(context['corpsesToLoot'], [context['cavebot']['targetCreature']], axis=0)
+        return context
 
     lootObserver = hudCreaturesObserver.pipe(operators.map(handleLoot))
 
@@ -299,56 +315,56 @@ def main():
         isNotCavebotWay = context['way'] != 'cavebot'
         if isNotCavebotWay:
             return False
-        if context['currentGroupTask'] is None:
+        if context['currentTask'] is None:
             return True
         endlessTasks = ['groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfSingleWalk', 'groupOfUseRope', 'groupOfUseShovel']
-        should = not (context['currentGroupTask'].name in endlessTasks)
+        should = (context['currentTask'].name not in endlessTasks)
         return should
     
     def handleTasks(context):
         global gameContext
         copyOfContext = context.copy()
-        hasCavebotTasks = shouldAskForCavebotTasks(context)
-        if hasCavebotTasks:
-            isTryingToAttackClosestCreature = copyOfContext[
-                'currentGroupTask'] is not None and (copyOfContext['currentGroupTask'].name == 'groupOfAttackClosestCreature' or copyOfContext['currentGroupTask'].name == 'groupOfFollowTargetCreature')
-            if isTryingToAttackClosestCreature:
-                f = 1
-            else:
-                targetCreature, newCurrentGroupTask = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
-                copyOfContext['targetCreature'] = targetCreature
-                hasCurrentGroupTask = copyOfContext['currentGroupTask'] is not None
-                if hasCurrentGroupTask:
-                    hasTargetCreature = targetCreature is not None
+        hasCurrentTask = copyOfContext['currentTask'] is not None
+        if hasCurrentTask and (copyOfContext['currentTask'].status == 'completed' or len(copyOfContext['currentTask'].tasks) == 0):
+            copyOfContext['currentTask'] = None
+        if shouldAskForCavebotTasks(context):
+            hasCurrentTaskAfterCheck = copyOfContext['currentTask'] is not None
+            isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (copyOfContext['currentTask'].name == 'groupOfAttackClosestCreature' or copyOfContext['currentTask'].name == 'groupOfFollowTargetCreature')
+            isNotTryingToAttackClosestCreature = not isTryingToAttackClosestCreature
+            if isNotTryingToAttackClosestCreature:
+                newCurrentTask = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
+                hasCurrentTask2 = copyOfContext['currentTask'] is not None
+                if hasCurrentTask2:
+                    hasTargetCreature = context['cavebot']['targetCreature'] is not None or context['cavebot']['closestCreature'] is not None
                     if hasTargetCreature:
                         hasKeyPressed = copyOfContext['lastPressedKey'] is not None
                         if hasKeyPressed:
                             pyautogui.keyUp(copyOfContext['lastPressedKey'])
                             copyOfContext['lastPressedKey'] = None
-                        copyOfContext['currentGroupTask'] = newCurrentGroupTask
+                        copyOfContext['currentTask'] = newCurrentTask
                 else:
-                    hasNewCurrentGroupTask = newCurrentGroupTask is not None
-                    if hasNewCurrentGroupTask:
+                    hasNewCurrentTask = newCurrentTask is not None
+                    if hasNewCurrentTask:
                         hasKeyPressed = copyOfContext['lastPressedKey'] is not None
                         if hasKeyPressed:
                             pyautogui.keyUp(copyOfContext['lastPressedKey'])
                             copyOfContext['lastPressedKey'] = None
-                        copyOfContext['currentGroupTask'] = newCurrentGroupTask
+                        copyOfContext['currentTask'] = newCurrentTask
         elif copyOfContext['way'] == 'lootCorpses':
-            if copyOfContext['currentGroupTask'] is None:
+            if copyOfContext['currentTask'] is None:
                 # TODO: get closest dead corpse
                 firstDeadCorpse = copyOfContext['corpsesToLoot'][0]
-                copyOfContext['currentGroupTask'] = GroupOfLootCorpseTasks(copyOfContext, firstDeadCorpse)
+                copyOfContext['currentTask'] = GroupOfLootCorpseTasks(copyOfContext, firstDeadCorpse)
         elif copyOfContext['way'] == 'waypoint':
-            currentWaypointIndex = copyOfContext['cavebot']['waypoints']['currentIndex']
-            currentWaypoint = copyOfContext['cavebot']['waypoints']['points'][currentWaypointIndex]
-            if copyOfContext['currentGroupTask'] == None:
-                copyOfContext['currentGroupTask'] = gameplay.resolvers.resolveTasksByWaypointType(copyOfContext, currentWaypoint)
+            if copyOfContext['currentTask'] == None:
+                currentWaypointIndex = copyOfContext['cavebot']['waypoints']['currentIndex']
+                currentWaypoint = copyOfContext['cavebot']['waypoints']['points'][currentWaypointIndex]
+                copyOfContext['currentTask'] = gameplay.resolvers.resolveTasksByWaypointType(copyOfContext, currentWaypoint)
         gameContext = copyOfContext
         return copyOfContext
 
     def hasTaskToExecute(context):
-        has = context['currentGroupTask'] is not None
+        has = context['currentTask'] is not None
         return has
 
     taskObserver = decisionObserver.pipe(
@@ -358,9 +374,9 @@ def main():
     )
 
     def taskObservable(context):
-        global gameContext, taskExecutor
+        global gameContext
         copyOfContext = context.copy()
-        copyOfContext = taskExecutor.exec(copyOfContext)
+        copyOfContext = context['currentTask'].exec(copyOfContext)
         copyOfContext['lastCoordinateVisited'] = context['coordinate']
         gameContext = copyOfContext
         
@@ -396,7 +412,6 @@ def main():
             if hasEnoughMana:
                 pyautogui.press(context['hotkeys']['cure'])
                 sleep(0.25)
-                return
 
     spellObserver = fpsWithScreenshot.pipe(
         operators.subscribe_on(threadPoolScheduler)
@@ -414,8 +429,7 @@ def main():
             return
         if mana >= 115 and hud.creatures.getNearestCreaturesCount(hudCreatures) > 2 and not actionBar.core.hasExoriCooldown(context['screenshot']):
             pyautogui.press('f4')
-            return
-        
+
     try:
         spellObserver.subscribe(spellObservable)
         healingObserver.subscribe(healingObservable)
@@ -424,7 +438,6 @@ def main():
             sleep(1)
             continue
     except KeyboardInterrupt:
-        print("Program terminated manually!")
         raise SystemExit
 
 

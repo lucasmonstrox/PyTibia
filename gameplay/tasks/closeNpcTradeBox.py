@@ -1,22 +1,16 @@
 import pyautogui
-from time import time
 from refill.core import getTradeTopPos
+from utils.mouse import leftClick
+from .baseTask import BaseTask
 
 
-class CloseNpcTradeBoxTask:
+class CloseNpcTradeBoxTask(BaseTask):
     def __init__(self):
-        self.createdAt = time()
-        self.startedAt = None
-        self.finishedAt = None
+        super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.5
-        self.delayOfTimeout = None
         self.name = 'closeNpcTradeBox'
-        self.status = 'notStarted'
         self.value = None
-
-    def shouldIgnore(self, _):
-        return False
 
     def do(self, context):
         tradeTopPos = getTradeTopPos(context['screenshot'])
@@ -25,23 +19,5 @@ class CloseNpcTradeBoxTask:
         (x, y, _, _) = tradeTopPos
         closeIconX = x + 165
         closeIconY = y + 7
-        pyautogui.click(closeIconX, closeIconY)
-        return context
-    
-    def ping(self, context):
-        return context
-
-    def did(self, _):
-        return True
-
-    def shouldRestart(self, _):
-        return False
-
-    def onIgnored(self, context):
-        return context
-
-    def onDidComplete(self, context):
-        return context
-
-    def onDidTimeout(self, context):
+        leftClick(closeIconX, closeIconY)
         return context

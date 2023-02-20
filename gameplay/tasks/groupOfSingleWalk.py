@@ -8,13 +8,13 @@ from .groupTaskExecutor import GroupTaskExecutor
 
 class GroupOfSingleWalkTasks(GroupTaskExecutor):
     def __init__(self, context, checkInCoordinate):
+        super().__init__()
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 2
         self.name = 'groupOfSingleWalk'
-        self.status = 'notStarted'
         self.tasks = self.generateTasks(context, checkInCoordinate)
         self.value = checkInCoordinate
 

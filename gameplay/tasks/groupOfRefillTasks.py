@@ -11,17 +11,17 @@ from .groupTaskExecutor import GroupTaskExecutor
 
 class GroupOfRefillTasks(GroupTaskExecutor):
     def __init__(self, context, waypoint):
+        super().__init__()
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
         self.name = 'groupOfRefill'
-        self.status = 'notStarted'
         self.tasks = self.generateTasks(context, waypoint)
         self.value = waypoint
 
-    def generateTasks(self, context, waypoint):
+    def generateTasks(self, context, _):
         # TODO: inherit from context bindings
         itemSlot = {
             'great health potion': 1,

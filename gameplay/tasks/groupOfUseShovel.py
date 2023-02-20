@@ -1,26 +1,30 @@
 import numpy as np
 from time import time
-from ..factories.makeRefillCheckerTask import makeRefillCheckerTask
+from ..factories.makeClickInCoordinateTask import makeClickInCoordinateTask
+from ..factories.makeSetNextWaypointTask import makeSetNextWaypointTask
+from ..factories.makeUseShovelTask import makeUseShovelTask
 from ..typings import taskType
 from .groupTaskExecutor import GroupTaskExecutor
 
 
-class GroupOfRefillCheckerTasks(GroupTaskExecutor):
-    def __init__(self, waypoint):
+class GroupOfUseShovelTasks(GroupTaskExecutor):
+    def __init__(self, _, waypoint):
+        super().__init__()
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
-        self.delayBeforeStart = 1
-        self.delayAfterComplete = 1
-        self.name = 'groupOfRefillChecker'
-        self.status = 'notStarted'
+        self.delayBeforeStart = 0
+        self.delayAfterComplete = 0
+        self.name = 'groupOfUseShovel'
         self.tasks = self.generateTasks(waypoint)
         self.value = waypoint
 
     def generateTasks(self, waypoint):
         tasks = np.array([], dtype=taskType)
         tasksToAppend = np.array([
-            makeRefillCheckerTask(waypoint),
+            makeUseShovelTask(waypoint),
+            makeClickInCoordinateTask(waypoint),
+            makeSetNextWaypointTask(),
         ], dtype=taskType)
         tasks = np.append(tasks, [tasksToAppend])
         return tasks

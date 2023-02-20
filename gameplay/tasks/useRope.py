@@ -1,46 +1,20 @@
 import pyautogui
-from time import time
 import hud.core
 import hud.slot
+from .baseTask import BaseTask
 
 
-class UseRopeTask:
+class UseRopeTask(BaseTask):
     def __init__(self, value):
-        self.createdAt = time()
-        self.startedAt = None
-        self.finishedAt = None
+        super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
-        self.delayOfTimeout = None
         self.name = 'useRope'
-        self.status = 'notStarted'
         self.value = value
-
-    def shouldIgnore(self, _):
-        return False
 
     def do(self, context):
         slot = hud.core.getSlotFromCoordinate(
             context['coordinate'], self.value['coordinate'])
         pyautogui.press(context['hotkeys']['rope'])
         hud.slot.clickSlot(slot, context['hud']['coordinate'])
-        return context
-    
-    def ping(self, context):
-        return context
-
-    def did(self, _):
-        # TODO: check if char is in upper coordinate
-        return True
-
-    def shouldRestart(self, _):
-        return False
-
-    def onIgnored(self, context):
-        return context
-
-    def onDidComplete(self, context):
-        return context
-
-    def onDidTimeout(self, context):
         return context
