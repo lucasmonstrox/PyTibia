@@ -55,25 +55,15 @@ gameContext = {
         'waypoints': {
             'currentIndex': None,
             'points': np.array([
-                # ('', 'walk', (33114,32831,7), {}),
-                # ('', 'walk', (33120,32831,7), {}),
-                # ('', 'walk', (33122,32831,7), {}),
-                # ('', 'walk', (33127,32830,7), {}),
-                # ('', 'walk', (33134,32831,7), {}),
-                # ('', 'walk', (33124,32833,7), {}),
-                # ('', 'walk', (33124,32833,7), {}),
-                # ('', 'walk', (33117,32833,7), {}),
-                
-                
-                # ('', 'walk', (33214, 32459, 8), {}),
-                # ('', 'walk', (33214, 32456, 8), {}),
-                # ('', 'moveUpNorth', (33214, 32456, 8), {}),
-                # ('', 'walk', (33214, 32450, 7), {}),  #indo para cave
-                # ('', 'walk', (33220, 32428, 7), {}),
-                # ('', 'walk', (33216, 32392, 7), {}),
-                # ('', 'walk', (33251, 32364, 7), {}),
-                # ('', 'walk', (33277, 32329, 7), {}),
-                # ('', 'walk', (33301, 32291, 7), {}),
+                ('', 'walk', (33214, 32459, 8), {}),
+                ('', 'walk', (33214, 32456, 8), {}),
+                ('', 'moveUpNorth', (33214, 32456, 8), {}),
+                ('', 'walk', (33214, 32450, 7), {}),  #indo para cave
+                ('', 'walk', (33220, 32428, 7), {}),
+                ('', 'walk', (33216, 32392, 7), {}),
+                ('', 'walk', (33251, 32364, 7), {}),
+                ('', 'walk', (33277, 32329, 7), {}),
+                ('', 'walk', (33301, 32291, 7), {}),
                 ('', 'walk', (33302, 32289, 7), {}), # chegou na cave
                 ('caveStart', 'walk', (33301, 32278, 7), {}), # 10
                 ('', 'walk', (33312, 32278, 7), {}), # 11
@@ -153,23 +143,6 @@ gameContext = {
     'window': None
 }
 hudCreatures = np.array([], dtype=hud.creatures.creatureType)
-
-
-# 1. tira screenshot
-# 2. pega coordenada
-# 3. pega monstros da battleList
-# 4. pega a coordenada da hud
-# 5. pega a imagem da hud
-# 6. resolve da onde o bot ta vindo
-# 7. pego os monstros da hud
-# 8. verifico se tem loot
-# 9. mapeio o waypoint index se for vazio
-# 10. fazer algum tipo de tarefa:
-#     - atacar e seguir
-#     - fazer waypoint
-#     - coletar loot
-#     - ...
-#     - depositar
 
 
 def main():
