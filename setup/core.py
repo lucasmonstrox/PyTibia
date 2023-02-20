@@ -65,10 +65,8 @@ def isPasswordEmpty(screenshot):
     (x, y, w, h) = getLoginWindowCoord(screenshot)
     x = x + 91
     y = y + 58
-
     result = utils.core.locate(utils.image.crop(
         screenshot, x, y, 13, 22), emptyFieldImg, confidence=0.99)
-
     if result is None:
         return False
     else:
@@ -82,7 +80,6 @@ def setPassword(screenshot):
         pyautogui.hotkey('ctrl', 'a')
         pyautogui.press('backspace')
     pyautogui.typewrite(login['Password'])
-    return
 
 
 def openClient(screenshot):
@@ -90,7 +87,6 @@ def openClient(screenshot):
     if iconCoord is not None:
         (x, y, _, _) = iconCoord
         utils.mouse.leftClick(x, y)
-
     openClientTimeout = float(default['openClientTimeout'])
     openClientStartTime = time()
     elapsedOpenClientTime = 0.0
@@ -100,21 +96,15 @@ def openClient(screenshot):
         screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
         elapsedOpenClientTime = time() - openClientStartTime
         LoginScreenPos = getLoginWindowCoord(screenshot)
-
         if LoginScreenPos is not None:
             break
-
     if LoginScreenPos is None:
         print('Opening up time out')
         return
-    else:
-        print(f'Client opened in: {elapsedOpenClientTime} seconds')
-
-    return
+    print(f'Client opened in: {elapsedOpenClientTime} seconds')
 
 
 def logIn():
-
     screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
     setEmail(screenshot)
     setPassword(screenshot)
@@ -122,31 +112,25 @@ def logIn():
     loginTimeout = float(default['LoginTimeout'])
     loginStartTime = time()
     elapsedLoginTime = 0.0
-    print('Waiting for character screen to show...')
     charScreenPos = None
     while elapsedLoginTime < loginTimeout:
         screenshot = utils.image.RGBtoGray(utils.core.getScreenshot())
         elapsedLoginTime = time() - loginStartTime
         charScreenPos = getCharacterWindowCoord(screenshot)
         wrongCredPos = utils.core.locate(wrongCredImg, screenshot)
-
         if wrongCredPos is not None:
             print('Wrong login credentials')
             return
         if charScreenPos is not None:
             break
-
     if charScreenPos is None:
         print('Character screen time out')
         return
     else:
         print(f'Character screen loaded in: {elapsedLoginTime} seconds')
-
-    for i in range(0, int(login['CharacterIndex'])):
+    for _ in range(0, int(login['CharacterIndex'])):
         utils.core.press('down')
-
     utils.core.press('enter')
-
     worldConnectTimeout = float(default['worldConnectTimeout'])
     worldConnectStartTime = time()
     elapsedWorldConnectTime = 0.0
@@ -158,14 +142,10 @@ def logIn():
         LeftSidebarArrowPos = hud.core.getLeftSidebarArrows(screenshot)
         if LeftSidebarArrowPos is not None:
             break
-
     if LeftSidebarArrowPos is None:
         print('World load time out')
         return
-    else:
-        print(f'Game World loaded in: {elapsedWorldConnectTime} seconds')
-
-    return
+    print(f'Game World loaded in: {elapsedWorldConnectTime} seconds')
 
 
 def isLoggedIn(screenshot):
