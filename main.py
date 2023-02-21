@@ -250,8 +250,8 @@ def main():
         copyOfContext = context.copy()
         hudCreatures = hud.creatures.getCreatures(
             copyOfContext['battleListCreatures'], copyOfContext['comingFromDirection'], copyOfContext['hud']['coordinate'], copyOfContext['hudImg'], copyOfContext['coordinate'], copyOfContext['resolution'])
-        copyOfContext['monsters'] = hud.creatures.getCreatureByType(hudCreatures, 'monster')
-        copyOfContext['players'] = hud.creatures.getCreatureByType(hudCreatures, 'player')
+        copyOfContext['monsters'] = hud.creatures.getCreaturesByType(hudCreatures, 'monster')
+        copyOfContext['players'] = hud.creatures.getCreaturesByType(hudCreatures, 'player')
         copyOfContext['cavebot']['targetCreature'] = hud.creatures.getTargetCreature(copyOfContext['monsters'])
         gameContext = copyOfContext
         return copyOfContext

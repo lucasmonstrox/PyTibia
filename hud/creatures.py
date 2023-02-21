@@ -313,8 +313,7 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
     return creatures
 
 
-# TODO: improve this
-def getCreatureByType(hudCreatures, type):
+def getCreaturesByType(hudCreatures, type):
     return hudCreatures[hudCreatures['type'] == type]
 
 
@@ -460,7 +459,9 @@ def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordina
                                     5 + slotWidth, borderX:borderX + slotWidth]
         borderGap = 4 if slotWidth == 64 else 2
         yOfBorder = slotWidth - borderGap
+        # TODO: crop only red border
         borderedCreatureImg[borderGap:yOfBorder, borderGap:yOfBorder] = 0
+        # TODO: improve performance
         pixelsCount = np.sum(np.where(np.logical_or(
             borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
         # TODO: count by 720p resolution should be less than 1080p resolution
