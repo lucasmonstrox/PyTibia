@@ -5,7 +5,7 @@ from ..typings import taskType
 from .groupTaskExecutor import GroupTaskExecutor
 
 
-class GroupOfRefillCheckerTasks(GroupTaskExecutor):
+class RefillCheckerWaypointTask(GroupTaskExecutor):
     def __init__(self, waypoint):
         super().__init__()
         self.createdAt = time()

@@ -9,7 +9,7 @@ from ..typings import taskType
 from .groupTaskExecutor import GroupTaskExecutor
 
 
-class GroupOfRefillTasks(GroupTaskExecutor):
+class RefillWaypointTask(GroupTaskExecutor):
     def __init__(self, context, waypoint):
         super().__init__()
         self.createdAt = time()

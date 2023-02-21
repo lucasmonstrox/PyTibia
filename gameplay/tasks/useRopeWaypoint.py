@@ -1,13 +1,12 @@
 import numpy as np
 from time import time
-from ..factories.makeClickInCoordinateTask import makeClickInCoordinateTask
+from ..factories.makeUseRopeTask import makeUseRopeTask
 from ..factories.makeSetNextWaypointTask import makeSetNextWaypointTask
-from ..factories.makeUseShovelTask import makeUseShovelTask
 from ..typings import taskType
 from .groupTaskExecutor import GroupTaskExecutor
 
 
-class GroupOfUseShovelTasks(GroupTaskExecutor):
+class UseRopeWaypointTask(GroupTaskExecutor):
     def __init__(self, _, waypoint):
         super().__init__()
         self.createdAt = time()
@@ -15,15 +14,14 @@ class GroupOfUseShovelTasks(GroupTaskExecutor):
         self.finishedAt = None
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
-        self.name = 'groupOfUseShovel'
+        self.name = 'groupOfUseRope'
         self.tasks = self.generateTasks(waypoint)
         self.value = waypoint
 
     def generateTasks(self, waypoint):
         tasks = np.array([], dtype=taskType)
         tasksToAppend = np.array([
-            makeUseShovelTask(waypoint),
-            makeClickInCoordinateTask(waypoint),
+            makeUseRopeTask(waypoint),
             makeSetNextWaypointTask(),
         ], dtype=taskType)
         tasks = np.append(tasks, [tasksToAppend])
