@@ -410,7 +410,6 @@ def hasTargetToCreatureBySlot(hudCreatures, slot, coordinate):
     if hasNoHudCreatures:
         return False
     floorLevel = hudCreatures[0]['coordinate'][2]
-    # TODO: improve this
     walkableFloorsSqms = radar.config.walkableFloorsSqms[floorLevel]
     hudWalkableFloorsSqms = getHudWalkableFloorsSqms(
         walkableFloorsSqms, coordinate)
