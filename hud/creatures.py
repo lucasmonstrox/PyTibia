@@ -105,7 +105,7 @@ def getClosestCreature(hudCreatures, coordinate):
     if hasNoCreatures:
         return None
     floorLevel = coordinate[2]
-    walkableFloorsSqms = radar.config.walkableFloorsSqms[floorLevel].copy()
+    walkableFloorsSqms = radar.config.walkableFloorsSqms[floorLevel]
     hudWalkableFloorsSqms = getHudWalkableFloorsSqms(
         walkableFloorsSqms, coordinate)
     adjacencyMatrix = utils.matrix.getAdjacencyMatrix(hudWalkableFloorsSqms)
@@ -273,7 +273,6 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
             creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1, startingX:endingX]
             if creatureNameImg.shape[1] != creatureWithDirtNameImg.shape[1]:
                 creatureWithDirtNameImg = hudImg[creatureBarY0:creatureBarY1, startingX:endingX + 1]
-            creatureWithDirtNameImg = cleanCreatureName(creatureWithDirtNameImg)
             creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg)
             if creatureDidMatch:
                 creature = makeCreature(creatureName, 'monster', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=discoverTarget)
@@ -287,7 +286,6 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
             creatureWithDirtNameImg2 = hudImg[creatureBarY0:creatureBarY1, startingX + 1:endingX + 1]
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
                 creatureNameImg2 = creatureNameImg2[:, 0:creatureNameImg2.shape[1] - 1]
-            creatureWithDirtNameImg2 = cleanCreatureName(creatureWithDirtNameImg2)
             creatureDidMatch = utils.matrix.hasMatrixInsideOther(creatureWithDirtNameImg2, creatureNameImg2)
             if creatureDidMatch:
                 creature = makeCreature(creatureName, 'monster', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=discoverTarget)
@@ -298,7 +296,6 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
                 battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 break
             creatureWithDirtNameImg3 = hudImg[creatureBarY0:creatureBarY1, startingX:endingX - 1]
-            creatureWithDirtNameImg3 = cleanCreatureName(creatureWithDirtNameImg3)
             creatureNameImg3 = creaturesNamesHashes.get(creatureName).copy()
             creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
             if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
@@ -440,7 +437,6 @@ def hasTargetToCreature(hudCreatures, hudCreature, coordinate):
 
 # TODO: improve clean code
 # TODO: windowCoordinate should be improved for hud edges
-# TODO: avoid calculating if creature is target when some creature is already target
 def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=True):
     isBigHud = slotWidth == 64
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
