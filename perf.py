@@ -149,13 +149,13 @@ hudCreatures = np.array([], dtype=hud.creatures.creatureType)
 
 def main():
     # rgbScreenshot = utils.core.getScreenshot(camera)
-    grayScreenshot = utils.image.loadFromRGBToGray('screenshot.png')
+    # grayScreenshot = utils.image.loadFromRGBToGray('screenshot.png')
     # grayScreenshot = utils.image.RGBtoGray(rgbScreenshot)
-    gameContext['previousCoordinate'] = radar.core.getCoordinate(grayScreenshot)
-    battleListCreatures = battleList.core.getCreatures(grayScreenshot)
-    hudSize = hud.core.hudSizes[gameContext['resolution']]
-    hudCoordinate = hud.core.getCoordinate(grayScreenshot, hudSize)
-    hudImg = hud.core.getImgByCoordinate(grayScreenshot, hudCoordinate, hudSize)
+    # gameContext['previousCoordinate'] = radar.core.getCoordinate(grayScreenshot)
+    # battleListCreatures = battleList.core.getCreatures(grayScreenshot)
+    # hudSize = hud.core.hudSizes[gameContext['resolution']]
+    # hudCoordinate = hud.core.getCoordinate(grayScreenshot, hudSize)
+    # hudImg = hud.core.getImgByCoordinate(grayScreenshot, hudCoordinate, hudSize)
     # hudCreatures = hud.creatures.getCreatures(battleListCreatures, 'left', hudCoordinate, hudImg, gameContext['previousCoordinate'], gameContext['resolution'])
     # print('hudCreatures', hudCreatures)   
 
@@ -290,10 +290,11 @@ def main():
     # print('res', res)
     # res = timeit.repeat(lambda: hud.creatures.getCreatures(battleListCreatures, 'left', hudCoordinate, hudImg, gameContext['previousCoordinate'], gameContext['resolution']), repeat=10, number=1)
     # res = timeit.repeat(lambda: pyautogui.press('w'), repeat=10, number=1)
+    # hudImg = utils.image.loadFromRGBToGray('hudImgBrancoPreto.png')
     # hudImg = utils.image.loadFromRGBToGray('hudImg.png')
-    utils.image.save(hudImg, 'hudImg.png')
-    bars = hud.creatures.getCreaturesBars(hudImg)
-    print(bars, len(bars))
+    # utils.image.save(hudImg, 'hudImgBrancoPreto.png')
+    # bars = hud.creatures.getCreaturesBars(hudImg)
+    # print(bars, len(bars))
     # hudCreatures = hud.creatures.getCreatures(battleListCreatures, 'left', hudCoordinate, hudImg, gameContext['previousCoordinate'], gameContext['resolution'])
     # print(bars, len(bars))
     # hudCreatures = hud.creatures.getCreatures(battleListCreatures, 'left', hudCoordinate, hudImg, gameContext['previousCoordinate'], gameContext['resolution'])
@@ -301,8 +302,20 @@ def main():
     # print('hudCreatures', hudCreatures)
     # res = timeit.repeat(lambda: hud.creatures.getCreaturesBars(hudImg), repeat=10, number=1)
     # print('res', res)
-    # res = timeit.repeat(lambda: handle(), repeat=10, number=1)
-    # print('res', res)
+    res = timeit.repeat(lambda: handle(), repeat=10, number=1)
+    print('res', res)
+    # cenas = np.arange(27 * 4).reshape(4, 27)
+    # print(cenas)
+    # i = 0
+    # j = 0
+    # upperBorder = cenas[j, i: i + 27]
+    # print('upperBorder', upperBorder, upperBorder.shape)
+    # leftBorder = cenas[j: j + 4, i]
+    # print('leftBorder', leftBorder, leftBorder.shape)
+    # rightBorder = cenas[j: j + 4, i + 26]
+    # print('rightBorder', rightBorder, rightBorder.shape)
+    # bottomBorder = cenas[j + 3, i: i + 26]
+    # print('bottomBorder', bottomBorder, bottomBorder.shape)
 
 
 if __name__ == '__main__':
