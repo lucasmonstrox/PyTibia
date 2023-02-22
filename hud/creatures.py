@@ -190,50 +190,42 @@ def getCreaturesBars(hudImg):
     bars = []
     for j in range(imgHeight - 3):
         i = -1
-        while(i < (imgWidth - 26)):
+        while(i < (imgWidth - 27)):
             i += 1
             if hudImg[j, i] == 0:
                 upperBorderIsBlack = True
                 bottomBorderIsBlack = True
                 leftBorderIsBlack = True
                 rightBorderIsBlack = True
-                l = 0
                 upperBorder = hudImg[j, i: i + 27]
                 for value in upperBorder:
                     if value != 0:
                         upperBorderIsBlack = False
                         break
-                    l = l + 1
                 if upperBorderIsBlack == False:
-                    i += l
                     continue
                 leftBorder = hudImg[j: j + 4, i]
                 for value in leftBorder:
                     if value != 0:
                         leftBorderIsBlack = False
                         break
-                print(i, j, leftBorder, leftBorderIsBlack)
-                # if leftBorderIsBlack == False:
-                #     i += l
-                #     continue
-                # rightBorder = hudImg[j: j + 4, i + 27]
-                # for value in rightBorder:
-                #     if value != 0:
-                #         rightBorderIsBlack = False
-                #         break
-                # if rightBorderIsBlack == False:
-                #     i += l
-                #     continue
-                # bottomBorder = hudImg[j + 4, i: i + 27]
-                # for value in bottomBorder:
-                #     if value != 0:
-                #         bottomBorderIsBlack = False
-                #         break
-                # if bottomBorderIsBlack == False:
-                #     i += l
-                #     continue
+                if leftBorderIsBlack == False:
+                    continue
+                rightBorder = hudImg[j: j + 4, i + 26]
+                for value in rightBorder:
+                    if value != 0:
+                        rightBorderIsBlack = False
+                        break
+                if rightBorderIsBlack == False:
+                    continue
+                bottomBorder = hudImg[j + 3, i: i + 26]
+                for value in bottomBorder:
+                    if value != 0:
+                        bottomBorderIsBlack = False
+                        break
+                if bottomBorderIsBlack == False:
+                    continue
                 bars.append((i, j))
-                i += l
     return bars
 
 
