@@ -185,28 +185,48 @@ def getCreaturesBarsNp(hudImg, resolution):
 
 
 @njit(cache=True, fastmath=True)
-def getCreaturesBars(hudImg, battleListCreaturesCount):
-    creaturesBars = np.zeros((battleListCreaturesCount, 2), dtype=np.uint32)
-    curr = 0
-    hudImgFlattened = np.ravel(hudImg)
-    teste = np.ravel(lifeBarBlackPixelsMapperOf1080)
-    for i in range(hudImgFlattened.shape[0]):
-        if curr == battleListCreaturesCount:
-            break
-        max = hudImgFlattened.shape[0] - hudImg.shape[0] * 4
-        if hudImgFlattened[i] == 0 and i < max:
-            imgCoordinates = teste + i
-            img = np.take(hudImgFlattened, imgCoordinates)
-            lifeBarDetected = np.all(img == 0)
-            if lifeBarDetected:
-                x = i % 960
-                y = i // 960
-                creaturesBars[curr] = [x, y]
-                curr += 1
-                if curr == battleListCreaturesCount:
-                    break
-    return creaturesBars
-
+def getCreaturesBars(hudImg):
+    imgHeight, imgWidth = hudImg.shape
+    bars = []
+    for j in range(imgHeight - 3):
+        i = -1
+        while(i < (imgWidth - 27)):
+            i += 1
+            if hudImg[j, i] == 0:
+                upperBorderIsBlack = True
+                bottomBorderIsBlack = True
+                leftBorderIsBlack = True
+                rightBorderIsBlack = True
+                upperBorder = hudImg[j, i: i + 27]
+                for value in upperBorder:
+                    if value != 0:
+                        upperBorderIsBlack = False
+                        break
+                if upperBorderIsBlack == False:
+                    continue
+                leftBorder = hudImg[j: j + 4, i]
+                for value in leftBorder:
+                    if value != 0:
+                        leftBorderIsBlack = False
+                        break
+                if leftBorderIsBlack == False:
+                    continue
+                rightBorder = hudImg[j: j + 4, i + 26]
+                for value in rightBorder:
+                    if value != 0:
+                        rightBorderIsBlack = False
+                        break
+                if rightBorderIsBlack == False:
+                    continue
+                bottomBorder = hudImg[j + 3, i: i + 26]
+                for value in bottomBorder:
+                    if value != 0:
+                        bottomBorderIsBlack = False
+                        break
+                if bottomBorderIsBlack == False:
+                    continue
+                bars.append((i, j))
+    return bars
 
 # TODO: if last category is remaining, avoid calculating, return it immediatelly
 # TODO: add name missAlignment for each creature, it avoid possible 3 calculations
