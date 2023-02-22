@@ -228,6 +228,7 @@ def getCreaturesBars(hudImg):
                 bars.append((i, j))
     return bars
 
+
 # TODO: if last category is remaining, avoid calculating, return it immediatelly
 # TODO: add name missAlignment for each creature, it avoid possible 3 calculations
 def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordinate, resolution):
@@ -241,7 +242,7 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
     hasNoBattleListCreatures = battleListCreaturesCount == 0
     if hasNoBattleListCreatures:
         return creatures
-    creaturesBars = getCreaturesBars(hudImg, battleListCreaturesCount)
+    creaturesBars = getCreaturesBars(hudImg)
     hasNoCreaturesBars = len(creaturesBars) == 0
     if hasNoCreaturesBars:
         return creatures
@@ -453,8 +454,42 @@ def hasTargetToCreature(hudCreatures, hudCreature, coordinate):
     return hasTarget
 
 
+@njit(cache=True, fastmath=True)
+def isCreatureBeingAttacked(hudImg, borderX, yOfCreatureBar, slotWidth):
+    pixelsCount = 0
+    borderedCreatureImg = hudImg[yOfCreatureBar + 5:yOfCreatureBar +
+                                    5 + slotWidth, borderX:borderX + slotWidth]
+    borderGap = 4 if slotWidth == 64 else 2
+    yOfBorder = slotWidth - borderGap
+    topBorder = borderedCreatureImg[0:borderGap, :].flatten()
+    bottomBorder = borderedCreatureImg[yOfBorder:, :].flatten()
+    leftBorder = borderedCreatureImg[borderGap:yOfBorder, 0:borderGap].flatten()
+    rightBorder = borderedCreatureImg[borderGap:yOfBorder, yOfBorder:].flatten()
+    for i in range(len(topBorder)):
+        if topBorder[i] == 76 or topBorder[i] == 166:
+            pixelsCount += 1
+    if pixelsCount > 50:
+        return True
+    for i in range(len(leftBorder)):
+        if leftBorder[i] == 76 or leftBorder[i] == 166:
+            pixelsCount += 1
+    if pixelsCount > 50:
+        return True
+    for i in range(len(rightBorder)):
+        if rightBorder[i] == 76 or rightBorder[i] == 166:
+            pixelsCount += 1
+    if pixelsCount > 50:
+        return True
+    for i in range(len(bottomBorder)):
+        if bottomBorder[i] == 76 or bottomBorder[i] == 166:
+            pixelsCount += 1
+    isBeingAttacked = pixelsCount > 50
+    return isBeingAttacked
+
+
 # TODO: improve clean code
 # TODO: windowCoordinate should be improved for hud edges
+# TODO: detect being creature by category
 def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=True):
     isBigHud = slotWidth == 64
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
@@ -475,17 +510,8 @@ def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordina
     borderX = max(xOfCreatureBar - distanceBetweenSlotPixelLifeBar, 0)
     isBeingAttacked = False
     if discoverTarget:
-        borderedCreatureImg = hudImg[yOfCreatureBar + 5:yOfCreatureBar +
-                                    5 + slotWidth, borderX:borderX + slotWidth]
-        borderGap = 4 if slotWidth == 64 else 2
-        yOfBorder = slotWidth - borderGap
-        # TODO: crop only red border
-        borderedCreatureImg[borderGap:yOfBorder, borderGap:yOfBorder] = 0
-        # TODO: improve performance
-        pixelsCount = np.sum(np.where(np.logical_or(
-            borderedCreatureImg == 76, borderedCreatureImg == 166), 1, 0))
-        # TODO: count by 720p resolution should be less than 1080p resolution
-        isBeingAttacked = pixelsCount > 50
+        isBeingAttacked = isCreatureBeingAttacked(
+            hudImg, borderX, yOfCreatureBar, slotWidth)
     slot = (xSlot, ySlot)
     coordinateX = coordinate[0] - 7 + xSlot
     coordinateY = coordinate[1] - 5 + ySlot
