@@ -2,10 +2,10 @@ import numpy as np
 from time import time
 from ..factories.makeRefillCheckerTask import makeRefillCheckerTask
 from ..typings import taskType
-from .groupTaskExecutor import GroupTaskExecutor
+from .base.vector import VectorTask
 
 
-class RefillCheckerWaypointTask(GroupTaskExecutor):
+class RefillCheckerWaypointTask(VectorTask):
     def __init__(self, waypoint):
         super().__init__()
         self.createdAt = time()

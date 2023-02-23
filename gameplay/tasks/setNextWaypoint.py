@@ -1,6 +1,6 @@
 from utils.array import getNextArrayIndex
 from ..waypoint import resolveGoalCoordinate
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class SetNextWaypointTask(BaseTask):
@@ -8,7 +8,7 @@ class SetNextWaypointTask(BaseTask):
         super().__init__()
         self.name = 'setNextWaypoint'
 
-    def do(self, context):
+    def exec(self, context):
         nextWaypointIndex = getNextArrayIndex(
             context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])
         context['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex

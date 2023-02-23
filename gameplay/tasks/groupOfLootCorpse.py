@@ -5,10 +5,10 @@ from ..factories.makeLootCorpse import makeLootCorpseTask
 from ..factories.makeWalkTask import makeWalkTask
 from ..typings import taskType
 from ..waypoint import generateFloorWalkpoints
-from .groupTaskExecutor import GroupTaskExecutor
+from .base.vector import VectorTask
 
 
-class GroupOfLootCorpseTasks(GroupTaskExecutor):
+class GroupOfLootCorpseTasks(VectorTask):
     def __init__(self, context, corpose):
         super().__init__()
         self.createdAt = time()

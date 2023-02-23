@@ -15,7 +15,7 @@ class BaseTask:
     def shouldIgnore(self, _):
         return False
 
-    def do(self, context):
+    def exec(self, context):
         return context
     
     def ping(self, context):

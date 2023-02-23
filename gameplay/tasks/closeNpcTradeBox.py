@@ -1,7 +1,7 @@
 import pyautogui
 from refill.core import getTradeTopPos
 from utils.mouse import leftClick
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class CloseNpcTradeBoxTask(BaseTask):
@@ -12,7 +12,7 @@ class CloseNpcTradeBoxTask(BaseTask):
         self.name = 'closeNpcTradeBox'
         self.value = None
 
-    def do(self, context):
+    def exec(self, context):
         tradeTopPos = getTradeTopPos(context['screenshot'])
         if tradeTopPos is None:
             return context

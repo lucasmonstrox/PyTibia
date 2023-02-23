@@ -77,6 +77,7 @@ poetry run python -m pytest
 
 # ✅ TODO
 
+- Add number of retry for tasks
 - Add recursive tasks
 - Add spells combos
 - Add thread to eat food

@@ -3,10 +3,10 @@ from time import time
 from ..factories.makeUseRopeTask import makeUseRopeTask
 from ..factories.makeSetNextWaypointTask import makeSetNextWaypointTask
 from ..typings import taskType
-from .groupTaskExecutor import GroupTaskExecutor
+from .base.vector import VectorTask
 
 
-class UseRopeWaypointTask(GroupTaskExecutor):
+class UseRopeWaypointTask(VectorTask):
     def __init__(self, _, waypoint):
         super().__init__()
         self.createdAt = time()

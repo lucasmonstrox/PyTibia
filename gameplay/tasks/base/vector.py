@@ -1,7 +1,7 @@
 from time import time
 
 
-class GroupTaskExecutor:
+class VectorTask:
     def __init__(self):
         self.currentTaskIndex = 0
         self.status = 'notStarted'
@@ -24,7 +24,7 @@ class GroupTaskExecutor:
                         self.markCurrentTaskAsCompleted()
                     else:
                         task.status = 'running'
-                        context = task.do(context)
+                        context = task.exec(context)
                     self.tasks[self.currentTaskIndex] = (taskName, task)
             elif task.status == 'running':
                 if task.shouldRestart(context):

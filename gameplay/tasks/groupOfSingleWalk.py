@@ -3,10 +3,10 @@ from time import time
 from ..factories.makeSetNextWaypointTask import makeSetNextWaypointTask
 from ..factories.makeWalkTask import makeWalkTask
 from ..typings import taskType
-from .groupTaskExecutor import GroupTaskExecutor
+from .base.vector import VectorTask
 
 
-class GroupOfSingleWalkTasks(GroupTaskExecutor):
+class GroupOfSingleWalkTasks(VectorTask):
     def __init__(self, context, checkInCoordinate):
         super().__init__()
         self.createdAt = time()

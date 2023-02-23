@@ -6,10 +6,10 @@ from ..factories.makeCloseNpcTradeBox import makeCloseNpcTradeBoxTask
 from ..factories.makeSayTask import makeSayTask
 from ..factories.makeSetNextWaypointTask import makeSetNextWaypointTask
 from ..typings import taskType
-from .groupTaskExecutor import GroupTaskExecutor
+from .base.vector import VectorTask
 
 
-class RefillWaypointTask(GroupTaskExecutor):
+class RefillWaypointTask(VectorTask):
     def __init__(self, context, waypoint):
         super().__init__()
         self.createdAt = time()

@@ -1,6 +1,6 @@
 import hud.core
 import hud.slot
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class UseHoleTask(BaseTask):
@@ -11,7 +11,7 @@ class UseHoleTask(BaseTask):
         self.name = 'useHole'
         self.value = value
 
-    def do(self, context):
+    def exec(self, context):
         slot = hud.core.getSlotFromCoordinate(
             context['coordinate'], self.value['coordinate'])
         hud.slot.rightClickSlot(slot, context['hud']['coordinate'])

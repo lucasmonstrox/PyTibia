@@ -1,5 +1,5 @@
 from inventory.core import isBackpackOpen, openBackpack
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class OpenBackpackTask(BaseTask):
@@ -14,7 +14,7 @@ class OpenBackpackTask(BaseTask):
         shouldIgnore = isBackpackOpen(context['screenshot'], self.value)
         return shouldIgnore
 
-    def do(self, context):
+    def exec(self, context):
         openBackpack(context['screenshot'], self.value)
         return context
     

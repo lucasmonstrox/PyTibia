@@ -2,7 +2,7 @@ import numpy as np
 import pyautogui
 import hud.core
 import hud.slot
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class LootCorpseTask(BaseTask):
@@ -13,7 +13,7 @@ class LootCorpseTask(BaseTask):
         self.name = 'lootCorpse'
         self.value = value
 
-    def do(self, context):
+    def exec(self, context):
         slot = hud.core.getSlotFromCoordinate(
             context['coordinate'], self.value['coordinate'])
         pyautogui.keyDown('shift')

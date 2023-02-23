@@ -1,7 +1,7 @@
 import pyautogui
 import hud.core
 import hud.slot
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class UseRopeTask(BaseTask):
@@ -12,7 +12,7 @@ class UseRopeTask(BaseTask):
         self.name = 'useRope'
         self.value = value
 
-    def do(self, context):
+    def exec(self, context):
         slot = hud.core.getSlotFromCoordinate(
             context['coordinate'], self.value['coordinate'])
         pyautogui.press(context['hotkeys']['rope'])

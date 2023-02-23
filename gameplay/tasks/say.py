@@ -1,5 +1,5 @@
 import chat.core
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class SayTask(BaseTask):
@@ -10,6 +10,6 @@ class SayTask(BaseTask):
         self.name = 'say'
         self.value = phrase
 
-    def do(self, context):
+    def exec(self, context):
         chat.core.sendMessage(context['screenshot'], self.value)
         return context

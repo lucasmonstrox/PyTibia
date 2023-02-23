@@ -1,5 +1,5 @@
-from ..factories.makeOpenBackpackTask import makeOpenBackpackTask
-from .decisionTask import DecisionTask
+from .base.decision import DecisionTask
+from .openBackpack import OpenBackpackTask
 
 
 # abrir backpack principal
@@ -21,11 +21,8 @@ from .decisionTask import DecisionTask
 class DepositItemsTask(DecisionTask):
     def __init__(self, context, waypoint):
         super().__init__(
-            makeOpenBackpackTask(context['backpacks']['main']),
-            makeOpenBackpackTask(context['backpacks']['loot']),
+            OpenBackpackTask(context['backpacks']['main']),
+            OpenBackpackTask(context['backpacks']['loot'])
         )
         self.name = 'depositItems'
         self.value = waypoint
-
-    def exec(self, context):
-        return super().exec(context)

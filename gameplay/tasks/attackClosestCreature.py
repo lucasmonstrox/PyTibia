@@ -1,6 +1,6 @@
 import pyautogui
 from utils.mouse import leftClick
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class AttackClosestCreatureTask(BaseTask):
@@ -9,7 +9,7 @@ class AttackClosestCreatureTask(BaseTask):
         self.delayOfTimeout = 1
         self.name = 'attackClosestCreature'
 
-    def do(self, context):
+    def exec(self, context):
         x, y = context['cavebot']['closestCreature']['windowCoordinate']
         pyautogui.keyDown('alt')
         leftClick(x, y)

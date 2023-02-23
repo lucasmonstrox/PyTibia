@@ -2,7 +2,7 @@ import numpy as np
 from actionBar.core import getSlotCount
 from skills.core import getCapacity
 from utils.array import getNextArrayIndex
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class RefillCheckerTask(BaseTask):

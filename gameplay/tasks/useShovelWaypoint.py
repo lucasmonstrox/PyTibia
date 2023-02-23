@@ -4,10 +4,10 @@ from ..factories.makeClickInCoordinateTask import makeClickInCoordinateTask
 from ..factories.makeSetNextWaypointTask import makeSetNextWaypointTask
 from ..factories.makeUseShovelTask import makeUseShovelTask
 from ..typings import taskType
-from .groupTaskExecutor import GroupTaskExecutor
+from .base.vector import VectorTask
 
 
-class UseShovelWaypointTask(GroupTaskExecutor):
+class UseShovelWaypointTask(VectorTask):
     def __init__(self, _, waypoint):
         super().__init__()
         self.createdAt = time()

@@ -6,10 +6,10 @@ from ..factories.makeAttackClosestCreature import makeAttackClosestCreatureTask
 from ..factories.makeWalkTask import makeWalkTask
 from ..typings import taskType
 from ..waypoint import generateFloorWalkpoints
-from .groupTaskExecutor import GroupTaskExecutor
+from .base.vector import VectorTask
 
 
-class GroupOfAttackClosestCreatureTasks(GroupTaskExecutor):
+class GroupOfAttackClosestCreatureTasks(VectorTask):
     def __init__(self, context):
         super().__init__()
         self.createdAt = time()

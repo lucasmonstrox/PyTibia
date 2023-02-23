@@ -1,6 +1,6 @@
 from time import time
 from refill import core
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class BuyItemTask(BaseTask):
@@ -11,6 +11,6 @@ class BuyItemTask(BaseTask):
         self.name = 'buyItem'
         self.value = itemNameWithQuantity
 
-    def do(self, context):
+    def exec(self, context):
         core.buyItem(context['screenshot'], self.value)
         return context

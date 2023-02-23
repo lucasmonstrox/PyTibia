@@ -4,7 +4,7 @@ from time import time
 from radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from skills.core import getSpeed
 from utils.coordinate import getDirectionBetweenCoordinates
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class WalkTask(BaseTask):
@@ -24,7 +24,7 @@ class WalkTask(BaseTask):
             context['coordinate'] == context['lastCoordinateVisited']) == True) == False
         return isStartingFromLastCoordinate
 
-    def do(self, context):
+    def exec(self, context):
         walkpoint = self.value
         direction = getDirectionBetweenCoordinates(context['coordinate'], walkpoint)
         hasNoNewDirection = direction is None

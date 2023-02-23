@@ -1,7 +1,7 @@
 import numpy as np
 import hud.core
 import hud.slot
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class ClickInCoordinateTask(BaseTask):
@@ -12,7 +12,7 @@ class ClickInCoordinateTask(BaseTask):
         self.name = 'clickInCoordinate'
         self.value = value
 
-    def do(self, context):
+    def exec(self, context):
         slot = hud.core.getSlotFromCoordinate(
             context['coordinate'], self.value['coordinate'])
         hud.slot.clickSlot(slot, context['hud']['coordinate'])

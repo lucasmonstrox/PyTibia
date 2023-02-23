@@ -68,38 +68,6 @@ creatureType = np.dtype([
 ])
 
 
-@njit(cache=True, fastmath=True)
-def cleanCreatureName(creatureName):
-    for i in range(creatureName.shape[0]):
-        for j in range(creatureName.shape[1]):
-            if creatureName[i, j] == 29:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 57:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 91:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 113:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 152:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 170:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 192:
-                creatureName[i, j] = 0
-    return creatureName
-
-
-def cleanCreatureNameNp(creatureName):
-    creatureName = np.where(creatureName == 29, 0, creatureName)
-    creatureName = np.where(creatureName == 57, 0, creatureName)
-    creatureName = np.where(creatureName == 91, 0, creatureName)
-    creatureName = np.where(creatureName == 113, 0, creatureName)
-    creatureName = np.where(creatureName == 152, 0, creatureName)
-    creatureName = np.where(creatureName == 170, 0, creatureName)
-    creatureName = np.where(creatureName == 192, 0, creatureName)
-    return creatureName
-
-
 def getClosestCreature(hudCreatures, coordinate):
     hasNoCreatures = len(hudCreatures) == 0
     if hasNoCreatures:
@@ -140,90 +108,42 @@ def getClosestCreature(hudCreatures, coordinate):
 
 
 @njit(cache=True, fastmath=True)
-def getBlackPixels(hudImg):
-    blackPixelsIndexes = np.flatnonzero(hudImg == 0)
-    return blackPixelsIndexes
-
-
-def getCreaturesBarsNp(hudImg, resolution):
-    global resolutions
-    lifeBarblackPixelsMapper = resolutions[resolution]['lifeBarblackPixelsMapper']
-    numberOfPixelsInHud = resolutions[resolution]['numberOfPixelsInHud']
-    hudWidth = resolutions[resolution]['hudWidth']
-    blackPixelsIndexes = getBlackPixels(hudImg)
-    maxBlackPixelIndex = numberOfPixelsInHud - (hudWidth * 4)
-    allowedBlackPixelsIndexes = np.flatnonzero(blackPixelsIndexes < maxBlackPixelIndex)
-    blackPixelsIndexes = np.take(blackPixelsIndexes, allowedBlackPixelsIndexes)
-    noBlackPixels = blackPixelsIndexes.size == 0
-    if noBlackPixels:
-        return np.array([])
-    blackPixelsIndexesDiff = np.diff(blackPixelsIndexes)
-    blackPixelsIndexesDiff = np.where(blackPixelsIndexesDiff == 1, 1, 0)
-    cumulativeOfBlackPixelsIndexesDiff = np.cumsum(blackPixelsIndexesDiff)
-    dk = blackPixelsIndexesDiff == 0
-    corr = np.diff(np.hstack(((0,), cumulativeOfBlackPixelsIndexesDiff[dk])))
-    a2 = blackPixelsIndexesDiff.copy()
-    a2[dk] -= corr
-    f = a2.cumsum()
-    h = np.flatnonzero(f == 26)
-    h = h - 25
-    blackPixelsIndexes = np.take(blackPixelsIndexes, h)
-    blackPixelsIndexes2d = np.broadcast_to(
-        blackPixelsIndexes, (lifeBarblackPixelsMapper.size, blackPixelsIndexes.size))
-    z = np.add(blackPixelsIndexes2d.T, lifeBarblackPixelsMapper)
-    pixelsColorsIndexes = np.take(hudImg, z)
-    g = (pixelsColorsIndexes == resolutions[resolution]['flattened']).all(1)
-    possibleCreatures = np.flatnonzero(g)
-    hasNoCreaturesBars = possibleCreatures.size == 0
-    if hasNoCreaturesBars:
-        return np.array([])
-    creaturesBars = np.take(blackPixelsIndexes, possibleCreatures)
-    creaturesBarsX = creaturesBars % hudWidth
-    creaturesBarsY = creaturesBars // hudWidth
-    creaturesBarsXY = np.column_stack((creaturesBarsX, creaturesBarsY))
-    return creaturesBarsXY
-
-
-@njit(cache=True, fastmath=True)
 def getCreaturesBars(hudImg):
-    imgHeight, imgWidth = hudImg.shape
+    imgHeight = len(hudImg)
+    imgWidth = len(hudImg[0])
     bars = []
     for j in range(imgHeight - 3):
         i = -1
         while(i < (imgWidth - 27)):
-            i += 1
-            if hudImg[j, i] == 0:
+            i += 4
+            if hudImg[j][i] == 0:
                 upperBorderIsBlack = True
                 bottomBorderIsBlack = True
                 leftBorderIsBlack = True
                 rightBorderIsBlack = True
-                upperBorder = hudImg[j, i: i + 27]
-                for value in upperBorder:
-                    if value != 0:
+                for k in range(0, 27, 4):
+                    if hudImg[j][i + k] != 0:
                         upperBorderIsBlack = False
                         break
-                if upperBorderIsBlack == False:
+                if not upperBorderIsBlack:
                     continue
-                leftBorder = hudImg[j: j + 4, i]
-                for value in leftBorder:
-                    if value != 0:
+                for k in range(0, 4, 4):
+                    if hudImg[j + k][i] != 0:
                         leftBorderIsBlack = False
                         break
-                if leftBorderIsBlack == False:
+                if not leftBorderIsBlack:
                     continue
-                rightBorder = hudImg[j: j + 4, i + 26]
-                for value in rightBorder:
-                    if value != 0:
+                for k in range(0, 4, 4):
+                    if hudImg[j + k][i + 26] != 0:
                         rightBorderIsBlack = False
                         break
-                if rightBorderIsBlack == False:
+                if not rightBorderIsBlack:
                     continue
-                bottomBorder = hudImg[j + 3, i: i + 26]
-                for value in bottomBorder:
-                    if value != 0:
+                for k in range(0, 26, 4):
+                    if hudImg[j + 3][i + k] != 0:
                         bottomBorderIsBlack = False
                         break
-                if bottomBorderIsBlack == False:
+                if not bottomBorderIsBlack:
                     continue
                 bars.append((i, j))
     return bars
@@ -386,18 +306,6 @@ def getNearestCreaturesCount(creatures):
     return nearestCreaturesCount
 
 
-def getNearestCreaturesCountNp(creatures):
-    hudWalkableFloorsSqmsCreatures = np.zeros((11, 15), dtype=np.uint)
-    xySlots = creatures['slot'][:, [1, 0]]
-    hudWalkableFloorsSqmsCreatures[xySlots[:, 0], xySlots[:, 1]] = 1
-    indicesOfNearestCreatures = hudWalkableFloorsSqmsCreatures[
-        [4, 4, 4, 5, 5, 6, 6, 6],
-        [6, 7, 8, 6, 8, 6, 7, 8]
-    ]
-    nearestCreaturesCount = np.sum(indicesOfNearestCreatures)
-    return nearestCreaturesCount
-
-
 @njit(cache=True, fastmath=True)
 def getTargetCreature(hudCreatures):
     hasNoHudCreatures = len(hudCreatures) == 0
@@ -407,22 +315,6 @@ def getTargetCreature(hudCreatures):
         if hudCreature['isBeingAttacked']:
             return hudCreature
     return None
-
-
-def getTargetCreatureNp(hudCreatures):
-    hasNoHudCreatures = len(hudCreatures) == 0
-    if hasNoHudCreatures:
-        return
-    indexes2d = np.argwhere(hudCreatures['isBeingAttacked'] == True)
-    if len(indexes2d) == 0:
-        return
-    indexes = indexes2d[0]
-    hasNoTarget = len(indexes) == 0
-    if hasNoTarget:
-        return
-    targetCreatureIndex = indexes[0]
-    targetCreature = hudCreatures[targetCreatureIndex]
-    return targetCreature
 
 
 def hasTargetToCreatureBySlot(hudCreatures, slot, coordinate):

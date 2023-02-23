@@ -55,6 +55,7 @@ gameContext = {
         'waypoints': {
             'currentIndex': None,
             'points': np.array([
+                ('', 'depositItems', (33214, 32456, 8), {'city': 'darashia'}),
                 ('', 'walk', (33214, 32459, 8), {}),
                 ('', 'walk', (33214, 32456, 8), {}),
                 ('', 'moveUpNorth', (33214, 32456, 8), {}),
@@ -298,7 +299,8 @@ def main():
         global gameContext
         copyOfContext = context.copy()
         hasCurrentTask = copyOfContext['currentTask'] is not None
-        if hasCurrentTask and (copyOfContext['currentTask'].status == 'completed' or len(copyOfContext['currentTask'].tasks) == 0):
+        # len(copyOfContext['currentTask'].tasks) == 0
+        if hasCurrentTask and (copyOfContext['currentTask'].status == 'completed'):
             copyOfContext['currentTask'] = None
         if shouldAskForCavebotTasks(context):
             hasCurrentTaskAfterCheck = copyOfContext['currentTask'] is not None

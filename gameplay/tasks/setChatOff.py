@@ -1,5 +1,5 @@
 from chat.core import enableChatOff
-from .baseTask import BaseTask
+from .base.baseTask import BaseTask
 
 
 class SetChatOffTask(BaseTask):
@@ -9,7 +9,7 @@ class SetChatOffTask(BaseTask):
         self.delayAfterComplete = 1
         self.name = 'setChatOff'
 
-    def do(self, context):
+    def exec(self, context):
         enableChatOff(context['screenshot'])
         return context
     
