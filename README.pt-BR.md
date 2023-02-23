@@ -1,15 +1,16 @@
 # 📝 Descrição
+
 > O PyTibia é o Tibia PixelBot mais rápido do mercado, desenvolvido em python para atingir unlocked fps.
 
-*Leia também em outras línguas: [Inglês](README.md), [Português Brasileiro](README.pt-BR.md).*
+_Leia também em outras línguas: [Inglês](README.md), [Português Brasileiro](README.pt-BR.md)._
 
 O BOT trabalha localizando imagens por toda a tela e aplica o cache para ignorar a relocalização de imagens estáticas que já foram capturadas, evitando o uso excessivo de CPU/GPU.
 
 O BOT é baseado em cálculo matricial, paralelismo, pré-processamento e cacheamento. Foi a maneira que eu encontrei para obter a performance(em nanosegundos/microsegundos) necessária e responder em tempo útil em relação ao Tibia.
 
-O BOT utiliza estrutura de dados, vetores, *pathfinding*, etc. e outras funcionalidades importantes para tomada de decisões inteligentes durante a *gameplay*.
+O BOT utiliza estrutura de dados, vetores, _pathfinding_, etc. e outras funcionalidades importantes para tomada de decisões inteligentes durante a _gameplay_.
 
-Eu, Lucas, criei essa orquestra de funcionalidades para aprender a linguagem de programação python, fazer *lives* na Twitch, amigos, enquanto aplico meus conhecimentos de *deep learning*, o já mencionado *pathfinding*, matrizes e mais.
+Eu, Lucas, criei essa orquestra de funcionalidades para aprender a linguagem de programação python, fazer _lives_ na Twitch, amigos, enquanto aplico meus conhecimentos de _deep learning_, o já mencionado _pathfinding_, matrizes e mais.
 
 Não, eu **não** pretendo vender uma assinatura para o seu uso, porém ele funcionará no "global" e você muito provavelmente poderá usá-lo, sob sua total responsabilidade.
 
@@ -34,7 +35,7 @@ Apenas disponível para cavaleiros
 - Controle total sob os píxeis do mouse para a movimentação humanizada.
 - Utilizar computação visional para detectar objetos que bloqueiam o caminho do char.
 - Utilizar processamento de linguagem natural para falar com outros jogadores.
-- *Crackear* o kernel e/ou colocar o Tibia a trabalhar em um subsistema para evitar detecções do BattleEye.
+- _Crackear_ o kernel e/ou colocar o Tibia a trabalhar em um subsistema para evitar detecções do BattleEye.
 - Party gameplay.
 - Guild gameplay, iniciar uma guerra e dominar um servidor.
 - Levantar fundos e ajudar meus colegas venezuelanos que estão passando por momentos difíceis.
@@ -104,6 +105,7 @@ Gostaria de fazer parte da equipe? Me contate no [**linkedin**](https://www.link
 Agradecimentos especiais ao [**Murilo Chianfa**](https://github.com/MuriloChianfa), responsável pelo [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12). Eu iniciei o bot para resolver problemas que não foram resolvidos no [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12).
 
 Você pode acompanhar o desenvolvimento do bot na minha stream [https://twitch.tv/lucasmonstrocs](https://twitch.tv/lucasmonstrocs).
+Você pode entrar no nosso discord através do link [https://discord.gg/HpvzwvNB](https://discord.gg/HpvzwvNB)
 
 ## 📝 Licença
 
