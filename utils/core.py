@@ -86,7 +86,7 @@ def getScreenshot(camera):
     if camera is None:
         return None
     if not camera.is_capturing:
-        camera.start(target_fps=240, video_mode=True)
+        camera.start(target_fps=60, video_mode=True)
     screenshot = camera.get_latest_frame()
     screenshotHeight = len(screenshot)
     screenshotWidth = len(screenshot[0])

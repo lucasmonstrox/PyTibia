@@ -149,14 +149,12 @@ hudCreatures = np.array([], dtype=hud.typing.creatureType)
 def main():
     optimal_thread_count = multiprocessing.cpu_count()
     threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
-    thirteenFps = 0.00416666666
-    fpsObserver = interval(thirteenFps)
+    fpsCounter = 0.01666666666 # 60 fps
+    fpsObserver = interval(fpsCounter)
 
     def handleScreenshot(_):
         global gameContext
-        rgbScreenshot = utils.core.getScreenshot(camera)
-        grayScreenshot = utils.image.RGBtoGray(rgbScreenshot)
-        gameContext['screenshot'] = grayScreenshot
+        gameContext['screenshot'] = utils.core.getScreenshot(camera)
         return gameContext
 
     fpsWithScreenshot = fpsObserver.pipe(
@@ -251,8 +249,10 @@ def main():
         copyOfContext = context.copy()
         hudCreatures = hud.creatures.getCreatures(
             copyOfContext['battleListCreatures'], copyOfContext['comingFromDirection'], copyOfContext['hud']['coordinate'], copyOfContext['hudImg'], copyOfContext['coordinate'], copyOfContext['resolution'])
-        copyOfContext['monsters'] = hud.creatures.getCreaturesByType(hudCreatures, 'monster')
-        copyOfContext['players'] = hud.creatures.getCreaturesByType(hudCreatures, 'player')
+        hudCreaturesCount = len(hudCreatures)
+        hasNoHudCreatures = hudCreaturesCount == 0
+        copyOfContext['monsters'] = np.array([], dtype=hud.typing.creatureType) if hasNoHudCreatures else hud.creatures.getCreaturesByType(hudCreatures, 'monster')
+        copyOfContext['players'] = np.array([], dtype=hud.typing.creatureType) if hasNoHudCreatures else hud.creatures.getCreaturesByType(hudCreatures, 'player')
         copyOfContext['cavebot']['targetCreature'] = hud.creatures.getTargetCreature(copyOfContext['monsters'])
         gameContext = copyOfContext
         return copyOfContext

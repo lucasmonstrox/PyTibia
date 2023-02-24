@@ -147,8 +147,8 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
     for creatureBarSortedIndex in creaturesBarsSortedIndexes:
         creatureBar = creaturesBars[creatureBarSortedIndex]
         nonCreaturesForCurrentBar = {}
-        battleListIndex = 0
-        while battleListIndex < len(battleListCreatures):
+        battleListCreaturesCount = len(battleListCreatures)
+        for battleListIndex in range(battleListCreaturesCount):
             battleListCreature = battleListCreatures[battleListIndex]
             creatureName = battleListCreature['name']
             isUnknownCreature = creatureName == 'Unknown'
@@ -157,12 +157,12 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
-                battleListIndex += 1
+                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 continue
             creatureTypeAlreadyTried = creatureName in nonCreaturesForCurrentBar
             if creatureTypeAlreadyTried:
                 continue
-            creatureNameImg = creaturesNamesHashes.get(creatureName)
+            creatureNameImg = creaturesNamesHashes.get(creatureName).copy()
             creatureNameWidth = creatureNameImg.shape[1]
             (creatureBarX, creatureBarY) = creatureBar
             creatureBarY0 = creatureBarY - 13
@@ -186,9 +186,9 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
-                battleListIndex += 1
+                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 break
-            creatureNameImg2 = creaturesNamesHashes.get(creatureName)
+            creatureNameImg2 = creaturesNamesHashes.get(creatureName).copy()
             creatureWithDirtNameImg2 = hudImg[creatureBarY0:creatureBarY1, startingX + 1:endingX + 1]
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
                 creatureNameImg2 = creatureNameImg2[:, 0:creatureNameImg2.shape[1] - 1]
@@ -198,10 +198,10 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
-                battleListIndex += 1
+                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 break
             creatureWithDirtNameImg3 = hudImg[creatureBarY0:creatureBarY1, startingX:endingX - 1]
-            creatureNameImg3 = creaturesNamesHashes.get(creatureName)
+            creatureNameImg3 = creaturesNamesHashes.get(creatureName).copy()
             creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
             if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
                 creatureNameImg3 = creatureNameImg3[:, 0:creatureNameImg3.shape[1] - 1]
@@ -211,14 +211,14 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
-                battleListIndex += 1
+                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 break
             nonCreaturesForCurrentBar[creatureName] = True
     return np.array(creatures, dtype=creatureType)
 
 
-def getCreaturesByType(hudCreatures, type):
-    return hudCreatures[hudCreatures['type'] == type]
+def getCreaturesByType(hudCreatures, creatureType):
+    return hudCreatures[hudCreatures['type'] == creatureType]
 
 
 def getDifferentCreaturesBySlots(previousHudCreatures, currentHudCreatures, slots):
