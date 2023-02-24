@@ -163,11 +163,11 @@ def main():
 
     def handleCoordinate(context):
         global gameContext
-        context['coordinate'] = radar.core.getCoordinate(
-            context['screenshot'], previousCoordinate=context['previousCoordinate'])
-        context['previousCoordinate'] = context['coordinate']
         gameContext = context
-        return context
+        gameContext['coordinate'] = radar.core.getCoordinate(
+            gameContext['screenshot'], previousCoordinate=gameContext['previousCoordinate'])
+        gameContext['previousCoordinate'] = gameContext['coordinate']
+        return gameContext
 
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.filter(lambda result: result['screenshot'] is not None),
@@ -178,13 +178,12 @@ def main():
 
     def handleBattleListCreatures(context):
         global gameContext
-        copyOfContext = context.copy()
-        copyOfContext['battleListCreatures'] = battleList.core.getCreatures(
-            copyOfContext['screenshot'])
-        hasBattleListCreatures = len(copyOfContext['battleListCreatures']) > 0
-        copyOfContext['cavebot']['isAttackingSomeCreature'] = battleList.core.isAttackingSomeCreature(context['battleListCreatures']) if hasBattleListCreatures else False
-        gameContext = copyOfContext
-        return copyOfContext
+        gameContext = context
+        gameContext['battleListCreatures'] = battleList.core.getCreatures(
+            gameContext['screenshot'])
+        hasBattleListCreatures = len(gameContext['battleListCreatures']) > 0
+        gameContext['cavebot']['isAttackingSomeCreature'] = battleList.core.isAttackingSomeCreature(gameContext['battleListCreatures']) if hasBattleListCreatures else False
+        return gameContext
 
     battleListObserver = coordinatesObserver.pipe(
         operators.map(handleBattleListCreatures)
@@ -192,12 +191,11 @@ def main():
 
     def handleHudCoordinate(context):
         global gameContext
-        copyOfContext = context.copy()
-        hudSize = hud.core.hudSizes[copyOfContext['resolution']]
-        copyOfContext['hud']['coordinate'] = hud.core.getCoordinate(
-            copyOfContext['screenshot'], hudSize)
-        gameContext = copyOfContext
-        return copyOfContext
+        gameContext = context
+        hudSize = hud.core.hudSizes[gameContext['resolution']]
+        gameContext['hud']['coordinate'] = hud.core.getCoordinate(
+            gameContext['screenshot'], hudSize)
+        return gameContext
 
     hudCoordinateObserver = battleListObserver.pipe(
         operators.filter(lambda result: result['coordinate'] is not None),
@@ -206,12 +204,11 @@ def main():
 
     def handleHudImg(context):
         global gameContext
-        copyOfContext = context.copy()
-        hudSize = hud.core.hudSizes[copyOfContext['resolution']]
-        copyOfContext['hudImg'] = hud.core.getImgByCoordinate(
-            copyOfContext['screenshot'], copyOfContext['hud']['coordinate'], hudSize)
-        gameContext = copyOfContext
-        return copyOfContext
+        gameContext = context
+        hudSize = hud.core.hudSizes[gameContext['resolution']]
+        gameContext['hudImg'] = hud.core.getImgByCoordinate(
+            gameContext['screenshot'], gameContext['hud']['coordinate'], hudSize)
+        return gameContext
 
     hudImgObserver = hudCoordinateObserver.pipe(
         operators.map(handleHudImg)
@@ -219,66 +216,63 @@ def main():
 
     def resolveDirection(context):
         global gameContext
-        copyOfContext = context.copy()
+        gameContext = context
         comingFromDirection = None
-        if copyOfContext['previousCoordinate'] is None:
-            copyOfContext['previousCoordinate'] = copyOfContext['coordinate']
+        if gameContext['previousCoordinate'] is None:
+            gameContext['previousCoordinate'] = gameContext['coordinate']
         coordinateDidChange = np.all(
-            copyOfContext['previousCoordinate'] == copyOfContext['coordinate']) == False
+            gameContext['previousCoordinate'] == gameContext['coordinate']) == False
         if coordinateDidChange:
-            coordinate = copyOfContext['coordinate']
-            if coordinate[2] != copyOfContext['previousCoordinate'][2]:
+            coordinate = gameContext['coordinate']
+            if coordinate[2] != gameContext['previousCoordinate'][2]:
                 comingFromDirection = None
-            elif coordinate[0] != copyOfContext['previousCoordinate'][0] and coordinate[1] != copyOfContext['previousCoordinate'][1]:
+            elif coordinate[0] != gameContext['previousCoordinate'][0] and coordinate[1] != gameContext['previousCoordinate'][1]:
                 comingFromDirection = None
-            elif coordinate[0] != copyOfContext['previousCoordinate'][0]:
+            elif coordinate[0] != gameContext['previousCoordinate'][0]:
                 comingFromDirection = 'left' if coordinate[
-                    0] > copyOfContext['previousCoordinate'][0] else 'right'
-            elif coordinate[1] != copyOfContext['previousCoordinate'][1]:
+                    0] > gameContext['previousCoordinate'][0] else 'right'
+            elif coordinate[1] != gameContext['previousCoordinate'][1]:
                 comingFromDirection = 'top' if coordinate[
-                    1] > copyOfContext['previousCoordinate'][1] else 'bottom'
-            copyOfContext['previousCoordinate'] = copyOfContext['coordinate']
-        copyOfContext['comingFromDirection'] = comingFromDirection
-        gameContext = copyOfContext
-        return copyOfContext
+                    1] > gameContext['previousCoordinate'][1] else 'bottom'
+            gameContext['previousCoordinate'] = gameContext['coordinate']
+        gameContext['comingFromDirection'] = comingFromDirection
+        return gameContext
 
     directionObserver = hudImgObserver.pipe(operators.map(resolveDirection))
 
     def resolveCreatures(context):
         global gameContext, hudCreatures
-        copyOfContext = context.copy()
+        gameContext = context
         hudCreatures = hud.creatures.getCreatures(
-            copyOfContext['battleListCreatures'], copyOfContext['comingFromDirection'], copyOfContext['hud']['coordinate'], copyOfContext['hudImg'], copyOfContext['coordinate'], copyOfContext['resolution'])
+            gameContext['battleListCreatures'], gameContext['comingFromDirection'], gameContext['hud']['coordinate'], gameContext['hudImg'], gameContext['coordinate'], gameContext['resolution'])
         hudCreaturesCount = len(hudCreatures)
         hasNoHudCreatures = hudCreaturesCount == 0
-        copyOfContext['monsters'] = np.array([], dtype=hud.typing.creatureType) if hasNoHudCreatures else hud.creatures.getCreaturesByType(hudCreatures, 'monster')
-        copyOfContext['players'] = np.array([], dtype=hud.typing.creatureType) if hasNoHudCreatures else hud.creatures.getCreaturesByType(hudCreatures, 'player')
-        copyOfContext['cavebot']['targetCreature'] = hud.creatures.getTargetCreature(copyOfContext['monsters'])
-        gameContext = copyOfContext
-        return copyOfContext
+        gameContext['monsters'] = np.array([], dtype=hud.typing.creatureType) if hasNoHudCreatures else hud.creatures.getCreaturesByType(hudCreatures, 'monster')
+        gameContext['players'] = np.array([], dtype=hud.typing.creatureType) if hasNoHudCreatures else hud.creatures.getCreaturesByType(hudCreatures, 'player')
+        gameContext['cavebot']['targetCreature'] = hud.creatures.getTargetCreature(gameContext['monsters'])
+        return gameContext
 
     hudCreaturesObserver = directionObserver.pipe(operators.map(resolveCreatures))
 
     def handleLoot(context):
-        if context['cavebot']['targetCreature'] is not None and chat.core.hasNewLoot(context['screenshot']):
-            context['corpsesToLoot'] = np.append(context['corpsesToLoot'], [context['cavebot']['targetCreature']], axis=0)
-        return context
+        if gameContext['cavebot']['targetCreature'] is not None and chat.core.hasNewLoot(gameContext['screenshot']):
+            gameContext['corpsesToLoot'] = np.append(gameContext['corpsesToLoot'], [gameContext['cavebot']['targetCreature']], axis=0)
+        return gameContext
 
     lootObserver = hudCreaturesObserver.pipe(operators.map(handleLoot))
 
     def mapDecision(context):
         global gameContext
-        copyOfContext = context.copy()
-        copyOfContext['way'] = gameplay.decision.getWay(
-            copyOfContext['corpsesToLoot'], copyOfContext['monsters'], copyOfContext['coordinate'])
-        gameContext = copyOfContext
-        return copyOfContext
+        gameContext = context
+        gameContext['way'] = gameplay.decision.getWay(
+            gameContext['corpsesToLoot'], gameContext['monsters'], gameContext['coordinate'])
+        return gameContext
 
     def mapCurrentWaypointIndex(context):
-        if context['cavebot']['waypoints']['currentIndex'] == None:
-            context['cavebot']['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
-                context['coordinate'], context['cavebot']['waypoints']['points'])
-        return context
+        if gameContext['cavebot']['waypoints']['currentIndex'] == None:
+            gameContext['cavebot']['waypoints']['currentIndex'] = radar.core.getClosestWaypointIndexFromCoordinate(
+                gameContext['coordinate'], gameContext['cavebot']['waypoints']['points'])
+        return gameContext
 
     decisionObserver = lootObserver.pipe(
         operators.map(mapDecision),
@@ -297,48 +291,47 @@ def main():
     
     def handleTasks(context):
         global gameContext
-        copyOfContext = context.copy()
-        hasCurrentTask = copyOfContext['currentTask'] is not None
-        if hasCurrentTask and (copyOfContext['currentTask'].status == 'completed' or len(copyOfContext['currentTask'].tasks) == 0):
-            copyOfContext['currentTask'] = None
-        if shouldAskForCavebotTasks(context):
-            hasCurrentTaskAfterCheck = copyOfContext['currentTask'] is not None
-            isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (copyOfContext['currentTask'].name == 'groupOfAttackClosestCreature' or copyOfContext['currentTask'].name == 'groupOfFollowTargetCreature')
+        gameContext = context
+        hasCurrentTask = gameContext['currentTask'] is not None
+        if hasCurrentTask and (gameContext['currentTask'].status == 'completed' or len(gameContext['currentTask'].tasks) == 0):
+            gameContext['currentTask'] = None
+        if shouldAskForCavebotTasks(gameContext):
+            hasCurrentTaskAfterCheck = gameContext['currentTask'] is not None
+            isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (gameContext['currentTask'].name == 'groupOfAttackClosestCreature' or gameContext['currentTask'].name == 'groupOfFollowTargetCreature')
             isNotTryingToAttackClosestCreature = not isTryingToAttackClosestCreature
             if isNotTryingToAttackClosestCreature:
-                newCurrentTask = gameplay.cavebot.resolveCavebotTasks(copyOfContext)
-                hasCurrentTask2 = copyOfContext['currentTask'] is not None
+                newCurrentTask = gameplay.cavebot.resolveCavebotTasks(context)
+                hasCurrentTask2 = gameContext['currentTask'] is not None
                 if hasCurrentTask2:
-                    hasTargetCreature = context['cavebot']['targetCreature'] is not None or context['cavebot']['closestCreature'] is not None
+                    hasTargetCreature = gameContext['cavebot']['targetCreature'] is not None or gameContext['cavebot']['closestCreature'] is not None
                     if hasTargetCreature:
-                        hasKeyPressed = copyOfContext['lastPressedKey'] is not None
+                        hasKeyPressed = gameContext['lastPressedKey'] is not None
                         if hasKeyPressed:
-                            pyautogui.keyUp(copyOfContext['lastPressedKey'])
-                            copyOfContext['lastPressedKey'] = None
-                        copyOfContext['currentTask'] = newCurrentTask
+                            pyautogui.keyUp(gameContext['lastPressedKey'])
+                            gameContext['lastPressedKey'] = None
+                        gameContext['currentTask'] = newCurrentTask
                 else:
                     hasNewCurrentTask = newCurrentTask is not None
                     if hasNewCurrentTask:
-                        hasKeyPressed = copyOfContext['lastPressedKey'] is not None
+                        hasKeyPressed = gameContext['lastPressedKey'] is not None
                         if hasKeyPressed:
-                            pyautogui.keyUp(copyOfContext['lastPressedKey'])
-                            copyOfContext['lastPressedKey'] = None
-                        copyOfContext['currentTask'] = newCurrentTask
-        elif copyOfContext['way'] == 'lootCorpses':
-            if copyOfContext['currentTask'] is None:
+                            pyautogui.keyUp(gameContext['lastPressedKey'])
+                            gameContext['lastPressedKey'] = None
+                        gameContext['currentTask'] = newCurrentTask
+        elif gameContext['way'] == 'lootCorpses':
+            if gameContext['currentTask'] is None:
                 # TODO: get closest dead corpse
-                firstDeadCorpse = copyOfContext['corpsesToLoot'][0]
-                copyOfContext['currentTask'] = GroupOfLootCorpseTasks(copyOfContext, firstDeadCorpse)
-        elif copyOfContext['way'] == 'waypoint':
-            if copyOfContext['currentTask'] == None:
-                currentWaypointIndex = copyOfContext['cavebot']['waypoints']['currentIndex']
-                currentWaypoint = copyOfContext['cavebot']['waypoints']['points'][currentWaypointIndex]
-                copyOfContext['currentTask'] = gameplay.resolvers.resolveTasksByWaypointType(copyOfContext, currentWaypoint)
-        gameContext = copyOfContext
-        return copyOfContext
+                firstDeadCorpse = gameContext['corpsesToLoot'][0]
+                gameContext['currentTask'] = GroupOfLootCorpseTasks(context, firstDeadCorpse)
+        elif gameContext['way'] == 'waypoint':
+            if gameContext['currentTask'] == None:
+                currentWaypointIndex = gameContext['cavebot']['waypoints']['currentIndex']
+                currentWaypoint = gameContext['cavebot']['waypoints']['points'][currentWaypointIndex]
+                gameContext['currentTask'] = gameplay.resolvers.resolveTasksByWaypointType(context, currentWaypoint)
+        return gameContext
 
     def hasTaskToExecute(context):
-        has = context['currentTask'] is not None
+        has = gameContext['currentTask'] is not None
         return has
 
     taskObserver = decisionObserver.pipe(
@@ -349,16 +342,16 @@ def main():
 
     def taskObservable(context):
         global gameContext
-        copyOfContext = context.copy()
-        copyOfContext = context['currentTask'].exec(copyOfContext)
-        copyOfContext['lastCoordinateVisited'] = context['coordinate']
-        gameContext = copyOfContext
+        gameContext = context
+        gameContext = gameContext['currentTask'].exec(context)
+        gameContext['lastCoordinateVisited'] = gameContext['coordinate']
         
     healingObserver = fpsWithScreenshot.pipe(
         operators.subscribe_on(threadPoolScheduler)
     )
 
     def healingObservable(context):
+        gameContext = context
         cures = {
             'exura infir ico': 10,
             'exura ico': 40,
@@ -367,24 +360,24 @@ def main():
             'utura': 40,
             'utura gran': 165,
         }
-        hp = player.core.getHealthPercentage(context['screenshot'])
+        hp = player.core.getHealthPercentage(gameContext['screenshot'])
         couldntGetHp = hp is None
         if couldntGetHp:
             return
-        mana = player.core.getManaPercentage(context['screenshot'])
+        mana = player.core.getManaPercentage(gameContext['screenshot'])
         couldntGetMana = mana is None
         if couldntGetMana:
             return
-        shouldHealUsingPotion = context['healing']['minimumToBeHealedUsingPotion'] >= hp
+        shouldHealUsingPotion = gameContext['healing']['minimumToBeHealedUsingPotion'] >= hp
         if shouldHealUsingPotion:
-            pyautogui.press(context['hotkeys']['healthPotion'])
+            pyautogui.press(gameContext['hotkeys']['healthPotion'])
             sleep(0.25)
             return
-        shouldHealUsingSpell = context['healing']['minimumToBeHealedUsingSpell'] >= hp
+        shouldHealUsingSpell = gameContext['healing']['minimumToBeHealedUsingSpell'] >= hp
         if shouldHealUsingSpell:
-            hasEnoughMana = mana >= cures[context['healing']['cureSpell']]
+            hasEnoughMana = mana >= cures[gameContext['healing']['cureSpell']]
             if hasEnoughMana:
-                pyautogui.press(context['hotkeys']['cure'])
+                pyautogui.press(gameContext['hotkeys']['cure'])
                 sleep(0.25)
 
     spellObserver = fpsWithScreenshot.pipe(
@@ -393,15 +386,15 @@ def main():
     
     def spellObservable(context):
         global hudCreatures
-        mana = skills.core.getMana(context['screenshot'])
+        mana = skills.core.getMana(gameContext['screenshot'])
         couldntGetMana = mana is None
         if couldntGetMana:
             return
-        canHaste = not player.core.hasSpecialCondition(context['screenshot'], 'haste')
+        canHaste = not player.core.hasSpecialCondition(gameContext['screenshot'], 'haste')
         if mana > 60 and canHaste:
             pyautogui.press('f6')
             return
-        if mana >= 115 and hud.creatures.getNearestCreaturesCount(hudCreatures) > 2 and not actionBar.core.hasExoriCooldown(context['screenshot']):
+        if mana >= 115 and hud.creatures.getNearestCreaturesCount(hudCreatures) > 2 and not actionBar.core.hasExoriCooldown(gameContext['screenshot']):
             pyautogui.press('f4')
 
     try:
