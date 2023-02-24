@@ -10,44 +10,17 @@ import utils.core
 import utils.image
 import utils.matrix
 from wiki.creatures import creatures as wikiCreatures
+from .typing import creatureType
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
-hudWidthOf1080 = 960
-hudWidthDouble = hudWidthOf1080 * 2
-hudWidthTriple = hudWidthOf1080 * 3
-lifeBarWidth = 26
-lifeBarBlackPixelsMapperOf1080 = np.array([
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-    hudWidthOf1080, hudWidthOf1080 + lifeBarWidth,
-    hudWidthDouble, hudWidthDouble + lifeBarWidth,
-    hudWidthTriple, hudWidthTriple + 1, hudWidthTriple + 2, hudWidthTriple + 3, hudWidthTriple +
-    4, hudWidthTriple + 5, hudWidthTriple + 6, hudWidthTriple + 7, hudWidthTriple +
-    8, hudWidthTriple + 9, hudWidthTriple + 10, hudWidthTriple + 11, hudWidthTriple + 12, hudWidthTriple + 13, hudWidthTriple +
-    14, hudWidthTriple + 15, hudWidthTriple + 16, hudWidthTriple +
-    17, hudWidthTriple + 18, hudWidthTriple + 19, hudWidthTriple + 20, hudWidthTriple + 21, hudWidthTriple +
-    22, hudWidthTriple + 23, hudWidthTriple +
-    24, hudWidthTriple + 25, hudWidthTriple + 26
-])
-lifeBarBlackPixelsMapperOf720 = np.array([
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-    480, 506,
-    960, 986,
-    1440, 1441, 1442, 1443, 1444, 1445, 1446, 1447, 1448, 1449, 1450, 1451, 1452, 1453, 1454, 1455, 1456, 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466
-])
 resolutions = {
     720: {
-        'lifeBarblackPixelsMapper': lifeBarBlackPixelsMapperOf720,
-        'flattened': np.zeros(lifeBarBlackPixelsMapperOf720.size),
-        'numberOfPixelsInHud': 168960,
         'hudHeight': 352,
         'hudWidth': 480,
         'slotWidth': 32,
     },
     1080: {
-        'lifeBarblackPixelsMapper': lifeBarBlackPixelsMapperOf1080,
-        'flattened': np.zeros(lifeBarBlackPixelsMapperOf1080.size),
-        'numberOfPixelsInHud': 675840,
         'hudHeight': 704,
         'hudWidth': 960,
         'slotWidth': 64,
@@ -57,15 +30,6 @@ creaturesNamesHashes = {}
 for creature in wikiCreatures:
     creaturesNamesHashes[creature] = utils.image.loadAsGrey(
         f'{currentPath}/images/monsters/{creature}.png')
-creatureType = np.dtype([
-    ('name', np.str_, 64),
-    ('type', np.str_, 64),
-    ('isBeingAttacked', np.bool_),
-    ('slot', np.uint8, (2,)),
-    ('coordinate', np.uint16, (3,)),
-    ('windowCoordinate', np.uint32, (2,)),
-    ('hudCoordinate', np.uint32, (2,)),
-])
 
 
 def getClosestCreature(hudCreatures, coordinate):

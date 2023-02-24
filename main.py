@@ -18,6 +18,7 @@ import gameplay.waypoint
 import hud.core
 import hud.creatures
 import hud.slot
+import hud.typing
 import player.core
 import radar.core
 from radar.types import coordinateType, waypointType
@@ -31,7 +32,7 @@ pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
 
 
-camera = dxcam.create()
+camera = dxcam.create(output_color='GRAY')
 gameContext = {
     'backpacks': {
         'main': 'brocade backpack',
@@ -100,7 +101,7 @@ gameContext = {
         },
     },
     'comingFromDirection': None,
-    'corpsesToLoot': np.array([], dtype=hud.creatures.creatureType),
+    'corpsesToLoot': np.array([], dtype=hud.typing.creatureType),
     'currentTask': None,
     'healing': {
         'minimumToBeHealedUsingPotion': 60,
@@ -122,8 +123,8 @@ gameContext = {
     'lastCoordinateVisited': None,
     'lastPressedKey': None,
     'lastWay': 'waypoint',
-    'monsters': np.array([], dtype=hud.creatures.creatureType),
-    'players': np.array([], dtype=hud.creatures.creatureType),
+    'monsters': np.array([], dtype=hud.typing.creatureType),
+    'players': np.array([], dtype=hud.typing.creatureType),
     'previousCoordinate': None,
     'coordinate': None,
     'refill': {
@@ -142,7 +143,7 @@ gameContext = {
     'way': None,
     'window': None
 }
-hudCreatures = np.array([], dtype=hud.creatures.creatureType)
+hudCreatures = np.array([], dtype=hud.typing.creatureType)
 
 
 def main():
