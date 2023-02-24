@@ -71,7 +71,7 @@ def getFloorLevel(screenshot):
     width = 2
     floorLevelImg = screenshot[top:top + height, left:left + width]
     floorImgHash = utils.core.hashit(floorLevelImg)
-    hashNotExists = not floorImgHash in config.floorsLevelsImgsHashes
+    hashNotExists = floorImgHash not in config.floorsLevelsImgsHashes
     if hashNotExists:
         return None
     floorLevel = config.floorsLevelsImgsHashes[floorImgHash]
