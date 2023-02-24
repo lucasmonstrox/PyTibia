@@ -243,7 +243,7 @@ def main():
         global gameContext, hudCreatures
         gameContext = context
         hudCreatures = hud.creatures.getCreatures(
-            gameContext['battleListCreatures'], gameContext['comingFromDirection'], gameContext['hud']['coordinate'], gameContext['hudImg'], gameContext['coordinate'], gameContext['resolution'])
+            gameContext['battleListCreatures'], gameContext['comingFromDirection'], gameContext['hud']['coordinate'], gameContext['hudImg'], gameContext['coordinate'])
         hudCreaturesCount = len(hudCreatures)
         hasNoHudCreatures = hudCreaturesCount == 0
         gameContext['monsters'] = np.array([], dtype=hud.typing.creatureType) if hasNoHudCreatures else hud.creatures.getCreaturesByType(hudCreatures, 'monster')
@@ -392,7 +392,6 @@ def main():
         canHaste = not player.core.hasSpecialCondition(gameContext['screenshot'], 'haste')
         if mana > 60 and canHaste:
             pyautogui.press('f6')
-            return
 
     try:
         spellObserver.subscribe(spellObservable)
