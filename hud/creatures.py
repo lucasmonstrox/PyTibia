@@ -68,38 +68,6 @@ creatureType = np.dtype([
 ])
 
 
-@njit(cache=True, fastmath=True)
-def cleanCreatureName(creatureName):
-    for i in range(creatureName.shape[0]):
-        for j in range(creatureName.shape[1]):
-            if creatureName[i, j] == 29:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 57:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 91:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 113:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 152:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 170:
-                creatureName[i, j] = 0
-            if creatureName[i, j] == 192:
-                creatureName[i, j] = 0
-    return creatureName
-
-
-def cleanCreatureNameNp(creatureName):
-    creatureName = np.where(creatureName == 29, 0, creatureName)
-    creatureName = np.where(creatureName == 57, 0, creatureName)
-    creatureName = np.where(creatureName == 91, 0, creatureName)
-    creatureName = np.where(creatureName == 113, 0, creatureName)
-    creatureName = np.where(creatureName == 152, 0, creatureName)
-    creatureName = np.where(creatureName == 170, 0, creatureName)
-    creatureName = np.where(creatureName == 192, 0, creatureName)
-    return creatureName
-
-
 def getClosestCreature(hudCreatures, coordinate):
     hasNoCreatures = len(hudCreatures) == 0
     if hasNoCreatures:
@@ -137,51 +105,6 @@ def getClosestCreature(hudCreatures, coordinate):
         (hudCreatures['slot'] == creatureSlot).all(axis=1))[0][0]
     closestCreature = hudCreatures[closestCreatureIndex]
     return closestCreature
-
-
-@njit(cache=True, fastmath=True)
-def getBlackPixels(hudImg):
-    blackPixelsIndexes = np.flatnonzero(hudImg == 0)
-    return blackPixelsIndexes
-
-
-def getCreaturesBarsNp(hudImg, resolution):
-    global resolutions
-    lifeBarblackPixelsMapper = resolutions[resolution]['lifeBarblackPixelsMapper']
-    numberOfPixelsInHud = resolutions[resolution]['numberOfPixelsInHud']
-    hudWidth = resolutions[resolution]['hudWidth']
-    blackPixelsIndexes = getBlackPixels(hudImg)
-    maxBlackPixelIndex = numberOfPixelsInHud - (hudWidth * 4)
-    allowedBlackPixelsIndexes = np.flatnonzero(blackPixelsIndexes < maxBlackPixelIndex)
-    blackPixelsIndexes = np.take(blackPixelsIndexes, allowedBlackPixelsIndexes)
-    noBlackPixels = blackPixelsIndexes.size == 0
-    if noBlackPixels:
-        return np.array([])
-    blackPixelsIndexesDiff = np.diff(blackPixelsIndexes)
-    blackPixelsIndexesDiff = np.where(blackPixelsIndexesDiff == 1, 1, 0)
-    cumulativeOfBlackPixelsIndexesDiff = np.cumsum(blackPixelsIndexesDiff)
-    dk = blackPixelsIndexesDiff == 0
-    corr = np.diff(np.hstack(((0,), cumulativeOfBlackPixelsIndexesDiff[dk])))
-    a2 = blackPixelsIndexesDiff.copy()
-    a2[dk] -= corr
-    f = a2.cumsum()
-    h = np.flatnonzero(f == 26)
-    h = h - 25
-    blackPixelsIndexes = np.take(blackPixelsIndexes, h)
-    blackPixelsIndexes2d = np.broadcast_to(
-        blackPixelsIndexes, (lifeBarblackPixelsMapper.size, blackPixelsIndexes.size))
-    z = np.add(blackPixelsIndexes2d.T, lifeBarblackPixelsMapper)
-    pixelsColorsIndexes = np.take(hudImg, z)
-    g = (pixelsColorsIndexes == resolutions[resolution]['flattened']).all(1)
-    possibleCreatures = np.flatnonzero(g)
-    hasNoCreaturesBars = possibleCreatures.size == 0
-    if hasNoCreaturesBars:
-        return np.array([])
-    creaturesBars = np.take(blackPixelsIndexes, possibleCreatures)
-    creaturesBarsX = creaturesBars % hudWidth
-    creaturesBarsY = creaturesBars // hudWidth
-    creaturesBarsXY = np.column_stack((creaturesBarsX, creaturesBarsY))
-    return creaturesBarsXY
 
 
 @njit(cache=True, fastmath=True)
@@ -237,7 +160,7 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
     - Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
     - Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars
     """
-    creatures = np.array([], dtype=creatureType)
+    creatures = []
     battleListCreaturesCount = len(battleListCreatures)
     hasNoBattleListCreatures = battleListCreaturesCount == 0
     if hasNoBattleListCreatures:
@@ -260,8 +183,8 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
     for creatureBarSortedIndex in creaturesBarsSortedIndexes:
         creatureBar = creaturesBars[creatureBarSortedIndex]
         nonCreaturesForCurrentBar = {}
-        battleListCreaturesCount = len(battleListCreatures)
-        for battleListIndex in range(battleListCreaturesCount):
+        battleListIndex = 0
+        while battleListIndex < len(battleListCreatures):
             battleListCreature = battleListCreatures[battleListIndex]
             creatureName = battleListCreature['name']
             isUnknownCreature = creatureName == 'Unknown'
@@ -269,14 +192,13 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
                 creature = makeCreature(creatureName, 'player', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=discoverTarget)
                 if creature[2]:
                     discoverTarget = False
-                creaturesToAppend = np.array([creature], dtype=creatureType)
-                creatures = np.append(creatures, creaturesToAppend)
-                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
+                creatures.append(creature)
+                battleListIndex += 1
                 continue
             creatureTypeAlreadyTried = creatureName in nonCreaturesForCurrentBar
             if creatureTypeAlreadyTried:
                 continue
-            creatureNameImg = creaturesNamesHashes.get(creatureName).copy()
+            creatureNameImg = creaturesNamesHashes.get(creatureName)
             creatureNameWidth = creatureNameImg.shape[1]
             (creatureBarX, creatureBarY) = creatureBar
             creatureBarY0 = creatureBarY - 13
@@ -299,11 +221,10 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
                 creature = makeCreature(creatureName, 'monster', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=discoverTarget)
                 if creature[2]:
                     discoverTarget = False
-                creaturesToAppend = np.array([creature], dtype=creatureType)
-                creatures = np.append(creatures, creaturesToAppend)
-                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
+                creatures.append(creature)
+                battleListIndex += 1
                 break
-            creatureNameImg2 = creaturesNamesHashes.get(creatureName).copy()
+            creatureNameImg2 = creaturesNamesHashes.get(creatureName)
             creatureWithDirtNameImg2 = hudImg[creatureBarY0:creatureBarY1, startingX + 1:endingX + 1]
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
                 creatureNameImg2 = creatureNameImg2[:, 0:creatureNameImg2.shape[1] - 1]
@@ -312,12 +233,11 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
                 creature = makeCreature(creatureName, 'monster', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=discoverTarget)
                 if creature[2]:
                     discoverTarget = False
-                creaturesToAppend = np.array([creature], dtype=creatureType)
-                creatures = np.append(creatures, creaturesToAppend)
-                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
+                creatures.append(creature)
+                battleListIndex += 1
                 break
             creatureWithDirtNameImg3 = hudImg[creatureBarY0:creatureBarY1, startingX:endingX - 1]
-            creatureNameImg3 = creaturesNamesHashes.get(creatureName).copy()
+            creatureNameImg3 = creaturesNamesHashes.get(creatureName)
             creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
             if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
                 creatureNameImg3 = creatureNameImg3[:, 0:creatureNameImg3.shape[1] - 1]
@@ -326,12 +246,11 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
                 creature = makeCreature(creatureName, 'monster', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=discoverTarget)
                 if creature[2]:
                     discoverTarget = False
-                creaturesToAppend = np.array([creature], dtype=creatureType)
-                creatures = np.append(creatures, creaturesToAppend)
-                battleListCreatures = np.delete(battleListCreatures, battleListIndex)
+                creatures.append(creature)
+                battleListIndex += 1
                 break
             nonCreaturesForCurrentBar[creatureName] = True
-    return creatures
+    return np.array(creatures, dtype=creatureType)
 
 
 def getCreaturesByType(hudCreatures, type):
@@ -386,18 +305,6 @@ def getNearestCreaturesCount(creatures):
     return nearestCreaturesCount
 
 
-def getNearestCreaturesCountNp(creatures):
-    hudWalkableFloorsSqmsCreatures = np.zeros((11, 15), dtype=np.uint)
-    xySlots = creatures['slot'][:, [1, 0]]
-    hudWalkableFloorsSqmsCreatures[xySlots[:, 0], xySlots[:, 1]] = 1
-    indicesOfNearestCreatures = hudWalkableFloorsSqmsCreatures[
-        [4, 4, 4, 5, 5, 6, 6, 6],
-        [6, 7, 8, 6, 8, 6, 7, 8]
-    ]
-    nearestCreaturesCount = np.sum(indicesOfNearestCreatures)
-    return nearestCreaturesCount
-
-
 @njit(cache=True, fastmath=True)
 def getTargetCreature(hudCreatures):
     hasNoHudCreatures = len(hudCreatures) == 0
@@ -407,22 +314,6 @@ def getTargetCreature(hudCreatures):
         if hudCreature['isBeingAttacked']:
             return hudCreature
     return None
-
-
-def getTargetCreatureNp(hudCreatures):
-    hasNoHudCreatures = len(hudCreatures) == 0
-    if hasNoHudCreatures:
-        return
-    indexes2d = np.argwhere(hudCreatures['isBeingAttacked'] == True)
-    if len(indexes2d) == 0:
-        return
-    indexes = indexes2d[0]
-    hasNoTarget = len(indexes) == 0
-    if hasNoTarget:
-        return
-    targetCreatureIndex = indexes[0]
-    targetCreature = hudCreatures[targetCreatureIndex]
-    return targetCreature
 
 
 def hasTargetToCreatureBySlot(hudCreatures, slot, coordinate):
