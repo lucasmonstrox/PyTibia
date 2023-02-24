@@ -4,8 +4,7 @@ import numpy as np
 import pyautogui
 from rx import interval, operators
 from rx.scheduler import ThreadPoolScheduler
-from time import sleep, time
-import actionBar.core
+from time import sleep
 import battleList.core
 import battleList.typing
 import chat.core
@@ -394,8 +393,6 @@ def main():
         if mana > 60 and canHaste:
             pyautogui.press('f6')
             return
-        if mana >= 115 and hud.creatures.getNearestCreaturesCount(hudCreatures) > 2 and not actionBar.core.hasExoriCooldown(gameContext['screenshot']):
-            pyautogui.press('f4')
 
     try:
         spellObserver.subscribe(spellObservable)
