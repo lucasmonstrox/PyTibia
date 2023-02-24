@@ -118,7 +118,8 @@ def getCreaturesBars(hudImg):
 
 # TODO: if last category is remaining, avoid calculating, return it immediatelly
 # TODO: add name missAlignment for each creature, it avoid possible 3 calculations
-def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordinate, resolution):
+# TODO: maximum creatures allowed should be equal battle list size
+def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordinate):
     """
     TODO:
     - Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
