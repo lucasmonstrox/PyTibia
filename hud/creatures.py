@@ -345,6 +345,7 @@ def isCreatureBeingAttacked(hudImg, borderX, yOfCreatureBar, slotWidth):
 # TODO: improve clean code
 # TODO: windowCoordinate should be improved for hud edges
 # TODO: detect being creature by category
+# TODO: since there is only one creature in hud and one in battleList being attacked, avoid computing if creature is being attacked on hud
 def makeCreature(creatureName, creatureType, creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=True):
     isBigHud = slotWidth == 64
     (hudCoordinateX, hudCoordinateY, _, _) = hudCoordinate
