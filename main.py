@@ -25,6 +25,7 @@ import utils.array
 import utils.core
 import utils.image
 import skills.core
+from ui.app import MyApp
 
 
 pyautogui.FAILSAFE = False
@@ -50,7 +51,7 @@ gameContext = {
             (33300, 32290, 8),
         ], dtype=coordinateType),
         'isAttackingSomeCreature': False,
-        'running': True,
+        'running': False,
         'targetCreature': None,
         'waypoints': {
             'currentIndex': None,
@@ -157,6 +158,8 @@ def main():
         return gameContext
 
     fpsWithScreenshot = fpsObserver.pipe(
+        operators.filter(
+            lambda _: gameContext['cavebot']['running'] == True),
         operators.map(handleScreenshot),
     )
 
@@ -170,8 +173,6 @@ def main():
 
     coordinatesObserver = fpsWithScreenshot.pipe(
         operators.filter(lambda result: result['screenshot'] is not None),
-        operators.filter(
-            lambda _: gameContext['cavebot']['running'] == True),
         operators.map(handleCoordinate)
     )
 
@@ -397,9 +398,7 @@ def main():
         spellObserver.subscribe(spellObservable)
         healingObserver.subscribe(healingObservable)
         taskObserver.subscribe(taskObservable)
-        while True:
-            sleep(1)
-            continue
+        MyApp().run()
     except KeyboardInterrupt:
         raise SystemExit
 
