@@ -5,19 +5,15 @@ from . import config, extractors, typing
 
 def getCreatures(screenshot):
     content = extractors.getContent(screenshot)
-    cannotGetContent = content is None
-    if cannotGetContent:
+    if content is None:
         return None
     filledSlotsCount = extractors.getFilledSlotsCount(content)
-    hasNoCreatures = filledSlotsCount == 0
-    if hasNoCreatures:
+    if filledSlotsCount == 0:
         return np.array([], dtype=typing.creatureType)
-    beingAttackedCreatures = extractors.getBeingAttackedCreatures(content, filledSlotsCount)
-    creaturesNamesImages = extractors.getCreaturesNamesImages(content, filledSlotsCount)
+    beingAttackedCreatures = [beingAttackedCreature for beingAttackedCreature in extractors.getBeingAttackedCreatures(content, filledSlotsCount)]
     creatures = [(getCreatureName(creatureNameImage), beingAttackedCreatures[slotIndex])
-                           for slotIndex, creatureNameImage in enumerate(creaturesNamesImages)]
-    creaturesNp = np.array(creatures, dtype=typing.creatureType)
-    return creaturesNp
+                           for slotIndex, creatureNameImage in enumerate(extractors.getCreaturesNamesImages(content, filledSlotsCount))]
+    return np.array(creatures, dtype=typing.creatureType)
 
 
 def getCreatureName(creatureNameImg):

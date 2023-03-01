@@ -6,18 +6,17 @@ from . import config, locators
 
 @njit(cache=True, fastmath=True)
 def getBeingAttackedCreatures(content, filledSlotsCount):
-    beingAttackedCreatures = np.full((filledSlotsCount), False, dtype=np.bool_)
-    size = 19
     for i in range(filledSlotsCount):
         y = (i * 22)
-        border = content[y, :size]
-        for j in range(size):
-            if border[j] != 76 and border[j] != 166:
+        for j in range(19):
+            bar = content[y, :19]
+            if bar[j] != 76 and bar[j] != 166:
                 break
             if j == 18:
-                beingAttackedCreatures[i] = True
-    return beingAttackedCreatures
-
+                yield True
+        if i < filledSlotsCount - 1:
+            yield False
+        
 
 def getContent(screenshot):
     containerTopBarPos = locators.getContainerTopBarPos(screenshot)
@@ -48,16 +47,11 @@ def getCreaturesNamesImages(content, filledSlotsCount):
     return creaturesNamesImages
 
 
-@njit(cache=True, fastmath=True, nogil=True)
+@njit(cache=True, fastmath=True)
 def getFilledSlotsCount(content):
-    firstLetterPixels = content[:, 23]
-    firstLetterPixelsFlatten = np.ravel(firstLetterPixels)
-    booleanIndexes = np.logical_or(firstLetterPixelsFlatten == 192, firstLetterPixelsFlatten == 247)
-    contentOfBooleans = np.flatnonzero(booleanIndexes)
-    hasNoFilledSlots = len(contentOfBooleans) == 0
-    if hasNoFilledSlots:
-        return 0
-    lastPaintedPixelIndex = contentOfBooleans[-1]
-    slotsCount = lastPaintedPixelIndex / 22
-    slotsCountRounded = math.ceil(slotsCount)
-    return slotsCountRounded
+    i = len(content[:, 23])
+    while(i > 0):
+        if content[:, 23][i - 1] == 192 or content[:, 23][i - 1] == 247:
+            return math.ceil(i / 22)
+        i = i - 1
+    return 0
