@@ -6,16 +6,17 @@ from . import config, locators
 
 @njit(cache=True, fastmath=True)
 def getBeingAttackedCreatures(content, filledSlotsCount):
+    beingAttackedCreatures = np.full((filledSlotsCount), False, dtype=np.bool_)
+    size = 19
     for i in range(filledSlotsCount):
         y = (i * 22)
-        for j in range(19):
-            bar = content[y, :19]
-            if bar[j] != 76 and bar[j] != 166:
+        border = content[y, :size]
+        for j in range(size):
+            if border[j] != 76 and border[j] != 166:
                 break
             if j == 18:
-                yield True
-        if i < filledSlotsCount - 1:
-            yield False
+                beingAttackedCreatures[i] = True
+    return beingAttackedCreatures
         
 
 def getContent(screenshot):
