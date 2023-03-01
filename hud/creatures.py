@@ -73,43 +73,41 @@ def getClosestCreature(hudCreatures, coordinate):
 
 @njit(cache=True, fastmath=True)
 def getCreaturesBars(hudImg):
-    imgHeight = len(hudImg)
-    imgWidth = len(hudImg[0])
+    imgHeight, imgWidth = hudImg.shape
     bars = []
     for j in range(imgHeight - 3):
         i = -1
         while(i < (imgWidth - 27)):
-            i += 4
-            if hudImg[j][i] == 0:
+            i += 1
+            if hudImg[j, i] & 0xFF == 0:
                 upperBorderIsBlack = True
-                for k in range(0, 27, 4):
-                    if hudImg[j][i + k] != 0:
+                for value in hudImg[j, i: i + 27]:
+                    if value & 0xFF != 0:
                         upperBorderIsBlack = False
                         break
-                if not upperBorderIsBlack:
+                if upperBorderIsBlack == False:
                     continue
                 leftBorderIsBlack = True
-                for k in range(0, 4, 4):
-                    if hudImg[j + k][i] != 0:
+                for value in hudImg[j: j + 4, i]:
+                    if value & 0xFF != 0:
                         leftBorderIsBlack = False
                         break
-                if not leftBorderIsBlack:
+                if leftBorderIsBlack == False:
                     continue
                 rightBorderIsBlack = True
-                for k in range(0, 4, 4):
-                    if hudImg[j + k][i + 26] != 0:
+                for value in hudImg[j: j + 4, i + 26]:
+                    if value & 0xFF != 0:
                         rightBorderIsBlack = False
                         break
-                if not rightBorderIsBlack:
+                if rightBorderIsBlack == False:
                     continue
                 bottomBorderIsBlack = True
-                for k in range(0, 26, 4):
-                    if hudImg[j + 3][i + k] != 0:
+                for value in hudImg[j + 3, i: i + 26]:
+                    if value & 0xFF != 0:
                         bottomBorderIsBlack = False
                         break
-                if not bottomBorderIsBlack:
-                    continue
-                bars.append((i, j))
+                if bottomBorderIsBlack:
+                    bars.append((i, j))
     return bars
 
 
@@ -149,29 +147,26 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
         for battleListIndex in range(battleListCreaturesCount):
             battleListCreature = battleListCreatures[battleListIndex]
             creatureName = battleListCreature['name']
-            isUnknownCreature = creatureName == 'Unknown'
-            if isUnknownCreature:
+            if creatureName == 'Unknown':
                 creature = makeCreature(creatureName, 'player', creatureBar, direction, hudCoordinate, hudImg, coordinate, slotWidth, discoverTarget=discoverTarget)
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
                 battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 continue
-            creatureTypeAlreadyTried = creatureName in nonCreaturesForCurrentBar
-            if creatureTypeAlreadyTried:
+            if creatureName in nonCreaturesForCurrentBar:
                 continue
-            creatureNameImg = creaturesNamesHashes.get(creatureName).copy()
-            creatureNameWidth = creatureNameImg.shape[1]
+            creatureNameImg = creaturesNamesHashes.get(creatureName)
             (creatureBarX, creatureBarY) = creatureBar
             creatureBarY0 = creatureBarY - 13
             creatureBarY1 = creatureBarY0 + 11
-            creatureNameImgHalfWidth = math.floor(creatureNameWidth / 2)
+            creatureNameImgHalfWidth = math.floor(creatureNameImg.shape[1] / 2)
             leftDiff = max(creatureNameImgHalfWidth - 13, 0)
             gapLeft = 0 if creatureBarX > leftDiff else leftDiff - creatureBarX
-            gapInnerLeft = 0 if creatureNameWidth > 27 else math.ceil((27 - creatureNameWidth) / 2)
-            rightDiff = max(creatureNameWidth - creatureNameImgHalfWidth - 14, 0)
+            gapInnerLeft = 0 if creatureNameImg.shape[1] > 27 else math.ceil((27 - creatureNameImg.shape[1]) / 2)
+            rightDiff = max(creatureNameImg.shape[1] - creatureNameImgHalfWidth - 14, 0)
             gapRight = 0 if hudWidth > (creatureBarX + 27 + rightDiff) else creatureBarX + 27 + rightDiff - hudWidth
-            gapInnerRight = 0 if creatureNameWidth > 27 else math.floor((27 - creatureNameWidth) / 2)
+            gapInnerRight = 0 if creatureNameImg.shape[1] > 27 else math.floor((27 - creatureNameImg.shape[1]) / 2)
             gg = 13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight
             startingX = max(0, creatureBarX - creatureNameImgHalfWidth + gg)
             endingX = min(hudWidth, creatureBarX + creatureNameImgHalfWidth + gg)
@@ -186,7 +181,7 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
                 creatures.append(creature)
                 battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 break
-            creatureNameImg2 = creaturesNamesHashes.get(creatureName).copy()
+            creatureNameImg2 = creaturesNamesHashes.get(creatureName)
             creatureWithDirtNameImg2 = hudImg[creatureBarY0:creatureBarY1, startingX + 1:endingX + 1]
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
                 creatureNameImg2 = creatureNameImg2[:, 0:creatureNameImg2.shape[1] - 1]
@@ -199,7 +194,7 @@ def getCreatures(battleListCreatures, direction, hudCoordinate, hudImg, coordina
                 battleListCreatures = np.delete(battleListCreatures, battleListIndex)
                 break
             creatureWithDirtNameImg3 = hudImg[creatureBarY0:creatureBarY1, startingX:endingX - 1]
-            creatureNameImg3 = creaturesNamesHashes.get(creatureName).copy()
+            creatureNameImg3 = creaturesNamesHashes.get(creatureName)
             creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
             if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
                 creatureNameImg3 = creatureNameImg3[:, 0:creatureNameImg3.shape[1] - 1]
