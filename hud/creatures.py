@@ -73,43 +73,41 @@ def getClosestCreature(hudCreatures, coordinate):
 
 @njit(cache=True, fastmath=True)
 def getCreaturesBars(hudImg):
-    imgHeight = len(hudImg)
-    imgWidth = len(hudImg[0])
+    imgHeight, imgWidth = hudImg.shape
     bars = []
     for j in range(imgHeight - 3):
         i = -1
         while(i < (imgWidth - 27)):
-            i += 4
-            if hudImg[j][i] == 0:
+            i += 1
+            if hudImg[j, i] & 0xFF == 0:
                 upperBorderIsBlack = True
-                bottomBorderIsBlack = True
-                leftBorderIsBlack = True
-                rightBorderIsBlack = True
-                for k in range(0, 27, 4):
-                    if hudImg[j][i + k] != 0:
+                for value in hudImg[j, i: i + 27]:
+                    if value & 0xFF != 0:
                         upperBorderIsBlack = False
                         break
-                if not upperBorderIsBlack:
+                if upperBorderIsBlack == False:
                     continue
-                for k in range(0, 4, 4):
-                    if hudImg[j + k][i] != 0:
+                leftBorderIsBlack = True
+                for value in hudImg[j: j + 4, i]:
+                    if value & 0xFF != 0:
                         leftBorderIsBlack = False
                         break
-                if not leftBorderIsBlack:
+                if leftBorderIsBlack == False:
                     continue
-                for k in range(0, 4, 4):
-                    if hudImg[j + k][i + 26] != 0:
+                rightBorderIsBlack = True
+                for value in hudImg[j: j + 4, i + 26]:
+                    if value & 0xFF != 0:
                         rightBorderIsBlack = False
                         break
-                if not rightBorderIsBlack:
+                if rightBorderIsBlack == False:
                     continue
-                for k in range(0, 26, 4):
-                    if hudImg[j + 3][i + k] != 0:
+                bottomBorderIsBlack = True
+                for value in hudImg[j + 3, i: i + 26]:
+                    if value & 0xFF != 0:
                         bottomBorderIsBlack = False
                         break
-                if not bottomBorderIsBlack:
-                    continue
-                bars.append((i, j))
+                if bottomBorderIsBlack:
+                    bars.append((i, j))
     return bars
 
 
