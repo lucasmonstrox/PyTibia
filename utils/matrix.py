@@ -34,13 +34,3 @@ def hasMatrixInsideOther(matrix, other):
             if other[i][j] == 0 and (matrix[i][j] != 0 and matrix[i][j] != 113 and matrix[i][j] != 29 and matrix[i][j] != 57 and matrix[i][j] != 91 and matrix[i][j] != 152 and matrix[i][j] != 170 and matrix[i][j] != 192):
                 return False
     return True
-
-
-@njit(cache=True, fastmath=True)
-def hasMatrixInsideOtherNp(matrix, other):
-    matrixFlattened = np.ravel(matrix)
-    otherFlattened = np.ravel(other)
-    blackPixelsIndexes = np.flatnonzero(otherFlattened == 0)
-    blackPixels = np.take(matrixFlattened, blackPixelsIndexes)
-    didMatch = np.all(blackPixels == 0)
-    return didMatch
