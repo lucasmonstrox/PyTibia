@@ -82,27 +82,27 @@ def getCreaturesBars(hudImg):
             i += 4
             if hudImg[j][i] == 0:
                 upperBorderIsBlack = True
-                bottomBorderIsBlack = True
-                leftBorderIsBlack = True
-                rightBorderIsBlack = True
                 for k in range(0, 27, 4):
                     if hudImg[j][i + k] != 0:
                         upperBorderIsBlack = False
                         break
                 if not upperBorderIsBlack:
                     continue
+                leftBorderIsBlack = True
                 for k in range(0, 4, 4):
                     if hudImg[j + k][i] != 0:
                         leftBorderIsBlack = False
                         break
                 if not leftBorderIsBlack:
                     continue
+                rightBorderIsBlack = True
                 for k in range(0, 4, 4):
                     if hudImg[j + k][i + 26] != 0:
                         rightBorderIsBlack = False
                         break
                 if not rightBorderIsBlack:
                     continue
+                bottomBorderIsBlack = True
                 for k in range(0, 26, 4):
                     if hudImg[j + 3][i + k] != 0:
                         bottomBorderIsBlack = False
