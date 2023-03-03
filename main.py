@@ -1,7 +1,9 @@
 import dxcam
+import kivy.context
 import multiprocessing
 import numpy as np
 import pyautogui
+import pygetwindow
 from rx import interval, operators
 from rx.scheduler import ThreadPoolScheduler
 from time import sleep
@@ -56,16 +58,16 @@ gameContext = {
         'waypoints': {
             'currentIndex': None,
             'points': np.array([
-                ('', 'walk', (33214, 32459, 8), {}),
-                ('', 'walk', (33214, 32456, 8), {}),
-                ('', 'moveUpNorth', (33214, 32456, 8), {}),
-                ('', 'walk', (33214, 32450, 7), {}),  #indo para cave
-                ('', 'walk', (33220, 32428, 7), {}),
-                ('', 'walk', (33216, 32392, 7), {}),
-                ('', 'walk', (33251, 32364, 7), {}),
-                ('', 'walk', (33277, 32329, 7), {}),
-                ('', 'walk', (33301, 32291, 7), {}),
-                ('', 'walk', (33302, 32289, 7), {}), # chegou na cave
+                # ('', 'walk', (33214, 32459, 8), {}),
+                # ('', 'walk', (33214, 32456, 8), {}),
+                # ('', 'moveUpNorth', (33214, 32456, 8), {}),
+                # ('', 'walk', (33214, 32450, 7), {}),  #indo para cave
+                # ('', 'walk', (33220, 32428, 7), {}),
+                # ('', 'walk', (33216, 32392, 7), {}),
+                # ('', 'walk', (33251, 32364, 7), {}),
+                # ('', 'walk', (33277, 32329, 7), {}),
+                # ('', 'walk', (33301, 32291, 7), {}),
+                # ('', 'walk', (33302, 32289, 7), {}), # chegou na cave
                 ('caveStart', 'walk', (33301, 32278, 7), {}), # 10
                 ('', 'walk', (33312, 32278, 7), {}), # 11
                 ('', 'walk', (33318, 32283, 7), {}), # 12
@@ -146,18 +148,39 @@ gameContext = {
 hudCreatures = np.array([], dtype=hud.typing.creatureType)
 
 
+import win32gui
+
 def main():
     optimal_thread_count = multiprocessing.cpu_count()
     threadPoolScheduler = ThreadPoolScheduler(optimal_thread_count)
     fpsCounter = 0.01666666666 # 60 fps
     fpsObserver = interval(fpsCounter)
-
+    
+    def minimizeWindow(hwnd):
+        win32gui.ShowWindow(hwnd, win32gui.SW_MINIMIZE)
+    
+    def maximizeWindow(hwnd):
+        win32gui.ShowWindow(hwnd, 3)
+        
+    def focusWindow(hwnd):
+        win32gui.SetForegroundWindow(hwnd)
+    
+    def handleWindow(_):
+        global gameContext
+        if gameContext['window'] is None:
+            gameContext['window'] = win32gui.FindWindow(None, 'Tibia - Account Manager')
+        return gameContext
+    
+    windowObserver = fpsObserver.pipe(
+        operators.map(handleWindow),
+    )
+    
     def handleScreenshot(_):
         global gameContext
         gameContext['screenshot'] = utils.core.getScreenshot(camera)
         return gameContext
 
-    fpsWithScreenshot = fpsObserver.pipe(
+    fpsWithScreenshot = windowObserver.pipe(
         operators.filter(
             lambda _: gameContext['cavebot']['running'] == True),
         operators.map(handleScreenshot),
@@ -186,6 +209,7 @@ def main():
         return gameContext
 
     battleListObserver = coordinatesObserver.pipe(
+        operators.filter(lambda result: result['coordinate'] is not None),
         operators.map(handleBattleListCreatures)
     )
 
@@ -255,6 +279,7 @@ def main():
     hudCreaturesObserver = directionObserver.pipe(operators.map(resolveCreatures))
 
     def handleLoot(context):
+        # gameContext = context
         if gameContext['cavebot']['targetCreature'] is not None and chat.core.hasNewLoot(gameContext['screenshot']):
             gameContext['corpsesToLoot'] = np.append(gameContext['corpsesToLoot'], [gameContext['cavebot']['targetCreature']], axis=0)
         return gameContext
@@ -394,10 +419,40 @@ def main():
         if mana > 60 and canHaste:
             pyautogui.press('f6')
 
+    class GameContext:
+        def addWaypoint(self, waypoint):
+            global gameContext
+            gameContext['cavebot']['waypoints']['points'] = np.append(gameContext['cavebot']['waypoints']['points'], np.array([waypoint], dtype=waypointType))
+            print(gameContext['cavebot']['waypoints']['points'])
+            
+        def focusInTibia(self):
+            global gameContext
+            maximizeWindow(gameContext['window'])
+            focusWindow(gameContext['window'])
+
+        def play(self):
+            self.focusInTibia()
+            sleep(1)
+            gameContext['cavebot']['running'] = True
+
+        def pause(self):
+            gameContext['cavebot']['running'] = False
+            gameContext['currentTask'] = None
+            if gameContext['lastPressedKey'] is not None:
+                pyautogui.keyUp(gameContext['lastPressedKey'])
+                gameContext['lastPressedKey'] = None
+
+        def getCoordinate(self):
+            global gameContext
+            screenshot = utils.core.getScreenshot(camera)
+            coordinate = radar.core.getCoordinate(screenshot, previousCoordinate=gameContext['previousCoordinate'])
+            return coordinate
+        
     try:
         spellObserver.subscribe(spellObservable)
         healingObserver.subscribe(healingObservable)
         taskObserver.subscribe(taskObservable)
+        kivy.context.register_context('game', GameContext)
         MyApp().run()
     except KeyboardInterrupt:
         raise SystemExit

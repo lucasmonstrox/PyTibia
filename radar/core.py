@@ -19,6 +19,7 @@ def getCoordinate(screenshot, previousCoordinate=None):
     if cannotGetRadarToolsPos:
         return None
     radarImg = extractors.getRadarImg(screenshot, radarToolsPos)
+    # utils.image.save(radarImg, 'radar.png')
     radarHashedImg = utils.core.hashitHex(radarImg)
     shouldGetCoordinateByCachedRadarHashedImg = radarHashedImg in config.coordinates
     if shouldGetCoordinateByCachedRadarHashedImg:
