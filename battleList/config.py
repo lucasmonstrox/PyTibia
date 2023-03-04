@@ -30,7 +30,16 @@ slot = {
         "gap": 2
     }
 }
-
+skulls = {
+    'images': {
+        'black': utils.image.loadFromRGBToGray(f'{imagesPath}/skulls/black.png'),
+        'green': utils.image.loadFromRGBToGray(f'{imagesPath}/skulls/green.png'),
+        'orange': utils.image.loadFromRGBToGray(f'{imagesPath}/skulls/orange.png'),
+        'red': utils.image.loadFromRGBToGray(f'{imagesPath}/skulls/red.png'),
+        'white': utils.image.loadFromRGBToGray(f'{imagesPath}/skulls/white.png'),
+        'yellow': utils.image.loadFromRGBToGray(f'{imagesPath}/skulls/yellow.png'),
+    }
+}
 
 for creatureName in wiki.creatures.creatures:
     creatureNameImg = utils.image.loadAsGrey(
