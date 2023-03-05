@@ -53,8 +53,8 @@ class CavebotScreen(MDScreen):
         moveDownButton = MDFlatButton(text='Mover abaixo', on_press=lambda _: self.addWaypoint('moveDown'))
         moveUpButton = MDFlatButton(text='Mover acima', on_press=lambda _: self.addWaypoint('moveUp'))
         walkButton = MDFlatButton(text='Andar', on_press=lambda _: self.addWaypoint('walk'))
-        useRopeButton = MDFlatButton(text='Usar corda')
-        useShovelButton = MDFlatButton(text='Usar pá')
+        useRopeButton = MDFlatButton(text='Usar corda', on_press=self.addUseRopeWaypoint)
+        useShovelButton = MDFlatButton(text='Usar pá', on_press=self.addUseShovelWaypoint)
         buttonsLayout.add_widget(walkButton)
         buttonsLayout.add_widget(moveDownButton)
         buttonsLayout.add_widget(moveUpButton)
@@ -68,15 +68,11 @@ class CavebotScreen(MDScreen):
         if checked:
             self.selectedDirection = direction
     
-    def cenas(self, *args):
-        print('aeeeee', args)
-    
     def on_row_press(self, _, instance_row):
         '''Called when a table row is clicked.'''
         print(vars(instance_row))
     
     def addWaypoint(self, waypointType):
-        print('clickou aqui')
         gameContext = kivy.context.get_current_context()['game']
         coordinate = gameContext.getCoordinate()
         cannotGetCoordinate = coordinate is None
@@ -104,4 +100,28 @@ class CavebotScreen(MDScreen):
         waypointRow = ('', waypointType, coordinate[0], coordinate[1], coordinate[2], {})
         self.data_tables.add_row(waypointRow)
         waypoint = (waypointRow[0], waypointRow[1], [waypointRow[2], waypointRow[3], waypointRow[4]], waypointRow[5])
+        gameContext.addWaypoint(waypoint)
+    
+    def addUseRopeWaypoint(self, _):
+        gameContext = kivy.context.get_current_context()['game']
+        coordinate = gameContext.getCoordinate()
+        waypointRow = ('', 'useRope', coordinate[0], coordinate[1], coordinate[2], {})
+        self.data_tables.add_row(waypointRow)
+        waypoint = ('', 'useRope', coordinate, {})
+        gameContext.addWaypoint(waypoint)
+    
+    def addUseShovelWaypoint(self, _):
+        gameContext = kivy.context.get_current_context()['game']
+        coordinate = gameContext.getCoordinate()
+        if self.selectedDirection == 'north':
+            coordinate[1] -= 1
+        elif self.selectedDirection == 'south':
+            coordinate[1] += 1
+        elif self.selectedDirection == 'east':
+            coordinate[0] += 1
+        elif self.selectedDirection == 'west':
+            coordinate[0] -= 1
+        waypointRow = ('', 'useShovel', coordinate[0], coordinate[1], coordinate[2], {})
+        self.data_tables.add_row(waypointRow)
+        waypoint = ('', 'useShovel', coordinate, {})
         gameContext.addWaypoint(waypoint)
