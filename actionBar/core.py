@@ -71,6 +71,10 @@ def hasExoriMasCooldown(screenshot):
     return hasCooldownByImg(screenshot, images['exoriMasCooldown'])
 
 
+def hasExoriMinCooldown(screenshot):
+    return hasCooldownByImg(screenshot, images['exoriMinCooldown'])
+
+
 def hasHasteCooldown(screenshot):
     return hasCooldownByImg(screenshot, images['hasteCooldown'])
 
