@@ -5,6 +5,7 @@ import pyautogui
 from rx import interval, operators
 from rx.scheduler import ThreadPoolScheduler
 from time import sleep
+import actionBar.core
 import battleList.core
 import battleList.typing
 import chat.core
@@ -55,51 +56,90 @@ gameContext = {
         'waypoints': {
             'currentIndex': None,
             'points': np.array([
-                ('', 'walk', (33214, 32459, 8), {}),
-                ('', 'walk', (33214, 32456, 8), {}),
-                ('', 'moveUpNorth', (33214, 32456, 8), {}),
-                ('', 'walk', (33214, 32450, 7), {}),  #indo para cave
-                ('', 'walk', (33220, 32428, 7), {}),
-                ('', 'walk', (33216, 32392, 7), {}),
-                ('', 'walk', (33251, 32364, 7), {}),
-                ('', 'walk', (33277, 32329, 7), {}),
-                ('', 'walk', (33301, 32291, 7), {}),
-                ('', 'walk', (33302, 32289, 7), {}), # chegou na cave
-                ('caveStart', 'walk', (33301, 32278, 7), {}), # 10
-                ('', 'walk', (33312, 32278, 7), {}), # 11
-                ('', 'walk', (33318, 32283, 7), {}), # 12
-                ('', 'walk', (33312, 32280, 7), {}), # 13
-                ('', 'moveDownSouth', (33312, 32280, 7), {}), # 14
-                ('', 'walk', (33302, 32283, 8), {}), # 15
-                ('', 'walk', (33300, 32289, 8), {}), # 16
-                ('', 'moveDownSouth', (33300, 32289, 8), {}), # 17
-                ('', 'walk', (33302, 32281, 9), {}), # 18
-                ('', 'walk', (33312, 32280, 9), {}), # 19
-                ('', 'walk', (33312, 32289, 9), {}), # 20
-                ('', 'walk', (33300, 32291, 9), {}), # 21
-                ('', 'moveUpNorth', (33300, 32291, 9), {}), # 22
-                ('', 'walk', (33302, 32283, 8), {}), # 23
-                ('', 'walk', (33312, 32282, 8), {}), # 24
-                ('', 'moveUpNorth', (33312, 32282, 8), {}), # 25
-                ('', 'walk', (33311, 32285, 7), {}), # 26
-                ('', 'walk', (33309, 32285, 7), {}), # 27
-                ('', 'moveUpNorth', (33309, 32285, 7), {}), # 28
-                ('', 'walk', (33310, 32278, 6), {}), # 29
-                ('', 'walk', (33309, 32283, 6), {}), # 30
-                ('', 'moveDownSouth', (33309, 32283, 6), {}), # 31
-                ('', 'walk', (33305, 32289, 7), {}), # 32
-                ('', 'refillChecker', (33306, 32289, 7), { # 33
-                    'minimumOfManaPotions': 1,
-                    'minimumOfHealthPotions': 1,
-                    'minimumOfCapacity': 200,
-                    'waypointLabelToRedirect': 'caveStart',
-                }),
-                ('', 'walk', (33264,32321,7), {}), # 31
+                ('', 'walk', (33216, 32351, 10), {}),
+                ('', 'walk', (33192, 32347, 10), {}),
+                ('', 'walk', (33195, 32365, 10), {}),
+                ('', 'walk', (33208, 32370, 10), {}),
+                ('', 'walk', (33223, 32387, 10), {}),
+                ('', 'walk', (33196, 32397, 10), {}),
+                # ('', 'walk', (33214, 32459, 8), {}),
+                # ('', 'walk', (33214, 32456, 8), {}),
+                # ('', 'moveUpNorth', (33214, 32456, 8), {}),
+                # ('', 'walk', (33214, 32450, 7), {}),  #indo para cave
+                # ('', 'walk', (33220, 32428, 7), {}),
+                # ('', 'walk', (33216, 32392, 7), {}),
+                # ('', 'walk', (33251, 32364, 7), {}),
+                # ('', 'walk', (33277, 32329, 7), {}),
+                # ('', 'walk', (33301, 32291, 7), {}),
+                # ('', 'walk', (33302, 32289, 7), {}), # chegou na cave
+                # ('caveStart', 'walk', (33301, 32278, 7), {}), # 10
+                # ('', 'walk', (33312, 32278, 7), {}), # 11
+                # ('', 'walk', (33318, 32283, 7), {}), # 12
+                # ('', 'walk', (33312, 32280, 7), {}), # 13
+                # ('', 'moveDownSouth', (33312, 32280, 7), {}), # 14
+                # ('', 'walk', (33302, 32283, 8), {}), # 15
+                # ('', 'walk', (33300, 32289, 8), {}), # 16
+                # ('', 'moveDownSouth', (33300, 32289, 8), {}), # 17
+                # ('', 'walk', (33302, 32281, 9), {}), # 18
+                # ('', 'walk', (33312, 32280, 9), {}), # 19
+                # ('', 'walk', (33312, 32289, 9), {}), # 20
+                # ('', 'walk', (33300, 32291, 9), {}), # 21
+                # ('', 'moveUpNorth', (33300, 32291, 9), {}), # 22
+                # ('', 'walk', (33302, 32283, 8), {}), # 23
+                # ('', 'walk', (33312, 32282, 8), {}), # 24
+                # ('', 'moveUpNorth', (33312, 32282, 8), {}), # 25
+                # ('', 'walk', (33311, 32285, 7), {}), # 26
+                # ('', 'walk', (33309, 32285, 7), {}), # 27
+                # ('', 'moveUpNorth', (33309, 32285, 7), {}), # 28
+                # ('', 'walk', (33310, 32278, 6), {}), # 29
+                # ('', 'walk', (33309, 32283, 6), {}), # 30
+                # ('', 'moveDownSouth', (33309, 32283, 6), {}), # 31
+                # ('', 'walk', (33305, 32289, 7), {}), # 32
+                # ('', 'refillChecker', (33306, 32289, 7), { # 33
+                #     'minimumOfManaPotions': 1,
+                #     'minimumOfHealthPotions': 1,
+                #     'minimumOfCapacity': 200,
+                #     'waypointLabelToRedirect': 'caveStart',
+                # }),
+                # ('', 'walk', (33264,32321,7), {}), # 31
             ], dtype=waypointType),
             'state': None
         },
     },
     'comingFromDirection': None,
+    'comboSpells': [
+        {
+            'name': '3 ou -',
+            'creatures': {
+                'compare': 'lessThan',
+                'value': 4
+            },
+            'currentSpellIndex': 0,
+            'spells': [
+                {'name': 'exori', 'hotkey': 'f4'},
+                {'name': 'exori gran', 'hotkey': 'f5'},
+                {'name': 'exori', 'hotkey': 'f4'},
+                {'name': 'exori min', 'hotkey': 'f7'},
+                {'name': 'exori', 'hotkey': 'f4'},
+                {'name': 'exori gran', 'hotkey': 'f5'},
+            ],
+        },
+        {
+            'name': '4 ou +',
+            'creatures': {
+                'compare': 'greaterThanOrEqual',
+                'value': 4
+            },
+            'currentSpellIndex': 0,
+            'spells': [
+                {'name': 'exori gran', 'hotkey': 'f5'},
+                {'name': 'exori mas', 'hotkey': 'f6'},
+                {'name': 'exori', 'hotkey': 'f4'},
+                {'name': 'exori gran', 'hotkey': 'f5'},
+                {'name': 'exori mas', 'hotkey': 'f6'},
+            ],
+        }
+    ],
     'corpsesToLoot': np.array([], dtype=hud.typing.creatureType),
     'currentTask': None,
     'healing': {
@@ -383,8 +423,27 @@ def main():
         operators.subscribe_on(threadPoolScheduler)
     )
     
-    def spellObservable(context):
-        global hudCreatures
+    def comboSpellDidMatch(comboSpell, nearestCreaturesCount):
+        if comboSpell['creatures']['compare'] == 'lessThan':
+            if nearestCreaturesCount < comboSpell['creatures']['value']:
+                return True
+            return False
+        if comboSpell['creatures']['compare'] == 'lessThanOrEqual':
+            if nearestCreaturesCount <= comboSpell['creatures']['value']:
+                return True
+            return False
+        if comboSpell['creatures']['compare'] == 'greaterThan':
+            if nearestCreaturesCount > comboSpell['creatures']['value']:
+                return True
+            return False
+        if comboSpell['creatures']['compare'] == 'greaterThanOrEqual':
+            if nearestCreaturesCount >= comboSpell['creatures']['value']:
+                return True
+            return False
+        return False
+    
+    def spellObservable(_):
+        global gameContext, hudCreatures
         mana = skills.core.getMana(gameContext['screenshot'])
         couldntGetMana = mana is None
         if couldntGetMana:
@@ -392,6 +451,26 @@ def main():
         canHaste = not player.core.hasSpecialCondition(gameContext['screenshot'], 'haste')
         if mana > 60 and canHaste:
             pyautogui.press('f6')
+        nearestCreaturesCount = hud.creatures.getNearestCreaturesCount(gameContext['monsters'])
+        if nearestCreaturesCount == 0:
+            return
+        spellsCooldownsMapper = {
+            'exori': actionBar.core.hasExoriCooldown,
+            'exori gran': actionBar.core.hasExoriGranCooldown,
+            'exori mas': actionBar.core.hasExoriMasCooldown,
+            'exori min': actionBar.core.hasExoriMinCooldown,
+        }
+        for key, comboSpell in enumerate(gameContext['comboSpells']):
+            if comboSpellDidMatch(comboSpell, nearestCreaturesCount):
+                spell = comboSpell['spells'][comboSpell['currentSpellIndex']]
+                hasCooldown = spellsCooldownsMapper[spell['name']](gameContext['screenshot'])
+                if hasCooldown:
+                    return
+                hotkey = spell['hotkey']
+                pyautogui.press(hotkey)
+                nextIndex = utils.array.getNextArrayIndex(comboSpell['spells'], comboSpell['currentSpellIndex'])
+                gameContext['comboSpells'][key]['currentSpellIndex'] = nextIndex
+                sleep(0.5)
 
     try:
         spellObserver.subscribe(spellObservable)
