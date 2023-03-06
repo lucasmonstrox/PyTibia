@@ -12,43 +12,42 @@ class GroupTaskExecutor:
             self.status = 'running'
             taskName, task = self.tasks[self.currentTaskIndex]
             if task.status == 'notStarted':
-                if task.startedAt == None:
-                    task.startedAt = time()
-                passedTimeSinceLastCheck = time() - task.startedAt
-                shouldExecNow = passedTimeSinceLastCheck >= task.delayBeforeStart
+                if self.tasks[self.currentTaskIndex][1].startedAt == None:
+                    self.tasks[self.currentTaskIndex][1].startedAt = time()
+                passedTimeSinceLastCheck = time() - self.tasks[self.currentTaskIndex][1].startedAt
+                shouldExecNow = passedTimeSinceLastCheck >= self.tasks[self.currentTaskIndex][1].delayBeforeStart
                 if shouldExecNow:
-                    shouldExecResponse = task.shouldIgnore(context) == False
-                    shouldNotExecTask = shouldExecResponse == False and task.status != 'running'
+                    shouldExecResponse = self.tasks[self.currentTaskIndex][1].shouldIgnore(context) == False
+                    shouldNotExecTask = shouldExecResponse == False and self.tasks[self.currentTaskIndex][1].status != 'running'
                     if shouldNotExecTask:
-                        context = task.onIgnored(context)
+                        context = self.tasks[self.currentTaskIndex][1].onIgnored(context)
                         self.markCurrentTaskAsCompleted()
                     else:
-                        task.status = 'running'
-                        context = task.do(context)
-                    self.tasks[self.currentTaskIndex] = (taskName, task)
-            elif task.status == 'running':
-                if task.shouldRestart(context):
+                        self.tasks[self.currentTaskIndex][1].status = 'running'
+                        context = self.tasks[self.currentTaskIndex][1].do(context)
+            elif self.tasks[self.currentTaskIndex][1].status == 'running':
+                if self.tasks[self.currentTaskIndex][1].shouldRestart(context):
                     self.tasks[self.currentTaskIndex][1].status = 'notStarted'
                 else:
-                    hasDelayOfTimeout = task.delayOfTimeout is not None
+                    hasDelayOfTimeout = self.tasks[self.currentTaskIndex][1].delayOfTimeout is not None
                     if hasDelayOfTimeout:
-                        passedTimeSinceLastCheck = time() - task.startedAt
-                        didTimeout = passedTimeSinceLastCheck >= task.delayOfTimeout
+                        passedTimeSinceLastCheck = time() - self.tasks[self.currentTaskIndex][1].startedAt
+                        didTimeout = passedTimeSinceLastCheck >= self.tasks[self.currentTaskIndex][1].delayOfTimeout
                         if didTimeout:
-                            context = task.onDidTimeout(context)
+                            context = self.tasks[self.currentTaskIndex][1].onDidTimeout(context)
                             self.markCurrentTaskAsCompleted()
                             return context
-                    didTask = task.did(context)
+                    didTask = self.tasks[self.currentTaskIndex][1].did(context)
                     if didTask:
-                        task.finishedAt = time()
+                        self.tasks[self.currentTaskIndex][1].finishedAt = time()
                         self.tasks[self.currentTaskIndex][1].status = 'almostComplete'
                     else:
-                        context = task.ping(context)
-            if task.status == 'almostComplete':
-                passedTimeSinceTaskCompleted = time() - task.finishedAt
-                didPassedEnoughDelayAfterTaskComplete = passedTimeSinceTaskCompleted > task.delayAfterComplete
+                        context = self.tasks[self.currentTaskIndex][1].ping(context)
+            if self.tasks[self.currentTaskIndex][1].status == 'almostComplete':
+                passedTimeSinceTaskCompleted = time() - self.tasks[self.currentTaskIndex][1].finishedAt
+                didPassedEnoughDelayAfterTaskComplete = passedTimeSinceTaskCompleted > self.tasks[self.currentTaskIndex][1].delayAfterComplete
                 if didPassedEnoughDelayAfterTaskComplete:
-                    context = task.onDidComplete(context)
+                    context = self.tasks[self.currentTaskIndex][1].onDidComplete(context)
                     self.markCurrentTaskAsCompleted()
         return context
 
