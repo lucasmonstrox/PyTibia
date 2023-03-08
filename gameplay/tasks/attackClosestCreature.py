@@ -10,10 +10,15 @@ class AttackClosestCreatureTask(BaseTask):
         self.name = 'attackClosestCreature'
 
     def do(self, context):
-        x, y = context['cavebot']['closestCreature']['windowCoordinate']
-        pyautogui.keyDown('alt')
-        leftClick(x, y)
-        pyautogui.keyUp('alt')
+        hasPlayers = len(context['players']) > 0
+        if hasPlayers:
+            x, y = context['cavebot']['closestCreature']['windowCoordinate']
+            pyautogui.keyDown('alt')
+            leftClick(x, y)
+            pyautogui.keyUp('alt')
+            return context
+        # TODO: bind automatically
+        pyautogui.press('space')
         return context
 
     def did(self, context):
