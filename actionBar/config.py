@@ -12,6 +12,7 @@ images = {
     'exoriMasCooldown': loadFromRGBToGray(f'{imagesPath}/cooldowns/exoriMas.png'),
     'exoriMinCooldown': loadFromRGBToGray(f'{imagesPath}/cooldowns/exoriMin.png'),
     'hasteCooldown': loadFromRGBToGray(f'{imagesPath}/cooldowns/haste.png'),
+    'healingCooldown': loadFromRGBToGray(f'{imagesPath}/cooldowns/healing.png'),
     'supportCooldown': loadFromRGBToGray(f'{imagesPath}/cooldowns/support.png'),
   
 }

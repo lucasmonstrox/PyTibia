@@ -38,6 +38,22 @@ def getSlotCount(screenshot, slot):
     return count
 
 
+def slotIsEquipped(screenshot, slot):
+    leftSideArrowsPos = getLeftArrowsPos(screenshot)
+    cannotGetLeftSideArrowsPos = leftSideArrowsPos is None
+    if cannotGetLeftSideArrowsPos:
+        return None
+    (xOfLeftSideArrowsPos, yOfLeftSideArrowsPos, widthOfLeftSideArrowsPos, _) = leftSideArrowsPos
+    pageSlot = (slot - 1)
+    slotSize = 34
+    slotGap = 2
+    x0 = xOfLeftSideArrowsPos + widthOfLeftSideArrowsPos + (slot * slotGap) + (pageSlot * slotSize)
+    y0 = yOfLeftSideArrowsPos
+    slotImg = screenshot[y0:y0 + 34, x0:x0 + 34]
+    isEquipped = slotImg[0, 0] == 41
+    return isEquipped
+
+
 def hasCooldownByImg(screenshot, cooldownImg):
     listOfCooldownsImg = getCooldownsImage(screenshot)
     cannotGetListOfCooldownsImg = listOfCooldownsImg is None
@@ -77,6 +93,10 @@ def hasExoriMinCooldown(screenshot):
 
 def hasHasteCooldown(screenshot):
     return hasCooldownByImg(screenshot, images['hasteCooldown'])
+
+
+def hasHealingCooldown(screenshot):
+    return hasCooldownByImg(screenshot, images['healingCooldown'])
 
 
 def hasSupportCooldown(screenshot):
