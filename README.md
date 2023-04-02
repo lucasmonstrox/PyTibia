@@ -78,16 +78,13 @@ poetry run python -m pytest
 # ✅ TODO
 
 - Add recursive tasks
-- Add spells combos
-- Add thread to eat food
-- Add training way
-- Add fishing way
 - Translate README for Spanish language
 - Add api docs
 - Add mypy
 - Add e2e tests into the tibia client
 - Add pytest-cov
 - Add python typings
+- Add stress tests
 
 # 👷 Authors
 
