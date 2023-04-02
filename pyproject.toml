@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 ahocorapy = "^1.6.1"
 dxcam = {git = "https://github.com/ra1nty/DXcam"}
+mypy = "^1.1.1"
 numba = "^0.56.4"
 numpy = "1.21.4"
 opencv-python = "^4.6.0.66"
@@ -20,7 +21,6 @@ scipy = "^1.9.1"
 tcod = "^13.8.1"
 xxhash = "^3.1.0"
 nptyping = "^2.5.0"
-mypy = "^1.1.1"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.1.3"
