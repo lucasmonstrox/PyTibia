@@ -77,12 +77,10 @@ poetry run python -m pytest
 
 # ✅ TODO
 
-- Add recursive tasks
 - Translate README for Spanish language
 - Add api docs
 - Add mypy
 - Add e2e tests into the tibia client
-- Add pytest-cov
 - Add python typings
 - Add stress tests
 
