@@ -56,8 +56,6 @@ Antes de continuar instale os seguintes pacotes:
 ```bash
 pip install poetry
 poetry install
-poetry run task add-torch
-poetry run task add-easyocr
 ```
 
 # ⌨ Desenvolvimento

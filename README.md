@@ -56,8 +56,6 @@ Install packages before continue
 ```bash
 pip install poetry
 poetry install
-poetry run task add-torch
-poetry run task add-easyocr
 ```
 
 # ⌨ Development
