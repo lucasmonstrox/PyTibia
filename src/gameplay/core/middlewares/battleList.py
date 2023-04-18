@@ -2,6 +2,9 @@ from src.features.battleList.core import getCreatures, isAttackingSomeCreature
 from src.features.battleList.extractors import getContent
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def setBattleListMiddleware(gameContext):
     content = getContent(gameContext['screenshot'])
     gameContext['battleList']['creatures'] = getCreatures(content)

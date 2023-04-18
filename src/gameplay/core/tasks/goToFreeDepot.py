@@ -18,7 +18,10 @@ class GoToFreeDepotTask(GroupTaskExecutor):
         self.state = 'findingVisibleCoordinates'
         self.tasks = self.makeTasks(context, waypoint)
         self.visitedOrBusyCoordinates = {}
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def makeTasks(self, context, waypoint):
         city = waypoint['options']['city']
         depotCoordinates = cities[city]['depotCoordinates']
@@ -52,6 +55,9 @@ class GoToFreeDepotTask(GroupTaskExecutor):
         # Observação: ao saber que todas as coordenadas estão ocupadas, marcar todas como não ocupadas, parar o boneco e ficar verificando se sai ou alguem, ou se começa o novo tempo de ronda
         return []
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def getFreeDepotCoordinates(self, battleListPlayers, visibleDepotCoordinates):
         hasNoPlayers = len(battleListPlayers) == 0
         if hasNoPlayers:
@@ -61,6 +67,9 @@ class GoToFreeDepotTask(GroupTaskExecutor):
         freeDepotCoordinates = np.array([x for x in visibleDepotCoordinates if tuple(x) not in delta])
         return freeDepotCoordinates
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def getVisibleDepotCoordinates(self, coordinate, depotCoordinates):
         visibleDepotCoordinates = []
         for depotCoordinate in depotCoordinates:
@@ -68,6 +77,9 @@ class GoToFreeDepotTask(GroupTaskExecutor):
                 visibleDepotCoordinates.append(depotCoordinate)
         return visibleDepotCoordinates
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def ping(self, context):
         if self.closestFreeDepotCoordinate is None:
             return context

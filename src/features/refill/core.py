@@ -6,11 +6,17 @@ from src.utils.mouse import leftClick, mouseMove
 from .config import images, npcTradeBarImage, npcTradeOkImage
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 @cacheObjectPosition
 def getTradeTopPos(screenshot):
     return locate(screenshot, npcTradeBarImage)
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 @cacheObjectPosition
 def getTradeBottomPos(screenshot):
     (x, y, _, _) = getTradeTopPos(screenshot)
@@ -20,6 +26,9 @@ def getTradeBottomPos(screenshot):
     return x, y + botY + 26, 174, 2
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def findItem(screenshot, itemName):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     leftClick(bx + 160, by - 75)
@@ -37,6 +46,9 @@ def findItem(screenshot, itemName):
     leftClick(x, y)
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def setAmount(screenshot, amount):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     leftClick(bx + 115, by - 42)
@@ -47,11 +59,17 @@ def setAmount(screenshot, amount):
     pyautogui.typewrite(str(amount))
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def confirmBuyItem(screenshot):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     leftClick(bx + 150, by - 18)
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def clearSearchBox(screenshot):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     x = bx + 115 + 45
@@ -61,12 +79,18 @@ def clearSearchBox(screenshot):
     mouseMove(x, y + 20)
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def buyItems(screenshot, itemsAndQuantities):
     screenshot = getScreenshot()
     for itemAndQuantity in itemsAndQuantities:
         buyItem(screenshot, itemAndQuantity)
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def buyItem(screenshot, itemAndQuantity):
     (itemName, quantity) = itemAndQuantity
     findItem(screenshot, itemName)

@@ -13,6 +13,9 @@ class UseRopeTask(BaseTask):
         self.name = 'useRope'
         self.value = value
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         slot = getSlotFromCoordinate(
             context['radar']['coordinate'], self.value['coordinate'])

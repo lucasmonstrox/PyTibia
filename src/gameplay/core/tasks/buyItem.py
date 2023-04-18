@@ -10,12 +10,18 @@ class BuyItemTask(BaseTask):
         self.delayAfterComplete = 1
         self.name = 'buyItem'
         self.value = itemNameWithQuantity
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def shouldIgnore(self, _):
         _, itemQuantity = self.value
         ignore = itemQuantity <= 0
         return ignore
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         buyItem(context['screenshot'], self.value)
         return context

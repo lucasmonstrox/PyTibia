@@ -16,6 +16,9 @@ class GroupOfWalkTasks(GroupTaskExecutor):
         self.value = waypointCoordinate
         self.tasks = self.generateTasks(context, self.value)
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def generateTasks(self, context, waypointCoordinate):
         nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
         for monster in context['gameWindow']['monsters']:
@@ -34,7 +37,10 @@ class GroupOfWalkTasks(GroupTaskExecutor):
         ], dtype=Task)
         tasks = np.append(tasks, [tasksToAppend])
         return tasks
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def _ping(self, context):
         nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
         for monster in context['gameWindow']['monsters']:
@@ -52,6 +58,9 @@ class GroupOfWalkTasks(GroupTaskExecutor):
                 context['currentTask'] = None
         return context
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def did(self, _):
         for taskWithName in self.tasks:
             _, task = taskWithName

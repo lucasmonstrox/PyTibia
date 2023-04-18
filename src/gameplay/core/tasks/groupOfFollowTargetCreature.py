@@ -13,6 +13,9 @@ class GroupOfFollowTargetCreatureTasks(GroupTaskExecutor):
         self.name = 'groupOfFollowTargetCreature'
         self.tasks = self.generateTasks(context)
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def generateTasks(self, context):
         tasks = np.array([], dtype=Task)
         nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()

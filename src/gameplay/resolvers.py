@@ -11,6 +11,9 @@ from .core.tasks.useRopeWaypoint import UseRopeWaypointTask
 from .core.tasks.useShovelWaypoint import UseShovelWaypointTask
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveTasksByWaypoint(context, waypoint):
     if waypoint['type'] == 'depositGold':
         return DepositGoldTask()

@@ -8,6 +8,9 @@ class GroupTaskExecutor(BaseTask):
         self.currentTaskIndex = 0
         self.tasks = []
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         if self.status == 'completed':
             return context
@@ -69,6 +72,9 @@ class GroupTaskExecutor(BaseTask):
             context = self.ping(context)
         return context
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def markCurrentTaskAsCompleted(self, context):
         self.tasks[self.currentTaskIndex][1].status = 'completed'
         isntLastTask = self.currentTaskIndex < len(self.tasks) - 1
@@ -78,4 +84,3 @@ class GroupTaskExecutor(BaseTask):
             if self.terminable:
                 self.status = 'completed'
                 self.onDidComplete(context)
-    

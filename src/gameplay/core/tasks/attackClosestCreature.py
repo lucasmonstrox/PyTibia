@@ -9,6 +9,9 @@ class AttackClosestCreatureTask(BaseTask):
         self.delayOfTimeout = 1
         self.name = 'attackClosestCreature'
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         ignoreHotkeyAttack = len(context['gameWindow']['players']) > 0 or context['targeting']['hasIgnorableCreatures']
         if ignoreHotkeyAttack:
@@ -21,9 +24,15 @@ class AttackClosestCreatureTask(BaseTask):
         pyautogui.press('space')
         return context
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def did(self, context):
         return context['cavebot']['isAttackingSomeCreature']
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def onDidTimeout(self, context):
         context['currentTask'] = None
         return context

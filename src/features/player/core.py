@@ -1,46 +1,46 @@
 import pathlib
 from src.utils.core import cacheObjectPosition, locate
-from src.utils.image import loadAsGrey
+from src.utils.image import loadFromRGBToGray
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
-accessoriesEquippedImg = loadAsGrey('src/features/radar/images/radar-tools.png')
-bleedingImg = loadAsGrey(f'{currentPath}/images/bleeding.png')
-cursedImg = loadAsGrey(f'{currentPath}/images/cursed.png')
-burningImg = loadAsGrey(f'{currentPath}/images/burning.png')
-fightImg = loadAsGrey(f'{currentPath}/images/fight.png')
-hungryImg = loadAsGrey(f'{currentPath}/images/hungry.png')
-poisonedImg = loadAsGrey(f'{currentPath}/images/poisoned.png')
-pzImg = loadAsGrey(f'{currentPath}/images/pz.png')
-restingAreaImg = loadAsGrey(f'{currentPath}/images/resting-area.png')
-stopImg = loadAsGrey(f'{currentPath}/images/stop.png')
-emptyArmorImg = loadAsGrey(f'{currentPath}/images/empty-armor.png')
-emptyBeltImg = loadAsGrey(f'{currentPath}/images/empty-arrow.png')
-emptyBackPackImg = loadAsGrey(f'{currentPath}/images/empty-backpack.png')
-emptyBootsImg = loadAsGrey(f'{currentPath}/images/empty-boots.png')
-emptyHelmetImg = loadAsGrey(f'{currentPath}/images/empty-helmet.png')
-emptyLegsIms = loadAsGrey(f'{currentPath}/images/empty-legs.png')
-emptyNecklaceImg = loadAsGrey(f'{currentPath}/images/empty-necklace.png')
-emptyRingImg = loadAsGrey(f'{currentPath}/images/empty-ring.png')
-emptyShieldImg = loadAsGrey(f'{currentPath}/images/empty-shield.png')
-emptyWeaponImg = loadAsGrey(f'{currentPath}/images/empty-weapon.png')
-followingAttackDisImg = loadAsGrey(
+accessoriesEquippedImg = loadFromRGBToGray('src/features/radar/images/radar-tools.png')
+bleedingImg = loadFromRGBToGray(f'{currentPath}/images/bleeding.png')
+cursedImg = loadFromRGBToGray(f'{currentPath}/images/cursed.png')
+burningImg = loadFromRGBToGray(f'{currentPath}/images/burning.png')
+fightImg = loadFromRGBToGray(f'{currentPath}/images/fight.png')
+hungryImg = loadFromRGBToGray(f'{currentPath}/images/hungry.png')
+poisonedImg = loadFromRGBToGray(f'{currentPath}/images/poisoned.png')
+pzImg = loadFromRGBToGray(f'{currentPath}/images/pz.png')
+restingAreaImg = loadFromRGBToGray(f'{currentPath}/images/resting-area.png')
+stopImg = loadFromRGBToGray(f'{currentPath}/images/stop.png')
+emptyArmorImg = loadFromRGBToGray(f'{currentPath}/images/empty-armor.png')
+emptyBeltImg = loadFromRGBToGray(f'{currentPath}/images/empty-arrow.png')
+emptyBackPackImg = loadFromRGBToGray(f'{currentPath}/images/empty-backpack.png')
+emptyBootsImg = loadFromRGBToGray(f'{currentPath}/images/empty-boots.png')
+emptyHelmetImg = loadFromRGBToGray(f'{currentPath}/images/empty-helmet.png')
+emptyLegsIms = loadFromRGBToGray(f'{currentPath}/images/empty-legs.png')
+emptyNecklaceImg = loadFromRGBToGray(f'{currentPath}/images/empty-necklace.png')
+emptyRingImg = loadFromRGBToGray(f'{currentPath}/images/empty-ring.png')
+emptyShieldImg = loadFromRGBToGray(f'{currentPath}/images/empty-shield.png')
+emptyWeaponImg = loadFromRGBToGray(f'{currentPath}/images/empty-weapon.png')
+followingAttackDisImg = loadFromRGBToGray(
     f'{currentPath}/images/following-attack-disabled.png')
-balancedAttackImg = loadAsGrey(f'{currentPath}/images/balanced-attack.png')
-defensiveAttackImg = loadAsGrey(
+balancedAttackImg = loadFromRGBToGray(f'{currentPath}/images/balanced-attack.png')
+defensiveAttackImg = loadFromRGBToGray(
     f'{currentPath}/images/defensive-attack.png')
-fullAttackImg = loadAsGrey(f'{currentPath}/images/full-attack.png')
-drunkImg = loadAsGrey(f'{currentPath}/images/drunk.png')
-electrifiedImg = loadAsGrey(f'{currentPath}/images/eletrified.png')
-followingAttackImg = loadAsGrey(
+fullAttackImg = loadFromRGBToGray(f'{currentPath}/images/full-attack.png')
+drunkImg = loadFromRGBToGray(f'{currentPath}/images/drunk.png')
+electrifiedImg = loadFromRGBToGray(f'{currentPath}/images/eletrified.png')
+followingAttackImg = loadFromRGBToGray(
     f'{currentPath}/images/following-attack.png')
-hasteImg = loadAsGrey(f'{currentPath}/images/haste.png')
-holdingAttackImg = loadAsGrey(f'{currentPath}/images/holding-attack.png')
-inventoryHiddenImg = loadAsGrey(
+hasteImg = loadFromRGBToGray(f'{currentPath}/images/haste.png')
+holdingAttackImg = loadFromRGBToGray(f'{currentPath}/images/holding-attack.png')
+inventoryHiddenImg = loadFromRGBToGray(
     f'{currentPath}/images/inventory-hidden.png')
-logoutBlockImg = loadAsGrey(f'{currentPath}/images/logout-block.png')
-readyForPvpImg = loadAsGrey(f'{currentPath}/images/ready-for-pvp.png')
-slowedImg = loadAsGrey(f'{currentPath}/images/slowed.png')
+logoutBlockImg = loadFromRGBToGray(f'{currentPath}/images/logout-block.png')
+readyForPvpImg = loadFromRGBToGray(f'{currentPath}/images/ready-for-pvp.png')
+slowedImg = loadFromRGBToGray(f'{currentPath}/images/slowed.png')
 
 
 # TODO: add unit tests
@@ -115,7 +115,6 @@ def isEquipmentEquipped(screenshot, equipment):
         'boots': emptyBootsImg,
         'belt': emptyBeltImg
     }
-
     emptyImg = emptyImgList.get(equipment, None)
     pos = locate(container, emptyImg)
     cond = pos is None

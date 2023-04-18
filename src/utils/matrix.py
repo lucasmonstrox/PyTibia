@@ -2,6 +2,9 @@ from numba import njit
 import numpy as np
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def getAdjacencyMatrix(arr):
     repArrHorizontal = np.ravel(arr)
     arrDim = arr.shape[0] * arr.shape[1]
@@ -27,6 +30,9 @@ def getAdjacencyMatrix(arr):
     return connections
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 @njit(cache=True, fastmath=True)
 def hasMatrixInsideOther(matrix, other):
     for i in range(matrix.shape[0]):

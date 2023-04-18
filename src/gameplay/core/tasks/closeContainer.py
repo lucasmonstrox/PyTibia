@@ -11,6 +11,9 @@ class CloseContainerTask(BaseTask):
         self.name = 'closeContainer'
         self.value = containerBarImage
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         containerPosition = locate(context['screenshot'], self.value, confidence=0.8)
         x, y = containerPosition[0] + 165, containerPosition[1] + 5

@@ -16,6 +16,9 @@ class GroupOfRefillTasks(GroupTaskExecutor):
         self.tasks = self.generateTasks(context, waypoint)
         self.value = waypoint
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def generateTasks(self, context, _):
         # TODO: inherit from context bindings
         itemSlot = {
@@ -49,6 +52,9 @@ class GroupOfRefillTasks(GroupTaskExecutor):
             makeCloseNpcTradeBoxTask(),
         ], dtype=Task)
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def onDidComplete(self, context):
         labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.value['options']['waypointLabelToRedirect'])[0]
         if len(labelIndexes) == 0:

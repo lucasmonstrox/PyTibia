@@ -2,7 +2,7 @@ import numpy as np
 from src.features.radar.typings import CoordinateHash
 from src.features.radar.config import nonWalkablePixelsColors
 from src.utils.core import hashitHex
-from src.utils.image import loadAsGrey
+from src.utils.image import loadFromRGBToGray
 
 
 def main():
@@ -10,7 +10,7 @@ def main():
     coordinatesAsArray = np.array([], dtype=CoordinateHash)
     startingXCoordinate = 31744
     startingYCoordinate = 30976
-    pixels = loadAsGrey('radar/images/floor-7.png')
+    pixels = loadFromRGBToGray('radar/images/floor-7.png')
     for y, rowPixels in enumerate(pixels):
         for x, pixelColor in enumerate(rowPixels):
             isNonWalkablePixel = np.isin(

@@ -18,22 +18,34 @@ class SingleWalkPressTask(BaseTask):
         self.name = 'singleWalkPress'
         self.value = value
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def shouldIgnore(self, context):
         # TODO: improve clever code
         isStartingFromLastCoordinate = (context['radar']['lastCoordinateVisited'] is None or np.any(
             context['radar']['coordinate'] == context['radar']['lastCoordinateVisited']) == True) == False
         return isStartingFromLastCoordinate
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         direction = getDirectionBetweenCoordinates(context['radar']['coordinate'], self.value)
         pyautogui.press(direction)
         return context
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def did(self, context):
         nextWalkpoint = self.value
         did = np.all(context['radar']['coordinate'] == nextWalkpoint) == True
         return did
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def onDidTimeout(self, context):
         context['currentTask'].status = 'completed'
         context['currentTask'].finishedAt = time()

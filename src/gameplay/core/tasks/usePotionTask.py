@@ -12,6 +12,9 @@ class UsePotionGroupTask(GroupTaskExecutor):
         self.value = hotkey
         self.tasks = self.makeTasks(hotkey, delayAfterComplete)
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def makeTasks(self, hotkey, delayAfterComplete):
         return np.array([
             UsePotionTask(hotkey, delayAfterComplete=delayAfterComplete),
@@ -25,8 +28,9 @@ class UsePotionTask(BaseTask):
         self.name = 'usePotionTask'
         self.value = hotkey
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         pyautogui.press(self.value)
         return context
-    
-    

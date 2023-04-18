@@ -15,6 +15,9 @@ class GroupOfLootCorpseTasks(GroupTaskExecutor):
         self.tasks = self.generateTasks(context, corpose)
         self.value = corpose
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def generateTasks(self, context, corpose):
         tasks = np.array([], dtype=Task)
         tasksToAppend = np.array([], dtype=Task)

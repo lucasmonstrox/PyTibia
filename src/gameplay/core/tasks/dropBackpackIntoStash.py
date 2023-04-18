@@ -12,6 +12,9 @@ class DropBackpackIntoStashTask(BaseTask):
         self.name = 'dropBackpackIntoStash'
         self.value = backpack
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         backpackPosition = locate(context['screenshot'], images['slots'][self.value], confidence=0.8)
         stashPosition = locate(context['screenshot'], images['slots']['stash'])

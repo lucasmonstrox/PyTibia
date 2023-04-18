@@ -14,8 +14,10 @@ class LogoutTask(GroupTaskExecutor):
         self.name = 'logout'
         self.tasks = self.generateTasks(context)
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def generateTasks(self, context):
-        print('vou iniciarrrr LogoutTask')
         return np.array([
             # ('pauseBot', PauseBotTask()),
             ('pressKeys', PressLogoutKeys(['ctrl', 'q'])),

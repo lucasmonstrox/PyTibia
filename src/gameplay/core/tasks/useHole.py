@@ -11,9 +11,11 @@ class UseHoleTask(BaseTask):
         self.name = 'useHole'
         self.value = value
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         slot = getSlotFromCoordinate(
             context['radar']['coordinate'], self.value['coordinate'])
         rightClickSlot(slot, context['gameWindow']['coordinate'])
         return context
-    

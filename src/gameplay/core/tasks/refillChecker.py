@@ -12,6 +12,9 @@ class RefillCheckerTask(BaseTask):
         self.name = 'refillChecker'
         self.value = value
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def shouldIgnore(self, context):
         # TODO: get correct binds for health potion
         quantityOfHealthPotions = getSlotCount(context['screenshot'], 1)
@@ -31,6 +34,9 @@ class RefillCheckerTask(BaseTask):
         shouldIgnore = hasEnoughHealthPotions and hasEnoughManaPotions and hasEnoughCapacity
         return shouldIgnore
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def onIgnored(self, context):
         labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.value['options']['waypointLabelToRedirect'])[0]
         if len(labelIndexes) == 0:
@@ -41,6 +47,9 @@ class RefillCheckerTask(BaseTask):
         context['cavebot']['waypoints']['state'] = None
         return context
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def onDidComplete(self, context):
         nextWaypointIndex = getNextArrayIndex(
             context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])

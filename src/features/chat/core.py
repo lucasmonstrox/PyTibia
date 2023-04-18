@@ -1,26 +1,23 @@
 import pathlib
 # from src.features.gameWindow.core import getLeftSidebarArrows
 from src.utils.core import cacheObjectPosition, hashit, locate, locateMultiple, press, typeKeyboard
-from src.utils.image import convertGraysToBlack, loadAsGrey
+from src.utils.image import convertGraysToBlack, loadFromRGBToGray
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
-chatMenuImg = loadAsGrey(f'{currentPath}/images/chatMenu.png')
-chatOnImg = loadAsGrey(f'{currentPath}/images/chatOn.png')
-chatOnImgTemp = loadAsGrey(f'{currentPath}/images/chatOnTemp.png')
-chatOffImg = loadAsGrey(f'{currentPath}/images/chatOff.png')
-chatOffImg = loadAsGrey(f'{currentPath}/images/chatOff.png')
-lootOfTextImg = loadAsGrey(f'{currentPath}/images/lootOfText.png')
-nothingTextImg = loadAsGrey(f'{currentPath}/images/nothingText.png')
-
+chatMenuImg = loadFromRGBToGray(f'{currentPath}/images/chatMenu.png')
+chatOnImg = loadFromRGBToGray(f'{currentPath}/images/chatOn.png')
+chatOnImgTemp = loadFromRGBToGray(f'{currentPath}/images/chatOnTemp.png')
+chatOffImg = loadFromRGBToGray(f'{currentPath}/images/chatOff.png')
+chatOffImg = loadFromRGBToGray(f'{currentPath}/images/chatOff.png')
+lootOfTextImg = loadFromRGBToGray(f'{currentPath}/images/lootOfText.png')
+nothingTextImg = loadFromRGBToGray(f'{currentPath}/images/nothingText.png')
 chatTabs = [
-    ('loot', (loadAsGrey(f'{currentPath}/images/loot.png'), loadAsGrey(f'{currentPath}/images/selectedLootTab.png'))),
-    ('npcs', (loadAsGrey(f'{currentPath}/images/NPCs.png'), loadAsGrey(f'{currentPath}/images/selectedNPCsTab.png'))),
-    ('localChat', (loadAsGrey(f'{currentPath}/images/localChat.png'),
-     loadAsGrey(f'{currentPath}/images/selectedLocalChatTab.png')))]
-
+    ('loot', (loadFromRGBToGray(f'{currentPath}/images/loot.png'), loadFromRGBToGray(f'{currentPath}/images/selectedLootTab.png'))),
+    ('npcs', (loadFromRGBToGray(f'{currentPath}/images/NPCs.png'), loadFromRGBToGray(f'{currentPath}/images/selectedNPCsTab.png'))),
+    ('localChat', (loadFromRGBToGray(f'{currentPath}/images/localChat.png'),
+     loadFromRGBToGray(f'{currentPath}/images/selectedLocalChatTab.png')))]
 chatTabs = dict(chatTabs)
-
 oldListOfLootCheck = []
 
 

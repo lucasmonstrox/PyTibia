@@ -2,6 +2,9 @@ from src.features.actionBar.core import hasCooldownByName, slotIsAvailable
 from src.gameplay.core.tasks.usePotionTask import UsePotionGroupTask
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def didMatchHealthAndMana(statusBar, metadata):
     didMatchHitPoints = statusBar['hpPercentage'] <= metadata['hp']['percentage'] if metadata['hp']['comparator'] == 'lessThanOrEqual' else statusBar['hpPercentage'] >= metadata['hp']['percentage']
     didMatchMana = statusBar['manaPercentage'] <= metadata['mana']['percentage'] if metadata['mana']['comparator'] == 'lessThanOrEqual' else statusBar['manaPercentage'] >= metadata['mana']['percentage']
@@ -9,6 +12,9 @@ def didMatchHealthAndMana(statusBar, metadata):
     return didMatch
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def healingBySpellsObservable(context):
     if context['currentSpellHealing'] is not None:
         if context['currentSpellHealing'].status == 'completed':

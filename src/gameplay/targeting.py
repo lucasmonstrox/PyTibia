@@ -1,3 +1,6 @@
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def hasCreaturesToAttack(context):
     context['targeting']['hasIgnorableCreatures'] = False
     if len(context['gameWindow']['monsters']) == 0:

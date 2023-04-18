@@ -12,6 +12,9 @@ class CloseNpcTradeBoxTask(BaseTask):
         self.name = 'closeNpcTradeBox'
         self.value = None
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         tradeTopPos = getTradeTopPos(context['screenshot'])
         if tradeTopPos is None:

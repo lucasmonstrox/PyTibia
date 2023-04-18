@@ -14,6 +14,9 @@ class LootCorpseTask(BaseTask):
         self.name = 'lootCorpse'
         self.value = value
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         # slot = getSlotFromCoordinate(
         #     context['radar']['coordinate'], self.value['coordinate'])
@@ -31,7 +34,10 @@ class LootCorpseTask(BaseTask):
         rightClickSlot([8, 6], context['gameWindow']['coordinate'])
         pyautogui.keyUp('shift')
         return context
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def onDidComplete(self, context):
         creatureToLoot = context['corpsesToLoot'][0]
         indexesToDelete = []

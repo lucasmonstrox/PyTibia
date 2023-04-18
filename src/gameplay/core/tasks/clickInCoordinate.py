@@ -12,12 +12,18 @@ class ClickInCoordinateTask(BaseTask):
         self.name = 'clickInCoordinate'
         self.value = value
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         slot = getSlotFromCoordinate(
             context['radar']['coordinate'], self.value['coordinate'])
         clickSlot(slot, context['gameWindow']['coordinate'])
         return context
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def did(self, context):
         res = context['radar']['coordinate'] == context['cavebot']['waypoints']['state']['checkInCoordinate']
         did = np.all(res) == True

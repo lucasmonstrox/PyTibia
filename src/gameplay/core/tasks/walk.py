@@ -18,6 +18,9 @@ class WalkTask(BaseTask):
         self.name = 'walk'
         self.value = value
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def shouldIgnore(self, context):
         # TODO: improve clever code
         if context['radar']['lastCoordinateVisited'] is None:
@@ -25,6 +28,9 @@ class WalkTask(BaseTask):
         isStartingFromLastCoordinate = context['radar']['coordinate'][0] != context['radar']['lastCoordinateVisited'][0] and context['radar']['coordinate'][1] != context['radar']['lastCoordinateVisited'][1] and context['radar']['coordinate'][2] != context['radar']['lastCoordinateVisited'][2]
         return isStartingFromLastCoordinate
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         walkpoint = self.value
         direction = getDirectionBetweenCoordinates(context['radar']['coordinate'], walkpoint)
@@ -67,11 +73,17 @@ class WalkTask(BaseTask):
             context['lastPressedKey'] = None
         return context
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def did(self, context):
         nextWalkpoint = self.value
         did = np.all(context['radar']['coordinate'] == nextWalkpoint) == True
         return did
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def onDidTimeout(self, context):
         context['currentTask'].status = 'completed'
         context['currentTask'].finishedAt = time()

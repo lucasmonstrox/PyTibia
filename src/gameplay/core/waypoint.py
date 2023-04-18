@@ -4,6 +4,9 @@ from src.utils.coordinate import getAvailableAroundCoordinates, getClosestCoordi
 from src.utils.core import getPixelFromCoordinate
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def generateFloorWalkpoints(coordinate, goalCoordinate, nonWalkableCoordinates=None):
     pixelCoordinate = getPixelFromCoordinate(coordinate)
     xFromTheStartOfRadar = pixelCoordinate[0] - 53
@@ -35,6 +38,9 @@ def generateFloorWalkpoints(coordinate, goalCoordinate, nonWalkableCoordinates=N
     return walkpoints
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveFloorCoordinate(_, nextCoordinate):
     return {
         'goalCoordinate': nextCoordinate,
@@ -42,6 +48,9 @@ def resolveFloorCoordinate(_, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveMoveDownEastCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     checkInCoordinate = [x + 2, y, floorLevel + 1]
@@ -51,6 +60,9 @@ def resolveMoveDownEastCoordinate(_, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveMoveDownNorthCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     checkInCoordinate = [x, y - 2, floorLevel + 1]
@@ -60,6 +72,9 @@ def resolveMoveDownNorthCoordinate(_, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveMoveDownSouthCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     checkInCoordinate = [x, y + 2, floorLevel + 1]
@@ -69,6 +84,9 @@ def resolveMoveDownSouthCoordinate(_, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveMoveDownWestCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     checkInCoordinate = [x - 2, y, floorLevel + 1]
@@ -78,6 +96,9 @@ def resolveMoveDownWestCoordinate(_, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveMoveUpNorthCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     goalCoordinate = [x, y - 2, floorLevel - 1]
@@ -87,6 +108,9 @@ def resolveMoveUpNorthCoordinate(_, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveMoveUpWestCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     goalCoordinate = [x - 2, y, floorLevel - 1]
@@ -96,6 +120,9 @@ def resolveMoveUpWestCoordinate(_, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveMoveUpEastCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     goalCoordinate = [x + 2, y, floorLevel - 1]
@@ -105,6 +132,9 @@ def resolveMoveUpEastCoordinate(_, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveMoveUpSouthCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     goalCoordinate = [x, y + 2, floorLevel - 1]
@@ -114,6 +144,9 @@ def resolveMoveUpSouthCoordinate(_, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveUseShovelWaypointCoordinate(coordinate, nextCoordinate):
     floorLevel = nextCoordinate[2]
     # TODO: avoid copying whole level
@@ -130,6 +163,9 @@ def resolveUseShovelWaypointCoordinate(coordinate, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveUseRopeWaypointCoordinate(_, nextCoordinate):
     checkInCoordinate = [nextCoordinate[0],
                          nextCoordinate[1] + 1, nextCoordinate[2] - 1]
@@ -139,6 +175,9 @@ def resolveUseRopeWaypointCoordinate(_, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveUseHoleCoordinate(_, nextCoordinate):
     (x, y, floorLevel) = nextCoordinate
     goalCoordinate = [x, y, floorLevel + 1]
@@ -148,6 +187,9 @@ def resolveUseHoleCoordinate(_, nextCoordinate):
     }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveGoalCoordinate(coordinate, waypoint):
     goalCoordinate = None
     if waypoint['type'] == 'useRope':

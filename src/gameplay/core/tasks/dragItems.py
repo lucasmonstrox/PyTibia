@@ -14,6 +14,9 @@ class DragItemsTask(BaseTask):
         self.terminable = False
         self.value = (containerBarImage, targetContainerImage)
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         containerBarPosition = locate(context['screenshot'], self.value[0], confidence=0.8)
         firstSlotImage = context['screenshot'][containerBarPosition[1] + 18:containerBarPosition[1] + 18 + 32, containerBarPosition[0] + 10:containerBarPosition[0] + 10 + 32]

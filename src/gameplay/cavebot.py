@@ -3,6 +3,9 @@ from .core.tasks.groupOfAttackClosestCreature import GroupOfAttackClosestCreatur
 from .core.tasks.groupOfFollowTargetCreature import GroupOfFollowTargetCreatureTasks
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def resolveCavebotTasks(context):
     if context['cavebot']['isAttackingSomeCreature']:
         hasNoTargetCreature = context['cavebot']['targetCreature'] == None
@@ -25,6 +28,9 @@ def resolveCavebotTasks(context):
     return GroupOfAttackClosestCreatureTasks(context)
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def shouldAskForCavebotTasks(context):
     if context['way'] != 'cavebot':
         return False

@@ -9,6 +9,9 @@ class CloseProcessTask(BaseTask):
         self.name = 'loseProcess'
         self.value = None
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         exit()
         return context

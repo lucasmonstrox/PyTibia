@@ -13,6 +13,9 @@ class ExpandBackpackTask(BaseTask):
         self.name = 'expandBackpack'
         self.value = backpackBarImage
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         backpackBarPosition = locate(context['screenshot'], self.value, confidence=0.8)
         y0 = backpackBarPosition[1]
@@ -27,7 +30,10 @@ class ExpandBackpackTask(BaseTask):
             return context
         mouseDrag(backpackBottomBarPositionX, backpackBottomBarPositionY, backpackBottomBarPositionX, backpackBottomBarPositionY + scrollY)
         return context
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     # TODO: check if backpack is expanded
     def did(self, context):
         return True

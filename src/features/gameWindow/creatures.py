@@ -8,7 +8,7 @@ from scipy.sparse.csgraph import dijkstra
 from src.features.radar.config import walkableFloorsSqms
 from src.features.radar.core import isCoordinateWalkable
 from src.utils.core import getPixelFromCoordinate, hashitHex
-from src.utils.image import loadAsGrey
+from src.utils.image import loadFromRGBToGray
 from src.utils.matrix import getAdjacencyMatrix, hasMatrixInsideOther
 from src.wiki.creatures import creatures as wikiCreatures
 from .typings import Creature
@@ -29,7 +29,7 @@ resolutions = {
 }
 creaturesNamesHashes = {}
 for creature in wikiCreatures:
-    creaturesNamesHashes[creature] = loadAsGrey(
+    creaturesNamesHashes[creature] = loadFromRGBToGray(
         f'{currentPath}/images/monsters/{creature}.png')
 
 

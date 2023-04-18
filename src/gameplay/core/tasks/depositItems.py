@@ -22,6 +22,9 @@ class DepositItemsTask(GroupTaskExecutor):
         self.tasks = self.generateTasks(context, waypoint)
         self.value = waypoint
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def generateTasks(self, context, waypoint):
         return np.array([
             makeGoToFreeDepotTask(context, waypoint),

@@ -11,11 +11,17 @@ class ScrollToItemTask(BaseTask):
         self.value = (containerImage, itemImage)
         self.itemPosition = None
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def shouldIgnore(self, context):
         itemPosition = self.getItemPosition(context['screenshot'])
         isItemVisible = itemPosition is not None
         return isItemVisible
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         containerPosition = locate(context['screenshot'], self.value[0], confidence=0.8)
         x = containerPosition[0] + 10
@@ -23,7 +29,10 @@ class ScrollToItemTask(BaseTask):
         pyautogui.moveTo(x, y)
         pyautogui.scroll(-10)
         return context
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def ping(self, context):
         itemPosition = self.getItemPosition(context['screenshot'])
         isItemVisible = itemPosition is not None
@@ -31,5 +40,8 @@ class ScrollToItemTask(BaseTask):
             self.terminable = True
         return context
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def getItemPosition(self, screenshot):
         return locate(screenshot, self.value[1], confidence=0.8)

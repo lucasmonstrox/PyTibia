@@ -11,6 +11,9 @@ class SayTask(BaseTask):
         self.name = 'say'
         self.value = phrase
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         sendMessage(context['screenshot'], self.value)
         return context

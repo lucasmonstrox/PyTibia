@@ -1,4 +1,5 @@
 # TODO: add unit tests
+# TODO: add perf
 # TODO: add typings
 def getNextArrayIndex(items, currentIndex):
     lengthOfItems = len(items)

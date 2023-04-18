@@ -1,5 +1,5 @@
 import numpy as np
-from src.utils.image import loadAsGrey, save
+from src.utils.image import loadFromRGBToGray, save
 from src.wiki import creatures
 
 
@@ -11,7 +11,7 @@ def main():
             letter = letter if letter != '.' else 'dot'
             letterBasePath = 'src/features/gameWindow/images/letters/uppercase' if letter.isupper() else 'src/features/gameWindow/images/letters/lowercase'
             letterFullPath = '{0}/{1}.png'.format(letterBasePath, letter)
-            letterAsArray = loadAsGrey(letterFullPath).copy()
+            letterAsArray = loadFromRGBToGray(letterFullPath).copy()
             letterAsArray[np.nonzero(letterAsArray == 0)] = 1
             letterAsArray[np.nonzero(letterAsArray == 255)] = 0
             if index > 0:

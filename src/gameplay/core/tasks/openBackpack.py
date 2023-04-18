@@ -13,10 +13,16 @@ class OpenBackpackTask(BaseTask):
         self.name = 'openBackpack'
         self.value = backpack
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def shouldIgnore(self, context):
         shouldIgnore = isBackpackOpen(context['screenshot'], self.value)
         return shouldIgnore
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         backpackImg = images['backpacks'][self.value]
         backpackPos = locate(context['screenshot'], backpackImg, confidence=0.8)
@@ -27,7 +33,10 @@ class OpenBackpackTask(BaseTask):
         backpackY = y + 5
         pyautogui.rightClick(backpackX, backpackY)
         return context
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def did(self, context):
         did = isBackpackOpen(context['screenshot'], self.value)
         return did

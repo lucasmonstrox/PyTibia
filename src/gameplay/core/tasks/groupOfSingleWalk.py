@@ -13,6 +13,9 @@ class GroupOfSingleWalkTasks(GroupTaskExecutor):
         self.tasks = self.generateTasks(context, checkInCoordinate)
         self.value = checkInCoordinate
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def generateTasks(self, context, checkInCoordinate):
         return np.array([
             makeWalkTask(context, checkInCoordinate),

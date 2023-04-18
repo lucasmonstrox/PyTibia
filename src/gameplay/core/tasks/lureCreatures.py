@@ -19,7 +19,10 @@ class LureCreaturesTask(GroupTaskExecutor):
         self.state = 'init'
         self.value = value
         self.tasks = np.array([], dtype=Task)
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def getCreaturesByInverseGameWindowDirection(self, direction, creatures):
         inveserCreatures = []
         if direction == 'up':
@@ -40,6 +43,9 @@ class LureCreaturesTask(GroupTaskExecutor):
                     inveserCreatures.append(creature)
         return np.array(inveserCreatures, dtype=Creature)
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def ping(self, context):
         # (X) gerar caminho para o lure point
         # recalcular apenas se aparecer novos monstros na tela
@@ -146,6 +152,9 @@ class LureCreaturesTask(GroupTaskExecutor):
         # FIM:
         # como terminar o waypoint...
         return context
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def did(self, _):
         return False

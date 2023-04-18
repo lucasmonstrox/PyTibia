@@ -16,6 +16,9 @@ class DropFlasksTask(GroupTaskExecutor):
         self.name = 'dropFlasks'
         self.tasks = self.generateTasks(context)
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def generateTasks(self, context):
         return np.array([
             makeOpenBackpackTask(context['backpacks']['main']),

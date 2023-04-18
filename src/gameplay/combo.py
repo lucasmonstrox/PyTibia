@@ -6,6 +6,9 @@ from src.features.gameWindow.creatures import getNearestCreaturesCount
 from src.utils.array import getNextArrayIndex
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def comboSpellsObservable(context):
     if context['statusBar']['mana'] is None:
         return

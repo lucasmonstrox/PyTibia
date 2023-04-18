@@ -11,11 +11,17 @@ class OpenDepotTask(BaseTask):
         self.delayAfterComplete = 1
         self.name = 'openDepot'
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         depotPosition = locate(context['screenshot'], images['slots']['depot'])
         pyautogui.rightClick(depotPosition[0] + 5, depotPosition[1] + 5)
         return context
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     # TODO: check if depot is opened
     def did(self, context):
         return True

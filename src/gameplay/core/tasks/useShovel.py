@@ -12,12 +12,18 @@ class UseShovelTask(BaseTask):
         self.name = 'useShovel'
         self.value = value
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def shouldIgnore(self, context):
         holeOpenImg = images[context['resolution']]['holeOpen']
         ignore = isHoleOpen(
             context['gameWindow']['img'], holeOpenImg, context['radar']['coordinate'], self.value['coordinate'])
         return ignore
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         slot = getSlotFromCoordinate(
             context['radar']['coordinate'], self.value['coordinate'])
@@ -25,6 +31,9 @@ class UseShovelTask(BaseTask):
         clickSlot(slot, context['gameWindow']['coordinate'])
         return context
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def did(self, context):
         holeOpenImg = images[context['resolution']]['holeOpen']
         did = isHoleOpen(

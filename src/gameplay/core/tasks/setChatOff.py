@@ -1,4 +1,4 @@
-from chat.core import enableChatOff
+from src.features.chat.core import enableChatOff
 from .baseTask import BaseTask
 
 
@@ -10,7 +10,9 @@ class SetChatOffTask(BaseTask):
         self.delayAfterComplete = 1
         self.name = 'setChatOff'
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         enableChatOff(context['screenshot'])
         return context
-    

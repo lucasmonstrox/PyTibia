@@ -8,6 +8,9 @@ class SetNextWaypointTask(BaseTask):
         super().__init__()
         self.name = 'setNextWaypoint'
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         nextWaypointIndex = getNextArrayIndex(
             context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])

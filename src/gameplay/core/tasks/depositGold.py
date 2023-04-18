@@ -14,6 +14,9 @@ class DepositGoldTask(GroupTaskExecutor):
         self.name = 'depositGold'
         self.tasks = self.makeTasks()
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def makeTasks(self):
         return np.array([
             makeSayTask('hi'),

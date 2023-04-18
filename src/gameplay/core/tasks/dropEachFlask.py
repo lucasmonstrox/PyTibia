@@ -16,6 +16,9 @@ class DropEachFlaskTask(BaseTask):
         self.value = backpack
         self.slotIndex = 0
 
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def do(self, context):
         (item, position) = self.getSlot(context, self.slotIndex)
         if item is None:
@@ -28,7 +31,10 @@ class DropEachFlaskTask(BaseTask):
         mouseDrag(position[0], position[1], slotPosX, slotPosY)
         time.sleep(1)
         return context
-    
+
+    # TODO: add unit tests
+    # TODO: add perf
+    # TODO: add typings
     def getSlot(self, context, slotIndex):
         backpackBarPosition = locate(context['screenshot'], images['containersBars'][self.value], confidence=0.8)
         if backpackBarPosition is None:

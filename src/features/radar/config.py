@@ -1,7 +1,7 @@
 import numpy as np
 import pathlib
 from src.utils.core import hashit
-from src.utils.image import loadAsGrey, loadFromRGBToGray
+from src.utils.image import loadFromRGBToGray
 
 currentPath = pathlib.Path(__file__).parent.resolve()
 coordinates = {}
@@ -85,7 +85,7 @@ floorsPathsImgs = [
 ]
 floorsPathsSqms = np.load(f'{currentPath}/npys/floorsPathsSqms.npy')
 images = {
-    'tools': loadAsGrey(f'{currentPath}/images/radar-tools.png')
+    'tools': loadFromRGBToGray(f'{currentPath}/images/radar-tools.png')
 }
 floorsLevelsImgs = np.load(f'{currentPath}/npys/floorsLevelsImgs.npy')
 floorsLevelsImgsHashes = {}
