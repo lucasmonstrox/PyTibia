@@ -6,7 +6,6 @@ authors = ["lucasmonstro <joao.galiano.silva@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-ahocorapy = "^1.6.1"
 dxcam = {git = "https://github.com/ra1nty/DXcam"}
 mypy = "^1.1.1"
 nptyping = "^2.5.0"

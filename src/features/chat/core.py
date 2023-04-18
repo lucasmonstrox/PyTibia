@@ -1,9 +1,7 @@
-from ahocorapy.keywordtree import KeywordTree
 import pathlib
-# from src.features.hud.core import getLeftSidebarArrows
-from src.utils.core import cacheObjectPos, hashit, locate, locateMultiple, press, typeKeyboard
-from src.utils.image import convertGraysToBlack, crop, loadAsGrey
-from src.utils.mouse import leftClick
+# from src.features.gameWindow.core import getLeftSidebarArrows
+from src.utils.core import cacheObjectPosition, hashit, locate, locateMultiple, press, typeKeyboard
+from src.utils.image import convertGraysToBlack, loadAsGrey
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
@@ -26,15 +24,9 @@ chatTabs = dict(chatTabs)
 oldListOfLootCheck = []
 
 
-def readMessagesFromActiveChatTab(screenshot):
-    (x, y, width, height) = getChatMessagesContainerPos(screenshot)
-    chatMessagesContainer = crop(screenshot, x, y, width, height)
-    chatMessagesContainer = convertGraysToBlack(chatMessagesContainer)
-    # messages = toString(chatMessagesContainer, '6').splitlines()
-    # messages = list(filter(None, messages))
-    # return messages
-
-
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def hasNewLoot(screenshot):
     global oldListOfLootCheck
     lootLines = getLootLines(screenshot)
@@ -58,6 +50,9 @@ def hasNewLoot(screenshot):
     return False
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def getLootLines(screenshot):
     (x, y, w, h) = getChatMessagesContainerPos(screenshot)
     messages = screenshot[y: y + h, x: x + w]
@@ -73,30 +68,25 @@ def getLootLines(screenshot):
     return linesWithLoot
 
 
-def searchInActiveChatTab(activeChatText, patterns):
-    kwtree = KeywordTree(case_insensitive=True)
-    for i in range(len(patterns)):
-        kwtree.add(patterns[i])
-    kwtree.finalize()
-
-    processedChatText = []
-    for i in range(len(activeChatText)):
-        results = kwtree.search_all(activeChatText[i])
-        if len(patterns) == len(list(results)):
-            processedChatText.append(activeChatText[i])
-    return processedChatText
-
-
-@cacheObjectPos
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
+@cacheObjectPosition
 def getChatMenuPos(screenshot):
     return locate(screenshot, chatMenuImg)
 
 
-@cacheObjectPos
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
+@cacheObjectPosition
 def getChatOffPos(screenshot):
     return locate(screenshot, chatOffImg, confidence=0.985)
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def getChatStatus(screenshot):
     chatOffPos = getChatOffPos(screenshot)
     if chatOffPos:
@@ -105,6 +95,9 @@ def getChatStatus(screenshot):
     return chatOnPos, True
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def enableChatOn(screenshot):
     (_, chatIsOn) = getChatStatus(screenshot)
     chatIsNotOn = chatIsOn is False
@@ -112,13 +105,19 @@ def enableChatOn(screenshot):
         press('enter')
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def enableChatOff(screenshot):
     (_, chatIsOn) = getChatStatus(screenshot)
     if chatIsOn:
         press('enter')
 
 
-@cacheObjectPos
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
+@cacheObjectPosition
 def getChatsTabsContainer(screenshot):
     leftSidebarArrows = None
     # leftSidebarArrows = getLeftSidebarArrows(screenshot)
@@ -126,7 +125,10 @@ def getChatsTabsContainer(screenshot):
     return leftSidebarArrows[0] + 10, chatMenuPos[1], chatMenuPos[0] - (leftSidebarArrows[0] + 10), 20
 
 
-@cacheObjectPos
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
+@cacheObjectPosition
 def getChatMessagesContainerPos(screenshot):
     leftSidebarArrows = None
     # leftSidebarArrows = getLeftSidebarArrows(screenshot)
@@ -135,41 +137,9 @@ def getChatMessagesContainerPos(screenshot):
     return leftSidebarArrows[0], chatMenu[1] + 18, chatStatus[0][0] + 40, (chatStatus[0][1] - 6) - (chatMenu[1] + 13)
 
 
-@cacheObjectPos
-def getLootTabPos(screenshot):
-    return locate(screenshot, chatTabs['loot'][0])
-
-
-@cacheObjectPos
-def getNPCsTabPos(screenshot):
-    return locate(screenshot, chatTabs['npcs'][0])
-
-
-@cacheObjectPos
-def getLocalChatTabPos(screenshot):
-    return locate(screenshot, chatTabs['localChat'][0])
-
-
-def isTabSelected(screenshot, tabName):
-    isSelected = locate(screenshot, chatTabs[tabName][1]) is not None
-    return isSelected
-
-
-def selectLootTab(screenshot):
-    (x, y, _, _) = getLootTabPos(screenshot)
-    leftClick(x, y)
-
-
-def selectNPCsTab(screenshot):
-    (x, y, _, _) = getNPCsTabPos(screenshot)
-    leftClick(x, y)
-
-
-def selectLocalChatTab(screenshot):
-    (x, y, _, _) = getLocalChatTabPos(screenshot)
-    leftClick(x, y)
-
-
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def sendMessage(screenshot, phrase):
     enableChatOn(screenshot)
     typeKeyboard(phrase)

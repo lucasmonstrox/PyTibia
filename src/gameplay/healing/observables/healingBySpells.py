@@ -1,5 +1,5 @@
 from src.features.actionBar.core import hasCooldownByName, slotIsAvailable
-from src.gameplay.tasks.usePotionTask import UsePotionGroupTask
+from src.gameplay.core.tasks.usePotionTask import UsePotionGroupTask
 
 
 def didMatchHealthAndMana(statusBar, metadata):
@@ -44,4 +44,4 @@ def healingBySpellsObservable(context):
     #         keysToPress.append(healingItem['hotkey'])
     # if len(keysToPress) > 0:
     #     pyautogui.press(keysToPress)
-    #     sleep(0.2)
+    #     time.sleep(0.2)

@@ -1,12 +1,11 @@
-import pathlib
-from src.utils.core import cacheObjectPos, locate
-from src.utils.image import loadFromRGBToGray
+from typing import Union
+from src.shared.typings import BBox, GrayImage
+from src.utils.core import cacheObjectPosition, locate
+from .config import images
 
 
-currentPath = pathlib.Path(__file__).parent.resolve()
-xpBoostImage = loadFromRGBToGray(f'{currentPath}/images/xpBoostButton.png')
-
-
-@cacheObjectPos
-def getXpBoostPosition(screenshot):
-    return locate(screenshot, xpBoostImage)
+# TODO: add unit tests
+# PERF: [0.05445730000000015, 1.9100000000271677e-05]
+@cacheObjectPosition
+def getXpBoostButtonPosition(screenshot: GrayImage) -> Union[BBox, None]:
+    return locate(screenshot, images['buttons']['xpBoost'])

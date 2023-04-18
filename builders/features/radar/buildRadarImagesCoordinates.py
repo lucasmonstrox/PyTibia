@@ -1,5 +1,5 @@
 import numpy as np
-from src.features.radar.types import coordinateHashType
+from src.features.radar.typings import CoordinateHash
 from src.features.radar.config import nonWalkablePixelsColors
 from src.utils.core import hashitHex
 from src.utils.image import loadAsGrey
@@ -7,7 +7,7 @@ from src.utils.image import loadAsGrey
 
 def main():
     floorLevel = 7
-    coordinatesAsArray = np.array([], dtype=coordinateHashType)
+    coordinatesAsArray = np.array([], dtype=CoordinateHash)
     startingXCoordinate = 31744
     startingYCoordinate = 30976
     pixels = loadAsGrey('radar/images/floor-7.png')
@@ -55,7 +55,7 @@ def main():
             coordinateScreenshot[57, 54] = crossPixelColor
             coordinateHash = hashitHex(coordinateScreenshot)
             coordinatesToAppend = np.array(
-                [(coordinateHash, coordinate)], dtype=coordinateHashType)
+                [(coordinateHash, coordinate)], dtype=CoordinateHash)
             coordinatesAsArray = np.append(
                 coordinatesAsArray, coordinatesToAppend)
     np.save('radar/npys/radarImagesCoordinates.npy', coordinatesAsArray)

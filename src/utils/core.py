@@ -3,14 +3,14 @@ import dxcam
 import numpy as np
 import pyautogui
 import random
-from time import sleep
+import time
 import xxhash
 
 
 camera = dxcam.create(output_color='GRAY')
 
 
-def cacheObjectPos(func):
+def cacheObjectPosition(func):
     lastX = None
     lastY = None
     lastW = None
@@ -97,23 +97,18 @@ def getScreenshot():
     return screenshotReshaped
 
 
-def stopScreenshotCamera(camera):
-    camera.stop()
-    camera.release()
-
-
 def press(key, delay=150):
     pyautogui.keyDown(key)
-    sleep(delay / 1000)
+    time.sleep(delay / 1000)
     pyautogui.keyUp(key)
 
 
 def typeKeyboard(phrase):
     words = list(phrase)
     for word in words:
-        sleep(random.randrange(70, 190) / 1000)
+        time.sleep(random.randrange(70, 190) / 1000)
         press(word)
-    sleep(random.randrange(70, 190) / 1000)
+    time.sleep(random.randrange(70, 190) / 1000)
     press('enter')
 
 

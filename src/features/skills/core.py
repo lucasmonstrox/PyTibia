@@ -3,13 +3,14 @@ from typing import Union
 from src.shared.typings import BBox, GrayImage
 from src.utils.core import hashit
 from src.utils.image import convertGraysToBlack
-from . import config, locators
+from .config import minutesOrHoursHashes, numbersHashes
+from .locators import getXpBoostButtonPosition
 
 
 # TODO: add unit tests
 # PERF: [0.04747469999999998, 2.9300000000009874e-05]
 def getCapacity(screenshot: GrayImage) -> Union[int, None]:
-    xpBoostPosition = locators.getXpBoostPosition(screenshot)
+    xpBoostPosition = getXpBoostButtonPosition(screenshot)
     if xpBoostPosition is None:
         return None
     position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 61), xpBoostPosition[2], xpBoostPosition[3]
@@ -19,7 +20,7 @@ def getCapacity(screenshot: GrayImage) -> Union[int, None]:
 # TODO: add unit tests
 # PERF: [0.04967209999999955, 3.1599999999798456e-05]
 def getHp(screenshot: GrayImage) -> Union[int, None]:
-    xpBoostPosition = locators.getXpBoostPosition(screenshot)
+    xpBoostPosition = getXpBoostButtonPosition(screenshot)
     if xpBoostPosition is None:
         return None
     position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 19), xpBoostPosition[2], xpBoostPosition[3]
@@ -29,7 +30,7 @@ def getHp(screenshot: GrayImage) -> Union[int, None]:
 # TODO: add unit tests
 # PERF: [0.05254219999999998, 2.970000000068751e-05]
 def getMana(screenshot: GrayImage) -> Union[int, None]:
-    xpBoostPosition = locators.getXpBoostPosition(screenshot)
+    xpBoostPosition = getXpBoostButtonPosition(screenshot)
     if xpBoostPosition is None:
         return None
     position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 33), xpBoostPosition[2], xpBoostPosition[3]
@@ -39,7 +40,7 @@ def getMana(screenshot: GrayImage) -> Union[int, None]:
 # TODO: add unit tests
 # PERF: [0.04700700000000024, 3.0399999999985994e-05]
 def getSpeed(screenshot: GrayImage) -> Union[int, None]:
-    xpBoostPosition = locators.getXpBoostPosition(screenshot)
+    xpBoostPosition = getXpBoostButtonPosition(screenshot)
     if xpBoostPosition is None:
         return None
     position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 75), xpBoostPosition[2], xpBoostPosition[3]
@@ -49,7 +50,7 @@ def getSpeed(screenshot: GrayImage) -> Union[int, None]:
 # TODO: add unit tests
 # PERF: [0.047493200000000346, 2.0000000000131024e-05]
 def getStamina(screenshot: GrayImage) -> Union[int, None]:
-    xpBoostPosition = locators.getXpBoostPosition(screenshot)
+    xpBoostPosition = getXpBoostButtonPosition(screenshot)
     if xpBoostPosition is None:
         return None
     position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 103), xpBoostPosition[2], xpBoostPosition[3]
@@ -64,14 +65,14 @@ def getMinutesCount(screenshot: GrayImage, position: BBox) -> int:
     minutesCountsImage = convertGraysToBlack(minutesCountsImage)
     minutesCountsHashKey = hashit(minutesCountsImage)
     minutesCount = 0
-    if minutesCountsHashKey in config.minutesOrHoursHashes:
-        minutesCount = config.minutesOrHoursHashes[minutesCountsHashKey]
+    if minutesCountsHashKey in minutesOrHoursHashes:
+        minutesCount = minutesOrHoursHashes[minutesCountsHashKey]
     hoursCountsImage = screenshot[y:y + 8, x + 110:x + 124]
     hoursCountsImage = convertGraysToBlack(hoursCountsImage)
     hoursCountsHashKey = hashit(hoursCountsImage)
     hoursCount = 0
-    if hoursCountsHashKey in config.minutesOrHoursHashes:
-        hoursCount = config.minutesOrHoursHashes[hoursCountsHashKey]
+    if hoursCountsHashKey in minutesOrHoursHashes:
+        hoursCount = minutesOrHoursHashes[hoursCountsHashKey]
     return (hoursCount * 60) + minutesCount
 
 
@@ -87,8 +88,8 @@ def getValuesCount(screenshot: GrayImage, position: BBox) -> int:
     capacityHundredsCountsImage = np.array(capacityHundredsCountsImage, dtype=np.uint8)
     capacityHundredsCountsHashKey = hashit(capacityHundredsCountsImage)
     capacityHundredsCount = 0
-    if capacityHundredsCountsHashKey in config.numbersHashes:
-        capacityHundredsCount = config.numbersHashes[capacityHundredsCountsHashKey]
+    if capacityHundredsCountsHashKey in numbersHashes:
+        capacityHundredsCount = numbersHashes[capacityHundredsCountsHashKey]
     capacityThousandsCountsImage = screenshot[y:y + 8, x + 116 - 22:x + 116]
     capacityThousandsCountsImage = convertGraysToBlack(
         capacityThousandsCountsImage)
@@ -99,6 +100,6 @@ def getValuesCount(screenshot: GrayImage, position: BBox) -> int:
     capacityThousandsCountsHashKey = hashit(
         capacityThousandsCountsImage)
     capacityThousandsCount = 0
-    if capacityThousandsCountsHashKey in config.numbersHashes:
-        capacityThousandsCount = config.numbersHashes[capacityThousandsCountsHashKey] * 1000
+    if capacityThousandsCountsHashKey in numbersHashes:
+        capacityThousandsCount = numbersHashes[capacityThousandsCountsHashKey] * 1000
     return capacityThousandsCount + capacityHundredsCount

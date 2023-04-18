@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.spatial import distance
-from . import core
+from .core import getPixelFromCoordinate
 
 
 def getAroundPixelsCoordinates(pixelCoordinate):
@@ -26,7 +26,7 @@ def getAvailableAroundPixelsCoordinates(aroundPixelsCoordinates, walkableFloorSq
 
 def getAvailableAroundCoordinates(coordinate, walkableFloorSqms):
     floor = coordinate[2]
-    pixelCoordinate = core.getPixelFromCoordinate(coordinate)
+    pixelCoordinate = getPixelFromCoordinate(coordinate)
     aroundPixelsCoordinates = getAroundPixelsCoordinates(pixelCoordinate)
     availableAroundPixelsCoordinates = getAvailableAroundPixelsCoordinates(
         aroundPixelsCoordinates, walkableFloorSqms)

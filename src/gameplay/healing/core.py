@@ -1,3 +1,5 @@
+# TODO: add perf
+# TODO: add unit tests
 def healingDidMatch(healingItem, hp, mana):
     hpDidMatch = True
     manaDidMatch = True

@@ -1,6 +1,6 @@
-from src.features.hud.creatures import getClosestCreature, hasTargetToCreature
-from .tasks.groupOfAttackClosestCreature import GroupOfAttackClosestCreatureTasks
-from .tasks.groupOfFollowTargetCreature import GroupOfFollowTargetCreatureTasks
+from src.features.gameWindow.creatures import getClosestCreature, hasTargetToCreature
+from .core.tasks.groupOfAttackClosestCreature import GroupOfAttackClosestCreatureTasks
+from .core.tasks.groupOfFollowTargetCreature import GroupOfFollowTargetCreatureTasks
 
 
 def resolveCavebotTasks(context):
@@ -9,16 +9,16 @@ def resolveCavebotTasks(context):
         if hasNoTargetCreature:
             return None
         hasNoTargetToTargetCreature = hasTargetToCreature(
-            context['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False
+            context['gameWindow']['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False
         if hasNoTargetToTargetCreature:
-            context['cavebot']['closestCreature'] = getClosestCreature(context['monsters'], context['radar']['coordinate'])
+            context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
             hasNoClosestCreature = context['cavebot']['closestCreature'] == None
             if hasNoClosestCreature:
                 return None
             return GroupOfAttackClosestCreatureTasks(context)
         # TODO: recalculate route if something cross walkpoints
         return GroupOfFollowTargetCreatureTasks(context)
-    context['cavebot']['closestCreature'] = getClosestCreature(context['monsters'], context['radar']['coordinate'])
+    context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
     hasNoClosestCreature = context['cavebot']['closestCreature'] == None
     if hasNoClosestCreature:
         return None

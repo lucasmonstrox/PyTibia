@@ -1,7 +1,10 @@
 from src.features.radar import config
-from src.utils.core import cacheObjectPos, locate
+from src.utils.core import cacheObjectPosition, locate
 
 
-@cacheObjectPos
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
+@cacheObjectPosition
 def getRadarToolsPos(screenshot):
     return locate(screenshot, config.images['tools'])

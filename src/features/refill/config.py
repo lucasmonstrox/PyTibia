@@ -3,11 +3,13 @@ from src.utils.image import loadFromRGBToGray
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
+# TODO: improve this
 npcTradeBarImage = loadFromRGBToGray(
     f'{currentPath}/images/npcTradeBar.png')
+# TODO: improve this
 npcTradeOkImage = loadFromRGBToGray(
     f'{currentPath}/images/npcTradeOk.png')
-potionsImages = {
+images = {
     'great health potion': loadFromRGBToGray(f'{currentPath}/images/potions/greatHealthPotion.png'),
     'great mana potion': loadFromRGBToGray(f'{currentPath}/images/potions/greatManaPotion.png'),
     'great spirit potion': loadFromRGBToGray(f'{currentPath}/images/potions/greatSpiritPotion.png'),

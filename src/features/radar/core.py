@@ -1,40 +1,45 @@
 import numpy as np
 import pyautogui
 from scipy.spatial import distance
-from time import sleep
+import time
 from src.utils.core import getCoordinateFromPixel, getPixelFromCoordinate, hashit, hashitHex, locate
-from . import config, extractors, locators
+from .config import coordinates, dimensions, floorsImgs, floorsLevelsImgsHashes, floorsPathsSqms, nonWalkablePixelsColors, walkableFloorsSqms
+from .extractors import getRadarImage
+from .locators import getRadarToolsPos
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 # TODO: get by cached images coordinates hashes
 def getCoordinate(screenshot, previousCoordinate=None):
     floorLevel = getFloorLevel(screenshot)
     cannotGetFloorLevel = floorLevel is None
     if cannotGetFloorLevel:
         return None
-    radarToolsPos = locators.getRadarToolsPos(screenshot)
+    radarToolsPos = getRadarToolsPos(screenshot)
     cannotGetRadarToolsPos = radarToolsPos is None
     if cannotGetRadarToolsPos:
         return None
-    radarImg = extractors.getRadarImg(screenshot, radarToolsPos)
+    radarImg = getRadarImage(screenshot, radarToolsPos)
     radarHashedImg = hashitHex(radarImg)
-    shouldGetCoordinateByCachedRadarHashedImg = radarHashedImg in config.coordinates
+    shouldGetCoordinateByCachedRadarHashedImg = radarHashedImg in coordinates
     if shouldGetCoordinateByCachedRadarHashedImg:
-        return config.coordinates[radarHashedImg]
+        return coordinates[radarHashedImg]
     shouldGetCoordinateByPreviousCoordinateArea = previousCoordinate is not None
     if shouldGetCoordinateByPreviousCoordinateArea:
         (previousCoordinateXPixel, previousCoordinateYPixel) = getPixelFromCoordinate(
             previousCoordinate)
         paddingSize = 20
         yStart = previousCoordinateYPixel - \
-            (config.dimensions['halfHeight'] + paddingSize)
+            (dimensions['halfHeight'] + paddingSize)
         yEnd = previousCoordinateYPixel + \
-            (config.dimensions['halfHeight'] + 1 + paddingSize)
+            (dimensions['halfHeight'] + 1 + paddingSize)
         xStart = previousCoordinateXPixel - \
-            (config.dimensions['halfWidth'] + paddingSize)
+            (dimensions['halfWidth'] + paddingSize)
         xEnd = previousCoordinateXPixel + \
-            (config.dimensions['halfWidth'] + paddingSize)
-        areaImgToCompare = config.floorsImgs[floorLevel][yStart:yEnd, xStart:xEnd]
+            (dimensions['halfWidth'] + paddingSize)
+        areaImgToCompare = floorsImgs[floorLevel][yStart:yEnd, xStart:xEnd]
         areaFoundImg = locate(
             areaImgToCompare, radarImg, confidence=0.9)
         if areaFoundImg:
@@ -45,20 +50,22 @@ def getCoordinate(screenshot, previousCoordinate=None):
             (currentCoordinateX, currentCoordinateY) = getCoordinateFromPixel(
                 (currentCoordinateXPixel, currentCoordinateYPixel))
             return [currentCoordinateX, currentCoordinateY, floorLevel]
-    imgCoordinate = locate(
-        config.floorsImgs[floorLevel], radarImg, confidence=0.75)
+    imgCoordinate = locate(floorsImgs[floorLevel], radarImg, confidence=0.75)
     cannotGetImgCoordinate = imgCoordinate is None
     if cannotGetImgCoordinate:
         return None
-    xImgCoordinate = imgCoordinate[0] + config.dimensions['halfWidth']
-    yImgCoordinate = imgCoordinate[1] + config.dimensions['halfHeight']
+    xImgCoordinate = imgCoordinate[0] + dimensions['halfWidth']
+    yImgCoordinate = imgCoordinate[1] + dimensions['halfHeight']
     xCoordinate, yCoordinate = getCoordinateFromPixel(
         (xImgCoordinate, yImgCoordinate))
     return [xCoordinate, yCoordinate, floorLevel]
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def getFloorLevel(screenshot):
-    radarToolsPos = locators.getRadarToolsPos(screenshot)
+    radarToolsPos = getRadarToolsPos(screenshot)
     radarToolsPosIsEmpty = radarToolsPos is None
     if radarToolsPosIsEmpty:
         return None
@@ -69,13 +76,16 @@ def getFloorLevel(screenshot):
     width = 2
     floorLevelImg = screenshot[top:top + height, left:left + width]
     floorImgHash = hashit(floorLevelImg)
-    hashNotExists = floorImgHash not in config.floorsLevelsImgsHashes
+    hashNotExists = floorImgHash not in floorsLevelsImgsHashes
     if hashNotExists:
         return None
-    floorLevel = config.floorsLevelsImgsHashes[floorImgHash]
+    floorLevel = floorsLevelsImgsHashes[floorImgHash]
     return floorLevel
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def getClosestWaypointIndexFromCoordinate(coordinate, waypoints):
     (xOfCoordinate, yOfCoordinate, floorLevel) = coordinate
     currentCoordinateWithoutFloor = [xOfCoordinate, yOfCoordinate]
@@ -133,6 +143,9 @@ tilesFrictionsBreakpoints = {
 }
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
     # TODO: sometimes friction is not found
     if tileFriction in tilesFrictionsBreakpoints:
@@ -145,29 +158,38 @@ def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
     return speed
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def getTileFrictionByCoordinate(coordinate):
     xOfPixelCoordinate, yOfPixelCoordinate = getPixelFromCoordinate(
         coordinate)
     floorLevel = coordinate[2]
-    tileFriction = config.floorsPathsSqms[floorLevel,
+    tileFriction = floorsPathsSqms[floorLevel,
                                           yOfPixelCoordinate, xOfPixelCoordinate]
     return tileFriction
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def goToCoordinate(screenshot, currentCoordinate, nextCoordinate):
-    (radarToolsPosX, radarToolsPosY, _, _) = locators.getRadarToolsPos(screenshot)
-    x0 = radarToolsPosX - config.dimensions['width'] - 11
+    (radarToolsPosX, radarToolsPosY, _, _) = getRadarToolsPos(screenshot)
+    x0 = radarToolsPosX - dimensions['width'] - 11
     y0 = radarToolsPosY - 50
-    radarCenterX = x0 + config.dimensions['halfWidth']
-    radarCenterY = y0 + config.dimensions['halfHeight']
+    radarCenterX = x0 + dimensions['halfWidth']
+    radarCenterY = y0 + dimensions['halfHeight']
     xdiff = nextCoordinate[0] - currentCoordinate[0]
     ydiff = nextCoordinate[1] - currentCoordinate[1]
     x = xdiff + radarCenterX
     y = ydiff + radarCenterY
     pyautogui.click(x, y)
-    sleep(0.25)
+    time.sleep(0.25)
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def isCloseToCoordinate(currentCoordinate, possibleCloseCoordinate, distanceTolerance=10):
     (xOfCurrentCoordinate, yOfCurrentCoordinate, _) = currentCoordinate
     XYOfCurrentCoordinate = (xOfCurrentCoordinate, yOfCurrentCoordinate)
@@ -180,12 +202,18 @@ def isCloseToCoordinate(currentCoordinate, possibleCloseCoordinate, distanceTole
     return isClose
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 # TODO: 2 coordinates was tested. Is very hard too test all coordinates(16 floors * 2560 mapWidth * 2048 mapHeight = 83.886.080 pixels)
 def isCoordinateWalkable(coordinate):
     (xOfPixel, yOfPixel) = getPixelFromCoordinate(coordinate)
-    return (config.walkableFloorsSqms[coordinate[2], yOfPixel, xOfPixel]) == 1
+    return (walkableFloorsSqms[coordinate[2], yOfPixel, xOfPixel]) == 1
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def isNonWalkablePixelColor(pixelColor):
-    isNonWalkable = np.isin(pixelColor, config.nonWalkablePixelsColors)
+    isNonWalkable = np.isin(pixelColor, nonWalkablePixelsColors)
     return isNonWalkable

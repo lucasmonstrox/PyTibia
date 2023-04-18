@@ -1,17 +1,17 @@
-from .tasks.depositGold import DepositGoldTask
-from .tasks.depositItems import DepositItemsTask
-from .tasks.dropFlasks import DropFlasksTask
-from .tasks.groupOfRefillChecker import GroupOfRefillCheckerTasks
-from .tasks.groupOfRefillTasks import GroupOfRefillTasks
-from .tasks.groupOfSingleWalk import GroupOfSingleWalkTasks
-from .tasks.groupOfWalk import GroupOfWalkTasks
-from .tasks.logout import LogoutTask
-from .tasks.lureCreatures import LureCreaturesTask
-from .tasks.useRopeWaypoint import UseRopeWaypointTask
-from .tasks.useShovelWaypoint import UseShovelWaypointTask
+from .core.tasks.depositGold import DepositGoldTask
+from .core.tasks.depositItems import DepositItemsTask
+from .core.tasks.dropFlasks import DropFlasksTask
+from .core.tasks.groupOfRefillChecker import GroupOfRefillCheckerTasks
+from .core.tasks.groupOfRefillTasks import GroupOfRefillTasks
+from .core.tasks.groupOfSingleWalk import GroupOfSingleWalkTasks
+from .core.tasks.groupOfWalk import GroupOfWalkTasks
+from .core.tasks.logout import LogoutTask
+from .core.tasks.lureCreatures import LureCreaturesTask
+from .core.tasks.useRopeWaypoint import UseRopeWaypointTask
+from .core.tasks.useShovelWaypoint import UseShovelWaypointTask
 
 
-def resolveTasksByWaypointType(context, waypoint):
+def resolveTasksByWaypoint(context, waypoint):
     if waypoint['type'] == 'depositGold':
         return DepositGoldTask()
     elif waypoint['type'] == 'depositItems':

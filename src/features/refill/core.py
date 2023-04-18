@@ -1,22 +1,22 @@
 import pyautogui
 from time import sleep
-from src.utils.core import cacheObjectPos, locate, getScreenshot, press
+from src.utils.core import cacheObjectPosition, locate, getScreenshot, press
 from src.utils.image import crop
 from src.utils.mouse import leftClick, mouseMove
-from . import config
+from .config import images, npcTradeBarImage, npcTradeOkImage
 
 
-@cacheObjectPos
+@cacheObjectPosition
 def getTradeTopPos(screenshot):
-    return locate(screenshot, config.npcTradeBarImage)
+    return locate(screenshot, npcTradeBarImage)
 
 
-@cacheObjectPos
+@cacheObjectPosition
 def getTradeBottomPos(screenshot):
     (x, y, _, _) = getTradeTopPos(screenshot)
     croppedImage = crop(
         screenshot, x, y, 174, len(screenshot) - y)
-    (_, botY, _, _) = locate(croppedImage, config.npcTradeOkImage)
+    (_, botY, _, _) = locate(croppedImage, npcTradeOkImage)
     return x, y + botY + 26, 174, 2
 
 
@@ -29,7 +29,7 @@ def findItem(screenshot, itemName):
     pyautogui.typewrite(itemName)
     sleep(2)
     screenshotAfterFind = getScreenshot()
-    itemImg = config.potionsImages[itemName]
+    itemImg = images[itemName]
     itemPos = locate(screenshotAfterFind, itemImg)
     # TODO: improve it, click should be done in a handle coordinate inside the box
     x = itemPos[0] + 10

@@ -1,7 +1,10 @@
 from src.features.radar import config
 
 
-def getRadarImg(screenshot, radarToolsPos):
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
+def getRadarImage(screenshot, radarToolsPos):
     radarToolsPosX = radarToolsPos[0]
     radarToolsPosY = radarToolsPos[1]
     x0 = radarToolsPosX - config.dimensions['width'] - 11

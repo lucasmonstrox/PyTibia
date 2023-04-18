@@ -1,8 +1,5 @@
-import numpy as np
 import pathlib
-import pyautogui
-from time import sleep
-from src.utils.core import cacheObjectPos, locate
+from src.utils.core import cacheObjectPosition, locate
 from src.utils.image import loadAsGrey
 
 
@@ -44,22 +41,21 @@ inventoryHiddenImg = loadAsGrey(
 logoutBlockImg = loadAsGrey(f'{currentPath}/images/logout-block.png')
 readyForPvpImg = loadAsGrey(f'{currentPath}/images/ready-for-pvp.png')
 slowedImg = loadAsGrey(f'{currentPath}/images/slowed.png')
-# storeImg = loadAsGrey(f'{currentPath}/images/store.png')
-
-hpBarAllowedPixelsColors = np.array([79, 118, 121, 110, 62])
-hpBarSize = 94
-
-manaBarAllowedPixelsColors = np.array([68, 95, 97, 89, 52])
-manaBarSize = 94
 
 
-@cacheObjectPos
-def getStopPos(screenshot):
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
+@cacheObjectPosition
+def getStopButtonPosition(screenshot):
     return locate(screenshot, stopImg)
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def getFightStatusContainer(screenshot, slotName):
-    (left, top, _, _) = getStopPos(screenshot)
+    (left, top, _, _) = getStopButtonPosition(screenshot)
     fightStatusImgList = {
         'defensive-attack': (screenshot[top - 98: top - 98 + 30, left:left + 30], left, top - 98),
         'balanced-attack': (screenshot[top - 123: top - 123 + 30, left:left + 30], left, top - 123),
@@ -72,41 +68,20 @@ def getFightStatusContainer(screenshot, slotName):
     return fightStatusImg
 
 
-def setFightStatus(screenshot, statusName):
-    (container, x, y) = getFightStatusContainer(screenshot, statusName)
-
-    fightStatusList = {
-        'defensive-attack': defensiveAttackImg,
-        'balanced-attack': balancedAttackImg,
-        'full-attack': fullAttackImg,
-        'holding-attack': holdingAttackImg,
-        'following-attack': followingAttackImg
-    }
-
-    statusImg = fightStatusList.get(statusName, None)
-    pos = locate(container, statusImg)
-    if pos is None:
-        pyautogui.click(x + 10, y + 10)
-
-
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def getReadyForPvpContainer(screenshot):
-    (left, top, _, _) = getStopPos(screenshot)
+    (left, top, _, _) = getStopButtonPosition(screenshot)
     top -= 72
     return screenshot[top: top + 20, left:left + 42], left, top
 
 
-def setReadyForPvp(screenshot, condition):
-
-    (pvpBtn, left, top) = getReadyForPvpContainer(screenshot)
-    pos = locate(pvpBtn, readyForPvpImg, 0.5)
-    actualStatus = pos is not None
-
-    if condition != actualStatus:
-        pyautogui.click(left + 10, top + 10)
-
-
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def getEquipmentContainer(screenshot, slotName):
-    (left, top, _, _) = getStopPos(screenshot)
+    (left, top, _, _) = getStopButtonPosition(screenshot)
     equipList = {
         'backpack': (left - 42, top - 128),
         'helmet': (left - 79, top - 142),
@@ -123,6 +98,9 @@ def getEquipmentContainer(screenshot, slotName):
     return screenshot[y:y + 30, x:x + 30]
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def isEquipmentEquipped(screenshot, equipment):
     container = getEquipmentContainer(screenshot, equipment)
     emptyImgList = {
@@ -144,14 +122,20 @@ def isEquipmentEquipped(screenshot, equipment):
     return cond
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def getSpecialConditionsContainer(screenshot):
-    stopPos = getStopPos(screenshot)
+    stopPos = getStopButtonPosition(screenshot)
     if stopPos is None:
         return None
     (left, top, _, _) = stopPos
     return screenshot[top:top + 12, left - 118:left - 118 + 107]
 
 
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add typings
 def hasSpecialCondition(screenshot, condition):
     specialConditionsContainer = getSpecialConditionsContainer(screenshot)
     cannotGetSpecialConditionsContainer = specialConditionsContainer is None
@@ -176,22 +160,3 @@ def hasSpecialCondition(screenshot, condition):
     pos = locate(specialConditionsContainer, conditionImg)
     cond = pos is not None
     return cond
-
-
-# def setInventoryVisible(screenshot, condition):
-#     pos = locate(screenshot, storeImg)
-#     inventoryVisible = pos is not None
-#     if inventoryVisible == condition:
-#         return
-#     if pos is None:
-#         (left, top, _, _) = src.features.radar.core.getRadarToolsPos(screenshot)
-#         left -= 118
-#         top += 64
-#         pyautogui.click(x=left + 6, y=top + 6)
-#     else:
-#         pyautogui.click(x=pos[0] - 74, y=pos[1] + 6)
-
-
-def stop(seconds=1):
-    pyautogui.press('esc')
-    sleep(seconds)

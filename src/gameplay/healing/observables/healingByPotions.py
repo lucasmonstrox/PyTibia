@@ -1,5 +1,5 @@
 from src.features.actionBar.core import slotIsAvailable
-from src.gameplay.tasks.usePotionTask import UsePotionGroupTask
+from src.gameplay.core.tasks.usePotionTask import UsePotionGroupTask
 
 
 def healingByPotionsObservable(context):
