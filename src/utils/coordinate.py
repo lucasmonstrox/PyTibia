@@ -1,11 +1,12 @@
 import numpy as np
 from scipy.spatial import distance
+from src.shared.typings import Coordinate, CoordinateList, XYCoordinate
 from .core import getPixelFromCoordinate
 
 
 # TODO: add unit tests
 # TODO: add typings
-def getAroundPixelsCoordinates(pixelCoordinate):
+def getAroundPixelsCoordinates(pixelCoordinate: XYCoordinate):
     aroundPixelsCoordinatesIndexes = np.array(
         [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]])
     pixelCoordinates = np.broadcast_to(
@@ -46,8 +47,7 @@ def getAvailableAroundCoordinates(coordinate, walkableFloorSqms):
 
 
 # TODO: add unit tests
-# TODO: add typings
-def getClosestCoordinate(coordinate, coordinates):
+def getClosestCoordinate(coordinate: Coordinate, coordinates: CoordinateList) -> Coordinate:
     xOfCoordinate, yOfCoordinate, _ = coordinate
     coordinateWithoutFloor = [xOfCoordinate, yOfCoordinate]
     coordinatesWithoutFloor = coordinates[:, [0, 1]]
@@ -60,8 +60,7 @@ def getClosestCoordinate(coordinate, coordinates):
 
 
 # TODO: add unit tests
-# TODO: add typings
-def getDirectionBetweenCoordinates(coordinate, nextCoordinate):
+def getDirectionBetweenCoordinates(coordinate: Coordinate, nextCoordinate: Coordinate) -> 'right' | 'left' | 'down' | 'up' | None:
     (xOfCurrentCoordinate, yOfCurrentCoordinate, _) = coordinate
     (xOfNextWaypointCoordinate, yOfNextWaypointCoordinate, _) = nextCoordinate
     if xOfCurrentCoordinate < xOfNextWaypointCoordinate:

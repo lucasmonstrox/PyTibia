@@ -8,7 +8,7 @@ from .groupTaskExecutor import GroupTaskExecutor
 
 
 class GroupOfSingleWalkTasks(GroupTaskExecutor):
-    def __init__(self, context: Context, checkInCoordinate):
+    def __init__(self, context: Context, checkInCoordinate: Coordinate):
         super().__init__()
         self.delayAfterComplete = 2
         self.name = 'groupOfSingleWalk'

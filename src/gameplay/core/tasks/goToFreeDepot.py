@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.spatial import distance
+from src.shared.typings import Coordinate, CoordinateList, Waypoint
 from src.wiki.cities import cities
 from ...typings import Context
 from ..factories.makeWalk import makeWalkTask
@@ -9,7 +10,7 @@ from .groupTaskExecutor import GroupTaskExecutor
 
 
 class GoToFreeDepotTask(GroupTaskExecutor):
-    def __init__(self, context, waypoint):
+    def __init__(self, context: Context, waypoint: Waypoint):
         super().__init__()
         self.didTask = False
         self.name = 'goToFreeDepot'
@@ -22,7 +23,7 @@ class GoToFreeDepotTask(GroupTaskExecutor):
 
     # TODO: add unit tests
     # TODO: add typings
-    def makeTasks(self, context: Context, waypoint):
+    def makeTasks(self, context: Context, waypoint: Waypoint):
         city = waypoint['options']['city']
         depotCoordinates = cities[city]['depotCoordinates']
         coordinate = context['radar']['coordinate']
@@ -57,7 +58,7 @@ class GoToFreeDepotTask(GroupTaskExecutor):
 
     # TODO: add unit tests
     # TODO: add typings
-    def getFreeDepotCoordinates(self, battleListPlayers, visibleDepotCoordinates):
+    def getFreeDepotCoordinates(self, battleListPlayers, visibleDepotCoordinates: CoordinateList) -> CoordinateList:
         hasNoPlayers = len(battleListPlayers) == 0
         if hasNoPlayers:
             return visibleDepotCoordinates
@@ -67,8 +68,7 @@ class GoToFreeDepotTask(GroupTaskExecutor):
         return freeDepotCoordinates
 
     # TODO: add unit tests
-    # TODO: add typings
-    def getVisibleDepotCoordinates(self, coordinate, depotCoordinates):
+    def getVisibleDepotCoordinates(self, coordinate: Coordinate, depotCoordinates: CoordinateList) -> CoordinateList:
         visibleDepotCoordinates = []
         for depotCoordinate in depotCoordinates:
             if depotCoordinate[0] >= (coordinate[0] - 7) and depotCoordinate[0] <= (coordinate[0] + 7) and depotCoordinate[1] >= (coordinate[1] - 5) and depotCoordinate[1] <= (coordinate[1] + 5):

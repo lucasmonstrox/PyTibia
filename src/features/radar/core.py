@@ -3,7 +3,7 @@ import pyautogui
 from scipy.spatial import distance
 import time
 from typing import Union
-from src.shared.typings import Coordinate, GrayImage
+from src.shared.typings import Coordinate, GrayImage, Waypoint, WaypointList
 from src.utils.core import getCoordinateFromPixel, getPixelFromCoordinate, hashit, hashitHex, locate
 from .config import coordinates, dimensions, floorsImgs, floorsLevelsImgsHashes, floorsPathsSqms, nonWalkablePixelsColors, walkableFloorsSqms
 from .extractors import getRadarImage
@@ -86,8 +86,7 @@ def getFloorLevel(screenshot: GrayImage) -> Union[FloorLevel, None]:
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getClosestWaypointIndexFromCoordinate(coordinate: Coordinate, waypoints):
+def getClosestWaypointIndexFromCoordinate(coordinate: Coordinate, waypoints: WaypointList) -> Waypoint:
     (xOfCoordinate, yOfCoordinate, floorLevel) = coordinate
     currentCoordinateWithoutFloor = [xOfCoordinate, yOfCoordinate]
     waypointsCoordinatesWithoutFloor = waypoints['coordinate'][:, :-1]

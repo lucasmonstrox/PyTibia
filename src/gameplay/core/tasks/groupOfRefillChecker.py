@@ -1,4 +1,5 @@
 import numpy as np
+from src.shared.typings import Waypoint
 from ..factories.makeRefillChecker import makeRefillCheckerTask
 from ..typings import Task
 from .groupTaskExecutor import GroupTaskExecutor
@@ -15,5 +16,5 @@ class GroupOfRefillCheckerTasks(GroupTaskExecutor):
 
     # TODO: add unit tests
     # TODO: add typings
-    def generateTasks(self, waypoint):
+    def generateTasks(self, waypoint: Waypoint):
         return np.array([makeRefillCheckerTask(waypoint)], dtype=Task)

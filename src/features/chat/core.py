@@ -119,9 +119,8 @@ def getChatsTabsContainer(screenshot: GrayImage) -> Tuple[BBox, int]:
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
 @cacheObjectPosition
-def getChatMessagesContainerPos(screenshot):
+def getChatMessagesContainerPos(screenshot: GrayImage) -> BBox:
     leftSidebarArrows = None
     # leftSidebarArrows = getLeftSidebarArrows(screenshot)
     chatMenu = getChatMenuPosition(screenshot)
@@ -131,7 +130,6 @@ def getChatMessagesContainerPos(screenshot):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def sendMessage(screenshot, phrase):
+def sendMessage(screenshot: GrayImage, phrase: str):
     enableChatOn(screenshot)
     typeKeyboard(phrase)

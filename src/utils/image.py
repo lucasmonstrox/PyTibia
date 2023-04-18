@@ -6,9 +6,8 @@ from src.shared.typings import GrayImage
 
 
 # TODO: add unit tests
-# TODO: add typings
 @njit(cache=True, fastmath=True)
-def convertGraysToBlack(arr):
+def convertGraysToBlack(arr: GrayImage) -> GrayImage:
     return np.where(np.logical_and(arr >= 50, arr <= 100), 0, arr)
 
 

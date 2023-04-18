@@ -1,5 +1,6 @@
 from src.features.gameWindow.core import getSlotFromCoordinate
 from src.features.gameWindow.slot import rightClickSlot
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -12,8 +13,7 @@ class UseHoleTask(BaseTask):
         self.value = value
 
     # TODO: add unit tests
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         slot = getSlotFromCoordinate(
             context['radar']['coordinate'], self.value['coordinate'])
         rightClickSlot(slot, context['gameWindow']['coordinate'])

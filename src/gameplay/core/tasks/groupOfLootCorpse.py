@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.spatial import distance
+from src.features.gameWindow.typings import Creature
 from src.features.radar.typings import Coordinate
 from ...typings import Context
 from ..factories.makeLootCorpse import makeLootCorpseTask
@@ -18,7 +19,7 @@ class GroupOfLootCorpseTasks(GroupTaskExecutor):
 
     # TODO: add unit tests
     # TODO: add typings
-    def generateTasks(self, context: Context, corpse):
+    def generateTasks(self, context: Context, corpse: Creature):
         tasks = np.array([], dtype=Task)
         tasksToAppend = np.array([], dtype=Task)
         tasks = np.append(tasks, [tasksToAppend])
