@@ -1,10 +1,10 @@
 import numpy as np
 from src.utils.image import loadFromRGBToGray, save
-from src.wiki import creatures
+from src.wiki.creatures import creatures
 
 
 def main():
-    for monster in creatures.creatures:
+    for monster in creatures:
         monsterLetters = np.zeros((11, 0), dtype=np.uint8)
         for index, letter in enumerate(monster):
             letter = letter if letter != ' ' else 'space'

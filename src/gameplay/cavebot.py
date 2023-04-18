@@ -37,4 +37,3 @@ def shouldAskForCavebotTasks(context):
     if context['currentTask'] is None:
         return True
     return (context['currentTask'].name not in ['groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfSingleWalk', 'useRopeWaypoint', 'useShovelWaypoint'])
-
