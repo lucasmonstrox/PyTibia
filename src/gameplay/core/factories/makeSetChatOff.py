@@ -1,9 +1,8 @@
+from typing import Tuple
 from ..tasks.setChatOff import SetChatOffTask
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def makeSetChatOffTask():
+def makeSetChatOffTask() -> Tuple[str, SetChatOffTask]:
     task = SetChatOffTask()
     return ('setChatOff', task)

@@ -1,4 +1,5 @@
 from time import time
+from ...typings import Context
 
 
 class BaseTask:
@@ -14,49 +15,33 @@ class BaseTask:
         self.value = None
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def shouldIgnore(self, _):
+    def shouldIgnore(self, _: Context) -> bool:
         return False
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def ping(self, context):
+    def ping(self, context: Context) -> Context:
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def did(self, _):
+    def did(self, _: Context) -> bool:
         return True
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def shouldRestart(self, _):
+    def shouldRestart(self, _: Context) -> bool:
         return False
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def onIgnored(self, context):
+    def onIgnored(self, context: Context) -> Context:
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def onDidComplete(self, context):
+    def onDidComplete(self, context: Context) -> Context:
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def onDidTimeout(self, context):
+    def onDidTimeout(self, context: Context) -> Context:
         return context

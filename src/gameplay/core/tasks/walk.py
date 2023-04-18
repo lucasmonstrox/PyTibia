@@ -4,6 +4,7 @@ from time import time
 from src.features.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from src.features.skills.core import getSpeed
 from src.utils.coordinate import getDirectionBetweenCoordinates
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -19,9 +20,7 @@ class WalkTask(BaseTask):
         self.value = value
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def shouldIgnore(self, context):
+    def shouldIgnore(self, context: Context) -> bool:
         # TODO: improve clever code
         if context['radar']['lastCoordinateVisited'] is None:
             return True
@@ -29,9 +28,7 @@ class WalkTask(BaseTask):
         return isStartingFromLastCoordinate
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> bool:
         walkpoint = self.value
         direction = getDirectionBetweenCoordinates(context['radar']['coordinate'], walkpoint)
         hasNoNewDirection = direction is None
@@ -74,17 +71,13 @@ class WalkTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def did(self, context):
+    def did(self, context: Context) -> bool:
         nextWalkpoint = self.value
         did = np.all(context['radar']['coordinate'] == nextWalkpoint) == True
         return did
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def onDidTimeout(self, context):
+    def onDidTimeout(self, context: Context) -> Context:
         context['currentTask'].status = 'completed'
         context['currentTask'].finishedAt = time()
         return context

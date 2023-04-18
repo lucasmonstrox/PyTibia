@@ -13,7 +13,6 @@ class UseRopeWaypointTask(GroupTaskExecutor):
         self.value = waypoint
 
     # TODO: add unit tests
-    # TODO: add perf
     # TODO: add typings
     def generateTasks(self, waypoint):
         return np.array([

@@ -1,9 +1,8 @@
+from typing import Tuple
 from ..tasks.buyItem import BuyItemTask
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def makeBuyItemTask(itemWithQuantity):
+def makeBuyItemTask(itemWithQuantity: Tuple[str, int]) -> Tuple[str, BuyItemTask]:
     task = BuyItemTask(itemWithQuantity)
     return ('buyItem', task)

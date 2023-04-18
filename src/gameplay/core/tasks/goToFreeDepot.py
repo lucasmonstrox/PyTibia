@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.spatial import distance
 from src.wiki.cities import cities
+from ...typings import Context
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
@@ -20,9 +21,8 @@ class GoToFreeDepotTask(GroupTaskExecutor):
         self.visitedOrBusyCoordinates = {}
 
     # TODO: add unit tests
-    # TODO: add perf
     # TODO: add typings
-    def makeTasks(self, context, waypoint):
+    def makeTasks(self, context: Context, waypoint):
         city = waypoint['options']['city']
         depotCoordinates = cities[city]['depotCoordinates']
         coordinate = context['radar']['coordinate']
@@ -56,7 +56,6 @@ class GoToFreeDepotTask(GroupTaskExecutor):
         return []
 
     # TODO: add unit tests
-    # TODO: add perf
     # TODO: add typings
     def getFreeDepotCoordinates(self, battleListPlayers, visibleDepotCoordinates):
         hasNoPlayers = len(battleListPlayers) == 0
@@ -68,7 +67,6 @@ class GoToFreeDepotTask(GroupTaskExecutor):
         return freeDepotCoordinates
 
     # TODO: add unit tests
-    # TODO: add perf
     # TODO: add typings
     def getVisibleDepotCoordinates(self, coordinate, depotCoordinates):
         visibleDepotCoordinates = []
@@ -78,9 +76,7 @@ class GoToFreeDepotTask(GroupTaskExecutor):
         return visibleDepotCoordinates
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def ping(self, context):
+    def ping(self, context: Context) -> Context:
         if self.closestFreeDepotCoordinate is None:
             return context
         if self.state == 'walkingIntoFreeDepot' and context['radar']['coordinate'][0] == self.closestFreeDepotCoordinate[0] and context['radar']['coordinate'][1] == self.closestFreeDepotCoordinate[1]:

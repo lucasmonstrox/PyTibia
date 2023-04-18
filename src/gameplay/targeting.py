@@ -1,7 +1,8 @@
+from .typings import Context
+
+
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def hasCreaturesToAttack(context):
+def hasCreaturesToAttack(context: Context) -> bool:
     context['targeting']['hasIgnorableCreatures'] = False
     if len(context['gameWindow']['monsters']) == 0:
         context['targeting']['canIgnoreCreatures'] = True

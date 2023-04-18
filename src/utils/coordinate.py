@@ -4,7 +4,6 @@ from .core import getPixelFromCoordinate
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
 def getAroundPixelsCoordinates(pixelCoordinate):
     aroundPixelsCoordinatesIndexes = np.array(
@@ -17,7 +16,6 @@ def getAroundPixelsCoordinates(pixelCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
 def getAvailableAroundPixelsCoordinates(aroundPixelsCoordinates, walkableFloorSqms):
     yPixelsCoordinates = aroundPixelsCoordinates[:, 1]
@@ -31,7 +29,6 @@ def getAvailableAroundPixelsCoordinates(aroundPixelsCoordinates, walkableFloorSq
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
 def getAvailableAroundCoordinates(coordinate, walkableFloorSqms):
     floor = coordinate[2]
@@ -49,7 +46,6 @@ def getAvailableAroundCoordinates(coordinate, walkableFloorSqms):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
 def getClosestCoordinate(coordinate, coordinates):
     xOfCoordinate, yOfCoordinate, _ = coordinate
@@ -64,7 +60,6 @@ def getClosestCoordinate(coordinate, coordinates):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
 def getDirectionBetweenCoordinates(coordinate, nextCoordinate):
     (xOfCurrentCoordinate, yOfCurrentCoordinate, _) = coordinate

@@ -1,9 +1,8 @@
+from typing import Tuple
 from ..tasks.closeContainer import CloseContainerTask
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def makeCloseContainerTask(containerBarImage):
+def makeCloseContainerTask(containerBarImage) -> Tuple[str, CloseContainerTask]:
     task = CloseContainerTask(containerBarImage)
     return ('closeContainer', task)

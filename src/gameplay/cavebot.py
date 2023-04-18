@@ -1,12 +1,12 @@
 from src.features.gameWindow.creatures import getClosestCreature, hasTargetToCreature
 from .core.tasks.groupOfAttackClosestCreature import GroupOfAttackClosestCreatureTasks
 from .core.tasks.groupOfFollowTargetCreature import GroupOfFollowTargetCreatureTasks
+from .typings import Context
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveCavebotTasks(context):
+def resolveCavebotTasks(context: Context):
     if context['cavebot']['isAttackingSomeCreature']:
         hasNoTargetCreature = context['cavebot']['targetCreature'] == None
         if hasNoTargetCreature:
@@ -29,9 +29,7 @@ def resolveCavebotTasks(context):
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def shouldAskForCavebotTasks(context):
+def shouldAskForCavebotTasks(context: Context) -> bool:
     if context['way'] != 'cavebot':
         return False
     if context['currentTask'] is None:

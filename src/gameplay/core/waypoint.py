@@ -1,13 +1,12 @@
 import tcod
 from src.features.radar.config import walkableFloorsSqms
+from src.shared.typings import Coordinate, CoordinateList
 from src.utils.coordinate import getAvailableAroundCoordinates, getClosestCoordinate
 from src.utils.core import getPixelFromCoordinate
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def generateFloorWalkpoints(coordinate, goalCoordinate, nonWalkableCoordinates=None):
+def generateFloorWalkpoints(coordinate: Coordinate, goalCoordinate: Coordinate, nonWalkableCoordinates=None) -> CoordinateList:
     pixelCoordinate = getPixelFromCoordinate(coordinate)
     xFromTheStartOfRadar = pixelCoordinate[0] - 53
     xFromTheEndOfRadar = pixelCoordinate[0] + 53
@@ -39,9 +38,8 @@ def generateFloorWalkpoints(coordinate, goalCoordinate, nonWalkableCoordinates=N
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveFloorCoordinate(_, nextCoordinate):
+def resolveFloorCoordinate(_, nextCoordinate: Coordinate):
     return {
         'goalCoordinate': nextCoordinate,
         'checkInCoordinate': nextCoordinate,
@@ -49,9 +47,8 @@ def resolveFloorCoordinate(_, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveMoveDownEastCoordinate(_, nextCoordinate):
+def resolveMoveDownEastCoordinate(_, nextCoordinate: Coordinate):
     (x, y, floorLevel) = nextCoordinate
     checkInCoordinate = [x + 2, y, floorLevel + 1]
     return {
@@ -61,9 +58,8 @@ def resolveMoveDownEastCoordinate(_, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveMoveDownNorthCoordinate(_, nextCoordinate):
+def resolveMoveDownNorthCoordinate(_, nextCoordinate: Coordinate):
     (x, y, floorLevel) = nextCoordinate
     checkInCoordinate = [x, y - 2, floorLevel + 1]
     return {
@@ -73,9 +69,8 @@ def resolveMoveDownNorthCoordinate(_, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveMoveDownSouthCoordinate(_, nextCoordinate):
+def resolveMoveDownSouthCoordinate(_, nextCoordinate: Coordinate):
     (x, y, floorLevel) = nextCoordinate
     checkInCoordinate = [x, y + 2, floorLevel + 1]
     return {
@@ -85,9 +80,8 @@ def resolveMoveDownSouthCoordinate(_, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveMoveDownWestCoordinate(_, nextCoordinate):
+def resolveMoveDownWestCoordinate(_, nextCoordinate: Coordinate):
     (x, y, floorLevel) = nextCoordinate
     checkInCoordinate = [x - 2, y, floorLevel + 1]
     return {
@@ -97,9 +91,8 @@ def resolveMoveDownWestCoordinate(_, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveMoveUpNorthCoordinate(_, nextCoordinate):
+def resolveMoveUpNorthCoordinate(_, nextCoordinate: Coordinate):
     (x, y, floorLevel) = nextCoordinate
     goalCoordinate = [x, y - 2, floorLevel - 1]
     return {
@@ -109,9 +102,8 @@ def resolveMoveUpNorthCoordinate(_, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveMoveUpWestCoordinate(_, nextCoordinate):
+def resolveMoveUpWestCoordinate(_, nextCoordinate: Coordinate):
     (x, y, floorLevel) = nextCoordinate
     goalCoordinate = [x - 2, y, floorLevel - 1]
     return {
@@ -121,9 +113,8 @@ def resolveMoveUpWestCoordinate(_, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveMoveUpEastCoordinate(_, nextCoordinate):
+def resolveMoveUpEastCoordinate(_, nextCoordinate: Coordinate):
     (x, y, floorLevel) = nextCoordinate
     goalCoordinate = [x + 2, y, floorLevel - 1]
     return {
@@ -133,9 +124,8 @@ def resolveMoveUpEastCoordinate(_, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveMoveUpSouthCoordinate(_, nextCoordinate):
+def resolveMoveUpSouthCoordinate(_, nextCoordinate: Coordinate):
     (x, y, floorLevel) = nextCoordinate
     goalCoordinate = [x, y + 2, floorLevel - 1]
     return {
@@ -145,9 +135,8 @@ def resolveMoveUpSouthCoordinate(_, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveUseShovelWaypointCoordinate(coordinate, nextCoordinate):
+def resolveUseShovelWaypointCoordinate(coordinate, nextCoordinate: Coordinate):
     floorLevel = nextCoordinate[2]
     # TODO: avoid copying whole level
     walkableFloorSqms = walkableFloorsSqms[floorLevel].copy()
@@ -164,9 +153,8 @@ def resolveUseShovelWaypointCoordinate(coordinate, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveUseRopeWaypointCoordinate(_, nextCoordinate):
+def resolveUseRopeWaypointCoordinate(_, nextCoordinate: Coordinate):
     checkInCoordinate = [nextCoordinate[0],
                          nextCoordinate[1] + 1, nextCoordinate[2] - 1]
     return {
@@ -176,9 +164,8 @@ def resolveUseRopeWaypointCoordinate(_, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveUseHoleCoordinate(_, nextCoordinate):
+def resolveUseHoleCoordinate(_, nextCoordinate: Coordinate):
     (x, y, floorLevel) = nextCoordinate
     goalCoordinate = [x, y, floorLevel + 1]
     return {
@@ -188,9 +175,8 @@ def resolveUseHoleCoordinate(_, nextCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveGoalCoordinate(coordinate, waypoint):
+def resolveGoalCoordinate(coordinate: Coordinate, waypoint):
     goalCoordinate = None
     if waypoint['type'] == 'useRope':
         goalCoordinate = resolveUseRopeWaypointCoordinate(

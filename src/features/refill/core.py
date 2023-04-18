@@ -1,5 +1,7 @@
 import pyautogui
 from time import sleep
+from typing import Union
+from src.shared.typings import BBox, GrayImage
 from src.utils.core import cacheObjectPosition, locate, getScreenshot, press
 from src.utils.image import crop
 from src.utils.mouse import leftClick, mouseMove
@@ -8,18 +10,19 @@ from .config import images, npcTradeBarImage, npcTradeOkImage
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
 @cacheObjectPosition
-def getTradeTopPos(screenshot):
+def getTradeTopPos(screenshot: GrayImage) -> Union[BBox, None]:
     return locate(screenshot, npcTradeBarImage)
 
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
 @cacheObjectPosition
-def getTradeBottomPos(screenshot):
-    (x, y, _, _) = getTradeTopPos(screenshot)
+def getTradeBottomPos(screenshot: GrayImage) -> Union[BBox, None]:
+    tradeTopPos = getTradeTopPos(screenshot)
+    if tradeTopPos is None:
+        return None
+    (x, y, _, _) = tradeTopPos
     croppedImage = crop(
         screenshot, x, y, 174, len(screenshot) - y)
     (_, botY, _, _) = locate(croppedImage, npcTradeOkImage)
@@ -28,8 +31,7 @@ def getTradeBottomPos(screenshot):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def findItem(screenshot, itemName):
+def findItem(screenshot: GrayImage, itemName: str):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     leftClick(bx + 160, by - 75)
     sleep(0.2)
@@ -48,8 +50,7 @@ def findItem(screenshot, itemName):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def setAmount(screenshot, amount):
+def setAmount(screenshot: GrayImage, amount: int):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     leftClick(bx + 115, by - 42)
     sleep(0.2)
@@ -61,16 +62,14 @@ def setAmount(screenshot, amount):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def confirmBuyItem(screenshot):
+def confirmBuyItem(screenshot: GrayImage):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     leftClick(bx + 150, by - 18)
 
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def clearSearchBox(screenshot):
+def clearSearchBox(screenshot: GrayImage):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     x = bx + 115 + 45
     y = by - 42 - 35
@@ -82,16 +81,7 @@ def clearSearchBox(screenshot):
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def buyItems(screenshot, itemsAndQuantities):
-    screenshot = getScreenshot()
-    for itemAndQuantity in itemsAndQuantities:
-        buyItem(screenshot, itemAndQuantity)
-
-
-# TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def buyItem(screenshot, itemAndQuantity):
+def buyItem(screenshot: GrayImage, itemAndQuantity):
     (itemName, quantity) = itemAndQuantity
     findItem(screenshot, itemName)
     sleep(1)

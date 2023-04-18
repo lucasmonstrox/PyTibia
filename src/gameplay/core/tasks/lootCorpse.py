@@ -1,5 +1,6 @@
 import numpy as np
 import pyautogui
+from ...typings import Context
 # from src.features.gameWindow.core import getSlotFromCoordinate
 from src.features.gameWindow.slot import rightClickSlot
 from .baseTask import BaseTask
@@ -15,9 +16,7 @@ class LootCorpseTask(BaseTask):
         self.value = value
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         # slot = getSlotFromCoordinate(
         #     context['radar']['coordinate'], self.value['coordinate'])
         # pyautogui.keyDown('shift')
@@ -36,9 +35,7 @@ class LootCorpseTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def onDidComplete(self, context):
+    def onDidComplete(self, context: Context) -> Context:
         creatureToLoot = context['corpsesToLoot'][0]
         indexesToDelete = []
         for index, corpseToLoot in enumerate(context['corpsesToLoot']):

@@ -1,4 +1,5 @@
 from src.utils.array import getNextArrayIndex
+from ...typings import Context
 from ..waypoint import resolveGoalCoordinate
 from .baseTask import BaseTask
 
@@ -9,9 +10,7 @@ class SetNextWaypointTask(BaseTask):
         self.name = 'setNextWaypoint'
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         nextWaypointIndex = getNextArrayIndex(
             context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])
         context['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex

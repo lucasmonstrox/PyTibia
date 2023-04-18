@@ -1,4 +1,5 @@
 from src.features.refill.core import buyItem
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -12,16 +13,12 @@ class BuyItemTask(BaseTask):
         self.value = itemNameWithQuantity
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def shouldIgnore(self, _):
+    def shouldIgnore(self, _: Context) -> bool:
         _, itemQuantity = self.value
         ignore = itemQuantity <= 0
         return ignore
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         buyItem(context['screenshot'], self.value)
         return context

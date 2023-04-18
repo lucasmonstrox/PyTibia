@@ -12,7 +12,6 @@ class UseHoleTask(BaseTask):
         self.value = value
 
     # TODO: add unit tests
-    # TODO: add perf
     # TODO: add typings
     def do(self, context):
         slot = getSlotFromCoordinate(

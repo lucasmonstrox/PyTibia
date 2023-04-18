@@ -1,10 +1,11 @@
 from src.features.chat.core import sendMessage
+from ...typings import Context
 from .baseTask import BaseTask
 
 
 # TODO: implement did method checking if phrase was spelled into chat
 class SayTask(BaseTask):
-    def __init__(self, phrase):
+    def __init__(self, phrase: str):
         super().__init__()
         self.delayBeforeStart = 2
         self.delayAfterComplete = 2
@@ -12,8 +13,6 @@ class SayTask(BaseTask):
         self.value = phrase
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         sendMessage(context['screenshot'], self.value)
         return context

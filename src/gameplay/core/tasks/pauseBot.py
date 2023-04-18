@@ -1,3 +1,4 @@
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -9,15 +10,11 @@ class PauseBotTask(BaseTask):
         self.name = 'pauseBot'
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         context['cavebot']['enabled'] = False
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
     # TODO: check if cavebot['enabled'] is False
-    def did(self, context):
+    def did(self, context: Context) -> bool:
         return True

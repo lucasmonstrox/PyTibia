@@ -1,5 +1,6 @@
 import pyautogui
 from src.utils.core import locate
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -12,9 +13,7 @@ class CloseContainerTask(BaseTask):
         self.value = containerBarImage
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         containerPosition = locate(context['screenshot'], self.value, confidence=0.8)
         x, y = containerPosition[0] + 165, containerPosition[1] + 5
         pyautogui.click(x, y)

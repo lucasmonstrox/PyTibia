@@ -1,9 +1,11 @@
 import time
-from src.features.gameWindow.slot import getSlotPos
+from src.features.gameWindow.slot import getSlotPosition
 from src.features.inventory.config import slotsImagesHashes
 from src.features.inventory.core import images
+from src.shared.typings import Slot
 from src.utils.core import hashit, locate
 from src.utils.mouse import mouseDrag
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -17,9 +19,7 @@ class DropEachFlaskTask(BaseTask):
         self.slotIndex = 0
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         (item, position) = self.getSlot(context, self.slotIndex)
         if item is None:
             self.slotIndex += 1
@@ -27,15 +27,13 @@ class DropEachFlaskTask(BaseTask):
         if item == 'empty slot':
             self.terminable = True
             return context
-        slotPosX, slotPosY = getSlotPos((7, 5), context['gameWindow']['coordinate'])
+        slotPosX, slotPosY = getSlotPosition((7, 5), context['gameWindow']['coordinate'])
         mouseDrag(position[0], position[1], slotPosX, slotPosY)
         time.sleep(1)
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def getSlot(self, context, slotIndex):
+    def getSlot(self, context: Context, slotIndex: int) -> Slot:
         backpackBarPosition = locate(context['screenshot'], images['containersBars'][self.value], confidence=0.8)
         if backpackBarPosition is None:
             return (None, (0, 0))

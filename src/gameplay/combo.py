@@ -4,12 +4,11 @@ from src.gameplay.comboSpells.core import comboSpellDidMatch
 from src.features.actionBar.core import hasCooldownByName
 from src.features.gameWindow.creatures import getNearestCreaturesCount
 from src.utils.array import getNextArrayIndex
+from .typings import Context
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def comboSpellsObservable(context):
+def comboSpellsObservable(context: Context):
     if context['statusBar']['mana'] is None:
         return
     nearestCreaturesCount = getNearestCreaturesCount(context['gameWindow']['monsters'])

@@ -1,9 +1,8 @@
+from typing import Tuple
 from ..tasks.dropEachFlask import DropEachFlaskTask
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def makeDropEachFlaskTask(backpack):
+def makeDropEachFlaskTask(backpack: str) -> Tuple[str, DropEachFlaskTask]:
     task = DropEachFlaskTask(backpack)
     return ('dropEachFlask', task)

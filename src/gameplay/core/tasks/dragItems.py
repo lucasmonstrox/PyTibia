@@ -3,6 +3,7 @@ import time
 from src.features.inventory.core import images
 from src.utils.core import locate
 from src.utils.mouse import mouseDrag
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -15,9 +16,7 @@ class DragItemsTask(BaseTask):
         self.value = (containerBarImage, targetContainerImage)
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         containerBarPosition = locate(context['screenshot'], self.value[0], confidence=0.8)
         firstSlotImage = context['screenshot'][containerBarPosition[1] + 18:containerBarPosition[1] + 18 + 32, containerBarPosition[0] + 10:containerBarPosition[0] + 10 + 32]
         isLootBackpackItem = locate(firstSlotImage, images['slots'][context['backpacks']['loot']], confidence=0.8) is not None

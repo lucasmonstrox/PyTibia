@@ -1,4 +1,6 @@
 import pathlib
+from typing import Tuple, Union
+from src.shared.typings import BBox, GrayImage
 # from src.features.gameWindow.core import getLeftSidebarArrows
 from src.utils.core import cacheObjectPosition, hashit, locate, locateMultiple, press, typeKeyboard
 from src.utils.image import convertGraysToBlack, loadFromRGBToGray
@@ -23,8 +25,7 @@ oldListOfLootCheck = []
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def hasNewLoot(screenshot):
+def hasNewLoot(screenshot: GrayImage) -> bool:
     global oldListOfLootCheck
     lootLines = getLootLines(screenshot)
     if len(lootLines) == 0:
@@ -50,7 +51,7 @@ def hasNewLoot(screenshot):
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def getLootLines(screenshot):
+def getLootLines(screenshot: GrayImage):
     (x, y, w, h) = getChatMessagesContainerPos(screenshot)
     messages = screenshot[y: y + h, x: x + w]
     lootLines = locateMultiple(lootOfTextImg, messages)
@@ -67,25 +68,22 @@ def getLootLines(screenshot):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
 @cacheObjectPosition
-def getChatMenuPos(screenshot):
+def getChatMenuPosition(screenshot: GrayImage) -> Union[BBox, None]:
     return locate(screenshot, chatMenuImg)
 
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
 @cacheObjectPosition
-def getChatOffPos(screenshot):
+def getChatOffPosition(screenshot: GrayImage) -> Union[BBox, None]:
     return locate(screenshot, chatOffImg, confidence=0.985)
 
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getChatStatus(screenshot):
-    chatOffPos = getChatOffPos(screenshot)
+def getChatStatus(screenshot: GrayImage) -> Tuple[BBox, bool]:
+    chatOffPos = getChatOffPosition(screenshot)
     if chatOffPos:
         return chatOffPos, False
     chatOnPos = locate(screenshot, chatOnImgTemp, confidence=0.9)
@@ -94,8 +92,7 @@ def getChatStatus(screenshot):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def enableChatOn(screenshot):
+def enableChatOn(screenshot: GrayImage):
     (_, chatIsOn) = getChatStatus(screenshot)
     chatIsNotOn = chatIsOn is False
     if chatIsNotOn:
@@ -104,8 +101,7 @@ def enableChatOn(screenshot):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def enableChatOff(screenshot):
+def enableChatOff(screenshot: GrayImage):
     (_, chatIsOn) = getChatStatus(screenshot)
     if chatIsOn:
         press('enter')
@@ -113,12 +109,11 @@ def enableChatOff(screenshot):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
 @cacheObjectPosition
-def getChatsTabsContainer(screenshot):
+def getChatsTabsContainer(screenshot: GrayImage) -> Tuple[BBox, int]:
     leftSidebarArrows = None
     # leftSidebarArrows = getLeftSidebarArrows(screenshot)
-    chatMenuPos = getChatMenuPos(screenshot)
+    chatMenuPos = getChatMenuPosition(screenshot)
     return leftSidebarArrows[0] + 10, chatMenuPos[1], chatMenuPos[0] - (leftSidebarArrows[0] + 10), 20
 
 
@@ -129,7 +124,7 @@ def getChatsTabsContainer(screenshot):
 def getChatMessagesContainerPos(screenshot):
     leftSidebarArrows = None
     # leftSidebarArrows = getLeftSidebarArrows(screenshot)
-    chatMenu = getChatMenuPos(screenshot)
+    chatMenu = getChatMenuPosition(screenshot)
     chatStatus = getChatStatus(screenshot)
     return leftSidebarArrows[0], chatMenu[1] + 18, chatStatus[0][0] + 40, (chatStatus[0][1] - 6) - (chatMenu[1] + 13)
 

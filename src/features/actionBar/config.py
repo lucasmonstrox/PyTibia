@@ -13,8 +13,8 @@ images = {
         'left': loadFromRGBToGray(f'{arrowsImagesPath }/left.png'),
         'right': loadFromRGBToGray(f'{arrowsImagesPath }/right.png'),
     },
-    # TODO: falta o exiva
-    # TODO: falta o utito mas sio
+    # TODO: add exiva
+    # TODO: add utito mas sio
     'cooldowns': {
         'attack': loadFromRGBToGray(f'{cooldownsImagesPath}/attack.png'),
         'exana kor': loadFromRGBToGray(f'{cooldownsImagesPath}/exanaKor.png'),

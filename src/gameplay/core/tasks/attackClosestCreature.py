@@ -1,5 +1,6 @@
 import pyautogui
 from src.utils.mouse import leftClick
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -10,9 +11,7 @@ class AttackClosestCreatureTask(BaseTask):
         self.name = 'attackClosestCreature'
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         ignoreHotkeyAttack = len(context['gameWindow']['players']) > 0 or context['targeting']['hasIgnorableCreatures']
         if ignoreHotkeyAttack:
             x, y = context['cavebot']['closestCreature']['windowCoordinate']
@@ -25,14 +24,10 @@ class AttackClosestCreatureTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def did(self, context):
+    def did(self, context: Context) -> bool:
         return context['cavebot']['isAttackingSomeCreature']
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def onDidTimeout(self, context):
+    def onDidTimeout(self, context: Context) -> Context:
         context['currentTask'] = None
         return context

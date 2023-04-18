@@ -1,9 +1,8 @@
 from src.utils.core import getScreenshot
+from ...typings import Context
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def setScreenshot(gameContext):
+def setScreenshot(gameContext: Context) -> Context:
     gameContext['screenshot'] = getScreenshot()
     return gameContext

@@ -2,6 +2,7 @@ import pyautogui
 from src.features.inventory.config import images
 from src.features.inventory.core import isBackpackOpen
 from src.utils.core import locate
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -14,16 +15,12 @@ class OpenBackpackTask(BaseTask):
         self.value = backpack
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def shouldIgnore(self, context):
+    def shouldIgnore(self, context: Context) -> bool:
         shouldIgnore = isBackpackOpen(context['screenshot'], self.value)
         return shouldIgnore
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         backpackImg = images['backpacks'][self.value]
         backpackPos = locate(context['screenshot'], backpackImg, confidence=0.8)
         if backpackPos is None:
@@ -35,8 +32,6 @@ class OpenBackpackTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def did(self, context):
+    def did(self, context: Context) -> bool:
         did = isBackpackOpen(context['screenshot'], self.value)
         return did

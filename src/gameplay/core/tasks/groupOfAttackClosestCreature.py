@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.spatial import distance
 from src.features.radar.typings import Coordinate
+from ...typings import Context
 from ..factories.makeAttackClosestCreature import makeAttackClosestCreatureTask
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
@@ -15,9 +16,8 @@ class GroupOfAttackClosestCreatureTasks(GroupTaskExecutor):
         self.tasks = self.generateTasks(context)
 
     # TODO: add unit tests
-    # TODO: add perf
     # TODO: add typings
-    def generateTasks(self, context):
+    def generateTasks(self, context: Context):
         tasks = np.array([], dtype=Task)
         tasksToAppend = np.array([
             makeAttackClosestCreatureTask(),

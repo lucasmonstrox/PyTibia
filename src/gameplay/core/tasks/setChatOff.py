@@ -1,4 +1,5 @@
 from src.features.chat.core import enableChatOff
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -11,8 +12,6 @@ class SetChatOffTask(BaseTask):
         self.name = 'setChatOff'
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         enableChatOff(context['screenshot'])
         return context

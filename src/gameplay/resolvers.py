@@ -9,12 +9,12 @@ from .core.tasks.logout import LogoutTask
 from .core.tasks.lureCreatures import LureCreaturesTask
 from .core.tasks.useRopeWaypoint import UseRopeWaypointTask
 from .core.tasks.useShovelWaypoint import UseShovelWaypointTask
+from .typings import Context
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def resolveTasksByWaypoint(context, waypoint):
+def resolveTasksByWaypoint(context: Context, waypoint):
     if waypoint['type'] == 'depositGold':
         return DepositGoldTask()
     elif waypoint['type'] == 'depositItems':

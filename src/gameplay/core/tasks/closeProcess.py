@@ -1,3 +1,4 @@
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -10,8 +11,6 @@ class CloseProcessTask(BaseTask):
         self.value = None
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         exit()
         return context

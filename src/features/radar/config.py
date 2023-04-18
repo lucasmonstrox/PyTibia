@@ -3,6 +3,7 @@ import pathlib
 from src.utils.core import hashit
 from src.utils.image import loadFromRGBToGray
 
+
 currentPath = pathlib.Path(__file__).parent.resolve()
 coordinates = {}
 dimensions = {

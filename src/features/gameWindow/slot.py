@@ -1,39 +1,36 @@
+from src.shared.typings import BBox, Slot
 import pyautogui
 
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getSlotPos(slot, gameWindowPos):
-    (gameWindowPosX, gameWindowPosY, gameWindowWidth, gameWindowHeight) = gameWindowPos
+def getSlotPosition(slot: Slot, gameWindowPosition: BBox) -> Slot:
+    (gameWindowPositionX, gameWindowPositionY, gameWindowWidth, gameWindowHeight) = gameWindowPosition
     (slotX, slotY) = slot
     slotHeight = gameWindowHeight // 11
     slotWidth = gameWindowWidth // 15
-    slotXCoordinate = gameWindowPosX + (slotX * slotWidth)
-    slotYCoordinate = gameWindowPosY + (slotY * slotHeight)
+    slotXCoordinate = gameWindowPositionX + (slotX * slotWidth)
+    slotYCoordinate = gameWindowPositionY + (slotY * slotHeight)
     return (slotXCoordinate, slotYCoordinate)
 
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def moveToSlot(slot, gameWindowPos):
-    slotXCoordinate, slotYCoordinate = getSlotPos(slot, gameWindowPos)
+def moveToSlot(slot: Slot, gameWindowPosition: BBox):
+    slotXCoordinate, slotYCoordinate = getSlotPosition(slot, gameWindowPosition)
     pyautogui.moveTo(slotXCoordinate, slotYCoordinate)
 
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def clickSlot(slot, gameWindowPos):
-    moveToSlot(slot, gameWindowPos)
+def clickSlot(slot: Slot, gameWindowPosition: BBox):
+    moveToSlot(slot, gameWindowPosition)
     pyautogui.click()
 
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def rightClickSlot(slot, gameWindowPos):
-    moveToSlot(slot, gameWindowPos)
+def rightClickSlot(slot: Slot, gameWindowPosition: BBox):
+    moveToSlot(slot, gameWindowPosition)
     pyautogui.rightClick()
 

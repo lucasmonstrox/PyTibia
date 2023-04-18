@@ -1,6 +1,7 @@
 import pyautogui
 from src.features.gameWindow.core import getSlotFromCoordinate, images, isHoleOpen
 from src.features.gameWindow.slot import clickSlot
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -13,18 +14,14 @@ class UseShovelTask(BaseTask):
         self.value = value
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def shouldIgnore(self, context):
+    def shouldIgnore(self, context: Context) -> bool:
         holeOpenImg = images[context['resolution']]['holeOpen']
         ignore = isHoleOpen(
             context['gameWindow']['img'], holeOpenImg, context['radar']['coordinate'], self.value['coordinate'])
         return ignore
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         slot = getSlotFromCoordinate(
             context['radar']['coordinate'], self.value['coordinate'])
         pyautogui.press(context['hotkeys']['shovel'])
@@ -32,9 +29,7 @@ class UseShovelTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def did(self, context):
+    def did(self, context: Context) -> bool:
         holeOpenImg = images[context['resolution']]['holeOpen']
         did = isHoleOpen(
             context['gameWindow']['img'], holeOpenImg, context['radar']['coordinate'], self.value['coordinate'])

@@ -1,6 +1,7 @@
 import pyautogui
 from src.features.gameWindow.core import getSlotFromCoordinate
 from src.features.gameWindow.slot import clickSlot
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -14,9 +15,7 @@ class UseRopeTask(BaseTask):
         self.value = value
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         slot = getSlotFromCoordinate(
             context['radar']['coordinate'], self.value['coordinate'])
         pyautogui.press(context['hotkeys']['rope'])

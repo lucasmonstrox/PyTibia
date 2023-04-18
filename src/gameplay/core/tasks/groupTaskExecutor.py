@@ -1,4 +1,5 @@
 from time import time
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -9,9 +10,7 @@ class GroupTaskExecutor(BaseTask):
         self.tasks = []
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         if self.status == 'completed':
             return context
         alreadyPing = False
@@ -73,9 +72,7 @@ class GroupTaskExecutor(BaseTask):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def markCurrentTaskAsCompleted(self, context):
+    def markCurrentTaskAsCompleted(self, context: Context):
         self.tasks[self.currentTaskIndex][1].status = 'completed'
         isntLastTask = self.currentTaskIndex < len(self.tasks) - 1
         if isntLastTask:

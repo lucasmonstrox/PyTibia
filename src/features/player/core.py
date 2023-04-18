@@ -1,4 +1,6 @@
 import pathlib
+from typing import Union
+from src.shared.typings import BBox, GrayImage
 from src.utils.core import cacheObjectPosition, locate
 from src.utils.image import loadFromRGBToGray
 
@@ -45,16 +47,15 @@ slowedImg = loadFromRGBToGray(f'{currentPath}/images/slowed.png')
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
 @cacheObjectPosition
-def getStopButtonPosition(screenshot):
+def getStopButtonPosition(screenshot: GrayImage) -> Union[BBox, None]:
     return locate(screenshot, stopImg)
 
 
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def getFightStatusContainer(screenshot, slotName):
+def getFightStatusContainer(screenshot: GrayImage, slotName):
     (left, top, _, _) = getStopButtonPosition(screenshot)
     fightStatusImgList = {
         'defensive-attack': (screenshot[top - 98: top - 98 + 30, left:left + 30], left, top - 98),
@@ -63,15 +64,13 @@ def getFightStatusContainer(screenshot, slotName):
         'holding-attack': (screenshot[top - 144: top - 144 + 30, left + 22: left + 22 + 30], left + 22, top - 144),
         'following-attack': (screenshot[top - 123: top - 123 + 30, left + 22: left + 22 + 30], left + 22, top - 123)
     }
-
     fightStatusImg = fightStatusImgList.get(slotName, None)
     return fightStatusImg
 
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getReadyForPvpContainer(screenshot):
+def getReadyForPvpContainer(screenshot: GrayImage) -> GrayImage:
     (left, top, _, _) = getStopButtonPosition(screenshot)
     top -= 72
     return screenshot[top: top + 20, left:left + 42], left, top
@@ -80,7 +79,7 @@ def getReadyForPvpContainer(screenshot):
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def getEquipmentContainer(screenshot, slotName):
+def getEquipmentContainer(screenshot: GrayImage, slotName):
     (left, top, _, _) = getStopButtonPosition(screenshot)
     equipList = {
         'backpack': (left - 42, top - 128),
@@ -101,7 +100,7 @@ def getEquipmentContainer(screenshot, slotName):
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def isEquipmentEquipped(screenshot, equipment):
+def isEquipmentEquipped(screenshot: GrayImage, equipment) -> bool:
     container = getEquipmentContainer(screenshot, equipment)
     emptyImgList = {
         'backpack': emptyBackPackImg,
@@ -123,8 +122,7 @@ def isEquipmentEquipped(screenshot, equipment):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getSpecialConditionsContainer(screenshot):
+def getSpecialConditionsContainer(screenshot: GrayImage) -> GrayImage:
     stopPos = getStopButtonPosition(screenshot)
     if stopPos is None:
         return None
@@ -135,7 +133,7 @@ def getSpecialConditionsContainer(screenshot):
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def hasSpecialCondition(screenshot, condition):
+def hasSpecialCondition(screenshot: GrayImage, condition) -> bool:
     specialConditionsContainer = getSpecialConditionsContainer(screenshot)
     cannotGetSpecialConditionsContainer = specialConditionsContainer is None
     if cannotGetSpecialConditionsContainer:

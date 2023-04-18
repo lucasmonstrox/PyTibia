@@ -1,5 +1,8 @@
 import pyautogui
+from typing import Union
+from src.shared.typings import BBox, GrayImage
 from src.utils.core import locate
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -12,17 +15,13 @@ class ScrollToItemTask(BaseTask):
         self.itemPosition = None
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def shouldIgnore(self, context):
+    def shouldIgnore(self, context: Context) -> bool:
         itemPosition = self.getItemPosition(context['screenshot'])
         isItemVisible = itemPosition is not None
         return isItemVisible
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         containerPosition = locate(context['screenshot'], self.value[0], confidence=0.8)
         x = containerPosition[0] + 10
         y = containerPosition[1] + 15
@@ -31,9 +30,7 @@ class ScrollToItemTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def ping(self, context):
+    def ping(self, context: Context) -> Context:
         itemPosition = self.getItemPosition(context['screenshot'])
         isItemVisible = itemPosition is not None
         if isItemVisible:
@@ -41,7 +38,5 @@ class ScrollToItemTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def getItemPosition(self, screenshot):
+    def getItemPosition(self, screenshot: GrayImage) -> Union[BBox, None]:
         return locate(screenshot, self.value[1], confidence=0.8)

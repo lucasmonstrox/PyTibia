@@ -1,4 +1,5 @@
 import pyautogui
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -11,9 +12,7 @@ class PressLogoutKeys(BaseTask):
         self.value = keys
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         with pyautogui.hold('ctrl'):
             pyautogui.press(['q'])
         return context

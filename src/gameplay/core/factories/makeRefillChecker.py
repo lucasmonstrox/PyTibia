@@ -1,9 +1,8 @@
+from typing import Tuple
 from ..tasks.refillChecker import RefillCheckerTask
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def makeRefillCheckerTask(phrase):
+def makeRefillCheckerTask(phrase: str) -> Tuple[str, RefillCheckerTask]:
     task = RefillCheckerTask(phrase)
     return ('refillChecker', task)

@@ -1,6 +1,7 @@
 import numpy as np
 from src.features.gameWindow.core import getSlotFromCoordinate
 from src.features.gameWindow.slot import clickSlot
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -13,18 +14,14 @@ class ClickInCoordinateTask(BaseTask):
         self.value = value
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         slot = getSlotFromCoordinate(
             context['radar']['coordinate'], self.value['coordinate'])
         clickSlot(slot, context['gameWindow']['coordinate'])
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def did(self, context):
+    def did(self, context: Context) -> bool:
         res = context['radar']['coordinate'] == context['cavebot']['waypoints']['state']['checkInCoordinate']
         did = np.all(res) == True
         return did

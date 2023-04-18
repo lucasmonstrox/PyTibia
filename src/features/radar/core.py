@@ -2,22 +2,24 @@ import numpy as np
 import pyautogui
 from scipy.spatial import distance
 import time
+from typing import Union
+from src.shared.typings import Coordinate, GrayImage
 from src.utils.core import getCoordinateFromPixel, getPixelFromCoordinate, hashit, hashitHex, locate
 from .config import coordinates, dimensions, floorsImgs, floorsLevelsImgsHashes, floorsPathsSqms, nonWalkablePixelsColors, walkableFloorsSqms
 from .extractors import getRadarImage
-from .locators import getRadarToolsPos
+from .locators import getRadarToolsPosition
+from .typings import FloorLevel
 
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
 # TODO: get by cached images coordinates hashes
-def getCoordinate(screenshot, previousCoordinate=None):
+def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate=None) -> Union[Coordinate, None]:
     floorLevel = getFloorLevel(screenshot)
     cannotGetFloorLevel = floorLevel is None
     if cannotGetFloorLevel:
         return None
-    radarToolsPos = getRadarToolsPos(screenshot)
+    radarToolsPos = getRadarToolsPosition(screenshot)
     cannotGetRadarToolsPos = radarToolsPos is None
     if cannotGetRadarToolsPos:
         return None
@@ -63,9 +65,8 @@ def getCoordinate(screenshot, previousCoordinate=None):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getFloorLevel(screenshot):
-    radarToolsPos = getRadarToolsPos(screenshot)
+def getFloorLevel(screenshot: GrayImage) -> Union[FloorLevel, None]:
+    radarToolsPos = getRadarToolsPosition(screenshot)
     radarToolsPosIsEmpty = radarToolsPos is None
     if radarToolsPosIsEmpty:
         return None
@@ -86,7 +87,7 @@ def getFloorLevel(screenshot):
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def getClosestWaypointIndexFromCoordinate(coordinate, waypoints):
+def getClosestWaypointIndexFromCoordinate(coordinate: Coordinate, waypoints):
     (xOfCoordinate, yOfCoordinate, floorLevel) = coordinate
     currentCoordinateWithoutFloor = [xOfCoordinate, yOfCoordinate]
     waypointsCoordinatesWithoutFloor = waypoints['coordinate'][:, :-1]
@@ -146,7 +147,7 @@ tilesFrictionsBreakpoints = {
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
+def getBreakpointTileMovementSpeed(charSpeed: int, tileFriction) -> int:
     # TODO: sometimes friction is not found
     if tileFriction in tilesFrictionsBreakpoints:
         breakpoints = tilesFrictionsBreakpoints[tileFriction]
@@ -161,7 +162,7 @@ def getBreakpointTileMovementSpeed(charSpeed, tileFriction):
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def getTileFrictionByCoordinate(coordinate):
+def getTileFrictionByCoordinate(coordinate: Coordinate):
     xOfPixelCoordinate, yOfPixelCoordinate = getPixelFromCoordinate(
         coordinate)
     floorLevel = coordinate[2]
@@ -172,25 +173,7 @@ def getTileFrictionByCoordinate(coordinate):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def goToCoordinate(screenshot, currentCoordinate, nextCoordinate):
-    (radarToolsPosX, radarToolsPosY, _, _) = getRadarToolsPos(screenshot)
-    x0 = radarToolsPosX - dimensions['width'] - 11
-    y0 = radarToolsPosY - 50
-    radarCenterX = x0 + dimensions['halfWidth']
-    radarCenterY = y0 + dimensions['halfHeight']
-    xdiff = nextCoordinate[0] - currentCoordinate[0]
-    ydiff = nextCoordinate[1] - currentCoordinate[1]
-    x = xdiff + radarCenterX
-    y = ydiff + radarCenterY
-    pyautogui.click(x, y)
-    time.sleep(0.25)
-
-
-# TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def isCloseToCoordinate(currentCoordinate, possibleCloseCoordinate, distanceTolerance=10):
+def isCloseToCoordinate(currentCoordinate: Coordinate, possibleCloseCoordinate: Coordinate, distanceTolerance: int=10) -> bool:
     (xOfCurrentCoordinate, yOfCurrentCoordinate, _) = currentCoordinate
     XYOfCurrentCoordinate = (xOfCurrentCoordinate, yOfCurrentCoordinate)
     (xOfPossibleCloseCoordinate, yOfPossibleCloseCoordinate, _) = possibleCloseCoordinate
@@ -204,9 +187,8 @@ def isCloseToCoordinate(currentCoordinate, possibleCloseCoordinate, distanceTole
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
 # TODO: 2 coordinates was tested. Is very hard too test all coordinates(16 floors * 2560 mapWidth * 2048 mapHeight = 83.886.080 pixels)
-def isCoordinateWalkable(coordinate):
+def isCoordinateWalkable(coordinate: Coordinate) -> bool:
     (xOfPixel, yOfPixel) = getPixelFromCoordinate(coordinate)
     return (walkableFloorsSqms[coordinate[2], yOfPixel, xOfPixel]) == 1
 
@@ -214,6 +196,6 @@ def isCoordinateWalkable(coordinate):
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def isNonWalkablePixelColor(pixelColor):
+def isNonWalkablePixelColor(pixelColor) -> bool:
     isNonWalkable = np.isin(pixelColor, nonWalkablePixelsColors)
     return isNonWalkable

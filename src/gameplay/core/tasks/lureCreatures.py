@@ -4,6 +4,7 @@ from src.features.gameWindow.creatures import getCreaturesGraph
 from src.features.gameWindow.typings import Creature
 from src.features.radar.typings import Coordinate
 from src.utils.coordinate import getDirectionBetweenCoordinates
+from ...typings import Context
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..factories.makeSingleWalkPress import makeSingleWalkPress
 from ..factories.makeWalk import makeWalkTask
@@ -21,7 +22,6 @@ class LureCreaturesTask(GroupTaskExecutor):
         self.tasks = np.array([], dtype=Task)
 
     # TODO: add unit tests
-    # TODO: add perf
     # TODO: add typings
     def getCreaturesByInverseGameWindowDirection(self, direction, creatures):
         inveserCreatures = []
@@ -44,9 +44,7 @@ class LureCreaturesTask(GroupTaskExecutor):
         return np.array(inveserCreatures, dtype=Creature)
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def ping(self, context):
+    def ping(self, context: Context) -> Context:
         # (X) gerar caminho para o lure point
         # recalcular apenas se aparecer novos monstros na tela
         nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
@@ -154,7 +152,5 @@ class LureCreaturesTask(GroupTaskExecutor):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def did(self, _):
+    def did(self, _: Context) -> bool:
         return False

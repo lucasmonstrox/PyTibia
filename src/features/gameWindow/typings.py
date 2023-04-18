@@ -1,4 +1,6 @@
+from nptyping import NDArray
 import numpy as np
+from typing import Any
 
 
 Creature = np.dtype([
@@ -10,3 +12,4 @@ Creature = np.dtype([
     ('windowCoordinate', np.uint32, (2,)),
     ('gameWindowCoordinate', np.uint32, (2,)),
 ])
+CreaturesList = NDArray[Any, Any]

@@ -1,11 +1,12 @@
+from typing import Tuple, Union
+from src.shared.typings import BBox, GrayImage
 from src.utils.core import hashit, locate
 from .config import arrowsImagesHashes, gameWindowCache, images
 
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getLeftArrowPosition(screenshot):
+def getLeftArrowPosition(screenshot: GrayImage) -> Union[BBox, None]:
     global gameWindowCache
     if gameWindowCache['left']['position'] is not None:
         images['arrows'][gameWindowCache['left']['arrow']]
@@ -32,8 +33,7 @@ def getLeftArrowPosition(screenshot):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getRightArrowPosition(screenshot):
+def getRightArrowPosition(screenshot: GrayImage) -> Union[BBox, None]:
     global gameWindowCache
     if gameWindowCache['right']['position'] is not None:
         images['arrows'][gameWindowCache['right']['arrow']]
@@ -60,8 +60,7 @@ def getRightArrowPosition(screenshot):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getCoordinate(screenshot, _):
+def getCoordinate(screenshot: GrayImage, _) -> Union[BBox, None]:
     global gameWindowCache
     leftArrowPosition = getLeftArrowPosition(screenshot)
     if leftArrowPosition is None:
@@ -76,16 +75,15 @@ def getCoordinate(screenshot, _):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getImageByCoordinate(screenshot, coordinates, gameWindowSize):
-    return screenshot[coordinates[1]:coordinates[1] +
-                     gameWindowSize[1], coordinates[0]:coordinates[0] + gameWindowSize[0]]
+def getImageByCoordinate(screenshot: GrayImage, coordinate, gameWindowSize) -> GrayImage:
+    return screenshot[coordinate[1]:coordinate[1] +
+                     gameWindowSize[1], coordinate[0]:coordinate[0] + gameWindowSize[0]]
 
 
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def getSlotFromCoordinate(currentCoordinate, coordinate):
+def getSlotFromCoordinate(currentCoordinate, coordinate) -> Union[Tuple[int, int], None]:
     diffX = coordinate[0] - currentCoordinate[0]
     diffXAbs = abs(diffX)
     if diffXAbs > 7:
@@ -101,8 +99,7 @@ def getSlotFromCoordinate(currentCoordinate, coordinate):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getSlotImg(gameWindowImg, slot, slotWidth):
+def getSlotImage(gameWindowImg: GrayImage, slot: Tuple[int, int], slotWidth: int) -> GrayImage:
     xOfSlot, yOfSlot = slot
     x = xOfSlot * slotWidth
     y = yOfSlot * slotWidth
@@ -113,10 +110,10 @@ def getSlotImg(gameWindowImg, slot, slotWidth):
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def isHoleOpen(gameWindowImg, holeOpenImg, coordinate, targetCoordinate):
+def isHoleOpen(gameWindowImg: GrayImage, holeOpenImg: GrayImage, coordinate, targetCoordinate) -> bool:
     slotWidth = len(gameWindowImg[1]) // 15
     slot = getSlotFromCoordinate(coordinate, targetCoordinate)
-    slotImg = getSlotImg(gameWindowImg, slot, slotWidth)
+    slotImg = getSlotImage(gameWindowImg, slot, slotWidth)
     holeOpenLocation = locate(slotImg, holeOpenImg)
     isOpen = holeOpenLocation is not None
     return isOpen

@@ -1,9 +1,9 @@
+from typing import Tuple
 from ..tasks.useRope import UseRopeTask
 
 
 # TODO: add unit tests
-# TODO: add perf
 # TODO: add typings
-def makeUseRopeTask(waypoint):
+def makeUseRopeTask(waypoint) -> Tuple[str, UseRopeTask]:
     task = UseRopeTask(waypoint)
     return ('useRope', task)

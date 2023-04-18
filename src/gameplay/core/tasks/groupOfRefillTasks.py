@@ -1,5 +1,6 @@
 import numpy as np
 from src.features.actionBar.core import getSlotCount
+from ...typings import Context
 from ..factories.makeBuyItemTask import makeBuyItemTask
 from ..factories.makeCloseNpcTradeBox import makeCloseNpcTradeBoxTask
 from ..factories.makeSay import makeSayTask
@@ -8,7 +9,7 @@ from .groupTaskExecutor import GroupTaskExecutor
 
 
 class GroupOfRefillTasks(GroupTaskExecutor):
-    def __init__(self, context, waypoint):
+    def __init__(self, context: Context, waypoint):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
@@ -17,9 +18,8 @@ class GroupOfRefillTasks(GroupTaskExecutor):
         self.value = waypoint
 
     # TODO: add unit tests
-    # TODO: add perf
     # TODO: add typings
-    def generateTasks(self, context, _):
+    def generateTasks(self, context: Context, _):
         # TODO: inherit from context bindings
         itemSlot = {
             'great health potion': 1,
@@ -53,9 +53,7 @@ class GroupOfRefillTasks(GroupTaskExecutor):
         ], dtype=Task)
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def onDidComplete(self, context):
+    def onDidComplete(self, context: Context) -> Context:
         labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.value['options']['waypointLabelToRedirect'])[0]
         if len(labelIndexes) == 0:
             # TODO: raise error

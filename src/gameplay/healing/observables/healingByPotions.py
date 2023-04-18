@@ -1,11 +1,10 @@
 from src.features.actionBar.core import slotIsAvailable
 from src.gameplay.core.tasks.usePotionTask import UsePotionGroupTask
+from ...typings import Context
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def healingByPotionsObservable(context):
+def healingByPotionsObservable(context: Context):
     if context['currentPotionHealing'] is not None:
         if context['currentPotionHealing'].status == 'completed':
             context['currentPotionHealing'] = None

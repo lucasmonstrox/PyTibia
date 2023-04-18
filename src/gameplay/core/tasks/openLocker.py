@@ -1,6 +1,7 @@
 from src.features.gameWindow.core import getSlotFromCoordinate
 from src.features.gameWindow.slot import rightClickSlot
 from src.features.inventory.core import isLockerOpen
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -11,22 +12,17 @@ class OpenLockerTask(BaseTask):
         self.name = 'openLockerTask'
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def shouldIgnore(self, context):
-        return isLockerOpen(context['screenshot'])
+    def shouldIgnore(self, context: Context) -> bool:
+        isOpen = isLockerOpen(context['screenshot'])
+        return isOpen
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         lockerCoordinate = context['deposit']['lockerCoordinate']
         slot = getSlotFromCoordinate(context['radar']['coordinate'], lockerCoordinate)
         rightClickSlot(slot, context['gameWindow']['coordinate'])
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def did(self, context):
+    def did(self, context: Context) -> bool:
         return isLockerOpen(context['screenshot'])

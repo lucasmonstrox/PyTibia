@@ -1,6 +1,7 @@
 from src.features.inventory.core import images
 from src.utils.core import locate
 from src.utils.mouse import mouseDrag
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -13,9 +14,7 @@ class DropBackpackIntoStashTask(BaseTask):
         self.value = backpack
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         backpackPosition = locate(context['screenshot'], images['slots'][self.value], confidence=0.8)
         stashPosition = locate(context['screenshot'], images['slots']['stash'])
         mouseDrag(backpackPosition[0], backpackPosition[1], stashPosition[0], stashPosition[1])

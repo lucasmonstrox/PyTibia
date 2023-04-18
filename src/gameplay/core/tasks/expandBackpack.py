@@ -1,6 +1,7 @@
 from src.features.inventory.core import images
 from src.utils.core import locate
 from src.utils.mouse import mouseDrag
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -14,9 +15,7 @@ class ExpandBackpackTask(BaseTask):
         self.value = backpackBarImage
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def do(self, context):
+    def do(self, context: Context) -> Context:
         backpackBarPosition = locate(context['screenshot'], self.value, confidence=0.8)
         y0 = backpackBarPosition[1]
         croppedImage = context['screenshot'][y0:, backpackBarPosition[0]:]
@@ -32,8 +31,6 @@ class ExpandBackpackTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
     # TODO: check if backpack is expanded
-    def did(self, context):
+    def did(self, context: Context) -> bool:
         return True

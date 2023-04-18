@@ -1,6 +1,7 @@
 import numpy as np
 import pyautogui
 from src.features.radar.typings import Coordinate
+from ...typings import Context
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
@@ -17,9 +18,7 @@ class GroupOfWalkTasks(GroupTaskExecutor):
         self.tasks = self.generateTasks(context, self.value)
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def generateTasks(self, context, waypointCoordinate):
+    def generateTasks(self, context: Context, waypointCoordinate):
         nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
         for monster in context['gameWindow']['monsters']:
             monsterCoordinateTuple = (monster['coordinate'][0], monster['coordinate'][1], monster['coordinate'][2])
@@ -39,9 +38,7 @@ class GroupOfWalkTasks(GroupTaskExecutor):
         return tasks
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def _ping(self, context):
+    def _ping(self, context: Context) -> Context:
         nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
         for monster in context['gameWindow']['monsters']:
             monsterCoordinateTuple = (monster['coordinate'][0], monster['coordinate'][1], monster['coordinate'][2])
@@ -59,9 +56,7 @@ class GroupOfWalkTasks(GroupTaskExecutor):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def did(self, _):
+    def did(self, _: Context) -> bool:
         for taskWithName in self.tasks:
             _, task = taskWithName
             if task.status != 'completed':

@@ -1,9 +1,8 @@
+from typing import Tuple
 from ..tasks.openDepot import OpenDepotTask
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def makeOpenDepotTask():
+def makeOpenDepotTask() -> Tuple[str, OpenDepotTask]:
     task = OpenDepotTask()
     return ('openDepot', task)

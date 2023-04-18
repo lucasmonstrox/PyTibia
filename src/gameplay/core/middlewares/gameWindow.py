@@ -4,12 +4,11 @@ from src.features.gameWindow.config import gameWindowSizes
 from src.features.gameWindow.core import getCoordinate, getImageByCoordinate
 from src.features.gameWindow.creatures import getCreatures, getCreaturesByType, getTargetCreature
 from src.features.gameWindow.typings import Creature
+from ...typings import Context
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def setDirection(gameContext):
+def setDirection(gameContext: Context) -> Context:
     if gameContext['radar']['previousCoordinate'] is None:
         gameContext['radar']['previousCoordinate'] = gameContext['radar']['coordinate']
     coordinate = gameContext['radar']['coordinate']
@@ -34,9 +33,7 @@ def setDirection(gameContext):
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def setHandleLoot(gameContext):
+def setHandleLoot(gameContext: Context) -> Context:
     # if chat.core.hasNewLoot(gameContext['screenshot']):
     #     if gameContext['cavebot']['targetCreature'] is not None:
     #         gameContext['loot']['corpsesToLoot'] = np.append(gameContext['loot']['corpsesToLoot'], [gameContext['cavebot']['targetCreature']], axis=0)
@@ -52,9 +49,7 @@ def setHandleLoot(gameContext):
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def setGameWindowMiddleware(gameContext):
+def setGameWindowMiddleware(gameContext: Context) -> Context:
     gameWindowSize = gameWindowSizes[gameContext['resolution']]
     gameContext['gameWindow']['coordinate'] = getCoordinate(
         gameContext['screenshot'], gameWindowSize)
@@ -64,9 +59,7 @@ def setGameWindowMiddleware(gameContext):
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def setGameWindowCreatures(gameContext):
+def setGameWindowCreatures(gameContext: Context) -> Context:
     beingAttackedCreatureCategory = getBeingAttackedCreatureCategory(gameContext['battleList']['creatures'])
     gameContext['battleList']['beingAttackedCreatureCategory'] = beingAttackedCreatureCategory
     gameContext['gameWindow']['creatures'] = getCreatures(

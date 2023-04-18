@@ -2,36 +2,26 @@ import pyautogui
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def leftClick(x, y):
+def leftClick(x: int, y: int):
     pyautogui.leftClick(x, y)
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def rightClick(x, y):
+def rightClick(x: int, y: int):
     pyautogui.rightClick(x, y)
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def mouseMove(x, y):
+def mouseMove(x: int, y: int):
     pyautogui.moveTo(x, y)
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def mouseScroll(scrolls):
+def mouseScroll(scrolls: int):
     pyautogui.vscroll(scrolls)
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def mouseDrag(x1, y1, x2, y2):
+def mouseDrag(x1: int, y1: int, x2: int, y2: int):
     pyautogui.moveTo(x1, y1)
     pyautogui.dragTo(x2, y2, button='left')

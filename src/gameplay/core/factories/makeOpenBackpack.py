@@ -1,9 +1,8 @@
+from typing import Tuple
 from ..tasks.openBackpack import OpenBackpackTask
 
 
 # TODO: add unit tests
-# TODO: add perf
-# TODO: add typings
-def makeOpenBackpackTask(backpack):
+def makeOpenBackpackTask(backpack: str) -> Tuple[str, OpenBackpackTask]:
     task = OpenBackpackTask(backpack)
     return ('openBackpack', task)

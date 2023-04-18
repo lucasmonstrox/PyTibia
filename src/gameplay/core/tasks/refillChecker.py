@@ -2,6 +2,7 @@ import numpy as np
 from src.features.actionBar.core import getSlotCount
 from src.features.skills.core import getCapacity
 from src.utils.array import getNextArrayIndex
+from ...typings import Context
 from .baseTask import BaseTask
 
 
@@ -13,9 +14,7 @@ class RefillCheckerTask(BaseTask):
         self.value = value
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def shouldIgnore(self, context):
+    def shouldIgnore(self, context: Context) -> bool:
         # TODO: get correct binds for health potion
         quantityOfHealthPotions = getSlotCount(context['screenshot'], 1)
         if quantityOfHealthPotions is None:
@@ -35,9 +34,7 @@ class RefillCheckerTask(BaseTask):
         return shouldIgnore
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def onIgnored(self, context):
+    def onIgnored(self, context: Context) -> Context:
         labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.value['options']['waypointLabelToRedirect'])[0]
         if len(labelIndexes) == 0:
             # TODO: raise error
@@ -48,9 +45,7 @@ class RefillCheckerTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    # TODO: add perf
-    # TODO: add typings
-    def onDidComplete(self, context):
+    def onDidComplete(self, context: Context) -> Context:
         nextWaypointIndex = getNextArrayIndex(
             context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])
         context['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex

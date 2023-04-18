@@ -1,5 +1,6 @@
 import numpy as np
 from src.features.inventory.core import images
+from ...typings import Context
 from ..factories.makeCloseContainer import makeCloseContainerTask
 from ..factories.makeDragItems import makeDragItemsTask
 from ..factories.makeDropBackpackIntoStash import makeDropBackpackIntoStashTask
@@ -23,9 +24,8 @@ class DepositItemsTask(GroupTaskExecutor):
         self.value = waypoint
 
     # TODO: add unit tests
-    # TODO: add perf
     # TODO: add typings
-    def generateTasks(self, context, waypoint):
+    def generateTasks(self, context: Context, waypoint):
         return np.array([
             makeGoToFreeDepotTask(context, waypoint),
             makeOpenLockerTask(),
