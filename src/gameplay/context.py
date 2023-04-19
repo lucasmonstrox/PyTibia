@@ -152,27 +152,27 @@ gameContext = {
         },
         'potions': {
             'firstHealthPotion': {
-                'enabled': False,
-                'hotkey': None,
-                'hpPercentageLessThanOrEqual': None,
+                'enabled': True,
+                'hotkey': 'f1',
+                'hpPercentageLessThanOrEqual': 50,
                 'manaPercentageGreaterThanOrEqual': None,
             },
             'secondHealthPotion': {
                 'enabled': False,
-                'hotkey': None,
-                'hpPercentageLessThanOrEqual': None,
+                'hotkey': 'f2',
+                'hpPercentageLessThanOrEqual': 70,
                 'manaPercentageGreaterThanOrEqual': None,
             },
             'thirdHealthPotion': {
-                'enabled': False,
-                'hotkey': None,
-                'hpPercentageLessThanOrEqual': None,
+                'enabled': True,
+                'hotkey': 'f2',
+                'hpPercentageLessThanOrEqual': 80,
                 'manaPercentageGreaterThanOrEqual': None,
             },
             'firstManaPotion': {
-                'enabled': False,
-                'hotkey': None,
-                'manaPercentageLessThanOrEqual': None,
+                'enabled': True,
+                'hotkey': '2',
+                'manaPercentageLessThanOrEqual': 80,
             },
             'secondManaPotion': {
                 'enabled': False,

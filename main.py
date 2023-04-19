@@ -114,11 +114,12 @@ def main():
         if gameContext['currentTask'] is not None:
             gameContext = gameContext['currentTask'].do(context)
         gameContext['radar']['lastCoordinateVisited'] = gameContext['radar']['coordinate']
-        
+
+    healingObserver = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
     comboSpellsObserver = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
 
     try:
-        # healingObserver.subscribe(healingByPotionsObservable)
+        healingObserver.subscribe(healingByPotionsObservable)
         # healingObserver.subscribe(healingBySpellsObservable)
         comboSpellsObserver.subscribe(comboSpellsObservable)
         gameplayObserver.subscribe(gameplayObservable)
