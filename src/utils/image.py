@@ -1,14 +1,12 @@
 import cv2
-from numba import njit
 import numpy as np
 from PIL import Image
 from src.shared.typings import GrayImage
 
 
 # TODO: add unit tests
-@njit(cache=True, fastmath=True)
-def convertGraysToBlack(arr: GrayImage) -> GrayImage:
-    return np.where(np.logical_and(arr >= 50, arr <= 100), 0, arr)
+def convertGraysToBlack(arr: np.ndarray) -> np.ndarray:
+    return np.array(np.where(np.logical_and(arr >= 50, arr <= 100), 0, arr), dtype=np.uint8)
 
 
 # TODO: add unit tests
