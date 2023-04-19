@@ -45,7 +45,6 @@ Only available for knights/paladin
 | Sell flasks               | :x:                |
 | Sell items                | :x:                |
 | Train                     | :x:                |
-| Train against slime       | :x:                |
 
 # ⚽ Goals
 

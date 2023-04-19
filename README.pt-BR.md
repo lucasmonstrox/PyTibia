@@ -37,7 +37,7 @@ Apenas disponível para knight/palaldin
 | Deposit non stacked items | :heavy_check_mark: |
 | Deposit stacked items     | :heavy_check_mark: |
 | Fish                      | :x:                |
-| Food eater                | :x:                |
+| Food eater                | :heavy_check_mark: |
 | Healing                   | :heavy_check_mark: |
 | Smart Targeting           | :heavy_check_mark: |
 | Refill                    | :heavy_check_mark: |
@@ -45,7 +45,6 @@ Apenas disponível para knight/palaldin
 | Sell flasks               | :x:                |
 | Sell items                | :x:                |
 | Train                     | :x:                |
-| Train against slime       | :x:                |
 
 # ⚽ Metas
 
