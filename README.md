@@ -18,16 +18,34 @@ This BOT ins't ready yet, this BOT still under construction.
 
 Be free to use any function to create your custom BOT or wait for the release of v0.
 
-# 🗺️ V0 Features
+# 🗺️ Features
 
-Only available for knights
+Only available for knights/paladin
 
-- Cavebot :heavy_check_mark:
-- Healing :heavy_check_mark:
-- Spell :heavy_check_mark:
-- Target :heavy_check_mark:
-- Gameplay by keyboard :heavy_check_mark:
-- UI :warning:
+| Features                  | Done               |
+| ------------------------- | ------------------ |
+| Alerts                    | :x:                |
+| Auto login                | :x:                |
+| Auto ring                 | :x:                |
+| Auto server save          | :x:                |
+| Cavebot                   | :heavy_check_mark: |
+| Combo Spells              | :heavy_check_mark: |
+| Drop flasks               | :heavy_check_mark: |
+| Deposit gold              | :heavy_check_mark: |
+| Deposit non stacked items | :heavy_check_mark: |
+| Deposit stacked items     | :heavy_check_mark: |
+| Fish                      | :x:                |
+| Food eater                | :x:                |
+| Healing                   | :x:                |
+| Smart Targeting           | :heavy_check_mark: |
+| Refill                    | :heavy_check_mark: |
+| Quick loot                | :heavy_check_mark: |
+| Sell flasks               | :x:                |
+| Sell items                | :x:                |
+| Train                     | :x:                |
+| Train against slime       | :x:                |
+| Walk by keyboard          | :heavy_check_mark: |
+| UI                        | :x:                |
 
 # ⚽ Goals
 
