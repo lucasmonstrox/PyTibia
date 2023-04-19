@@ -10,6 +10,8 @@ This BOT is all based on matrix calculation, also applies parallelism and also p
 
 This BOT also uses data structure, arrays, path finding, among other important things to have smart decisions and gameplay.
 
+This BOT walks by keyboard and make human mouse movimentation.
+
 I created this BOT to learn python, to stream on twitch, to make friends, to apply my knowledgments in deep learning, path finding, matrix, etc.
 
 I'm not going to sell subscription to this BOT, but it will work on "global" and you can use it, it's at your own risk.
@@ -36,7 +38,7 @@ Only available for knights/paladin
 | Deposit stacked items     | :heavy_check_mark: |
 | Fish                      | :x:                |
 | Food eater                | :x:                |
-| Healing                   | :x:                |
+| Healing                   | :heavy_check_mark: |
 | Smart Targeting           | :heavy_check_mark: |
 | Refill                    | :heavy_check_mark: |
 | Quick loot                | :heavy_check_mark: |
@@ -44,8 +46,6 @@ Only available for knights/paladin
 | Sell items                | :x:                |
 | Train                     | :x:                |
 | Train against slime       | :x:                |
-| Walk by keyboard          | :heavy_check_mark: |
-| UI                        | :x:                |
 
 # ⚽ Goals
 

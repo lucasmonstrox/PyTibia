@@ -10,6 +10,8 @@ O BOT é baseado em cálculo matricial, paralelismo, pré-processamento e cachea
 
 O BOT utiliza estrutura de dados, vetores, _pathfinding_, etc. e outras funcionalidades importantes para tomada de decisões inteligentes durante a _gameplay_.
 
+O BOT anda pelo teclado e faz movimentação humana através do mouse.
+
 Eu, Lucas, criei essa orquestra de funcionalidades para aprender a linguagem de programação python, fazer _lives_ na Twitch, amigos, enquanto aplico meus conhecimentos de _deep learning_, o já mencionado _pathfinding_, matrizes e mais.
 
 Não, eu **não** pretendo vender uma assinatura para o seu uso, porém ele funcionará no "global" e você muito provavelmente poderá usá-lo, sob sua total responsabilidade.
@@ -20,14 +22,30 @@ Sinta-se livre para utilizar de qualquer função, criar sua própria versão ou
 
 # 🗺️ Recursos
 
-Apenas disponível para cavaleiros
+Apenas disponível para knight/palaldin
 
-- Bot de Caverna :heavy_check_mark:
-- Cura :heavy_check_mark:
-- Spell :heavy_check_mark:
-- Target :heavy_check_mark:
-- Jogabilidade pelo teclado :heavy_check_mark:
-- Interface de Usuário :warning:
+| Features                  | Done               |
+| ------------------------- | ------------------ |
+| Alerts                    | :x:                |
+| Auto login                | :x:                |
+| Auto ring                 | :x:                |
+| Auto server save          | :x:                |
+| Cavebot                   | :heavy_check_mark: |
+| Combo Spells              | :heavy_check_mark: |
+| Drop flasks               | :heavy_check_mark: |
+| Deposit gold              | :heavy_check_mark: |
+| Deposit non stacked items | :heavy_check_mark: |
+| Deposit stacked items     | :heavy_check_mark: |
+| Fish                      | :x:                |
+| Food eater                | :x:                |
+| Healing                   | :heavy_check_mark: |
+| Smart Targeting           | :heavy_check_mark: |
+| Refill                    | :heavy_check_mark: |
+| Quick loot                | :heavy_check_mark: |
+| Sell flasks               | :x:                |
+| Sell items                | :x:                |
+| Train                     | :x:                |
+| Train against slime       | :x:                |
 
 # ⚽ Metas
 
