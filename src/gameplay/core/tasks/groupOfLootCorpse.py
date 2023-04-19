@@ -7,7 +7,7 @@ from ..factories.makeLootCorpse import makeLootCorpseTask
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 class GroupOfLootCorpseTasks(GroupTask):

@@ -2,7 +2,7 @@ import numpy as np
 from src.shared.typings import Waypoint
 from ..factories.makeRefillChecker import makeRefillCheckerTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 class GroupOfRefillCheckerTasks(GroupTask):

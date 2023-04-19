@@ -3,13 +3,13 @@ import pyautogui
 from ...typings import Context
 from ..typings import Task
 from .baseTask import BaseTask
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 class UseHotkeyGroupTask(GroupTask):
     def __init__(self, hotkey: str, delayAfterComplete: int=0):
         super().__init__()
-        self.name = 'usePotionGroup'
+        self.name = 'useHotkeyGroup'
         self.value = hotkey
         self.tasks = self.makeTasks(hotkey, delayAfterComplete)
 

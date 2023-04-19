@@ -4,7 +4,7 @@ from ...typings import Context
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 class GroupOfSingleWalkTasks(GroupTask):

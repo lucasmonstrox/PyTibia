@@ -5,7 +5,7 @@ from ...typings import Context
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 class GroupOfFollowTargetCreatureTasks(GroupTask):

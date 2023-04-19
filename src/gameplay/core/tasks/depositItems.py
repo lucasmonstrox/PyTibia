@@ -12,7 +12,7 @@ from ..factories.makeOpenLocker import makeOpenLockerTask
 from ..factories.makeScrollToItem import makeScrollToItemTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 class DepositItemsTask(GroupTask):

@@ -6,7 +6,7 @@ from ..factories.makeExpandBackpack import makeExpandBackpackTask
 from ..factories.makeOpenBackpack import makeOpenBackpackTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 class DropFlasksTask(GroupTask):

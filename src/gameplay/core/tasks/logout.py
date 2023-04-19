@@ -4,7 +4,7 @@ from ..tasks.closeProcess import CloseProcessTask
 from ..tasks.pauseBot import PauseBotTask
 from ..tasks.pressLogoutKeys import PressLogoutKeys
 from ..typings import Task
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 class LogoutTask(GroupTask):

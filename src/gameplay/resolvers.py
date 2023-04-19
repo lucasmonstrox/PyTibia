@@ -8,7 +8,7 @@ from .core.tasks.groupOfRefillChecker import GroupOfRefillCheckerTasks
 from .core.tasks.groupOfRefillTasks import GroupOfRefillTasks
 from .core.tasks.groupOfSingleWalk import GroupOfSingleWalkTasks
 from .core.tasks.groupOfWalk import GroupOfWalkTasks
-from .core.tasks.groupTaskExecutor import GroupTask
+from .core.tasks.groupTask import GroupTask
 from .core.tasks.logout import LogoutTask
 from .core.tasks.lureCreatures import LureCreaturesTask
 from .core.tasks.useRopeWaypoint import UseRopeWaypointTask

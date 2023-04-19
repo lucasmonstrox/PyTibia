@@ -3,7 +3,7 @@ from src.shared.typings import Waypoint
 from ..factories.makeUseRope import makeUseRopeTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 class UseRopeWaypointTask(GroupTask):

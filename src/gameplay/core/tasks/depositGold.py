@@ -2,7 +2,7 @@ import numpy as np
 from ..typings import Task
 from ..factories.makeSay import makeSayTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 # TODO: check if gold was deposited successfully

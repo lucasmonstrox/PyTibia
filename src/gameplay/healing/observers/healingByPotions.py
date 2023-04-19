@@ -1,6 +1,7 @@
 from src.features.actionBar.core import slotIsAvailable
 from src.gameplay.core.tasks.useHotkey import UseHotkeyGroupTask
 from ...typings import Context
+from ..utils.potions import matchHpHealing, matchManaHealing
 
 
 currentPotionHealingTask = None
@@ -13,7 +14,8 @@ def healingByPotionsObserver(context: Context):
         if currentPotionHealingTask.status == 'completed':
             currentPotionHealingTask = None
         else:
-            currentPotionHealingTask.do(context)
+            if currentPotionHealingTask.status == 'notStarted':
+                currentPotionHealingTask.do(context)
             return
     for potionType in ['firstHealthPotion', 'secondHealthPotion', 'thirdHealthPotion']:
         if context['healing']['potions'][potionType]['enabled']:
@@ -25,25 +27,3 @@ def healingByPotionsObserver(context: Context):
             if matchManaHealing(context['healing']['potions'][potionType], context['statusBar']) and slotIsAvailable(context['screenshot'], 1):
                 currentPotionHealingTask = UseHotkeyGroupTask(context['healing']['potions'][potionType]['hotkey'], delayAfterComplete=1)
                 return
-
-
-# TODO: add typings
-# TODO: add unit tests
-def matchHpHealing(healing, statusBar):
-    if healing['hpPercentageLessThanOrEqual'] is not None:
-        if statusBar['hpPercentage'] > healing['hpPercentageLessThanOrEqual']:
-            return False
-    if healing['manaPercentageGreaterThanOrEqual'] is not None:
-        if statusBar['hpPercentage'] < healing['manaPercentageGreaterThanOrEqual']:
-            return False
-    return True
-
-
-# TODO: add typings
-# TODO: add unit tests
-def matchManaHealing(healing, statusBar):
-    if healing['manaPercentageLessThanOrEqual'] is None:
-        return False
-    if statusBar['manaPercentage'] > healing['manaPercentageLessThanOrEqual']:
-        return False
-    return True

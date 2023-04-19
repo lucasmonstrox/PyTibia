@@ -4,7 +4,7 @@ from ..factories.makeClickInCoordinate import makeClickInCoordinateTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..factories.makeUseShovel import makeUseShovelTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 class UseShovelWaypointTask(GroupTask):

@@ -6,7 +6,7 @@ from ..factories.makeBuyItemTask import makeBuyItemTask
 from ..factories.makeCloseNpcTradeBox import makeCloseNpcTradeBoxTask
 from ..factories.makeSay import makeSayTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTask
+from .groupTask import GroupTask
 
 
 class GroupOfRefillTasks(GroupTask):
