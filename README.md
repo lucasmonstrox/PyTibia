@@ -97,8 +97,6 @@ poetry run python -m pytest
 - Add api docs
 - Add mypy
 - Add e2e tests into the tibia client
-- Add python typings
-- Add stress tests
 
 # 👷 Authors
 
