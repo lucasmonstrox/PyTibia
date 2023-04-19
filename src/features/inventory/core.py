@@ -6,7 +6,7 @@ from .config import images
 # TODO: add unit tests
 # TODO: add perf
 def isBackpackOpen(screenshot: GrayImage, name: str) -> bool:
-    backpackBarImage = images['backpacks'][name]
+    backpackBarImage = images['slots'][name]
     backpackBarPos = locate(screenshot, backpackBarImage)
     isOpen = backpackBarPos is not None
     return isOpen
