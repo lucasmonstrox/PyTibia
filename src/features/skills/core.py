@@ -18,6 +18,16 @@ def getCapacity(screenshot: GrayImage) -> Union[int, None]:
 
 
 # TODO: add unit tests
+# TODO: ad perf
+def getFood(screenshot: GrayImage) -> Union[int, None]:
+    xpBoostPosition = getXpBoostButtonPosition(screenshot)
+    if xpBoostPosition is None:
+        return None
+    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 89), xpBoostPosition[2], xpBoostPosition[3]
+    return getMinutesCount(screenshot, position)
+
+
+# TODO: add unit tests
 # PERF: [0.04967209999999955, 3.1599999999798456e-05]
 def getHp(screenshot: GrayImage) -> Union[int, None]:
     xpBoostPosition = getXpBoostButtonPosition(screenshot)
