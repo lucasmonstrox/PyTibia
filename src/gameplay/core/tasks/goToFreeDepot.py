@@ -48,7 +48,6 @@ class GoToFreeDepotTask(GroupTask):
         else:
             self.state = 'walkingIntoVisibleCoordinates'
             # - gerar caminho até visualizar os próximos depots se necessário
-            print('não tem')
         # -- Se sim
         # --- gerar caminho até a coordenada. Ficar pingando para verificar se alguem entra nesse tempo, cancela e calcula novamente.
         # -- Se não
