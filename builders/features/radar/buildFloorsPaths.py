@@ -1,5 +1,5 @@
 import numpy as np
-from src.features.radar.config import floors
+from src.repositories.radar.config import floors
 from src.utils.image import load
 
 

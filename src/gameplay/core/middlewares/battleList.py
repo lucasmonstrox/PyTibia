@@ -1,5 +1,5 @@
-from src.features.battleList.core import getCreatures, isAttackingSomeCreature
-from src.features.battleList.extractors import getContent
+from src.repositories.battleList.core import getCreatures, isAttackingSomeCreature
+from src.repositories.battleList.extractors import getContent
 from ...typings import Context
 
 

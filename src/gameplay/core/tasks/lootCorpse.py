@@ -1,9 +1,9 @@
 import numpy as np
 import pyautogui
 from ...typings import Context
-# from src.features.gameWindow.core import getSlotFromCoordinate
-from src.features.gameWindow.slot import rightClickSlot
-from src.features.gameWindow.typings import Creature
+# from src.repositories.gameWindow.core import getSlotFromCoordinate
+from src.repositories.gameWindow.slot import rightClickSlot
+from src.repositories.gameWindow.typings import Creature
 from .baseTask import BaseTask
 
 

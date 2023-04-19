@@ -1,4 +1,4 @@
-from src.features.chat.core import enableChatOff
+from src.repositories.chat.core import enableChatOff
 from ...typings import Context
 from .baseTask import BaseTask
 

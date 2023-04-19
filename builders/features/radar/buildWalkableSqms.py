@@ -1,6 +1,6 @@
 import numpy as np
-from src.features.radar.config import floors
-from src.features.radar.core import isNonWalkablePixelColor
+from src.repositories.radar.config import floors
+from src.repositories.radar.core import isNonWalkablePixelColor
 from src.utils.image import loadFromRGBToGray
 
 

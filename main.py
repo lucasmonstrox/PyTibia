@@ -17,7 +17,7 @@ from src.gameplay.resolvers import resolveTasksByWaypoint
 from src.gameplay.healing.observers.eatFood import eatFoodObserver
 from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserver
 from src.gameplay.healing.observers.healingByPotions import healingByPotionsObserver
-from src.features.gameWindow.creatures import getClosestCreature
+from src.repositories.gameWindow.creatures import getClosestCreature
 
 
 pyautogui.FAILSAFE = False

@@ -1,5 +1,5 @@
 import numpy as np
-from src.features.inventory.core import images
+from src.repositories.inventory.core import images
 from ...typings import Context
 from ..factories.makeDropEachFlask import makeDropEachFlaskTask
 from ..factories.makeExpandBackpack import makeExpandBackpackTask

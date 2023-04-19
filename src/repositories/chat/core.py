@@ -1,7 +1,7 @@
 import pathlib
 from typing import Tuple, Union
 from src.shared.typings import BBox, GrayImage
-# from src.features.gameWindow.core import getLeftSidebarArrows
+# from src.repositories.gameWindow.core import getLeftSidebarArrows
 from src.utils.core import cacheObjectPosition, hashit, locate, locateMultiple, press, typeKeyboard
 from src.utils.image import convertGraysToBlack, loadFromRGBToGray
 

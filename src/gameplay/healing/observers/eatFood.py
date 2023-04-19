@@ -1,6 +1,6 @@
-from src.features.actionBar.core import slotIsAvailable
-from src.features.skills.core import getFood
 from src.gameplay.core.tasks.useHotkey import UseHotkeyGroupTask
+from src.repositories.actionBar.core import slotIsAvailable
+from src.repositories.skills.core import getFood
 from ...typings import Context
 
 

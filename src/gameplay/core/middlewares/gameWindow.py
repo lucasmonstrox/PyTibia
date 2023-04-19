@@ -1,9 +1,9 @@
 import numpy as np
-from src.features.battleList.core import getBeingAttackedCreatureCategory
-from src.features.gameWindow.config import gameWindowSizes
-from src.features.gameWindow.core import getCoordinate, getImageByCoordinate
-from src.features.gameWindow.creatures import getCreatures, getCreaturesByType, getTargetCreature
-from src.features.gameWindow.typings import Creature
+from src.repositories.battleList.core import getBeingAttackedCreatureCategory
+from src.repositories.gameWindow.config import gameWindowSizes
+from src.repositories.gameWindow.core import getCoordinate, getImageByCoordinate
+from src.repositories.gameWindow.creatures import getCreatures, getCreaturesByType, getTargetCreature
+from src.repositories.gameWindow.typings import Creature
 from ...typings import Context
 
 
@@ -41,7 +41,7 @@ def setHandleLoot(gameContext: Context) -> Context:
     #     if hasSpelledExoriCategory:
     #         spellPath = getSpellPath(gameContext['comboSpells']['lastUsedSpell'])
     #         if len(spellPath) > 0:
-    #             differentCreatures = src.features.gameWindow.creatures.getDifferentCreaturesBySlots(gameContext['gameWindow']['previousMonsters'], gamecontext['gameWindow']['monsters'], spellPath)
+    #             differentCreatures = src.repositories.gameWindow.creatures.getDifferentCreaturesBySlots(gameContext['gameWindow']['previousMonsters'], gamecontext['gameWindow']['monsters'], spellPath)
     #             gameContext['loot']['corpsesToLoot'] = np.append(gameContext['loot']['corpsesToLoot'], differentCreatures, axis=0)
     #         gameContext['comboSpells']['lastUsedSpell'] = None
     gameContext['cavebot']['targetCreature'] = getTargetCreature(gameContext['gameWindow']['monsters'])

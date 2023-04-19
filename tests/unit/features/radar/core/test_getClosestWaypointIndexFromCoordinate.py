@@ -1,6 +1,6 @@
 import numpy as np
-from src.features.radar.core import getClosestWaypointIndexFromCoordinate
-from src.features.radar.typings import Waypoint
+from src.repositories.radar.core import getClosestWaypointIndexFromCoordinate
+from src.repositories.radar.typings import Waypoint
 
 
 def test_should_return_2_when_closest_waypoint_is_in_index_2():

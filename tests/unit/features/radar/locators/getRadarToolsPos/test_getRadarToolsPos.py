@@ -1,5 +1,5 @@
 import pathlib
-from src.features.radar.locators import getRadarToolsPosition
+from src.repositories.radar.locators import getRadarToolsPosition
 from src.utils.image import loadFromRGBToGray
 
 

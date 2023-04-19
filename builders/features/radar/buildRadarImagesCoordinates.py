@@ -1,6 +1,6 @@
 import numpy as np
-from src.features.radar.typings import CoordinateHash
-from src.features.radar.config import nonWalkablePixelsColors
+from src.repositories.radar.typings import CoordinateHash
+from src.repositories.radar.config import nonWalkablePixelsColors
 from src.utils.core import hashitHex
 from src.utils.image import loadFromRGBToGray
 

@@ -1,4 +1,4 @@
-from src.features.radar import config
+from src.repositories.radar import config
 from src.shared.typings import BBox, GrayImage
 
 

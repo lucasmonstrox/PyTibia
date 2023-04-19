@@ -1,5 +1,5 @@
 from typing import Union
-from src.features.gameWindow.creatures import getClosestCreature, hasTargetToCreature
+from src.repositories.gameWindow.creatures import getClosestCreature, hasTargetToCreature
 from .core.tasks.groupOfAttackClosestCreature import GroupOfAttackClosestCreatureTasks
 from .core.tasks.groupOfFollowTargetCreature import GroupOfFollowTargetCreatureTasks
 from .typings import Context

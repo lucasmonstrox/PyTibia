@@ -1,6 +1,6 @@
 import numpy as np
 import pathlib
-from src.features.actionBar.extractors import getCooldownsImage
+from src.repositories.actionBar.extractors import getCooldownsImage
 from src.utils.image import loadFromRGBToGray
 
 

@@ -1,5 +1,5 @@
-from src.features.statusBar.core import getManaPercentage, getHpPercentage
-from src.features.skills.core import getHp, getMana
+from src.repositories.skills.core import getHp, getMana
+from src.repositories.statusBar.core import getManaPercentage, getHpPercentage
 
 
 def setMapPlayerStatusMiddleware(context):

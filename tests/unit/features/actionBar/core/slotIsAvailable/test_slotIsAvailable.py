@@ -1,5 +1,5 @@
 import pathlib
-from src.features.actionBar.core import slotIsAvailable
+from src.repositories.actionBar.core import slotIsAvailable
 from src.utils.image import loadFromRGBToGray
 
 

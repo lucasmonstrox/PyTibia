@@ -1,8 +1,8 @@
 import numpy as np
 import pyautogui
 from time import time
-from src.features.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
-from src.features.skills.core import getSpeed
+from src.repositories.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
+from src.repositories.skills.core import getSpeed
 from src.utils.coordinate import getDirectionBetweenCoordinates
 from ...typings import Context
 from .baseTask import BaseTask

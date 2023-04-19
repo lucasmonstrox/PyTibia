@@ -1,5 +1,5 @@
 import pathlib
-from src.features.battleList.core import getFilledSlotsCount
+from src.repositories.battleList.core import getFilledSlotsCount
 from src.utils.image import loadFromRGBToGray
 
 

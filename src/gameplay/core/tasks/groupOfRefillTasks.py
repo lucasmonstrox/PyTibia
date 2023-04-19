@@ -1,5 +1,5 @@
 import numpy as np
-from src.features.actionBar.core import getSlotCount
+from src.repositories.actionBar.core import getSlotCount
 from src.shared.typings import Waypoint
 from ...typings import Context
 from ..factories.makeBuyItemTask import makeBuyItemTask

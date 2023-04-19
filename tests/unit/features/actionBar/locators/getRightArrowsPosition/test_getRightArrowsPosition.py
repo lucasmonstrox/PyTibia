@@ -1,5 +1,5 @@
 import pathlib
-from src.features.actionBar.locators import getRightArrowsPosition
+from src.repositories.actionBar.locators import getRightArrowsPosition
 from src.utils.image import loadFromRGBToGray
 
 

@@ -1,4 +1,4 @@
-from src.features.radar.core import isCoordinateWalkable
+from src.repositories.radar.core import isCoordinateWalkable
 
 
 def test_should_return_False_when_cordinate_is_not_walkable():

@@ -1,7 +1,7 @@
 import time
-from src.features.gameWindow.slot import getSlotPosition
-from src.features.inventory.config import slotsImagesHashes
-from src.features.inventory.core import images
+from src.repositories.gameWindow.slot import getSlotPosition
+from src.repositories.inventory.config import slotsImagesHashes
+from src.repositories.inventory.core import images
 from src.shared.typings import Slot
 from src.utils.core import hashit, locate
 from src.utils.mouse import mouseDrag

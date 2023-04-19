@@ -1,4 +1,4 @@
-from src.features.inventory.core import images
+from src.repositories.inventory.core import images
 from src.utils.core import locate
 from src.utils.mouse import mouseDrag
 from ...typings import Context

@@ -1,6 +1,6 @@
 import pyautogui
-from src.features.inventory.config import images
-from src.features.inventory.core import isBackpackOpen
+from src.repositories.inventory.config import images
+from src.repositories.inventory.core import isBackpackOpen
 from src.utils.core import locate
 from ...typings import Context
 from .baseTask import BaseTask

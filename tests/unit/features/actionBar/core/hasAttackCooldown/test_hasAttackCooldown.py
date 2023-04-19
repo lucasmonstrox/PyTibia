@@ -1,5 +1,5 @@
 import pathlib
-from src.features.actionBar.core import hasAttackCooldown
+from src.repositories.actionBar.core import hasAttackCooldown
 from src.utils.image import loadFromRGBToGray
 
 

@@ -1,6 +1,6 @@
 import numpy as np
 import pathlib
-from src.features.radar.extractors import getRadarImage
+from src.repositories.radar.extractors import getRadarImage
 from src.utils.image import loadFromRGBToGray
 
 

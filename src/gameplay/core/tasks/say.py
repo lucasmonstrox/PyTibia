@@ -1,4 +1,4 @@
-from src.features.chat.core import sendMessage
+from src.repositories.chat.core import sendMessage
 from ...typings import Context
 from .baseTask import BaseTask
 

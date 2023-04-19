@@ -1,5 +1,5 @@
-from src.features.actionBar.core import hasCooldownByName
 from src.gameplay.core.tasks.useHotkey import UseHotkeyGroupTask
+from src.repositories.actionBar.core import hasCooldownByName
 from ...typings import Context
 
 

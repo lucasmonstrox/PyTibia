@@ -1,5 +1,5 @@
 from typing import Union
-from src.features.radar import config
+from src.repositories.radar import config
 from src.shared.typings import BBox, GrayImage
 from src.utils.core import cacheObjectPosition, locate
 

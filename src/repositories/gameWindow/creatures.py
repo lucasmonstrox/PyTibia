@@ -6,8 +6,8 @@ import tcod
 from typing import List, Tuple, Union
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
-from src.features.radar.config import walkableFloorsSqms
-from src.features.radar.core import isCoordinateWalkable
+from src.repositories.radar.config import walkableFloorsSqms
+from src.repositories.radar.core import isCoordinateWalkable
 from src.shared.typings import Coordinate, GrayImage, Slot, SlotWidth, XYCoordinate
 from src.utils.core import getPixelFromCoordinate, hashitHex
 from src.utils.image import loadFromRGBToGray

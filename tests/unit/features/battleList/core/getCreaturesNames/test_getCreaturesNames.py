@@ -1,5 +1,5 @@
 import pathlib
-from src.features.battleList.core import getCreaturesNames
+from src.repositories.battleList.core import getCreaturesNames
 from src.utils.image import loadFromRGBToGray
 
 

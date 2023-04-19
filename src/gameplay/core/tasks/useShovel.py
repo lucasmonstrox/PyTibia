@@ -1,6 +1,6 @@
 import pyautogui
-from src.features.gameWindow.core import getSlotFromCoordinate, images, isHoleOpen
-from src.features.gameWindow.slot import clickSlot
+from src.repositories.gameWindow.core import getSlotFromCoordinate, images, isHoleOpen
+from src.repositories.gameWindow.slot import clickSlot
 from src.shared.typings import Waypoint
 from ...typings import Context
 from .baseTask import BaseTask

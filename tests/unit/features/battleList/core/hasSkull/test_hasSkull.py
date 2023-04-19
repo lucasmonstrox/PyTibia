@@ -1,7 +1,7 @@
 import numpy as np
 import pathlib
-from src.features.battleList.core import hasSkull
-from src.features.battleList.typings import Creature
+from src.repositories.battleList.core import hasSkull
+from src.repositories.battleList.typings import Creature
 from src.utils.image import loadFromRGBToGray
 
 

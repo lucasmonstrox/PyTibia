@@ -1,5 +1,5 @@
-from src.features.gameWindow.core import getSlotFromCoordinate
-from src.features.gameWindow.slot import rightClickSlot
+from src.repositories.gameWindow.core import getSlotFromCoordinate
+from src.repositories.gameWindow.slot import rightClickSlot
 from src.shared.typings import Waypoint
 from ...typings import Context
 from .baseTask import BaseTask

@@ -1,4 +1,4 @@
-from src.features.radar.core import isCloseToCoordinate
+from src.repositories.radar.core import isCloseToCoordinate
 
 
 def test_should_return_False_when_possible_cordinate_is_not_in_coordinate():

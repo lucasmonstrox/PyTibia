@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.spatial import distance
-from src.features.battleList.typings import CreatureList
+from src.repositories.battleList.typings import CreatureList
 from src.shared.typings import Coordinate, CoordinateList, Waypoint
 from src.wiki.cities import cities
 from ...typings import Context

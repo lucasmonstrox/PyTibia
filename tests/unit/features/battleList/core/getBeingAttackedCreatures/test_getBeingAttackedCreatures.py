@@ -1,5 +1,5 @@
 import pathlib
-from src.features.battleList.core import getBeingAttackedCreatures
+from src.repositories.battleList.core import getBeingAttackedCreatures
 from src.utils.image import loadFromRGBToGray
 
 

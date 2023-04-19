@@ -1,5 +1,5 @@
 import tcod
-from src.features.radar.config import walkableFloorsSqms
+from src.repositories.radar.config import walkableFloorsSqms
 from src.shared.typings import Coordinate, CoordinateList
 from src.utils.coordinate import getAvailableAroundCoordinates, getClosestCoordinate
 from src.utils.core import getPixelFromCoordinate

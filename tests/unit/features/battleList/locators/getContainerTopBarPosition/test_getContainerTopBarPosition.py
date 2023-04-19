@@ -1,5 +1,5 @@
 import pathlib
-from src.features.battleList.locators import getContainerTopBarPosition
+from src.repositories.battleList.locators import getContainerTopBarPosition
 from src.utils.image import loadFromRGBToGray
 
 

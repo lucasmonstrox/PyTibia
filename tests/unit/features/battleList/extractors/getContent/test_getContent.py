@@ -1,6 +1,6 @@
 import numpy as np
 import pathlib
-from src.features.battleList.extractors import getContent
+from src.repositories.battleList.extractors import getContent
 from src.utils.image import loadFromRGBToGray
 
 

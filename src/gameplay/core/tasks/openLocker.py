@@ -1,6 +1,6 @@
-from src.features.gameWindow.core import getSlotFromCoordinate
-from src.features.gameWindow.slot import rightClickSlot
-from src.features.inventory.core import isLockerOpen
+from src.repositories.gameWindow.core import getSlotFromCoordinate
+from src.repositories.gameWindow.slot import rightClickSlot
+from src.repositories.inventory.core import isLockerOpen
 from ...typings import Context
 from .baseTask import BaseTask
 

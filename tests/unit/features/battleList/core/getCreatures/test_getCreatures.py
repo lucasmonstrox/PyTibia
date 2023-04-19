@@ -1,6 +1,6 @@
 import numpy as np
-from src.features.battleList.core import getCreatures
-from src.features.battleList.typings import Creature
+from src.repositories.battleList.core import getCreatures
+from src.repositories.battleList.typings import Creature
 
 
 def test_should_return_an_empty_array_when_filled_slots_count_is_zero(mocker):

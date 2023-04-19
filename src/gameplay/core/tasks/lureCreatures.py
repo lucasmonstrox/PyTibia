@@ -1,8 +1,8 @@
 import numpy as np
 import pyautogui
-from src.features.gameWindow.creatures import getCreaturesGraph
-from src.features.gameWindow.typings import Creature, CreatureList
-from src.features.radar.typings import Coordinate
+from src.repositories.gameWindow.creatures import getCreaturesGraph
+from src.repositories.gameWindow.typings import Creature, CreatureList
+from src.repositories.radar.typings import Coordinate
 from src.shared.typings import Direction
 from src.utils.coordinate import getDirectionBetweenCoordinates
 from ...typings import Context

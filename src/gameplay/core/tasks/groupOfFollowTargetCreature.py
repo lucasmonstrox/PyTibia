@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.spatial import distance
-from src.features.radar.typings import Coordinate
+from src.repositories.radar.typings import Coordinate
 from ...typings import Context
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task

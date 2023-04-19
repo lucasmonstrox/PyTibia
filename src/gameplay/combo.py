@@ -1,8 +1,8 @@
 import pyautogui
 import time
 from src.gameplay.comboSpells.core import comboSpellDidMatch
-from src.features.actionBar.core import hasCooldownByName
-from src.features.gameWindow.creatures import getNearestCreaturesCount
+from src.repositories.actionBar.core import hasCooldownByName
+from src.repositories.gameWindow.creatures import getNearestCreaturesCount
 from src.utils.array import getNextArrayIndex
 from .typings import Context
 

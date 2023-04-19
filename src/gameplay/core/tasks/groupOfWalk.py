@@ -1,6 +1,6 @@
 import numpy as np
 import pyautogui
-from src.features.radar.typings import Coordinate
+from src.repositories.radar.typings import Coordinate
 from ...typings import Context
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..factories.makeWalk import makeWalkTask

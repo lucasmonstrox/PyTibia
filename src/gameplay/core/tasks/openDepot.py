@@ -1,5 +1,5 @@
 import pyautogui
-from src.features.inventory.core import images
+from src.repositories.inventory.core import images
 from src.utils.core import locate
 from ...typings import Context
 from .baseTask import BaseTask

@@ -1,5 +1,5 @@
 import pathlib
-from src.features.actionBar.core import hasHealingCooldown
+from src.repositories.actionBar.core import hasHealingCooldown
 from src.utils.image import loadFromRGBToGray
 
 

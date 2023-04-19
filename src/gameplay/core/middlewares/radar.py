@@ -1,4 +1,4 @@
-from src.features.radar.core import getClosestWaypointIndexFromCoordinate, getCoordinate
+from src.repositories.radar.core import getClosestWaypointIndexFromCoordinate, getCoordinate
 
 
 def setRadarMiddleware(gameContext):

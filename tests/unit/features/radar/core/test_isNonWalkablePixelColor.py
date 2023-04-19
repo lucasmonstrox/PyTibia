@@ -1,5 +1,5 @@
-from src.features.radar.config import pixelsColorsValues
-from src.features.radar.core import isNonWalkablePixelColor
+from src.repositories.radar.config import pixelsColorsValues
+from src.repositories.radar.core import isNonWalkablePixelColor
 
 
 def test_should_return_False_when_pixel_color_is_an_access_point():

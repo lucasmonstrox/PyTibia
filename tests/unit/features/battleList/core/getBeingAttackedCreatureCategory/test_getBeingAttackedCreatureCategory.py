@@ -1,6 +1,6 @@
 import numpy as np
-from src.features.battleList.core import getBeingAttackedCreatureCategory
-from src.features.battleList.typings import Creature
+from src.repositories.battleList.core import getBeingAttackedCreatureCategory
+from src.repositories.battleList.typings import Creature
 
 
 def test_should_return_None_when_there_are_no_creatures():

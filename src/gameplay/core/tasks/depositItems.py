@@ -1,5 +1,5 @@
 import numpy as np
-from src.features.inventory.core import images
+from src.repositories.inventory.core import images
 from src.shared.typings import Waypoint
 from ...typings import Context
 from ..factories.makeCloseContainer import makeCloseContainerTask
