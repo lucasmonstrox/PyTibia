@@ -3,10 +3,10 @@ from src.shared.typings import Waypoint
 from ..factories.makeUseRope import makeUseRopeTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class UseRopeWaypointTask(GroupTaskExecutor):
+class UseRopeWaypointTask(GroupTask):
     def __init__(self, _, waypoint: Waypoint):
         super().__init__()
         self.name = 'useRopeWaypoint'

@@ -12,4 +12,4 @@ Creature = np.dtype([
     ('windowCoordinate', np.uint32, (2,)),
     ('gameWindowCoordinate', np.uint32, (2,)),
 ])
-CreaturesList = NDArray[Any, Any]
+CreatureList = NDArray[Any, Any]

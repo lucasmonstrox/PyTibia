@@ -1,6 +1,6 @@
 import pyautogui
 from time import sleep
-from typing import Union
+from typing import Tuple, Union
 from src.shared.typings import BBox, GrayImage
 from src.utils.core import cacheObjectPosition, locate, getScreenshot, press
 from src.utils.image import crop
@@ -80,8 +80,7 @@ def clearSearchBox(screenshot: GrayImage):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def buyItem(screenshot: GrayImage, itemAndQuantity):
+def buyItem(screenshot: GrayImage, itemAndQuantity: Tuple[str, int]):
     (itemName, quantity) = itemAndQuantity
     findItem(screenshot, itemName)
     sleep(1)

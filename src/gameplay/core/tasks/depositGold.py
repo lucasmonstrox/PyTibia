@@ -2,11 +2,11 @@ import numpy as np
 from ..typings import Task
 from ..factories.makeSay import makeSayTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
 # TODO: check if gold was deposited successfully
-class DepositGoldTask(GroupTaskExecutor):
+class DepositGoldTask(GroupTask):
     def __init__(self):
         super().__init__()
         self.delayBeforeStart = 1

@@ -1,9 +1,9 @@
 from typing import Tuple
+from src.shared.typings import Waypoint
 from ..tasks.useShovel import UseShovelTask
 
 
 # TODO: add unit tests
-# TODO: add typings
-def makeUseShovelTask(waypoint) -> Tuple[str, UseShovelTask]:
+def makeUseShovelTask(waypoint: Waypoint) -> Tuple[str, UseShovelTask]:
     task = UseShovelTask(waypoint)
     return ('useShovel', task)

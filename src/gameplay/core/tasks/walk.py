@@ -3,21 +3,22 @@ import pyautogui
 from time import time
 from src.features.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from src.features.skills.core import getSpeed
+from src.shared.typings import Coordinate
 from src.utils.coordinate import getDirectionBetweenCoordinates
 from ...typings import Context
 from .baseTask import BaseTask
 
 
 class WalkTask(BaseTask):
-    def __init__(self, context, value):
+    def __init__(self, context: Context, coordinate: Coordinate):
         super().__init__()
         charSpeed = getSpeed(context['screenshot'])
-        tileFriction = getTileFrictionByCoordinate(value)
+        tileFriction = getTileFrictionByCoordinate(coordinate)
         movementSpeed = getBreakpointTileMovementSpeed(
             charSpeed, tileFriction)
         self.delayOfTimeout = (movementSpeed * 2) / 1000
         self.name = 'walk'
-        self.value = value
+        self.value = coordinate
 
     # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:

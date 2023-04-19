@@ -5,6 +5,7 @@ from .baseTask import BaseTask
 
 # TODO: check if item was bought
 class BuyItemTask(BaseTask):
+    # TODO: add types
     def __init__(self, itemNameWithQuantity):
         super().__init__()
         self.delayBeforeStart = 1

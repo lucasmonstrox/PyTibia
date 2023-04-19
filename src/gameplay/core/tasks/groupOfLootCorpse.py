@@ -7,11 +7,11 @@ from ..factories.makeLootCorpse import makeLootCorpseTask
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class GroupOfLootCorpseTasks(GroupTaskExecutor):
-    def __init__(self, context: Context, corpse):
+class GroupOfLootCorpseTasks(GroupTask):
+    def __init__(self, context: Context, corpse: Creature):
         super().__init__()
         self.name = 'groupOfLootCorpse'
         self.tasks = self.generateTasks(context, corpse)

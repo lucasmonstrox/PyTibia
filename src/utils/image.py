@@ -12,8 +12,7 @@ def convertGraysToBlack(arr: GrayImage) -> GrayImage:
 
 
 # TODO: add unit tests
-# TODO: add typings
-def RGBtoGray(image) -> GrayImage:
+def RGBtoGray(image: np.ndarray) -> GrayImage:
     return cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
 
@@ -34,6 +33,5 @@ def crop(img: GrayImage, x: int, y: int, width: int, height: int) -> GrayImage:
 
 
 # TODO: add unit tests
-# TODO: add typings
-def load(path: str):
+def load(path: str) -> np.ndarray:
     return np.array(cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2RGB), dtype=np.uint8)

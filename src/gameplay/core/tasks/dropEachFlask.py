@@ -10,7 +10,7 @@ from .baseTask import BaseTask
 
 
 class DropEachFlaskTask(BaseTask):
-    def __init__(self, backpack):
+    def __init__(self, backpack: str):
         super().__init__()
         self.delayOfTimeout = 1
         self.name = 'dropEachFlask'

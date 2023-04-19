@@ -1,9 +1,9 @@
 from typing import Tuple
+from src.shared.typings import Waypoint
 from ..tasks.useHole import UseHoleTask
 
 
 # TODO: add unit tests
-# TODO: add typings
-def makeUseHoleTask(waypoint) -> Tuple[str, UseHoleTask]:
+def makeUseHoleTask(waypoint: Waypoint) -> Tuple[str, UseHoleTask]:
     task = UseHoleTask(waypoint)
     return ('useHole', task)

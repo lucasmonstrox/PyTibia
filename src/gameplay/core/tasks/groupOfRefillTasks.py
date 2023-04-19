@@ -1,25 +1,26 @@
 import numpy as np
 from src.features.actionBar.core import getSlotCount
+from src.shared.typings import Waypoint
 from ...typings import Context
 from ..factories.makeBuyItemTask import makeBuyItemTask
 from ..factories.makeCloseNpcTradeBox import makeCloseNpcTradeBoxTask
 from ..factories.makeSay import makeSayTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class GroupOfRefillTasks(GroupTaskExecutor):
-    def __init__(self, context: Context, waypoint):
+class GroupOfRefillTasks(GroupTask):
+    def __init__(self, context: Context, waypoint: Waypoint):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
         self.name = 'groupOfRefill'
-        self.tasks = self.generateTasks(context, waypoint)
+        self.tasks = self.generateTasks(context)
         self.value = waypoint
 
     # TODO: add unit tests
     # TODO: add typings
-    def generateTasks(self, context: Context, _):
+    def generateTasks(self, context: Context):
         # TODO: inherit from context bindings
         itemSlot = {
             'great health potion': 1,

@@ -1,8 +1,9 @@
 import numpy as np
 import pyautogui
 from src.features.gameWindow.creatures import getCreaturesGraph
-from src.features.gameWindow.typings import Creature
+from src.features.gameWindow.typings import Creature, CreatureList
 from src.features.radar.typings import Coordinate
+from src.shared.typings import Direction
 from src.utils.coordinate import getDirectionBetweenCoordinates
 from ...typings import Context
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
@@ -10,10 +11,11 @@ from ..factories.makeSingleWalkPress import makeSingleWalkPress
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class LureCreaturesTask(GroupTaskExecutor):
+class LureCreaturesTask(GroupTask):
+    # TODO: add types
     def __init__(self, value):
         super().__init__()
         self.name = 'lureCreatures'
@@ -22,8 +24,7 @@ class LureCreaturesTask(GroupTaskExecutor):
         self.tasks = np.array([], dtype=Task)
 
     # TODO: add unit tests
-    # TODO: add typings
-    def getCreaturesByInverseGameWindowDirection(self, direction, creatures):
+    def getCreaturesByInverseGameWindowDirection(self, direction: Direction, creatures: CreatureList) -> CreatureList:
         inveserCreatures = []
         if direction == 'up':
             for creature in creatures:

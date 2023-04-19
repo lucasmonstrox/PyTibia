@@ -1,14 +1,12 @@
 import numpy as np
-import pyautogui
 from scipy.spatial import distance
-import time
 from typing import Union
-from src.shared.typings import Coordinate, GrayImage, Waypoint, WaypointList
+from src.shared.typings import Coordinate, GrayImage, GrayPixel, Waypoint, WaypointList
 from src.utils.core import getCoordinateFromPixel, getPixelFromCoordinate, hashit, hashitHex, locate
 from .config import coordinates, dimensions, floorsImgs, floorsLevelsImgsHashes, floorsPathsSqms, nonWalkablePixelsColors, walkableFloorsSqms
 from .extractors import getRadarImage
 from .locators import getRadarToolsPosition
-from .typings import FloorLevel
+from .typings import FloorLevel, TileFriction
 
 
 # TODO: add unit tests
@@ -145,8 +143,7 @@ tilesFrictionsBreakpoints = {
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getBreakpointTileMovementSpeed(charSpeed: int, tileFriction) -> int:
+def getBreakpointTileMovementSpeed(charSpeed: int, tileFriction: TileFriction) -> int:
     # TODO: sometimes friction is not found
     if tileFriction in tilesFrictionsBreakpoints:
         breakpoints = tilesFrictionsBreakpoints[tileFriction]
@@ -160,8 +157,7 @@ def getBreakpointTileMovementSpeed(charSpeed: int, tileFriction) -> int:
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getTileFrictionByCoordinate(coordinate: Coordinate):
+def getTileFrictionByCoordinate(coordinate: Coordinate) -> TileFriction:
     xOfPixelCoordinate, yOfPixelCoordinate = getPixelFromCoordinate(
         coordinate)
     floorLevel = coordinate[2]
@@ -194,7 +190,6 @@ def isCoordinateWalkable(coordinate: Coordinate) -> bool:
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def isNonWalkablePixelColor(pixelColor) -> bool:
+def isNonWalkablePixelColor(pixelColor: GrayPixel) -> bool:
     isNonWalkable = np.isin(pixelColor, nonWalkablePixelsColors)
     return isNonWalkable

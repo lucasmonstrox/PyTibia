@@ -3,11 +3,11 @@ import pyautogui
 from ...typings import Context
 from ..typings import Task
 from .baseTask import BaseTask
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class UsePotionGroupTask(GroupTaskExecutor):
-    def __init__(self, hotkey, delayAfterComplete=0):
+class UseHotkeyGroupTask(GroupTask):
+    def __init__(self, hotkey: str, delayAfterComplete: int=0):
         super().__init__()
         self.name = 'usePotionGroup'
         self.value = hotkey
@@ -17,12 +17,12 @@ class UsePotionGroupTask(GroupTaskExecutor):
     # TODO: add typings
     def makeTasks(self, hotkey, delayAfterComplete: int):
         return np.array([
-            UsePotionTask(hotkey, delayAfterComplete=delayAfterComplete),
+            UseHotkeyTask(hotkey, delayAfterComplete=delayAfterComplete),
         ], dtype=Task)
 
 
-class UsePotionTask(BaseTask):
-    def __init__(self, hotkey, delayAfterComplete=0):
+class UseHotkeyTask(BaseTask):
+    def __init__(self, hotkey: str, delayAfterComplete: int=0):
         super().__init__()
         self.delayAfterComplete = delayAfterComplete
         self.name = 'usePotionTask'

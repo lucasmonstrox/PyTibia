@@ -3,17 +3,18 @@ import pyautogui
 from ...typings import Context
 # from src.features.gameWindow.core import getSlotFromCoordinate
 from src.features.gameWindow.slot import rightClickSlot
+from src.features.gameWindow.typings import Creature
 from .baseTask import BaseTask
 
 
 # TODO: check if something was looted or exactly count was looted
 class LootCorpseTask(BaseTask):
-    def __init__(self, value):
+    def __init__(self, creature: Creature):
         super().__init__()
         self.delayBeforeStart = 0.25
         self.delayAfterComplete = 0.25
         self.name = 'lootCorpse'
-        self.value = value
+        self.value = creature
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:

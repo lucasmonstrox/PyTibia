@@ -1,3 +1,6 @@
+from typing import Union
+from src.shared.typings import Waypoint
+from .core.tasks.baseTask import BaseTask
 from .core.tasks.depositGold import DepositGoldTask
 from .core.tasks.depositItems import DepositItemsTask
 from .core.tasks.dropFlasks import DropFlasksTask
@@ -5,6 +8,7 @@ from .core.tasks.groupOfRefillChecker import GroupOfRefillCheckerTasks
 from .core.tasks.groupOfRefillTasks import GroupOfRefillTasks
 from .core.tasks.groupOfSingleWalk import GroupOfSingleWalkTasks
 from .core.tasks.groupOfWalk import GroupOfWalkTasks
+from .core.tasks.groupTaskExecutor import GroupTask
 from .core.tasks.logout import LogoutTask
 from .core.tasks.lureCreatures import LureCreaturesTask
 from .core.tasks.useRopeWaypoint import UseRopeWaypointTask
@@ -13,8 +17,7 @@ from .typings import Context
 
 
 # TODO: add unit tests
-# TODO: add typings
-def resolveTasksByWaypoint(context: Context, waypoint):
+def resolveTasksByWaypoint(context: Context, waypoint: Waypoint) -> Union[BaseTask, GroupTask]:
     if waypoint['type'] == 'depositGold':
         return DepositGoldTask()
     elif waypoint['type'] == 'depositItems':

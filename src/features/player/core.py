@@ -54,22 +54,6 @@ def getStopButtonPosition(screenshot: GrayImage) -> Union[BBox, None]:
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getFightStatusContainer(screenshot: GrayImage, slotName):
-    (left, top, _, _) = getStopButtonPosition(screenshot)
-    fightStatusImgList = {
-        'defensive-attack': (screenshot[top - 98: top - 98 + 30, left:left + 30], left, top - 98),
-        'balanced-attack': (screenshot[top - 123: top - 123 + 30, left:left + 30], left, top - 123),
-        'full-attack': (screenshot[top - 144: top - 144 + 30, left:left + 30], left, top - 144),
-        'holding-attack': (screenshot[top - 144: top - 144 + 30, left + 22: left + 22 + 30], left + 22, top - 144),
-        'following-attack': (screenshot[top - 123: top - 123 + 30, left + 22: left + 22 + 30], left + 22, top - 123)
-    }
-    fightStatusImg = fightStatusImgList.get(slotName, None)
-    return fightStatusImg
-
-
-# TODO: add unit tests
-# TODO: add perf
 def getReadyForPvpContainer(screenshot: GrayImage) -> GrayImage:
     (left, top, _, _) = getStopButtonPosition(screenshot)
     top -= 72
@@ -78,8 +62,7 @@ def getReadyForPvpContainer(screenshot: GrayImage) -> GrayImage:
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getEquipmentContainer(screenshot: GrayImage, slotName):
+def getEquipmentContainer(screenshot: GrayImage, slotName: str) -> GrayImage:
     (left, top, _, _) = getStopButtonPosition(screenshot)
     equipList = {
         'backpack': (left - 42, top - 128),
@@ -99,29 +82,6 @@ def getEquipmentContainer(screenshot: GrayImage, slotName):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def isEquipmentEquipped(screenshot: GrayImage, equipment) -> bool:
-    container = getEquipmentContainer(screenshot, equipment)
-    emptyImgList = {
-        'backpack': emptyBackPackImg,
-        'helmet': emptyHelmetImg,
-        'necklace': emptyNecklaceImg,
-        'weapon': emptyWeaponImg,
-        'shield': emptyShieldImg,
-        'armor': emptyArmorImg,
-        'ring': emptyRingImg,
-        'legs': emptyLegsIms,
-        'boots': emptyBootsImg,
-        'belt': emptyBeltImg
-    }
-    emptyImg = emptyImgList.get(equipment, None)
-    pos = locate(container, emptyImg)
-    cond = pos is None
-    return cond
-
-
-# TODO: add unit tests
-# TODO: add perf
 def getSpecialConditionsContainer(screenshot: GrayImage) -> GrayImage:
     stopPos = getStopButtonPosition(screenshot)
     if stopPos is None:
@@ -132,8 +92,7 @@ def getSpecialConditionsContainer(screenshot: GrayImage) -> GrayImage:
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def hasSpecialCondition(screenshot: GrayImage, condition) -> bool:
+def hasSpecialCondition(screenshot: GrayImage, condition: str) -> Union[bool, None]:
     specialConditionsContainer = getSpecialConditionsContainer(screenshot)
     cannotGetSpecialConditionsContainer = specialConditionsContainer is None
     if cannotGetSpecialConditionsContainer:

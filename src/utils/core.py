@@ -4,7 +4,7 @@ import numpy as np
 import pyautogui
 import random
 import time
-from typing import Union
+from typing import Callable, Union
 import xxhash
 from src.shared.typings import BBox, Coordinate, GrayImage, XYCoordinate
 
@@ -13,8 +13,7 @@ camera = dxcam.create(output_color='GRAY')
 
 
 # TODO: add unit tests
-# TODO: add typings
-def cacheObjectPosition(func):
+def cacheObjectPosition(func: Callable) -> Callable:
     lastX = None
     lastY = None
     lastW = None
@@ -55,14 +54,12 @@ def getPixelFromCoordinate(coordinate: Coordinate) -> XYCoordinate:
 
 
 # TODO: add unit tests
-# TODO: add typings
-def hashit(arr) -> int:
+def hashit(arr: np.ndarray) -> int:
     return xxhash.xxh64(np.ascontiguousarray(arr), seed=20220605).intdigest()
 
 
 # TODO: add unit tests
-# TODO: add typings
-def hashitHex(arr) -> str:
+def hashitHex(arr: np.ndarray) -> str:
     return xxhash.xxh64(np.ascontiguousarray(arr), seed=20220605).hexdigest()
 
 

@@ -1,6 +1,6 @@
 # TODO: add unit tests
 # TODO: add typings
-def healingDidMatch(healingItem, hp, mana) -> bool:
+def healingDidMatch(healingItem, hp: int, mana: int) -> bool:
     hpDidMatch = True
     manaDidMatch = True
     if healingItem['hp']['lessThan'] is not None:

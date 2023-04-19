@@ -5,12 +5,12 @@ from src.shared.typings import GrayImage
 from src.utils.core import hashit, locate
 from .config import creaturesNamesImagesHashes, skulls
 from .extractors import getCreaturesNamesImages
-from .typings import CreaturesList, Creature
+from .typings import CreatureList, Creature
 
 
 # PERF: [0.13737060000000056, 4.999999987376214e-07]
 @njit(cache=True, fastmath=True)
-def getBeingAttackedCreatureCategory(creatures: CreaturesList) -> Union[str, None]:
+def getBeingAttackedCreatureCategory(creatures: CreatureList) -> Union[str, None]:
     for creature in creatures:
         if creature['isBeingAttacked']:
             return creature['name']
@@ -34,7 +34,7 @@ def getBeingAttackedCreatures(content: GrayImage, filledSlotsCount: int) -> Gene
 
 
 # PERF: [0.00017040000000001498, 7.330000000038694e-05]
-def getCreatures(content: GrayImage) -> CreaturesList:
+def getCreatures(content: GrayImage) -> CreatureList:
     filledSlotsCount = getFilledSlotsCount(content)
     if filledSlotsCount == 0:
         return np.array([], dtype=Creature)
@@ -70,7 +70,7 @@ def getFilledSlotsCount(content: GrayImage) -> int:
 
 
 # PERF: [7.5999999999964984e-06, 7.999999986907369e-07]
-def hasSkull(content: GrayImage, creatures: CreaturesList) -> bool:
+def hasSkull(content: GrayImage, creatures: CreatureList) -> bool:
     for creatureIndex, creature in enumerate(creatures):
         if creature['name'] != 'Unknown':
             continue
@@ -91,7 +91,7 @@ def hasSkull(content: GrayImage, creatures: CreaturesList) -> bool:
 
 # PERF: [4.499999999296733e-06, 9.999999992515995e-07]
 @njit(cache=True, fastmath=True)
-def isAttackingSomeCreature(creatures: CreaturesList) -> bool:
+def isAttackingSomeCreature(creatures: CreatureList) -> bool:
     for isBeingAttacked in creatures['isBeingAttacked']:
         if isBeingAttacked:
             return True

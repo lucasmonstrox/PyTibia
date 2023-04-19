@@ -1,3 +1,4 @@
+from typing import Union
 from src.features.gameWindow.creatures import getClosestCreature, hasTargetToCreature
 from .core.tasks.groupOfAttackClosestCreature import GroupOfAttackClosestCreatureTasks
 from .core.tasks.groupOfFollowTargetCreature import GroupOfFollowTargetCreatureTasks
@@ -5,8 +6,7 @@ from .typings import Context
 
 
 # TODO: add unit tests
-# TODO: add typings
-def resolveCavebotTasks(context: Context):
+def resolveCavebotTasks(context: Context) -> Union[Union[GroupOfAttackClosestCreatureTasks, GroupOfFollowTargetCreatureTasks], None]:
     if context['cavebot']['isAttackingSomeCreature']:
         hasNoTargetCreature = context['cavebot']['targetCreature'] == None
         if hasNoTargetCreature:

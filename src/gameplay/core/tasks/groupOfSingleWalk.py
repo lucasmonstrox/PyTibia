@@ -4,10 +4,10 @@ from ...typings import Context
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class GroupOfSingleWalkTasks(GroupTaskExecutor):
+class GroupOfSingleWalkTasks(GroupTask):
     def __init__(self, context: Context, checkInCoordinate: Coordinate):
         super().__init__()
         self.delayAfterComplete = 2

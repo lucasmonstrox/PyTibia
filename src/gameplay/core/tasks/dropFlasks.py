@@ -6,10 +6,10 @@ from ..factories.makeExpandBackpack import makeExpandBackpackTask
 from ..factories.makeOpenBackpack import makeOpenBackpackTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class DropFlasksTask(GroupTaskExecutor):
+class DropFlasksTask(GroupTask):
     def __init__(self, context: Context):
         super().__init__()
         self.delayBeforeStart = 1

@@ -5,4 +5,4 @@ from typing import Any
 
 Creature = np.dtype([('name', np.str_, 64), ('isBeingAttacked', np.bool_)])
 # TODO: fix it
-CreaturesList = NDArray[Any, Any]
+CreatureList = NDArray[Any, Any]

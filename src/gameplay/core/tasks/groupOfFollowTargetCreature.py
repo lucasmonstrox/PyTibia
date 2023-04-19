@@ -5,10 +5,10 @@ from ...typings import Context
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class GroupOfFollowTargetCreatureTasks(GroupTaskExecutor):
+class GroupOfFollowTargetCreatureTasks(GroupTask):
     def __init__(self, context: Context):
         super().__init__()
         self.name = 'groupOfFollowTargetCreature'

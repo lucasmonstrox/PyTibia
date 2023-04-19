@@ -4,10 +4,10 @@ from ..tasks.closeProcess import CloseProcessTask
 from ..tasks.pauseBot import PauseBotTask
 from ..tasks.pressLogoutKeys import PressLogoutKeys
 from ..typings import Task
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class LogoutTask(GroupTaskExecutor):
+class LogoutTask(GroupTask):
     def __init__(self, context: Context):
         super().__init__()
         self.delayBeforeStart = 1

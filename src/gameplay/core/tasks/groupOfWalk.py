@@ -6,19 +6,19 @@ from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class GroupOfWalkTasks(GroupTaskExecutor):
-    def __init__(self, context, waypointCoordinate):
+class GroupOfWalkTasks(GroupTask):
+    def __init__(self, context: Context, coordinate: Coordinate):
         super().__init__()
         self.delayAfterComplete = 1
         self.name = 'groupOfWalk'
-        self.value = waypointCoordinate
+        self.value = coordinate
         self.tasks = self.generateTasks(context, self.value)
 
     # TODO: add unit tests
-    def generateTasks(self, context: Context, waypointCoordinate):
+    def generateTasks(self, context: Context, waypointCoordinate: Coordinate):
         nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
         for monster in context['gameWindow']['monsters']:
             monsterCoordinateTuple = (monster['coordinate'][0], monster['coordinate'][1], monster['coordinate'][2])

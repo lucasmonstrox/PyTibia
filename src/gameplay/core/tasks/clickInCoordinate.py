@@ -1,17 +1,18 @@
 import numpy as np
 from src.features.gameWindow.core import getSlotFromCoordinate
 from src.features.gameWindow.slot import clickSlot
+from src.shared.typings import Waypoint
 from ...typings import Context
 from .baseTask import BaseTask
 
 
 class ClickInCoordinateTask(BaseTask):
-    def __init__(self, value):
+    def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.5
         self.name = 'clickInCoordinate'
-        self.value = value
+        self.value = waypoint
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:

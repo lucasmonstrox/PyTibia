@@ -1,5 +1,5 @@
 from src.features.actionBar.core import slotIsAvailable
-from src.gameplay.core.tasks.usePotionTask import UsePotionGroupTask
+from src.gameplay.core.tasks.useHotkey import UseHotkeyGroupTask
 from ...typings import Context
 
 
@@ -13,5 +13,5 @@ def healingByPotionsObservable(context: Context):
             return
     if context['healing']['potions']['firstPriority']['enabled']:
         if context['statusBar']['hpPercentage'] < context['healing']['potions']['firstPriority']['hpPercentage'] and slotIsAvailable(context['screenshot'], 1):
-            context['currentPotionHealing'] = UsePotionGroupTask(context['healing']['potions']['firstPriority']['hotkey'], delayAfterComplete=1)
+            context['currentPotionHealing'] = UseHotkeyGroupTask(context['healing']['potions']['firstPriority']['hotkey'], delayAfterComplete=1)
             return

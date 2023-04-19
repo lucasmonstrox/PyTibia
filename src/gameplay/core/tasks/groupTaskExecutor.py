@@ -3,7 +3,7 @@ from ...typings import Context
 from .baseTask import BaseTask
 
 
-class GroupTaskExecutor(BaseTask):
+class GroupTask(BaseTask):
     def __init__(self):
         super().__init__()
         self.currentTaskIndex = 0

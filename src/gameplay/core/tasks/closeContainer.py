@@ -1,4 +1,5 @@
 import pyautogui
+from src.shared.typings import GrayImage
 from src.utils.core import locate
 from ...typings import Context
 from .baseTask import BaseTask
@@ -6,7 +7,7 @@ from .baseTask import BaseTask
 
 # TODO: check if container bar is hide
 class CloseContainerTask(BaseTask):
-    def __init__(self, containerBarImage):
+    def __init__(self, containerBarImage: GrayImage):
         super().__init__()
         self.delayAfterComplete = 1
         self.name = 'closeContainer'

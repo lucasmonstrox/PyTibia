@@ -7,7 +7,7 @@ from .baseTask import BaseTask
 
 # TODO: there is not way to check if items was moved to stash. try it soon
 class DropBackpackIntoStashTask(BaseTask):
-    def __init__(self, backpack):
+    def __init__(self, backpack: str):
         super().__init__()
         self.delayAfterComplete = 1
         self.name = 'dropBackpackIntoStash'

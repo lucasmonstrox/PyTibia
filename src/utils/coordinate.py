@@ -1,12 +1,12 @@
 import numpy as np
+from typing import List, Union
 from scipy.spatial import distance
 from src.shared.typings import Coordinate, CoordinateList, XYCoordinate
 from .core import getPixelFromCoordinate
 
 
 # TODO: add unit tests
-# TODO: add typings
-def getAroundPixelsCoordinates(pixelCoordinate: XYCoordinate):
+def getAroundPixelsCoordinates(pixelCoordinate: XYCoordinate) -> List[XYCoordinate]:
     aroundPixelsCoordinatesIndexes = np.array(
         [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]])
     pixelCoordinates = np.broadcast_to(
@@ -17,8 +17,7 @@ def getAroundPixelsCoordinates(pixelCoordinate: XYCoordinate):
 
 
 # TODO: add unit tests
-# TODO: add typings
-def getAvailableAroundPixelsCoordinates(aroundPixelsCoordinates, walkableFloorSqms):
+def getAvailableAroundPixelsCoordinates(aroundPixelsCoordinates: List[XYCoordinate], walkableFloorSqms: np.ndarray) -> List[XYCoordinate]:
     yPixelsCoordinates = aroundPixelsCoordinates[:, 1]
     xPixelsCoordinates = aroundPixelsCoordinates[:, 0]
     walkableFloorSqmsByPixelsCoordinates = walkableFloorSqms[yPixelsCoordinates,
@@ -30,8 +29,7 @@ def getAvailableAroundPixelsCoordinates(aroundPixelsCoordinates, walkableFloorSq
 
 
 # TODO: add unit tests
-# TODO: add typings
-def getAvailableAroundCoordinates(coordinate, walkableFloorSqms):
+def getAvailableAroundCoordinates(coordinate: Coordinate, walkableFloorSqms: np.ndarray) -> CoordinateList:
     floor = coordinate[2]
     pixelCoordinate = getPixelFromCoordinate(coordinate)
     aroundPixelsCoordinates = getAroundPixelsCoordinates(pixelCoordinate)
@@ -60,7 +58,7 @@ def getClosestCoordinate(coordinate: Coordinate, coordinates: CoordinateList) ->
 
 
 # TODO: add unit tests
-def getDirectionBetweenCoordinates(coordinate: Coordinate, nextCoordinate: Coordinate) -> 'right' | 'left' | 'down' | 'up' | None:
+def getDirectionBetweenCoordinates(coordinate: Coordinate, nextCoordinate: Coordinate) -> Union[str, None]:
     (xOfCurrentCoordinate, yOfCurrentCoordinate, _) = coordinate
     (xOfNextWaypointCoordinate, yOfNextWaypointCoordinate, _) = nextCoordinate
     if xOfCurrentCoordinate < xOfNextWaypointCoordinate:

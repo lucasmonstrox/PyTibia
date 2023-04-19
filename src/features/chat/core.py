@@ -50,8 +50,7 @@ def hasNewLoot(screenshot: GrayImage) -> bool:
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getLootLines(screenshot: GrayImage):
+def getLootLines(screenshot: GrayImage) -> GrayImage:
     (x, y, w, h) = getChatMessagesContainerPos(screenshot)
     messages = screenshot[y: y + h, x: x + w]
     lootLines = locateMultiple(lootOfTextImg, messages)

@@ -1,4 +1,5 @@
 from src.features.inventory.core import images
+from src.shared.typings import GrayImage
 from src.utils.core import locate
 from src.utils.mouse import mouseDrag
 from ...typings import Context
@@ -6,7 +7,7 @@ from .baseTask import BaseTask
 
 
 class ExpandBackpackTask(BaseTask):
-    def __init__(self, backpackBarImage):
+    def __init__(self, backpackBarImage: GrayImage):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1

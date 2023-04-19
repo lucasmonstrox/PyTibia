@@ -1,15 +1,16 @@
 import numpy as np
 from scipy.spatial import distance
+from src.features.battleList.typings import CreatureList
 from src.shared.typings import Coordinate, CoordinateList, Waypoint
 from src.wiki.cities import cities
 from ...typings import Context
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class GoToFreeDepotTask(GroupTaskExecutor):
+class GoToFreeDepotTask(GroupTask):
     def __init__(self, context: Context, waypoint: Waypoint):
         super().__init__()
         self.didTask = False
@@ -57,8 +58,7 @@ class GoToFreeDepotTask(GroupTaskExecutor):
         return []
 
     # TODO: add unit tests
-    # TODO: add typings
-    def getFreeDepotCoordinates(self, battleListPlayers, visibleDepotCoordinates: CoordinateList) -> CoordinateList:
+    def getFreeDepotCoordinates(self, battleListPlayers: CreatureList, visibleDepotCoordinates: CoordinateList) -> CoordinateList:
         hasNoPlayers = len(battleListPlayers) == 0
         if hasNoPlayers:
             return visibleDepotCoordinates

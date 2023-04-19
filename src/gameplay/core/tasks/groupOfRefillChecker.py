@@ -2,11 +2,11 @@ import numpy as np
 from src.shared.typings import Waypoint
 from ..factories.makeRefillChecker import makeRefillCheckerTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class GroupOfRefillCheckerTasks(GroupTaskExecutor):
-    def __init__(self, waypoint):
+class GroupOfRefillCheckerTasks(GroupTask):
+    def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1

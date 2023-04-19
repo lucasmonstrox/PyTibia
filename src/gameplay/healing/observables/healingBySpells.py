@@ -1,5 +1,5 @@
 from src.features.actionBar.core import hasCooldownByName, slotIsAvailable
-from src.gameplay.core.tasks.usePotionTask import UsePotionGroupTask
+from src.gameplay.core.tasks.useHotkey import UseHotkeyGroupTask
 from ...typings import Context
 
 
@@ -23,13 +23,13 @@ def healingBySpellsObservable(context: Context):
     if context['healing']['spells']['utura']['enabled']:
         if didMatchHealthAndMana(context['statusBar'], context['healing']['spells']['utura']):
             if slotIsAvailable(context['screenshot'], 13) and not hasCooldownByName(context['screenshot'], 'utura'):
-                context['currentSpellHealing'] = UsePotionGroupTask(context['healing']['spells']['utura']['hotkey'])
+                context['currentSpellHealing'] = UseHotkeyGroupTask(context['healing']['spells']['utura']['hotkey'])
                 return
     # TODO: introduzir healing cooldown
     for spellHealing in ['criticalHealing', 'lightHealing']:
         if context['healing']['spells'][spellHealing]['enabled']:
             if context['statusBar']['mana'] > context['healing']['spells'][spellHealing]['metadata']['manaNeeded'] and not hasCooldownByName(context['screenshot'], context['healing']['spells'][spellHealing]['metadata']['spellName']):
-                context['currentSpellHealing'] = UsePotionGroupTask(context['healing']['spells'][spellHealing]['hotkey'])
+                context['currentSpellHealing'] = UseHotkeyGroupTask(context['healing']['spells'][spellHealing]['hotkey'])
                 return
     # hasHealingCooldown = src.features.actionBar.core.hasHealingCooldown(context['screenshot'])
     # keysToPress = []

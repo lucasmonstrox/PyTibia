@@ -4,6 +4,7 @@ from .baseTask import BaseTask
 
 
 class PressLogoutKeys(BaseTask):
+    # TODO: add types
     def __init__(self, keys):
         super().__init__()
         self.delayBeforeStart = 1

@@ -1,5 +1,5 @@
 from typing import Tuple, Union
-from src.shared.typings import BBox, GrayImage
+from src.shared.typings import BBox, Coordinate, GrayImage, Slot
 from src.utils.core import hashit, locate
 from .config import arrowsImagesHashes, gameWindowCache, images
 
@@ -82,8 +82,7 @@ def getImageByCoordinate(screenshot: GrayImage, coordinate, gameWindowSize) -> G
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getSlotFromCoordinate(currentCoordinate, coordinate) -> Union[Tuple[int, int], None]:
+def getSlotFromCoordinate(currentCoordinate: Coordinate, coordinate: Coordinate) -> Union[Slot, None]:
     diffX = coordinate[0] - currentCoordinate[0]
     diffXAbs = abs(diffX)
     if diffXAbs > 7:
@@ -109,8 +108,7 @@ def getSlotImage(gameWindowImg: GrayImage, slot: Tuple[int, int], slotWidth: int
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def isHoleOpen(gameWindowImg: GrayImage, holeOpenImg: GrayImage, coordinate, targetCoordinate) -> bool:
+def isHoleOpen(gameWindowImg: GrayImage, holeOpenImg: GrayImage, coordinate: Coordinate, targetCoordinate: Coordinate) -> bool:
     slotWidth = len(gameWindowImg[1]) // 15
     slot = getSlotFromCoordinate(coordinate, targetCoordinate)
     slotImg = getSlotImage(gameWindowImg, slot, slotWidth)

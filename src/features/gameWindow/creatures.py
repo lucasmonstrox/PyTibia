@@ -3,16 +3,17 @@ from numba import njit
 import numpy as np
 import pathlib
 import tcod
+from typing import List, Tuple, Union
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 from src.features.radar.config import walkableFloorsSqms
 from src.features.radar.core import isCoordinateWalkable
-from src.shared.typings import Coordinate, GrayImage, Slot
+from src.shared.typings import Coordinate, GrayImage, Slot, SlotWidth, XYCoordinate
 from src.utils.core import getPixelFromCoordinate, hashitHex
 from src.utils.image import loadFromRGBToGray
 from src.utils.matrix import getAdjacencyMatrix, hasMatrixInsideOther
 from src.wiki.creatures import creatures as wikiCreatures
-from .typings import Creature, CreaturesList
+from .typings import Creature, CreatureList
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
@@ -38,7 +39,7 @@ for creature in wikiCreatures:
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def getClosestCreature(gameWindowCreatures: CreaturesList, coordinate: Coordinate):
+def getClosestCreature(gameWindowCreatures: CreatureList, coordinate: Coordinate):
     if len(gameWindowCreatures) == 0:
         return None
     gameWindowWalkableFloorsSqms = getGameWindowWalkableFloorsSqms(
@@ -115,7 +116,7 @@ def getCreaturesBars(gameWindowImage: GrayImage):
 # TODO: maximum creatures allowed should be equal battle list size
 # TODO: Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
 # TODO: Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars
-def getCreatures(battleListCreatures, direction, gameWindowCoordinate, gameWindowImage, coordinate, beingAttackedCreatureCategory=None, walkedPixelsInSqm=0):
+def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordinate, gameWindowImage: GrayImage, coordinate: Coordinate, beingAttackedCreatureCategory: str=None, walkedPixelsInSqm: int=0):
     if len(battleListCreatures) == 0:
         return np.array([], dtype=Creature)
     creaturesBars = [creatureBar for creatureBar in getCreaturesBars(gameWindowImage)]
@@ -204,14 +205,14 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate, gameWindo
 # TODO: add perf
 # TODO: add typings
 # TODO: change to for loop with numba
-def getCreaturesByType(gameWindowCreatures: CreaturesList, creatureType):
+def getCreaturesByType(gameWindowCreatures: CreatureList, creatureType):
     return gameWindowCreatures[gameWindowCreatures['type'] == creatureType]
 
 
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def getCreaturesGraph(gameWindowCreatures: CreaturesList, coordinate: Coordinate):
+def getCreaturesGraph(gameWindowCreatures: CreatureList, coordinate: Coordinate):
     floorLevel = gameWindowCreatures[0]['coordinate'][2]
     walkableFloorsSqms = walkableFloorsSqms[floorLevel]
     gameWindowWalkableFloorsSqms = getGameWindowWalkableFloorsSqms(
@@ -227,9 +228,8 @@ def getCreaturesGraph(gameWindowCreatures: CreaturesList, coordinate: Coordinate
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
 # TODO: improve performance
-def getDifferentCreaturesBySlots(previousGameWindowCreatures: CreaturesList, currentGameWindowCreatures: CreaturesList, slots):
+def getDifferentCreaturesBySlots(previousGameWindowCreatures: CreatureList, currentGameWindowCreatures: CreatureList, slots: List[Slot]) -> CreatureList:
     previousGameWindowCreaturesBySlots = np.array(
         [], dtype=Creature)
     currentGameWindowCreaturesBySlots = np.array(
@@ -261,8 +261,7 @@ def getDifferentCreaturesBySlots(previousGameWindowCreatures: CreaturesList, cur
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getGameWindowWalkableFloorsSqms(walkableFloorsSqms, coordinate: Coordinate):
+def getGameWindowWalkableFloorsSqms(walkableFloorsSqms: np.ndarray, coordinate: Coordinate) -> np.ndarray:
     (xOfPixelCoordinate, yOfPixelCoordinate) = getPixelFromCoordinate(
         coordinate)
     return walkableFloorsSqms[yOfPixelCoordinate -
@@ -273,7 +272,7 @@ def getGameWindowWalkableFloorsSqms(walkableFloorsSqms, coordinate: Coordinate):
 # TODO: add perf
 # TODO: if something is already compared, avoid it. Check if it is faster
 @njit(cache=True, fastmath=True)
-def getNearestCreaturesCount(creatures: CreaturesList) -> int:
+def getNearestCreaturesCount(creatures: CreatureList) -> int:
     nearestCreaturesCount = 0
     for creatureSlot in creatures['slot']:
         if (creatureSlot[0] == 6 and creatureSlot[1] == 4) or (creatureSlot[0] == 7 and creatureSlot[1] == 4) or (creatureSlot[0] == 8 and creatureSlot[1] == 4) or (creatureSlot[0] == 6 and creatureSlot[1] == 5) or (creatureSlot[0] == 8 and creatureSlot[1] == 5) or (creatureSlot[0] == 6 and creatureSlot[1] == 6) or (creatureSlot[0] == 7 and creatureSlot[1] == 6) or (creatureSlot[0] == 8 and creatureSlot[1] == 6):
@@ -284,7 +283,7 @@ def getNearestCreaturesCount(creatures: CreaturesList) -> int:
 # TODO: add unit tests
 # TODO: add perf
 @njit(cache=True, fastmath=True)
-def getTargetCreature(gameWindowCreatures: CreaturesList):
+def getTargetCreature(gameWindowCreatures: CreatureList):
     if len(gameWindowCreatures) == 0:
         return None
     for gameWindowCreature in gameWindowCreatures:
@@ -294,7 +293,7 @@ def getTargetCreature(gameWindowCreatures: CreaturesList):
 
 # TODO: add unit tests
 # TODO: add perf
-def hasTargetToCreatureBySlot(gameWindowCreatures: CreaturesList, slot: Slot, coordinate: Coordinate) -> bool:
+def hasTargetToCreatureBySlot(gameWindowCreatures: CreatureList, slot: Slot, coordinate: Coordinate) -> bool:
     if len(gameWindowCreatures) == 0:
         return False
     xOfCoordinate, yOfCoordinate, floorLevel = coordinate
@@ -316,7 +315,7 @@ def hasTargetToCreatureBySlot(gameWindowCreatures: CreaturesList, slot: Slot, co
 
 # TODO: add unit tests
 # TODO: add perf
-def hasTargetToCreature(gameWindowCreatures: CreaturesList, gameWindowCreature: Creature, coordinate: Coordinate) -> bool:
+def hasTargetToCreature(gameWindowCreatures: CreatureList, gameWindowCreature: Creature, coordinate: Coordinate) -> bool:
     hasTarget = hasTargetToCreatureBySlot(
         gameWindowCreatures, gameWindowCreature['slot'], coordinate)
     return hasTarget
@@ -363,7 +362,7 @@ def isCreatureBeingAttacked(gameWindowImage: GrayImage, borderX: int, yOfCreatur
 # TODO: windowCoordinate should be improved for gameWindow edges
 # TODO: detect being attacked creature by category
 # TODO: since there is only one creature in gameWindow and one in battleList being attacked, avoid computing if creature is being attacked on gameWindow
-def makeCreature(creatureName: str, creatureType, creatureBar, direction, gameWindowCoordinate, gameWindowImage, coordinate, slotWidth, discoverTarget=True, beingAttackedCreatureCategory=None, walkedPixelsInSqm=0):
+def makeCreature(creatureName: str, creatureType: str, creatureBar: Tuple[int, int], direction: str, gameWindowCoordinate: XYCoordinate, gameWindowImage: GrayImage, coordinate: Coordinate, slotWidth: SlotWidth, discoverTarget: bool=True, beingAttackedCreatureCategory: Union[str, None]=None, walkedPixelsInSqm: int=0):
     isBigGameWindow = slotWidth == 64
     gameWindowMisalignment = {'x': 0, 'y': 0}
     if creatureType == 'monster':

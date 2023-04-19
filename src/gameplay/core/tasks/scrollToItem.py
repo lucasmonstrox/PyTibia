@@ -7,7 +7,7 @@ from .baseTask import BaseTask
 
 
 class ScrollToItemTask(BaseTask):
-    def __init__(self, containerImage, itemImage):
+    def __init__(self, containerImage: GrayImage, itemImage: GrayImage):
         super().__init__()
         self.name = 'scrollToItem'
         self.terminable = False

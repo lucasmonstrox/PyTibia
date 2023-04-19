@@ -1,6 +1,7 @@
 import pyautogui
 import time
 from src.features.inventory.core import images
+from src.shared.typings import GrayImage
 from src.utils.core import locate
 from src.utils.mouse import mouseDrag
 from ...typings import Context
@@ -9,7 +10,7 @@ from .baseTask import BaseTask
 
 # TODO: check if item was moved. Is possible to check by cap
 class DragItemsTask(BaseTask):
-    def __init__(self, containerBarImage, targetContainerImage):
+    def __init__(self, containerBarImage: GrayImage, targetContainerImage: GrayImage):
         super().__init__()
         self.name = 'dragItems'
         self.terminable = False

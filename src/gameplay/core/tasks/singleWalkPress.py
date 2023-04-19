@@ -9,7 +9,8 @@ from .baseTask import BaseTask
 
 
 class SingleWalkPressTask(BaseTask):
-    def __init__(self, context, value):
+    # TODO: add types
+    def __init__(self, context: Context, value):
         super().__init__()
         charSpeed = getSpeed(context['screenshot'])
         tileFriction = getTileFrictionByCoordinate(value)

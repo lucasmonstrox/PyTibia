@@ -7,7 +7,7 @@ from .baseTask import BaseTask
 
 
 class OpenBackpackTask(BaseTask):
-    def __init__(self, backpack):
+    def __init__(self, backpack: str):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1

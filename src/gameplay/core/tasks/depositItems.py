@@ -12,11 +12,11 @@ from ..factories.makeOpenLocker import makeOpenLockerTask
 from ..factories.makeScrollToItem import makeScrollToItemTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..typings import Task
-from .groupTaskExecutor import GroupTaskExecutor
+from .groupTaskExecutor import GroupTask
 
 
-class DepositItemsTask(GroupTaskExecutor):
-    def __init__(self, context, waypoint):
+class DepositItemsTask(GroupTask):
+    def __init__(self, context: Context, waypoint: Waypoint):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1

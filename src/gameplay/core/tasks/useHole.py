@@ -1,16 +1,17 @@
 from src.features.gameWindow.core import getSlotFromCoordinate
 from src.features.gameWindow.slot import rightClickSlot
+from src.shared.typings import Waypoint
 from ...typings import Context
 from .baseTask import BaseTask
 
 
 class UseHoleTask(BaseTask):
-    def __init__(self, value):
+    def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.delayBeforeStart = 2
         self.delayAfterComplete = 2
         self.name = 'useHole'
-        self.value = value
+        self.value = waypoint
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:

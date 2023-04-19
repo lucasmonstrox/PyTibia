@@ -1,17 +1,18 @@
 import numpy as np
 from src.features.actionBar.core import getSlotCount
 from src.features.skills.core import getCapacity
+from src.shared.typings import Waypoint
 from src.utils.array import getNextArrayIndex
 from ...typings import Context
 from .baseTask import BaseTask
 
 
 class RefillCheckerTask(BaseTask):
-    def __init__(self, value):
+    def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.delayAfterComplete = 1
         self.name = 'refillChecker'
-        self.value = value
+        self.value = waypoint
 
     # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:
