@@ -208,7 +208,7 @@ gameContext = {
             },
             'utura': {
                 'enabled': True,
-                'hotkey': None,
+                'hotkey': '3',
                 'spell': {
                     'name': 'utura',
                     'manaNeeded': 40,

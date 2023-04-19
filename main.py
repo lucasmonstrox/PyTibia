@@ -5,7 +5,7 @@ from rx.scheduler import ThreadPoolScheduler
 import time
 from src.gameplay.cavebot import resolveCavebotTasks, shouldAskForCavebotTasks
 from src.gameplay.context import gameContext
-from src.gameplay.combo import comboSpellsObservable
+from src.gameplay.combo import comboSpellsObserver
 from src.gameplay.core.middlewares.battleList import setBattleListMiddleware
 from src.gameplay.core.middlewares.gameWindow import setDirection, setHandleLoot, setGameWindowCreatures, setGameWindowMiddleware
 from src.gameplay.core.middlewares.playerStatus import setMapPlayerStatusMiddleware
@@ -14,8 +14,8 @@ from src.gameplay.core.middlewares.screenshot import setScreenshot
 from src.gameplay.targeting import hasCreaturesToAttack
 from src.gameplay.core.tasks.groupOfLootCorpse import GroupOfLootCorpseTasks
 from src.gameplay.resolvers import resolveTasksByWaypoint
-from src.gameplay.healing.observables.healingBySpells import healingBySpellsObservable
-from src.gameplay.healing.observables.healingByPotions import healingByPotionsObservable
+from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserver
+from src.gameplay.healing.observers.healingByPotions import healingByPotionsObserver
 from src.features.gameWindow.creatures import getClosestCreature
 
 
@@ -115,13 +115,14 @@ def main():
             gameContext = gameContext['currentTask'].do(context)
         gameContext['radar']['lastCoordinateVisited'] = gameContext['radar']['coordinate']
 
-    healingObserver = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
-    comboSpellsObserver = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
+    healingByPotionsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
+    healingBySpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
+    comboSpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
 
     try:
-        healingObserver.subscribe(healingByPotionsObservable)
-        # healingObserver.subscribe(healingBySpellsObservable)
-        comboSpellsObserver.subscribe(comboSpellsObservable)
+        healingByPotionsObservable.subscribe(healingByPotionsObserver)
+        healingBySpellsObservable.subscribe(healingBySpellsObserver)
+        comboSpellsObservable.subscribe(comboSpellsObserver)
         gameplayObserver.subscribe(gameplayObservable)
         while True:
             time.sleep(1)

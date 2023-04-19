@@ -3,6 +3,9 @@ from src.gameplay.core.tasks.useHotkey import UseHotkeyGroupTask
 from ...typings import Context
 
 
+currentSpellHealingTask = None
+
+
 # TODO: add unit tests
 # TODO: add typings
 def didMatchHealthAndMana(statusBar, metadata):
@@ -13,24 +16,24 @@ def didMatchHealthAndMana(statusBar, metadata):
 
 
 # TODO: add unit tests
-def healingBySpellsObservable(context: Context):
-    if context['currentSpellHealing'] is not None:
-        if context['currentSpellHealing'].status == 'completed':
-            context['currentSpellHealing'] = None
+def healingBySpellsObserver(context: Context):
+    global currentSpellHealingTask
+    if currentSpellHealingTask is not None:
+        if currentSpellHealingTask.status == 'completed':
+            currentSpellHealingTask = None
         else:
-            context = context['currentSpellHealing'].do(context)
+            currentSpellHealingTask.do(context)
             return
     if context['healing']['spells']['utura']['enabled']:
-        if didMatchHealthAndMana(context['statusBar'], context['healing']['spells']['utura']):
-            if slotIsAvailable(context['screenshot'], 13) and not hasCooldownByName(context['screenshot'], 'utura'):
-                context['currentSpellHealing'] = UseHotkeyGroupTask(context['healing']['spells']['utura']['hotkey'])
-                return
-    # TODO: introduzir healing cooldown
-    for spellHealing in ['criticalHealing', 'lightHealing']:
-        if context['healing']['spells'][spellHealing]['enabled']:
-            if context['statusBar']['mana'] > context['healing']['spells'][spellHealing]['metadata']['manaNeeded'] and not hasCooldownByName(context['screenshot'], context['healing']['spells'][spellHealing]['metadata']['spellName']):
-                context['currentSpellHealing'] = UseHotkeyGroupTask(context['healing']['spells'][spellHealing]['hotkey'])
-                return
+        if context['statusBar']['mana'] >= context['healing']['spells']['utura']['spell']['manaNeeded'] and not hasCooldownByName(context['screenshot'], 'utura'):
+            currentSpellHealingTask = UseHotkeyGroupTask(context['healing']['spells']['utura']['hotkey'])
+            return
+    # # TODO: introduzir healing cooldown
+    # for spellHealing in ['criticalHealing', 'lightHealing']:
+    #     if context['healing']['spells'][spellHealing]['enabled']:
+    #         if context['statusBar']['mana'] > context['healing']['spells'][spellHealing]['metadata']['manaNeeded'] and not hasCooldownByName(context['screenshot'], context['healing']['spells'][spellHealing]['metadata']['spellName']):
+    #             currentSpellHealingTask = UseHotkeyGroupTask(context['healing']['spells'][spellHealing]['hotkey'])
+    #             return
     # hasHealingCooldown = src.features.actionBar.core.hasHealingCooldown(context['screenshot'])
     # keysToPress = []
     # for healingItem in context['healing']['items']:

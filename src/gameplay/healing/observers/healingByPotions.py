@@ -7,7 +7,7 @@ currentPotionHealingTask = None
 
 
 # TODO: add unit tests
-def healingByPotionsObservable(context: Context):
+def healingByPotionsObserver(context: Context):
     global currentPotionHealingTask
     if currentPotionHealingTask is not None:
         if currentPotionHealingTask.status == 'completed':

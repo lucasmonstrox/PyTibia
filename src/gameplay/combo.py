@@ -8,7 +8,7 @@ from .typings import Context
 
 
 # TODO: add unit tests
-def comboSpellsObservable(context: Context):
+def comboSpellsObserver(context: Context):
     if context['statusBar']['mana'] is None:
         return
     nearestCreaturesCount = getNearestCreaturesCount(context['gameWindow']['monsters'])
