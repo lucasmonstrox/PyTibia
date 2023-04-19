@@ -22,7 +22,7 @@ Be free to use any function to create your custom BOT or wait for the release of
 
 # 🗺️ Features
 
-Only available for knights/paladin
+Only available for knight/paladin
 
 | Features                  | Done               |
 | ------------------------- | ------------------ |
