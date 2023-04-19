@@ -14,8 +14,7 @@ def healingByPotionsObserver(context: Context):
         if currentPotionHealingTask.status == 'completed':
             currentPotionHealingTask = None
         else:
-            if currentPotionHealingTask.status == 'notStarted':
-                currentPotionHealingTask.do(context)
+            currentPotionHealingTask.do(context)
             return
     for potionType in ['firstHealthPotion', 'secondHealthPotion', 'thirdHealthPotion']:
         if context['healing']['potions'][potionType]['enabled']:

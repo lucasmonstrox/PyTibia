@@ -14,6 +14,7 @@ from src.gameplay.core.middlewares.screenshot import setScreenshot
 from src.gameplay.targeting import hasCreaturesToAttack
 from src.gameplay.core.tasks.groupOfLootCorpse import GroupOfLootCorpseTasks
 from src.gameplay.resolvers import resolveTasksByWaypoint
+from src.gameplay.healing.observers.eatFood import eatFoodObserver
 from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserver
 from src.gameplay.healing.observers.healingByPotions import healingByPotionsObserver
 from src.features.gameWindow.creatures import getClosestCreature
@@ -115,11 +116,13 @@ def main():
             gameContext = gameContext['currentTask'].do(context)
         gameContext['radar']['lastCoordinateVisited'] = gameContext['radar']['coordinate']
 
+    eatFoodObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
     healingByPotionsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
     healingBySpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
     comboSpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
 
     try:
+        eatFoodObservable.subscribe(eatFoodObserver)
         healingByPotionsObservable.subscribe(healingByPotionsObserver)
         healingBySpellsObservable.subscribe(healingBySpellsObserver)
         comboSpellsObservable.subscribe(comboSpellsObserver)

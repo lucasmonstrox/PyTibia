@@ -227,6 +227,11 @@ gameContext = {
                 }
             },
         },
+        'eatFood': {
+            'enabled': True,
+            'hotkey': '5',
+            'eatWhenFoodIslessOrEqual': 5,
+        }
     },
     'hotkeys': {
         'healthPotion': 'f1',

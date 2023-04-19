@@ -13,8 +13,7 @@ def healingBySpellsObserver(context: Context):
         if currentSpellHealingTask.status == 'completed':
             currentSpellHealingTask = None
         else:
-            if currentSpellHealingTask.status == 'notStarted':
-                currentSpellHealingTask.do(context)
+            currentSpellHealingTask.do(context)
             return
     if context['healing']['spells']['utura']['enabled']:
         if context['statusBar']['mana'] >= context['healing']['spells']['utura']['spell']['manaNeeded'] and not hasCooldownByName(context['screenshot'], context['healing']['spells']['utura']['spell']['name']):
