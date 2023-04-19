@@ -164,7 +164,7 @@ gameContext = {
                 'manaPercentageGreaterThanOrEqual': None,
             },
             'thirdHealthPotion': {
-                'enabled': True,
+                'enabled': False,
                 'hotkey': 'f2',
                 'hpPercentageLessThanOrEqual': 80,
                 'manaPercentageGreaterThanOrEqual': None,
@@ -216,10 +216,15 @@ gameContext = {
                 }
             },
             'exuraGranIco': {
-                'enabled': False,
-                'hotkey': None,
-                'hpPercentageLessThanOrEqual': 99,
-                'manaPercentageGreaterThanOrEqual': 5
+                'enabled': True,
+                'hotkey': 'f12',
+                'hpPercentageLessThanOrEqual': 60,
+                'manaPercentageGreaterThanOrEqual': 5,
+                'spell': {
+                    'name': 'exura gran ico',
+                    'manaNeeded': 200,
+                    'cooldownInSeconds': 600
+                }
             },
         },
     },

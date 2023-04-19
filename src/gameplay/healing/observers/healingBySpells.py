@@ -25,8 +25,12 @@ def healingBySpellsObserver(context: Context):
             currentSpellHealingTask.do(context)
             return
     if context['healing']['spells']['utura']['enabled']:
-        if context['statusBar']['mana'] >= context['healing']['spells']['utura']['spell']['manaNeeded'] and not hasCooldownByName(context['screenshot'], 'utura'):
+        if context['statusBar']['mana'] >= context['healing']['spells']['utura']['spell']['manaNeeded'] and not hasCooldownByName(context['screenshot'], context['healing']['spells']['utura']['spell']['name']):
             currentSpellHealingTask = UseHotkeyGroupTask(context['healing']['spells']['utura']['hotkey'])
+            return
+    if context['healing']['spells']['exuraGranIco']['enabled']:
+        if context['statusBar']['mana'] >= context['healing']['spells']['exuraGranIco']['spell']['manaNeeded'] and not hasCooldownByName(context['screenshot'], 'exura gran ico'):
+            currentSpellHealingTask = UseHotkeyGroupTask(context['healing']['spells']['exuraGranIco']['hotkey'])
             return
     # # TODO: introduzir healing cooldown
     # for spellHealing in ['criticalHealing', 'lightHealing']:
