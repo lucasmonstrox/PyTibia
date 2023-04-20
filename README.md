@@ -94,11 +94,12 @@ poetry run python -m pytest
 
 - Translate README for Spanish language
 - Add api docs
-- Publish api docs to github pages
+- Add apidocs(github pages) deploy on CI
 - Add mypy
 - Add mypy to CI
 - Add unit tests to CI
 - Add screenshot adapter on linux
+- Apply statemachine pattern to manage tasks
 
 # 👷 Authors
 

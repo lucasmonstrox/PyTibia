@@ -94,11 +94,12 @@ poetry run python -m pytest
 
 - Traduzir o README para a língua espanhola
 - Adicionar api docs
-- Publicar api docs no github pages
+- Adicionar deploy da apidocs(github pages) no CI
 - Adicionar mypy
 - Adicionar mypy na CI
 - Adicionar testes unitários na CI
 - Adicionar adaptador de screenshot no linux
+- Aplicar padrão de código statemachine para gerenciar tarefas
 
 # 👷 Autores
 
