@@ -1,7 +1,7 @@
 from numba import njit
 import numpy as np
 from typing import Generator, Union
-from src.shared.typings import GrayImage
+from src.shared.typings import CreatureCategory, CreatureCategoryOrUnknown, GrayImage
 from src.utils.core import hashit, locate
 from .config import creaturesNamesImagesHashes, skulls
 from .extractors import getCreaturesNamesImages
@@ -10,7 +10,7 @@ from .typings import CreatureList, Creature
 
 # PERF: [0.13737060000000056, 4.999999987376214e-07]
 @njit(cache=True, fastmath=True)
-def getBeingAttackedCreatureCategory(creatures: CreatureList) -> Union[str, None]:
+def getBeingAttackedCreatureCategory(creatures: CreatureList) -> Union[CreatureCategory, None]:
     for creature in creatures:
         if creature['isBeingAttacked']:
             return creature['name']
@@ -45,7 +45,7 @@ def getCreatures(content: GrayImage) -> CreatureList:
 
 
 # PERF: [0.019119499999998624, 4.020000000082291e-05]
-def getCreaturesNames(content: GrayImage, filledSlotsCount: int) -> Generator[str, None, None]:
+def getCreaturesNames(content: GrayImage, filledSlotsCount: int) -> Generator[CreatureCategoryOrUnknown, None, None]:
     for creatureNameImage in getCreaturesNamesImages(content, filledSlotsCount):
         yield creaturesNamesImagesHashes.get(hashit(creatureNameImage), 'Unknown')
 

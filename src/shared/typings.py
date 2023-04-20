@@ -5,6 +5,8 @@ from typing import Any, List, Tuple, Union
 BBox = Tuple[int, int, int, int]
 Coordinate = Tuple[int, int, int]
 CoordinateList = List[Coordinate]
+CreatureCategory = str
+CreatureCategoryOrUnknown = Union[CreatureCategory, 'unknown']
 Direction = Union['up', Union['down', Union['left', 'right']]]
 # TODO: fix it
 GrayImage = NDArray[Any, Any]
