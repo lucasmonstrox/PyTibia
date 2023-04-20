@@ -98,6 +98,7 @@ poetry run python -m pytest
 - Add mypy
 - Add mypy to CI
 - Add unit tests to CI
+- Add screenshot adapter on linux
 
 # 👷 Authors
 

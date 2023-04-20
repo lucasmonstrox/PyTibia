@@ -97,6 +97,8 @@ poetry run python -m pytest
 - Publicar api docs no github pages
 - Adicionar mypy
 - Adicionar mypy na CI
+- Adicionar testes unitários na CI
+- Adicionar adaptador de screenshot no linux
 
 # 👷 Autores
 
