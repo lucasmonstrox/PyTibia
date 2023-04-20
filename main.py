@@ -32,18 +32,30 @@ def main():
     fpsCounter = 0.015625 # Valor decimal utilizado para calcular o tempo de quadros por segundo (FPS)
     fpsObserver = interval(fpsCounter) #  observa o FPS a cada "fpsCounter" segundos.
     
-    def handleGameData(_):
-        global gameContext
-        gameContext = setScreenshot(gameContext)
-        gameContext = setRadarMiddleware(gameContext)
-        gameContext = setBattleListMiddleware(gameContext)
-        gameContext = setGameWindowMiddleware(gameContext)
-        gameContext = setDirection(gameContext)
-        gameContext = setGameWindowCreatures(gameContext)
-        gameContext = setHandleLoot(gameContext)
-        gameContext = setWaypointIndex(gameContext)
-        gameContext = setMapPlayerStatusMiddleware(gameContext)
-        return gameContext
+    # Define uma função chamada "handleGameData" que recebe um argumento "_" que não é utilizado.
+def handleGameData(_):
+    # A função utiliza uma variável global chamada "gameContext".
+    global gameContext
+    # Executa a função "setScreenshot" e passa a variável "gameContext" como argumento. A função captura uma captura de tela do jogo e atualiza a variável "gameContext".
+    gameContext = setScreenshot(gameContext)
+    # Executa a função "setRadarMiddleware" e passa a variável "gameContext" como argumento. A função configura o radar do jogo e atualiza a variável "gameContext".
+    gameContext = setRadarMiddleware(gameContext)
+    # Executa a função "setBattleListMiddleware" e passa a variável "gameContext" como argumento. A função configura a lista de batalha e atualiza a variável "gameContext".
+    gameContext = setBattleListMiddleware(gameContext)
+    # Executa a função "setGameWindowMiddleware" e passa a variável "gameContext" como argumento. A função configura a janela do jogo e atualiza a variável "gameContext".
+    gameContext = setGameWindowMiddleware(gameContext)
+    # Executa a função "setDirection" e passa a variável "gameContext" como argumento. A função define a direção do personagem e atualiza a variável "gameContext".
+    gameContext = setDirection(gameContext)
+    # Executa a função "setGameWindowCreatures" e passa a variável "gameContext" como argumento. A função configura as criaturas da janela do jogo e atualiza a variável "gameContext".
+    gameContext = setGameWindowCreatures(gameContext)
+    # Executa a função "setHandleLoot" e passa a variável "gameContext" como argumento. A função lida com o saque do jogo e atualiza a variável "gameContext".
+    gameContext = setHandleLoot(gameContext)
+    # Executa a função "setWaypointIndex" e passa a variável "gameContext" como argumento. A função define o índice do ponto de passagem e atualiza a variável "gameContext".
+    gameContext = setWaypointIndex(gameContext)
+    # Executa a função "setMapPlayerStatusMiddleware" e passa a variável "gameContext" como argumento. A função configura o status do jogador no mapa e atualiza a variável "gameContext".
+    gameContext = setMapPlayerStatusMiddleware(gameContext)
+    # Retorna a variável "gameContext" atualizada.
+    return gameContext 
 
     gameObserver = fpsObserver.pipe(operators.map(handleGameData))
 
