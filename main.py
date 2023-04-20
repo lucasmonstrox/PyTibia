@@ -57,7 +57,12 @@ def handleGameData(_):
     # Retorna a variável "gameContext" atualizada.
     return gameContext 
 
-    gameObserver = fpsObserver.pipe(operators.map(handleGameData))
+    # Cria uma variável chamada "gameObserver" que recebe o resultado de uma operação de pipeline.
+gameObserver = fpsObserver.pipe(
+    # Utiliza o operador "map" para aplicar a função "handleGameData" a cada atualização recebida pelo observador.
+    operators.map(handleGameData)
+)
+
 
     def handleGameplayTasks(context):
         global gameContext
