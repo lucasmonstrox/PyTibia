@@ -7,6 +7,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 dxcam = {git = "https://github.com/ra1nty/DXcam"}
+kivy = "^2.1.0"
+kivymd = "^1.1.1"
 mypy = "^1.1.1"
 nptyping = "^2.5.0"
 numba = "^0.56.4"
