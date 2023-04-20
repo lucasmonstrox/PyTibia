@@ -1,8 +1,11 @@
+import kivy.context
 import multiprocessing
+import numpy as np
 import pyautogui
+from time import sleep
+import win32gui
 from rx import interval, operators
 from rx.scheduler import ThreadPoolScheduler
-import time
 from src.gameplay.cavebot import resolveCavebotTasks, shouldAskForCavebotTasks
 from src.gameplay.context import gameContext
 from src.gameplay.combo import comboSpellsObserver
@@ -17,6 +20,10 @@ from src.gameplay.resolvers import resolveTasksByWaypoint
 from src.gameplay.healing.observers.eatFood import eatFoodObserver
 from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserver
 from src.gameplay.healing.observers.healingByPotions import healingByPotionsObserver
+from src.repositories.radar.core import getCoordinate
+from src.repositories.radar.typings import Waypoint
+from src.utils.core import getScreenshot
+from src.ui.app import MyApp
 from src.repositories.gameWindow.creatures import getClosestCreature
 
 
@@ -30,8 +37,21 @@ def main():
     fpsCounter = 0.015625
     fpsObserver = interval(fpsCounter)
     
+    def minimizeWindow(hwnd):
+        win32gui.ShowWindow(hwnd, win32gui.SW_MINIMIZE)
+
+    def maximizeWindow(hwnd):
+        win32gui.ShowWindow(hwnd, 3)
+
+    def focusWindow(hwnd):
+        win32gui.SetForegroundWindow(hwnd)
+
     def handleGameData(_):
         global gameContext
+        if gameContext['window'] is None:
+            gameContext['window'] = win32gui.FindWindow(None, 'Tibia - Lucas Monstro')
+        if gameContext['pause']:
+            return gameContext
         gameContext = setScreenshot(gameContext)
         gameContext = setRadarMiddleware(gameContext)
         gameContext = setBattleListMiddleware(gameContext)
@@ -43,7 +63,10 @@ def main():
         gameContext = setMapPlayerStatusMiddleware(gameContext)
         return gameContext
 
-    gameObserver = fpsObserver.pipe(operators.map(handleGameData))
+    gameObserver = fpsObserver.pipe(
+        operators.map(handleGameData),
+        operators.filter(lambda ctx: ctx['pause'] == False),
+    )
 
     def handleGameplayTasks(context):
         global gameContext
@@ -105,13 +128,16 @@ def main():
         gameContext['gameWindow']['previousMonsters'] = gameContext['gameWindow']['monsters']
         return gameContext
 
-    gameplayObserver = gameObserver.pipe(
+    gameplayObservable = gameObserver.pipe(
+        operators.filter(lambda ctx: ctx['pause'] == False),
         operators.map(handleGameplayTasks),
         operators.subscribe_on(threadPoolScheduler),
     )
 
-    def gameplayObservable(context):
+    def gameplayObserver(context):
         global gameContext
+        if gameContext['pause']:
+            return
         if gameContext['currentTask'] is not None:
             gameContext = gameContext['currentTask'].do(context)
         gameContext['radar']['lastCoordinateVisited'] = gameContext['radar']['coordinate']
@@ -120,16 +146,43 @@ def main():
     healingByPotionsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
     healingBySpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
     comboSpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
+    
+    class GameContext:
+        def addWaypoint(self, waypoint):
+            global gameContext
+            gameContext['cavebot']['waypoints']['points'] = np.append(gameContext['cavebot']['waypoints']['points'], np.array([waypoint], dtype=Waypoint))
+
+        def focusInTibia(self):
+            global gameContext
+            maximizeWindow(gameContext['window'])
+            focusWindow(gameContext['window'])
+
+        def play(self):
+            self.focusInTibia()
+            sleep(1)
+            gameContext['pause'] = False
+
+        def pause(self):
+            gameContext['pause'] = True
+            gameContext['currentTask'] = None
+            if gameContext['lastPressedKey'] is not None:
+                pyautogui.keyUp(gameContext['lastPressedKey'])
+                gameContext['lastPressedKey'] = None
+
+        def getCoordinate(self):
+            global gameContext
+            screenshot = getScreenshot()
+            coordinate = getCoordinate(screenshot, previousCoordinate=gameContext['previousCoordinate'])
+            return coordinate
 
     try:
         eatFoodObservable.subscribe(eatFoodObserver)
         healingByPotionsObservable.subscribe(healingByPotionsObserver)
         healingBySpellsObservable.subscribe(healingBySpellsObserver)
         comboSpellsObservable.subscribe(comboSpellsObserver)
-        gameplayObserver.subscribe(gameplayObservable)
-        while True:
-            time.sleep(1)
-            continue
+        gameplayObservable.subscribe(gameplayObserver)
+        kivy.context.register_context('game', GameContext)
+        MyApp().run()
     except KeyboardInterrupt:
         raise SystemExit
 

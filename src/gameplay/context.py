@@ -250,6 +250,7 @@ gameContext = {
         'corpsesToLoot': np.array([], dtype=GameWindowCreature),
     },
     'lastPressedKey': None,
+    'pause': True,
     'radar': {
         'coordinate': None,
         'previousCoordinate': None,

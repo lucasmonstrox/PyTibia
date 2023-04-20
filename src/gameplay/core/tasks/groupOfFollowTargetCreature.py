@@ -18,6 +18,8 @@ class GroupOfFollowTargetCreatureTasks(GroupTask):
     # TODO: add typings
     def generateTasks(self, context: Context):
         tasks = np.array([], dtype=Task)
+        if context['cavebot']['targetCreature'] is None:
+            return tasks
         nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
         for monster in context['gameWindow']['monsters']:
             if np.array_equal(monster['coordinate'], context['cavebot']['targetCreature']['coordinate']) == False:
