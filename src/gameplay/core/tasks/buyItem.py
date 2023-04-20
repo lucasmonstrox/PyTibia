@@ -16,8 +16,8 @@ class BuyItemTask(BaseTask):
     # TODO: add unit tests
     def shouldIgnore(self, _: Context) -> bool:
         _, itemQuantity = self.value
-        ignore = itemQuantity <= 0
-        return ignore
+        shouldIgnoreTask = itemQuantity <= 0
+        return shouldIgnoreTask
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:

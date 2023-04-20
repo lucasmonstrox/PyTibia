@@ -24,5 +24,5 @@ class ClickInCoordinateTask(BaseTask):
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
         res = context['radar']['coordinate'] == context['cavebot']['waypoints']['state']['checkInCoordinate']
-        did = np.all(res) == True
-        return did
+        didTask = np.all(res) == True
+        return didTask

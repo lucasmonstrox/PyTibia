@@ -74,8 +74,8 @@ class WalkTask(BaseTask):
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
         nextWalkpoint = self.value
-        did = np.all(context['radar']['coordinate'] == nextWalkpoint) == True
-        return did
+        didTask = np.all(context['radar']['coordinate'] == nextWalkpoint) == True
+        return didTask
 
     # TODO: add unit tests
     def onDidTimeout(self, context: Context) -> Context:

@@ -31,8 +31,8 @@ class RefillCheckerTask(BaseTask):
         if capacity is None:
             return False
         hasEnoughCapacity = capacity > self.value['options']['minimumOfCapacity']
-        shouldIgnore = hasEnoughHealthPotions and hasEnoughManaPotions and hasEnoughCapacity
-        return shouldIgnore
+        shouldIgnoreTask = hasEnoughHealthPotions and hasEnoughManaPotions and hasEnoughCapacity
+        return shouldIgnoreTask
 
     # TODO: add unit tests
     def onIgnored(self, context: Context) -> Context:

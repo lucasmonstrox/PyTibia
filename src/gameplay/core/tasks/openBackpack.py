@@ -16,8 +16,8 @@ class OpenBackpackTask(BaseTask):
 
     # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:
-        shouldIgnore = isBackpackOpen(context['screenshot'], self.value)
-        return shouldIgnore
+        shouldIgnoreTask = isBackpackOpen(context['screenshot'], self.value)
+        return shouldIgnoreTask
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
@@ -33,5 +33,5 @@ class OpenBackpackTask(BaseTask):
 
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
-        did = isBackpackOpen(context['screenshot'], self.value)
-        return did
+        didTask = isBackpackOpen(context['screenshot'], self.value)
+        return didTask
