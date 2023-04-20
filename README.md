@@ -94,8 +94,10 @@ poetry run python -m pytest
 
 - Translate README for Spanish language
 - Add api docs
+- Publish api docs to github pages
 - Add mypy
-- Add e2e tests into the tibia client
+- Add mypy to CI
+- Add unit tests to CI
 
 # 👷 Authors
 

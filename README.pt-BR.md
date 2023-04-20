@@ -93,9 +93,10 @@ poetry run python -m pytest
 # ✅ TODO
 
 - Traduzir o README para a língua espanhola
-- Adicionar a documentação da API
+- Adicionar api docs
+- Publicar api docs no github pages
 - Adicionar mypy
-- Adicionar e2e testes no cliente Tibia
+- Adicionar mypy na CI
 
 # 👷 Autores
 
