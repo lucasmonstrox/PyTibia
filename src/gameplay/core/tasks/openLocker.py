@@ -25,4 +25,5 @@ class OpenLockerTask(BaseTask):
 
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
-        return isLockerOpen(context['screenshot'])
+        didTask = isLockerOpen(context['screenshot'])
+        return didTask
