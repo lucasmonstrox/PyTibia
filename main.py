@@ -19,16 +19,18 @@ from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserv
 from src.gameplay.healing.observers.healingByPotions import healingByPotionsObserver
 from src.features.gameWindow.creatures import getClosestCreature
 
+# O código abaixo utiliza a biblioteca multiprocessing para criar processos paralelos, a biblioteca pyautogui para controlar o mouse e teclado do computador, a biblioteca rx para criar um observador que executa tarefas em um determinado intervalo de tempo, e diversas funções próprias para automatizar o gameplay.
 
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
 
 
+# Essa classe é uma função principal que utiliza a biblioteca "multiprocessing" para contar o número ótimo de threads disponíveis no processador do sistema.
 def main():
     optimalThreadCount = multiprocessing.cpu_count()
-    threadPoolScheduler = ThreadPoolScheduler(optimalThreadCount)
-    fpsCounter = 0.015625
-    fpsObserver = interval(fpsCounter)
+    threadPoolScheduler = ThreadPoolScheduler(optimalThreadCount) # Número de threads ótimos encontrados
+    fpsCounter = 0.015625 # Valor decimal utilizado para calcular o tempo de quadros por segundo (FPS)
+    fpsObserver = interval(fpsCounter) #  observa o FPS a cada "fpsCounter" segundos.
     
     def handleGameData(_):
         global gameContext
