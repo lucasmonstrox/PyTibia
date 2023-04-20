@@ -2,7 +2,7 @@
 
 > O PyTibia é o Tibia PixelBot mais rápido do mercado, desenvolvido em python para atingir unlocked fps.
 
-_Leia também em outras línguas: [Inglês](README.md), [Português Brasileiro](README.pt-BR.md)._
+_Leia também em outras línguas: [English](README.md), [Português Brasileiro](README.pt-BR.md), [Spanish](README.pt-BR.md)._
 
 O BOT trabalha localizando imagens por toda a tela e aplica o cache para ignorar a relocalização de imagens estáticas que já foram capturadas, evitando o uso excessivo de CPU/GPU.
 
