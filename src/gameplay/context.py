@@ -153,36 +153,36 @@ gameContext = {
         'potions': {
             'firstHealthPotion': {
                 'enabled': True,
-                'hotkey': 'f1',
+                'hotkey': '1',
                 'hpPercentageLessThanOrEqual': 50,
                 'manaPercentageGreaterThanOrEqual': None,
             },
             'secondHealthPotion': {
                 'enabled': False,
-                'hotkey': 'f2',
+                'hotkey': '2',
                 'hpPercentageLessThanOrEqual': 70,
                 'manaPercentageGreaterThanOrEqual': None,
             },
             'thirdHealthPotion': {
                 'enabled': False,
-                'hotkey': 'f2',
+                'hotkey': '1',
                 'hpPercentageLessThanOrEqual': 80,
                 'manaPercentageGreaterThanOrEqual': None,
             },
             'firstManaPotion': {
-                'enabled': True,
+                'enabled': False,
                 'hotkey': '2',
-                'manaPercentageLessThanOrEqual': 80,
+                'manaPercentageLessThanOrEqual': 90,
             },
             'secondManaPotion': {
                 'enabled': False,
-                'hotkey': None,
-                'manaPercentageLessThanOrEqual': None,
+                'hotkey': '2',
+                'manaPercentageLessThanOrEqual': 90,
             },
             'thirdManaPotion': {
                 'enabled': False,
-                'hotkey': None,
-                'manaPercentageLessThanOrEqual': None,
+                'hotkey': '2',
+                'manaPercentageLessThanOrEqual': 90,
             },
         },
         'spells': {
@@ -207,7 +207,7 @@ gameContext = {
                 }
             },
             'utura': {
-                'enabled': True,
+                'enabled': False,
                 'hotkey': '3',
                 'spell': {
                     'name': 'utura',
@@ -216,7 +216,7 @@ gameContext = {
                 }
             },
             'exuraGranIco': {
-                'enabled': True,
+                'enabled': False,
                 'hotkey': 'f12',
                 'hpPercentageLessThanOrEqual': 60,
                 'manaPercentageGreaterThanOrEqual': 5,

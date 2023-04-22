@@ -175,6 +175,27 @@ def main():
             coordinate = getCoordinate(screenshot, previousCoordinate=gameContext['previousCoordinate'])
             return coordinate
 
+        def toggleHealingPotionsByKey(self, healthPotionType, enabled):
+            global gameContext
+            gameContext['healing']['potions'][healthPotionType]['enabled'] = enabled
+
+        def setHealthPotionHotkeyByKey(self, healthPotionType, hotkey):
+            global gameContext
+            gameContext['healing']['potions'][healthPotionType]['hotkey'] = hotkey
+
+        def setHealthPotionHpPercentageLessThanOrEqual(self, healthPotionType, hpPercentage):
+            global gameContext
+            gameContext['healing']['potions'][healthPotionType]['hpPercentageLessThanOrEqual'] = hpPercentage
+
+        def toggleManaPotionsByKey(self, manaPotionType, enabled):
+            global gameContext
+            gameContext['healing']['potions'][manaPotionType]['enabled'] = enabled
+
+        def setManaPotionManaPercentageLessThanOrEqual(self, manaPotionType, manaPercentage):
+            global gameContext
+            gameContext['healing']['potions'][manaPotionType]['manaPercentageLessThanOrEqual'] = manaPercentage
+
+
     try:
         eatFoodObservable.subscribe(eatFoodObserver)
         healingByPotionsObservable.subscribe(healingByPotionsObserver)
