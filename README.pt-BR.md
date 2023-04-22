@@ -16,7 +16,7 @@ Eu, Lucas, criei essa orquestra de funcionalidades para aprender a linguagem de 
 
 Não, eu **não** pretendo vender uma assinatura para o seu uso, porém ele funcionará no "global" e você muito provavelmente poderá usá-lo, sob sua total responsabilidade.
 
-O robô não está finalizado e passa por constantes mudanças.
+O BOT não está finalizado e passa por constantes mudanças.
 
 Sinta-se livre para utilizar de qualquer função, criar sua própria versão ou aguardar o lançamento de uma versão inicial.
 
