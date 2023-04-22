@@ -59,7 +59,7 @@ Apenas disponível para knight/palaldin
 
 # 🦾 Outro excelente bot enquanto o PyTibia não está pronto
 
-BearSharp é um bot excelente e feito por um amigo e já está funcioando, você pode falar com ele via discord https://discord.gg/kaKgkNxNtD
+BearSharp é um bot excelente e feito por um amigo e já está funcionando, você pode falar com ele via discord https://discord.gg/kaKgkNxNtD
 
 # 🧰 Instalação
 
