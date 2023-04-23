@@ -65,8 +65,8 @@ BearSharp is an excellent paid bot made by a friend, you can find him via discor
 
 ## Prerequisites
 
-- Python 3.9.13
-- Poetry >=1.2.0
+- [`Python`](https://www.python.org/downloads/release/python-3913) 3.9.13
+- [`Poetry`](https://python-poetry.org/docs/#installation) >=1.2.0
 
 Install packages before continue
 
