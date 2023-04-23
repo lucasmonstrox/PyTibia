@@ -20,6 +20,5 @@ class HorizontalMenu(BoxLayout):
         spellsButton.bind(on_press=lambda _: self.parent.ids.screen_manager.switch_screen('spells_screen'))
         self.add_widget(setupButton)
         self.add_widget(cavebotButton)
-        self.add_widget(targetButton)
         self.add_widget(healerButton)
         self.add_widget(spellsButton)
