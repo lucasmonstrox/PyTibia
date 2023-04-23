@@ -71,7 +71,6 @@ BearSharp é um bot excelente e feito por um amigo e já está funcionando, voc�
 Antes de continuar instale os seguintes pacotes:
 
 ```bash
-pip install poetry
 poetry install
 ```
 

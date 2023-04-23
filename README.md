@@ -71,7 +71,6 @@ BearSharp is an excellent paid bot made by a friend, you can find him via discor
 Install packages before continue
 
 ```bash
-pip install poetry
 poetry install
 ```
 
