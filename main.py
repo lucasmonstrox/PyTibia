@@ -172,7 +172,7 @@ def main():
         def getCoordinate(self):
             global gameContext
             screenshot = getScreenshot()
-            coordinate = getCoordinate(screenshot, previousCoordinate=gameContext['previousCoordinate'])
+            coordinate = getCoordinate(screenshot, previousCoordinate=gameContext['radar']['previousCoordinate'])
             return coordinate
 
         def toggleHealingPotionsByKey(self, healthPotionType, enabled):
