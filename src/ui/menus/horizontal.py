@@ -14,8 +14,6 @@ class HorizontalMenu(BoxLayout):
         setupButton.bind(on_press=lambda _: self.parent.ids.screen_manager.switch_screen('setup_screen'))
         cavebotButton = Button(text='Cavebot', size_hint=(None, 1))
         cavebotButton.bind(on_press=lambda _: self.parent.ids.screen_manager.switch_screen('cavebot_screen'))
-        targetButton = Button(text='Targeting', size_hint=(None, 1))
-        targetButton.bind(on_press=lambda _: self.parent.ids.screen_manager.switch_screen('targeting_screen'))
         healerButton = Button(text='Healing', size_hint=(None, 1))
         healerButton.bind(on_press=lambda _: self.parent.ids.screen_manager.switch_screen('healing_screen'))
         spellsButton = Button(text='Spells', size_hint=(None, 1))
