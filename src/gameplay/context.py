@@ -188,8 +188,8 @@ gameContext = {
         'spells': {
             'criticalHealing': {
                 'enabled': False,
-                'hotkey': None,
-                'hpPercentageLessThanOrEqual': None,
+                'hotkey': 'f3',
+                'hpPercentageLessThanOrEqual': 90,
                 'spell': {
                     'name': 'exura med ico',
                     'manaNeeded': 90,
@@ -197,12 +197,12 @@ gameContext = {
                 }
             },
             'lightHealing': {
-                'enabled': False,
-                'hotkey': None,
-                'hpPercentage': None,
+                'enabled': True,
+                'hotkey': 'f3',
+                'hpPercentageLessThanOrEqual': 90,
                 'spell': {
-                    'name': 'exura ico',
-                    'manaNeeded': 40,
+                    'name': 'exura med ico',
+                    'manaNeeded': 90,
                     'cooldownInSeconds': 1
                 }
             },

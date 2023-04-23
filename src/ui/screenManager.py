@@ -1,6 +1,6 @@
 from kivy.uix.screenmanager import NoTransition, ScreenManager
 from .screens.cavebot import CavebotScreen
-from .screens.healing import HealingScreen
+from .screens.healing.screen import HealingScreen
 from .screens.setup import SetupScreen
 from .screens.spells import SpellsScreen
 from .screens.targeting import TargetingScreen

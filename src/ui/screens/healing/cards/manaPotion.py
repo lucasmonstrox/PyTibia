@@ -6,7 +6,6 @@ from kivymd.uix.card import MDCard
 from kivymd.uix.fitimage import FitImage
 from kivymd.uix.label import MDLabel
 from kivymd.uix.slider.slider import MDSlider
-from kivymd.uix.textfield import MDTextField
 from kivy.uix.textinput import TextInput
 
 
@@ -18,7 +17,7 @@ class MyTextInput(TextInput):
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         self.callback(self, window, keycode, text, modifiers)
 
-class HealthPotionCard(BoxLayout):
+class ManaPotionCard(BoxLayout):
     def __init__(self, healthPotionType, labelText='', **kwargs):
         super().__init__(**kwargs, orientation='vertical')
         self.gameContext = get_current_context()['game']
@@ -26,17 +25,17 @@ class HealthPotionCard(BoxLayout):
         header = BoxLayout()
         label = MDLabel(text=labelText)
         switch = Switch()
-        switch.bind(active=self.toggleHealthPotion)
+        switch.bind(active=self.toggleManaPotion)
         header.add_widget(label)
         header.add_widget(switch)
         self.add_widget(header)
         card = MDCard()
         content = BoxLayout(orientation='vertical', padding=[10, 10, 10, 10], spacing=5)
-        hpLabel = MDLabel(text='HP% less than:', theme_text_color='Error')
+        hpLabel = MDLabel(text='Mana% less than:', theme_text_color='Primary')
         hpContent = BoxLayout(orientation='vertical')
         hpContent.add_widget(hpLabel)
-        slider = MDSlider(color='red', hint_bg_color='red', hint_text_color='white', thumb_color_active='red', thumb_color_inactive='red', min=10, step=10)
-        slider.bind(value=self.onHpPercentageChange)
+        slider = MDSlider(color='blue', hint_bg_color='blue', hint_text_color='white', thumb_color_active='blue', thumb_color_inactive='blue', min=10, step=10)
+        slider.bind(value=self.onManaPercentageChange)
         hpContent.add_widget(slider)
         cardHeader = BoxLayout()
         # cardHeader.add_widget(FitImage(source='src/repositories/actionBar/images/cooldowns/attack.png'))
@@ -51,11 +50,11 @@ class HealthPotionCard(BoxLayout):
         card.add_widget(content)
         self.add_widget(card)
 
-    def toggleHealthPotion(self, _, enabled):
-        self.gameContext.toggleHealingPotionsByKey(self.healthPotionType, enabled)
+    def toggleManaPotion(self, _, enabled):
+        self.gameContext.toggleManaPotionsByKey(self.healthPotionType, enabled)
 
-    def onHpPercentageChange(self, _, value):
-        self.gameContext.setHealthPotionHpPercentageLessThanOrEqual(self.healthPotionType, value)
+    def onManaPercentageChange(self, _, value):
+        self.gameContext.setManaPotionManaPercentageLessThanOrEqual(self.healthPotionType, value)
 
     def keyboard_on_key_down(self, instance, window, keyCode, text, modifiers):
         _, hotkey = keyCode
@@ -69,5 +68,5 @@ class HealthPotionCard(BoxLayout):
             return
         if hotkey and not modifiers:
             gameContext = get_current_context()['game']
-            gameContext.setHealthPotionHotkeyByKey(self.healthPotionType, hotkey)
+            gameContext.setManaPotionHotkeyByKey(self.healthPotionType, hotkey)
             instance.text = hotkey

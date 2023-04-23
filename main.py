@@ -195,6 +195,18 @@ def main():
             global gameContext
             gameContext['healing']['potions'][manaPotionType]['manaPercentageLessThanOrEqual'] = manaPercentage
 
+        def toggleHealingSpellsByKey(self, contextKey, enabled):
+            global gameContext
+            gameContext['healing']['spells'][contextKey]['enabled'] = enabled
+
+        def setHealingSpellsHpPercentage(self, contextKey, hpPercentage):
+            global gameContext
+            gameContext['healing']['spells'][contextKey]['hpPercentageLessThanOrEqual'] = hpPercentage
+
+        def setHealingSpellsHotkey(self, contextKey, hotkey):
+            global gameContext
+            gameContext['healing']['spells'][contextKey]['hotkey'] = hotkey
+
 
     try:
         eatFoodObservable.subscribe(eatFoodObserver)
