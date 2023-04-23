@@ -17,11 +17,11 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate=None) ->
     cannotGetFloorLevel = floorLevel is None
     if cannotGetFloorLevel:
         return None
-    radarToolsPos = getRadarToolsPosition(screenshot)
-    cannotGetRadarToolsPos = radarToolsPos is None
+    radarToolsPosition = getRadarToolsPosition(screenshot)
+    cannotGetRadarToolsPos = radarToolsPosition is None
     if cannotGetRadarToolsPos:
         return None
-    radarImg = getRadarImage(screenshot, radarToolsPos)
+    radarImg = getRadarImage(screenshot, radarToolsPosition)
     radarHashedImg = hashitHex(radarImg)
     shouldGetCoordinateByCachedRadarHashedImg = radarHashedImg in coordinates
     if shouldGetCoordinateByCachedRadarHashedImg:
@@ -64,11 +64,11 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate=None) ->
 # TODO: add unit tests
 # TODO: add perf
 def getFloorLevel(screenshot: GrayImage) -> Union[FloorLevel, None]:
-    radarToolsPos = getRadarToolsPosition(screenshot)
-    radarToolsPosIsEmpty = radarToolsPos is None
-    if radarToolsPosIsEmpty:
+    radarToolsPosition = getRadarToolsPosition(screenshot)
+    radarToolsPositionIsEmpty = radarToolsPosition is None
+    if radarToolsPositionIsEmpty:
         return None
-    left, top, width, height = radarToolsPos
+    left, top, width, height = radarToolsPosition
     left = left + width + 8
     top = top - 7
     height = 67
