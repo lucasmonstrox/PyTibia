@@ -86,7 +86,7 @@ floorsPathsImgs = [
 ]
 floorsPathsSqms = np.load(f'{currentPath}/npys/floorsPathsSqms.npy')
 images = {
-    'tools': loadFromRGBToGray(f'{currentPath}/images/radar-tools.png')
+    'tools': loadFromRGBToGray(f'{currentPath}/images/buttons/radarTools.png')
 }
 floorsLevelsImgs = [
     loadFromRGBToGray(
