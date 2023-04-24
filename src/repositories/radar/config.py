@@ -88,7 +88,40 @@ floorsPathsSqms = np.load(f'{currentPath}/npys/floorsPathsSqms.npy')
 images = {
     'tools': loadFromRGBToGray(f'{currentPath}/images/radar-tools.png')
 }
-floorsLevelsImgs = np.load(f'{currentPath}/npys/floorsLevelsImgs.npy')
+floorsLevelsImgs = [
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/0.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/1.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/2.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/3.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/4.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/5.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/6.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/7.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/8.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/9.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/10.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/11.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/12.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/13.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/14.png'),
+    loadFromRGBToGray(
+        f'{currentPath}/images/floor-levels/15.png'),
+]
 floorsLevelsImgsHashes = {}
 pixelsColorsValues = {
     'accessPoint': 226,
