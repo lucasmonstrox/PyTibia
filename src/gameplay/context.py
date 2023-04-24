@@ -141,10 +141,16 @@ gameContext = {
                 'hotkey': None,
                 'manaPercentageLessThanOrEqual': None,
             },
+            'ssa': {
+                'enabled': False,
+                'hotkey': None,
+                'hpPercentageLessThanOrEqual': None,
+                'hpPercentageGreaterThanOrEqual': None,
+            }
         },
         'potions': {
             'firstHealthPotion': {
-                'enabled': True,
+                'enabled': False,
                 'hotkey': '1',
                 'hpPercentageLessThanOrEqual': 50,
                 'manaPercentageGreaterThanOrEqual': None,
@@ -189,7 +195,7 @@ gameContext = {
                 }
             },
             'lightHealing': {
-                'enabled': True,
+                'enabled': False,
                 'hotkey': 'f3',
                 'hpPercentageLessThanOrEqual': 90,
                 'spell': {

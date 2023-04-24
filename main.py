@@ -20,6 +20,7 @@ from src.gameplay.resolvers import resolveTasksByWaypoint
 from src.gameplay.healing.observers.eatFood import eatFoodObserver
 from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserver
 from src.gameplay.healing.observers.healingByPotions import healingByPotionsObserver
+from src.gameplay.healing.observers.healingPriority import healingPriorityObserver
 from src.repositories.radar.core import getCoordinate
 from src.repositories.radar.typings import Waypoint
 from src.utils.core import getScreenshot
@@ -143,6 +144,7 @@ def main():
         gameContext['radar']['lastCoordinateVisited'] = gameContext['radar']['coordinate']
 
     eatFoodObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
+    healingPriorityObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
     healingByPotionsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
     healingBySpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
     comboSpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
@@ -210,6 +212,7 @@ def main():
 
     try:
         eatFoodObservable.subscribe(eatFoodObserver)
+        healingPriorityObservable.subscribe(healingPriorityObserver)
         healingByPotionsObservable.subscribe(healingByPotionsObserver)
         healingBySpellsObservable.subscribe(healingBySpellsObserver)
         comboSpellsObservable.subscribe(comboSpellsObserver)
