@@ -16,15 +16,7 @@ gameContext = {
     },
     'cavebot': {
         'enabled': True,
-        'holesOrStairs': np.array([
-            (33306, 32284, 5),
-            (33306, 32284, 6),
-            (33309, 32284, 6),
-            (33312, 32281, 7),
-            (33309, 32284, 7),
-            (33312, 32281, 8),
-            (33300, 32290, 8),
-        ], dtype=Coordinate),
+        'holesOrStairs': np.array([], dtype=Coordinate),
         'isAttackingSomeCreature': False,
         'targetCreature': None,
         'waypoints': {
@@ -275,12 +267,8 @@ gameContext = {
         'mana': None,
     },
     'targeting': {
-        'enabled': True,
-        'creatures': {
-            'Rat': {
-                'ignore': True
-            },
-        },
+        'enabled': False,
+        'creatures': {},
         'canIgnoreCreatures': True,
         'hasIgnorableCreatures' : False,
     },
