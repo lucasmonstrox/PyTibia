@@ -90,37 +90,37 @@ images = {
 }
 floorsLevelsImgs = [
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/0.png'),
+        f'{currentPath}/images/floorLevels/0.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/1.png'),
+        f'{currentPath}/images/floorLevels/1.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/2.png'),
+        f'{currentPath}/images/floorLevels/2.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/3.png'),
+        f'{currentPath}/images/floorLevels/3.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/4.png'),
+        f'{currentPath}/images/floorLevels/4.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/5.png'),
+        f'{currentPath}/images/floorLevels/5.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/6.png'),
+        f'{currentPath}/images/floorLevels/6.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/7.png'),
+        f'{currentPath}/images/floorLevels/7.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/8.png'),
+        f'{currentPath}/images/floorLevels/8.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/9.png'),
+        f'{currentPath}/images/floorLevels/9.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/10.png'),
+        f'{currentPath}/images/floorLevels/10.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/11.png'),
+        f'{currentPath}/images/floorLevels/11.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/12.png'),
+        f'{currentPath}/images/floorLevels/12.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/13.png'),
+        f'{currentPath}/images/floorLevels/13.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/14.png'),
+        f'{currentPath}/images/floorLevels/14.png'),
     loadFromRGBToGray(
-        f'{currentPath}/images/floor-levels/15.png'),
+        f'{currentPath}/images/floorLevels/15.png'),
 ]
 floorsLevelsImgsHashes = {}
 pixelsColorsValues = {
