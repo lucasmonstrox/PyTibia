@@ -123,7 +123,6 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
     if len(creaturesBars) == 0:
         return np.array([], dtype=Creature)
     creatures = []
-    # creatures = [None] * len(creaturesBars)
     gameWindowWidth = len(gameWindowImage[1])
     x = (len(gameWindowImage[1]) / 2) - 1
     y = (len(gameWindowImage[0]) / 2) - 1
@@ -135,20 +134,18 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
     sqrt = np.sqrt(sum)
     creaturesBarsSortedIndexes = np.argsort(sqrt)
     discoverTarget = beingAttackedCreatureCategory is not None
-    battleListStartIndex = 0
     for creatureBarSortedIndex in creaturesBarsSortedIndexes:
         nonCreaturesForCurrentBar = {}
-        for battleListIndex in range(battleListStartIndex, len(battleListCreatures)):
+        for battleListIndex in range(len(battleListCreatures)):
             if battleListCreatures[battleListIndex]['name'] == 'Unknown':
                 creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'player', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage, coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
-                battleListStartIndex += 1
                 break
             if nonCreaturesForCurrentBar.get(battleListCreatures[battleListIndex]['name'], None) is not None:
                 continue
-            creatureNameImg = creaturesNamesHashes.get(battleListCreatures[battleListIndex]['name'])
+            creatureNameImg = creaturesNamesHashes.get(battleListCreatures[battleListIndex]['name']).copy()
             (creatureBarX, creatureBarY) = creaturesBars[creatureBarSortedIndex]
             creatureBarY0 = creatureBarY - 13
             creatureBarY1 = creatureBarY0 + 11
@@ -170,9 +167,8 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
-                battleListStartIndex += 1
                 break
-            creatureNameImg2 = creaturesNamesHashes.get(battleListCreatures[battleListIndex]['name'])
+            creatureNameImg2 = creaturesNamesHashes.get(battleListCreatures[battleListIndex]['name']).copy()
             creatureWithDirtNameImg2 = gameWindowImage[creatureBarY0:creatureBarY1, startingX + 1:endingX + 1]
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
                 creatureNameImg2 = creatureNameImg2[:, 0:creatureNameImg2.shape[1] - 1]
@@ -181,10 +177,9 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
-                battleListStartIndex += 1
                 break
             creatureWithDirtNameImg3 = gameWindowImage[creatureBarY0:creatureBarY1, startingX:endingX - 1]
-            creatureNameImg3 = creaturesNamesHashes.get(battleListCreatures[battleListIndex]['name'])
+            creatureNameImg3 = creaturesNamesHashes.get(battleListCreatures[battleListIndex]['name']).copy()
             creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
             if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
                 creatureNameImg3 = creatureNameImg3[:, 0:creatureNameImg3.shape[1] - 1]
@@ -192,10 +187,7 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
                 creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'monster', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage, coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
                 if creature[2]:
                     discoverTarget = False
-                # creatures[creaturesIndex] = creature
-                # creaturesIndex += 1
                 creatures.append(creature)
-                battleListStartIndex += 1
                 break
             nonCreaturesForCurrentBar[battleListCreatures[battleListIndex]['name']] = True
     return np.array(creatures, dtype=Creature)
