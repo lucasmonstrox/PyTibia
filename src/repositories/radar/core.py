@@ -143,14 +143,18 @@ def getBreakpointTileMovementSpeed(charSpeed: int, tileFriction: TileFriction) -
     # TODO: sometimes friction is not found
     if tileFriction in tilesFrictionsBreakpoints:
         breakpoints = tilesFrictionsBreakpoints[tileFriction]
-        availableTileSpeeds = np.flatnonzero(breakpoints >= charSpeed)
+        availableTileSpeeds = np.flatnonzero(breakpoints > charSpeed)
+        if len(availableTileSpeeds) == 0:
+            return breakpointTileMovementSpeed[17]
         currentTileSpeed = availableTileSpeeds[0]
         speed = breakpointTileMovementSpeed.get(currentTileSpeed, 850)
         return speed
     closestTileFriction = np.flatnonzero(availableFrictionsArray >= tileFriction)[0]
     newTileFriction = availableFrictionsArray[closestTileFriction]
     breakpoints = tilesFrictionsBreakpoints[newTileFriction]
-    availableTileSpeeds = np.flatnonzero(breakpoints >= charSpeed)
+    availableTileSpeeds = np.flatnonzero(breakpoints > charSpeed)
+    if len(availableTileSpeeds) == 0:
+        return breakpointTileMovementSpeed[17]
     currentTileSpeed = availableTileSpeeds[0]
     speed = breakpointTileMovementSpeed.get(currentTileSpeed, 850)
     return speed
