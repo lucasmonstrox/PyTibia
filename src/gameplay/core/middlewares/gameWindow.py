@@ -1,9 +1,11 @@
 import numpy as np
 from src.repositories.battleList.core import getBeingAttackedCreatureCategory
+from src.repositories.chat.core import hasNewLoot
 from src.repositories.gameWindow.config import gameWindowSizes
 from src.repositories.gameWindow.core import getCoordinate, getImageByCoordinate
-from src.repositories.gameWindow.creatures import getCreatures, getCreaturesByType, getTargetCreature
+from src.repositories.gameWindow.creatures import getCreatures, getCreaturesByType, getDifferentCreaturesBySlots, getTargetCreature
 from src.repositories.gameWindow.typings import Creature
+from ...comboSpells.core import getSpellPath
 from ...typings import Context
 
 
@@ -34,17 +36,20 @@ def setDirection(gameContext: Context) -> Context:
 
 # TODO: add unit tests
 def setHandleLoot(gameContext: Context) -> Context:
-    # if chat.core.hasNewLoot(gameContext['screenshot']):
-    #     if gameContext['cavebot']['targetCreature'] is not None:
-    #         gameContext['loot']['corpsesToLoot'] = np.append(gameContext['loot']['corpsesToLoot'], [gameContext['cavebot']['targetCreature']], axis=0)
-    #     hasSpelledExoriCategory = gameContext['comboSpells']['lastUsedSpell'] is not None and gameContext['comboSpells']['lastUsedSpell'] in ['exori', 'exori gran', 'exori mas']
-    #     if hasSpelledExoriCategory:
-    #         spellPath = getSpellPath(gameContext['comboSpells']['lastUsedSpell'])
-    #         if len(spellPath) > 0:
-    #             differentCreatures = src.repositories.gameWindow.creatures.getDifferentCreaturesBySlots(gameContext['gameWindow']['previousMonsters'], gamecontext['gameWindow']['monsters'], spellPath)
-    #             gameContext['loot']['corpsesToLoot'] = np.append(gameContext['loot']['corpsesToLoot'], differentCreatures, axis=0)
-    #         gameContext['comboSpells']['lastUsedSpell'] = None
+    if hasNewLoot(gameContext['screenshot']):
+        if gameContext['cavebot']['previousTargetCreature'] is not None:
+            gameContext['loot']['corpsesToLoot'] = np.append(gameContext['loot']['corpsesToLoot'], [gameContext['cavebot']['previousTargetCreature']], axis=0)
+            gameContext['cavebot']['previousTargetCreature'] = None
+        hasSpelledExoriCategory = gameContext['comboSpells']['lastUsedSpell'] is not None and gameContext['comboSpells']['lastUsedSpell'] in ['exori', 'exori gran', 'exori mas']
+        if hasSpelledExoriCategory:
+            spellPath = getSpellPath(gameContext['comboSpells']['lastUsedSpell'])
+            if len(spellPath) > 0:
+                differentCreatures = getDifferentCreaturesBySlots(gameContext['gameWindow']['previousMonsters'], gameContext['gameWindow']['monsters'], spellPath)
+                gameContext['loot']['corpsesToLoot'] = np.append(gameContext['loot']['corpsesToLoot'], differentCreatures, axis=0)
+            gameContext['comboSpells']['lastUsedSpell'] = None
     gameContext['cavebot']['targetCreature'] = getTargetCreature(gameContext['gameWindow']['monsters'])
+    if gameContext['cavebot']['targetCreature'] is not None:
+        gameContext['cavebot']['previousTargetCreature'] = gameContext['cavebot']['targetCreature']
     return gameContext
 
 

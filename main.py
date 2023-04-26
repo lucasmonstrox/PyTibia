@@ -75,13 +75,16 @@ def main():
         hasCurrentTask = gameContext['currentTask'] is not None
         if hasCurrentTask and gameContext['currentTask'].name != 'lureCreatures' and (gameContext['currentTask'].status == 'completed' or len(gameContext['currentTask'].tasks) == 0):
             gameContext['currentTask'] = None
-        hasCreaturesToAttackInCavebot = hasCreaturesToAttack(context)
-        hasCorpsesToLoot = len(gameContext['loot']['corpsesToLoot']) > 0 
-        if hasCorpsesToLoot and not hasCreaturesToAttackInCavebot:
+        hasCorpsesToLoot = len(gameContext['loot']['corpsesToLoot']) > 0
+        if hasCorpsesToLoot:
             gameContext['way'] = 'lootCorpses'
             if gameContext['currentTask'] is not None and gameContext['currentTask'].name != 'groupOfLootCorpse':
                 gameContext['currentTask'] = None
             if gameContext['currentTask'] is None:
+                hasKeyPressed = gameContext['lastPressedKey'] is not None
+                if hasKeyPressed:
+                    pyautogui.keyUp(gameContext['lastPressedKey'])
+                    gameContext['lastPressedKey'] = None
                 # TODO: get closest dead corpse
                 firstDeadCorpse = gameContext['loot']['corpsesToLoot'][0]
                 gameContext['currentTask'] = GroupOfLootCorpseTasks(context, firstDeadCorpse)
@@ -89,7 +92,7 @@ def main():
             return gameContext
         elif gameContext['currentTask'] is not None and gameContext['currentTask'].name == 'lureCreatures':
             gameContext['way'] = 'waypoint'
-        elif hasCreaturesToAttackInCavebot:
+        elif hasCreaturesToAttack(context):
             targetCreature = getClosestCreature(gameContext['gameWindow']['creatures'], gameContext['radar']['coordinate'])
             hasTargetCreature = targetCreature != None
             if hasTargetCreature:

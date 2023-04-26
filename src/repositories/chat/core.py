@@ -1,9 +1,9 @@
 import pathlib
 from typing import Tuple, Union
 from src.shared.typings import BBox, GrayImage
-# from src.repositories.gameWindow.core import getLeftSidebarArrows
+from src.repositories.gameWindow.core import getLeftArrowPosition
 from src.utils.core import cacheObjectPosition, hashit, locate, locateMultiple, press, typeKeyboard
-from src.utils.image import convertGraysToBlack, loadFromRGBToGray
+from src.utils.image import convertGraysToBlack, loadFromRGBToGray, save
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
@@ -53,6 +53,7 @@ def hasNewLoot(screenshot: GrayImage) -> bool:
 def getLootLines(screenshot: GrayImage) -> GrayImage:
     (x, y, w, h) = getChatMessagesContainerPos(screenshot)
     messages = screenshot[y: y + h, x: x + w]
+    save(messages, 'messages.png')
     lootLines = locateMultiple(lootOfTextImg, messages)
     linesWithLoot = []
     for line in lootLines:
@@ -110,21 +111,19 @@ def enableChatOff(screenshot: GrayImage):
 # TODO: add perf
 @cacheObjectPosition
 def getChatsTabsContainer(screenshot: GrayImage) -> Tuple[BBox, int]:
-    leftSidebarArrows = None
-    # leftSidebarArrows = getLeftSidebarArrows(screenshot)
+    leftSidebarArrows = getLeftArrowPosition(screenshot)
     chatMenuPos = getChatMenuPosition(screenshot)
-    return leftSidebarArrows[0] + 10, chatMenuPos[1], chatMenuPos[0] - (leftSidebarArrows[0] + 10), 20
+    return leftSidebarArrows[0] + 15, chatMenuPos[1], chatMenuPos[0] - (leftSidebarArrows[0] + 15), 20
 
 
 # TODO: add unit tests
 # TODO: add perf
 @cacheObjectPosition
 def getChatMessagesContainerPos(screenshot: GrayImage) -> BBox:
-    leftSidebarArrows = None
-    # leftSidebarArrows = getLeftSidebarArrows(screenshot)
+    leftSidebarArrows = getLeftArrowPosition(screenshot)
     chatMenu = getChatMenuPosition(screenshot)
     chatStatus = getChatStatus(screenshot)
-    return leftSidebarArrows[0], chatMenu[1] + 18, chatStatus[0][0] + 40, (chatStatus[0][1] - 6) - (chatMenu[1] + 13)
+    return leftSidebarArrows[0] + 5, chatMenu[1] + 18, chatStatus[0][0] + 40, (chatStatus[0][1] - 6) - (chatMenu[1] + 13)
 
 
 # TODO: add unit tests

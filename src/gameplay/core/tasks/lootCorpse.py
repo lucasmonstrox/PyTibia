@@ -1,7 +1,6 @@
 import numpy as np
 import pyautogui
 from ...typings import Context
-# from src.repositories.gameWindow.core import getSlotFromCoordinate
 from src.repositories.gameWindow.slot import rightClickSlot
 from src.repositories.gameWindow.typings import Creature
 from .baseTask import BaseTask
@@ -11,17 +10,13 @@ from .baseTask import BaseTask
 class LootCorpseTask(BaseTask):
     def __init__(self, creature: Creature):
         super().__init__()
-        self.delayBeforeStart = 0.25
+        self.delayBeforeStart = 1
         self.delayAfterComplete = 0.25
         self.name = 'lootCorpse'
         self.value = creature
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        # slot = getSlotFromCoordinate(
-        #     context['radar']['coordinate'], self.value['coordinate'])
-        # pyautogui.keyDown('shift')
-        # rightClickSlot(slot, context['gameWindow']['coordinate'])
         pyautogui.keyDown('shift')
         rightClickSlot([6, 4], context['gameWindow']['coordinate'])
         rightClickSlot([7, 4], context['gameWindow']['coordinate'])
@@ -37,11 +32,11 @@ class LootCorpseTask(BaseTask):
 
     # TODO: add unit tests
     def onDidComplete(self, context: Context) -> Context:
-        creatureToLoot = context['corpsesToLoot'][0]
+        creatureToLoot = context['loot']['corpsesToLoot'][0]
         indexesToDelete = []
-        for index, corpseToLoot in enumerate(context['corpsesToLoot']):
+        for index, corpseToLoot in enumerate(context['loot']['corpsesToLoot']):
             coordinateDidMatch = creatureToLoot['coordinate'][0] == corpseToLoot['coordinate'][0] and creatureToLoot['coordinate'][1] == corpseToLoot['coordinate'][1] and creatureToLoot['coordinate'][2] == corpseToLoot['coordinate'][2]
             if coordinateDidMatch:
                 indexesToDelete.append(index)
-        context['corpsesToLoot'] = np.delete(context['corpsesToLoot'], indexesToDelete)
+        context['loot']['corpsesToLoot'] = np.delete(context['loot']['corpsesToLoot'], indexesToDelete)
         return context
