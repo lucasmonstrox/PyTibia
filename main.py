@@ -21,11 +21,11 @@ from src.gameplay.healing.observers.eatFood import eatFoodObserver
 from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserver
 from src.gameplay.healing.observers.healingByPotions import healingByPotionsObserver
 from src.gameplay.healing.observers.healingPriority import healingPriorityObserver
+from src.repositories.gameWindow.creatures import getClosestCreature
 from src.repositories.radar.core import getCoordinate
 from src.repositories.radar.typings import Waypoint
 from src.utils.core import getScreenshot
 from src.ui.app import MyApp
-from src.repositories.gameWindow.creatures import getClosestCreature
 
 
 pyautogui.FAILSAFE = False
@@ -50,7 +50,7 @@ def main():
     def handleGameData(_):
         global gameContext
         if gameContext['window'] is None:
-            gameContext['window'] = win32gui.FindWindow(None, 'Tibia - Lucas Monstro')
+            gameContext['window'] = win32gui.FindWindow(None, 'Tibia - Lucas Monstrinho')
         if gameContext['pause']:
             return gameContext
         gameContext = setScreenshot(gameContext)
@@ -148,7 +148,7 @@ def main():
     healingByPotionsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
     healingBySpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
     comboSpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
-    
+
     class GameContext:
         def addWaypoint(self, waypoint):
             global gameContext
@@ -208,7 +208,6 @@ def main():
         def setHealingSpellsHotkey(self, contextKey, hotkey):
             global gameContext
             gameContext['healing']['spells'][contextKey]['hotkey'] = hotkey
-
 
     try:
         eatFoodObservable.subscribe(eatFoodObserver)
