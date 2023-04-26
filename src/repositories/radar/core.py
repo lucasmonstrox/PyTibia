@@ -139,8 +139,8 @@ tilesFrictionsWithBreakpoints = {
 
 # TODO: add perf
 def getBreakpointTileMovementSpeed(charSpeed: int, tileFriction: TileFriction) -> int:
-    global availableTilesFrictions
-    if tileFriction not in tilesFrictionsWithBreakpoints:
+    tileFrictionNotFound = tileFriction not in tilesFrictionsWithBreakpoints
+    if tileFrictionNotFound:
         closestTilesFrictions = np.flatnonzero(availableTilesFrictions > tileFriction)
         hasClosestTilesFrictions = len(closestTilesFrictions) > 0
         tileFriction = availableTilesFrictions[closestTilesFrictions[0]] if hasClosestTilesFrictions else 250
