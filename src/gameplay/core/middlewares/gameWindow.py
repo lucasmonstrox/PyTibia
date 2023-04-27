@@ -1,6 +1,7 @@
 import numpy as np
+from src.gameplay.core.tasks.selectLootTab import GroupOfSelectLootTabTasks
 from src.repositories.battleList.core import getBeingAttackedCreatureCategory
-from src.repositories.chat.core import hasNewLoot
+from src.repositories.chat.core import hasNewLoot, lootTabIsSelected
 from src.repositories.gameWindow.config import gameWindowSizes
 from src.repositories.gameWindow.core import getCoordinate, getImageByCoordinate
 from src.repositories.gameWindow.creatures import getCreatures, getCreaturesByType, getDifferentCreaturesBySlots, getTargetCreature
@@ -36,6 +37,11 @@ def setDirection(gameContext: Context) -> Context:
 
 # TODO: add unit tests
 def setHandleLoot(gameContext: Context) -> Context:
+    endlessTasks = ['depositGold', 'groupOfRefill', 'groupOfSelectLootTab']
+    if (gameContext['currentTask'] is None or gameContext['currentTask'].name not in endlessTasks):
+        isSelected = lootTabIsSelected(gameContext['screenshot'])
+        if isSelected is not None and not isSelected:
+            gameContext['currentTask'] = GroupOfSelectLootTabTasks()
     if hasNewLoot(gameContext['screenshot']):
         if gameContext['cavebot']['previousTargetCreature'] is not None:
             gameContext['loot']['corpsesToLoot'] = np.append(gameContext['loot']['corpsesToLoot'], [gameContext['cavebot']['previousTargetCreature']], axis=0)

@@ -3,7 +3,8 @@ from typing import Tuple, Union
 from src.shared.typings import BBox, GrayImage
 from src.repositories.gameWindow.core import getLeftArrowPosition
 from src.utils.core import cacheObjectPosition, hashit, locate, locateMultiple, press, typeKeyboard
-from src.utils.image import convertGraysToBlack, loadFromRGBToGray, save
+from src.utils.image import cacheChain, convertGraysToBlack, loadFromRGBToGray, save
+from .config import images
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
@@ -53,7 +54,6 @@ def hasNewLoot(screenshot: GrayImage) -> bool:
 def getLootLines(screenshot: GrayImage) -> GrayImage:
     (x, y, w, h) = getChatMessagesContainerPos(screenshot)
     messages = screenshot[y: y + h, x: x + w]
-    save(messages, 'messages.png')
     lootLines = locateMultiple(lootOfTextImg, messages)
     linesWithLoot = []
     for line in lootLines:
@@ -71,7 +71,6 @@ def getLootLines(screenshot: GrayImage) -> GrayImage:
 @cacheObjectPosition
 def getChatMenuPosition(screenshot: GrayImage) -> Union[BBox, None]:
     return locate(screenshot, chatMenuImg)
-
 
 # TODO: add unit tests
 # TODO: add perf
@@ -124,6 +123,25 @@ def getChatMessagesContainerPos(screenshot: GrayImage) -> BBox:
     chatMenu = getChatMenuPosition(screenshot)
     chatStatus = getChatStatus(screenshot)
     return leftSidebarArrows[0] + 5, chatMenu[1] + 18, chatStatus[0][0] + 40, (chatStatus[0][1] - 6) - (chatMenu[1] + 13)
+
+
+@cacheChain([
+    images['tabs']['loot']['selectedLoot'],
+    images['tabs']['loot']['unselectedLoot'],
+    images['tabs']['loot']['unselectedLootWithNewestMessage'],
+    images['tabs']['loot']['unselectedLootWithUnreadMessage'],
+])
+def getLootTabPosition(_: GrayImage) -> Tuple[BBox, int]:
+    pass
+
+
+def lootTabIsSelected(screenshot: GrayImage) -> Union[bool, None]:
+    lootTabPosition = getLootTabPosition(screenshot)
+    if lootTabPosition is None:
+        return None
+    x, y, width, height = lootTabPosition
+    lootTabImage = screenshot[y:y + height, x:x + width]
+    return lootTabImage[0, 0] == 71
 
 
 # TODO: add unit tests

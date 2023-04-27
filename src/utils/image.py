@@ -1,7 +1,41 @@
 import cv2
 import numpy as np
 from PIL import Image
-from src.shared.typings import GrayImage
+from typing import Union
+from src.shared.typings import BBox, GrayImage
+from src.utils.core import hashit, locate
+
+
+# TODO: add types
+# TODO: add unit tests
+def cacheChain(imageList):
+    def decorator(_):
+        lastX = None
+        lastY = None
+        lastW = None
+        lastH = None
+        lastImgHash = None
+        def inner(screenshot: GrayImage) -> Union[BBox, None]:
+            nonlocal lastX, lastY, lastW, lastH, lastImgHash
+            if lastX != None and lastY != None and lastW != None and lastH != None:
+                copiedImg = screenshot[lastY:lastY + lastH, lastX:lastX + lastW]
+                copiedImgHash = hashit(copiedImg)
+                if copiedImgHash == lastImgHash:
+                    return (lastX, lastY, lastW, lastH)
+            for image in imageList:
+                imagePosition = locate(screenshot, image)
+                if imagePosition is not None:
+                    (x, y, w, h) = imagePosition
+                    lastX = x
+                    lastY = y
+                    lastW = w
+                    lastH = h
+                    lastImg = screenshot[lastY:lastY + lastH, lastX:lastX + lastW]
+                    lastImgHash = hashit(lastImg)
+                    return (x, y, w, h)
+            return None
+        return inner
+    return decorator
 
 
 # TODO: add unit tests

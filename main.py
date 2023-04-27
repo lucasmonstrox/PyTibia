@@ -50,7 +50,7 @@ def main():
     def handleGameData(_):
         global gameContext
         if gameContext['window'] is None:
-            gameContext['window'] = win32gui.FindWindow(None, 'Tibia - Lucas Monstrinho')
+            gameContext['window'] = win32gui.FindWindow(None, 'Tibia - Lucas Monstro')
         if gameContext['pause']:
             return gameContext
         gameContext = setScreenshot(gameContext)
@@ -75,6 +75,8 @@ def main():
         hasCurrentTask = gameContext['currentTask'] is not None
         if hasCurrentTask and gameContext['currentTask'].name != 'lureCreatures' and (gameContext['currentTask'].status == 'completed' or len(gameContext['currentTask'].tasks) == 0):
             gameContext['currentTask'] = None
+        if gameContext['currentTask'] is not None and gameContext['currentTask'].name == 'groupOfSelectLootTab':
+            return gameContext
         hasCorpsesToLoot = len(gameContext['loot']['corpsesToLoot']) > 0
         if hasCorpsesToLoot:
             gameContext['way'] = 'lootCorpses'
@@ -213,11 +215,11 @@ def main():
             gameContext['healing']['spells'][contextKey]['hotkey'] = hotkey
 
     try:
-        eatFoodObservable.subscribe(eatFoodObserver)
-        healingPriorityObservable.subscribe(healingPriorityObserver)
-        healingByPotionsObservable.subscribe(healingByPotionsObserver)
-        healingBySpellsObservable.subscribe(healingBySpellsObserver)
-        comboSpellsObservable.subscribe(comboSpellsObserver)
+        # eatFoodObservable.subscribe(eatFoodObserver)
+        # healingPriorityObservable.subscribe(healingPriorityObserver)
+        # healingByPotionsObservable.subscribe(healingByPotionsObserver)
+        # healingBySpellsObservable.subscribe(healingBySpellsObserver)
+        # comboSpellsObservable.subscribe(comboSpellsObserver)
         gameplayObservable.subscribe(gameplayObserver)
         kivy.context.register_context('game', GameContext)
         MyApp().run()
