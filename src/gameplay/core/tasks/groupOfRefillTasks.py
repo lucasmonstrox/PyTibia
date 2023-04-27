@@ -4,7 +4,10 @@ from src.shared.typings import Waypoint
 from ...typings import Context
 from ..factories.makeBuyItemTask import makeBuyItemTask
 from ..factories.makeCloseNpcTradeBox import makeCloseNpcTradeBoxTask
+from ..factories.makeSetChatOff import makeSetChatOffTask
 from ..factories.makeSay import makeSayTask
+from ..factories.makeSelectChatTab import makeSelectChatTabTask
+from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..typings import Task
 from .groupTask import GroupTask
 
@@ -46,11 +49,14 @@ class GroupOfRefillTasks(GroupTask):
         amountOfHealthPotionsToBuy = max(0, context['refill']['health']['quantity'] - \
             healthPotionsAmount)
         return np.array([
+            makeSelectChatTabTask('local chat'),
             makeSayTask('hi'),
             makeSayTask('trade'),
             makeBuyItemTask((context['refill']['mana']['item'], amountOfManaPotionsToBuy)),
             makeBuyItemTask((context['refill']['health']['item'], amountOfHealthPotionsToBuy)),
             makeCloseNpcTradeBoxTask(),
+            makeSetChatOffTask(),
+            makeSetNextWaypointTask(),
         ], dtype=Task)
 
     # TODO: add unit tests

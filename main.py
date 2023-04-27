@@ -10,6 +10,7 @@ from src.gameplay.cavebot import resolveCavebotTasks, shouldAskForCavebotTasks
 from src.gameplay.context import gameContext
 from src.gameplay.combo import comboSpellsObserver
 from src.gameplay.core.middlewares.battleList import setBattleListMiddleware
+from src.gameplay.core.middlewares.chat import setChatTabsMiddleware
 from src.gameplay.core.middlewares.gameWindow import setDirection, setHandleLoot, setGameWindowCreatures, setGameWindowMiddleware
 from src.gameplay.core.middlewares.playerStatus import setMapPlayerStatusMiddleware
 from src.gameplay.core.middlewares.radar import setRadarMiddleware, setWaypointIndex
@@ -55,6 +56,7 @@ def main():
             return gameContext
         gameContext = setScreenshot(gameContext)
         gameContext = setRadarMiddleware(gameContext)
+        gameContext = setChatTabsMiddleware(gameContext)
         gameContext = setBattleListMiddleware(gameContext)
         gameContext = setGameWindowMiddleware(gameContext)
         gameContext = setDirection(gameContext)
@@ -148,11 +150,32 @@ def main():
             gameContext = gameContext['currentTask'].do(context)
         gameContext['radar']['lastCoordinateVisited'] = gameContext['radar']['coordinate']
 
-    eatFoodObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
-    healingPriorityObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
-    healingByPotionsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
-    healingBySpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
-    comboSpellsObservable = gameObserver.pipe(operators.subscribe_on(threadPoolScheduler))
+    def continueWhenIsNotChatTask(context):
+        if context['currentTask'] is None:
+            return
+        chatTask = ['depositGold', 'groupOfRefill']
+        return context['currentTask'].name not in chatTask
+
+    eatFoodObservable = gameObserver.pipe(
+        operators.filter(continueWhenIsNotChatTask),
+        operators.subscribe_on(threadPoolScheduler)
+    )
+    healingPriorityObservable = gameObserver.pipe(
+        operators.filter(continueWhenIsNotChatTask),
+        operators.subscribe_on(threadPoolScheduler)
+    )
+    healingByPotionsObservable = gameObserver.pipe(
+        operators.filter(continueWhenIsNotChatTask),
+        operators.subscribe_on(threadPoolScheduler)
+    )
+    healingBySpellsObservable = gameObserver.pipe(
+        operators.filter(continueWhenIsNotChatTask),
+        operators.subscribe_on(threadPoolScheduler)
+    )
+    comboSpellsObservable = gameObserver.pipe(
+        operators.filter(continueWhenIsNotChatTask),
+        operators.subscribe_on(threadPoolScheduler)
+    )
 
     class GameContext:
         def addWaypoint(self, waypoint):

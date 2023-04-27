@@ -1,7 +1,9 @@
 import numpy as np
 from ..typings import Task
 from ..factories.makeSay import makeSayTask
+from ..factories.makeSetChatOff import makeSetChatOffTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
+from ..factories.makeSelectChatTab import makeSelectChatTabTask
 from .groupTask import GroupTask
 
 
@@ -18,8 +20,10 @@ class DepositGoldTask(GroupTask):
     # TODO: add typings
     def makeTasks(self):
         return np.array([
+            makeSelectChatTabTask('local chat'),
             makeSayTask('hi'),
             makeSayTask('deposit all'),
             makeSayTask('yes'),
+            makeSetChatOffTask(),
             makeSetNextWaypointTask(),
         ], dtype=Task)

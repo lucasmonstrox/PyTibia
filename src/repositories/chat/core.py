@@ -4,7 +4,7 @@ from src.shared.typings import BBox, GrayImage
 from src.repositories.gameWindow.core import getLeftArrowPosition
 from src.utils.core import cacheObjectPosition, hashit, locate, locateMultiple, press, typeKeyboard
 from src.utils.image import cacheChain, convertGraysToBlack, loadFromRGBToGray, save
-from .config import images
+from .config import hashes, images
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
@@ -15,13 +15,34 @@ chatOffImg = loadFromRGBToGray(f'{currentPath}/images/chatOff.png')
 chatOffImg = loadFromRGBToGray(f'{currentPath}/images/chatOff.png')
 lootOfTextImg = loadFromRGBToGray(f'{currentPath}/images/lootOfText.png')
 nothingTextImg = loadFromRGBToGray(f'{currentPath}/images/nothingText.png')
-chatTabs = [
-    ('loot', (loadFromRGBToGray(f'{currentPath}/images/loot.png'), loadFromRGBToGray(f'{currentPath}/images/selectedLootTab.png'))),
-    ('npcs', (loadFromRGBToGray(f'{currentPath}/images/NPCs.png'), loadFromRGBToGray(f'{currentPath}/images/selectedNPCsTab.png'))),
-    ('localChat', (loadFromRGBToGray(f'{currentPath}/images/localChat.png'),
-     loadFromRGBToGray(f'{currentPath}/images/selectedLocalChatTab.png')))]
-chatTabs = dict(chatTabs)
 oldListOfLootCheck = []
+
+
+# TODO: add unit tests
+# TODO: add perf
+# TODO: add tests
+def getTabs(screenshot):
+    shouldFindTabs = True
+    tabIndex = 0
+    tabs = {}
+    leftSidebarArrowsPosition = getLeftArrowPosition(screenshot)
+    chatMenuPosition = getChatMenuPosition(screenshot)
+    x, y, width, height = leftSidebarArrowsPosition[0] + 18, chatMenuPosition[1], chatMenuPosition[0] - (leftSidebarArrowsPosition[0] + 18), 20
+    chatsTabsContainerImage = screenshot[y:y + height, x:x + width]
+    while shouldFindTabs:
+        xOfTab = tabIndex * 96
+        firstPixel = chatsTabsContainerImage[0, xOfTab]
+        if firstPixel != 114 and firstPixel != 125:
+            shouldFindTabs = False
+            continue
+        isTabSelected = firstPixel == 114
+        tabImage = chatsTabsContainerImage[2:16, xOfTab + 2:xOfTab + 2 + 92]
+        tabImageHash = hashit(tabImage)
+        tabName = hashes['tabs'].get(tabImageHash, 'Unknown')
+        if tabName != 'Unknown':
+            tabs.setdefault(tabName, {'isSelected': isTabSelected, 'position': (x + xOfTab, y, 92, 14)})
+        tabIndex += 1
+    return tabs
 
 
 # TODO: add unit tests
@@ -52,7 +73,7 @@ def hasNewLoot(screenshot: GrayImage) -> bool:
 # TODO: add unit tests
 # TODO: add perf
 def getLootLines(screenshot: GrayImage) -> GrayImage:
-    (x, y, w, h) = getChatMessagesContainerPos(screenshot)
+    (x, y, w, h) = getChatMessagesContainerPosition(screenshot)
     messages = screenshot[y: y + h, x: x + w]
     lootLines = locateMultiple(lootOfTextImg, messages)
     linesWithLoot = []
@@ -71,6 +92,7 @@ def getLootLines(screenshot: GrayImage) -> GrayImage:
 @cacheObjectPosition
 def getChatMenuPosition(screenshot: GrayImage) -> Union[BBox, None]:
     return locate(screenshot, chatMenuImg)
+
 
 # TODO: add unit tests
 # TODO: add perf
@@ -100,25 +122,8 @@ def enableChatOn(screenshot: GrayImage):
 
 # TODO: add unit tests
 # TODO: add perf
-def enableChatOff(screenshot: GrayImage):
-    (_, chatIsOn) = getChatStatus(screenshot)
-    if chatIsOn:
-        press('enter')
-
-
-# TODO: add unit tests
-# TODO: add perf
 @cacheObjectPosition
-def getChatsTabsContainer(screenshot: GrayImage) -> Tuple[BBox, int]:
-    leftSidebarArrows = getLeftArrowPosition(screenshot)
-    chatMenuPos = getChatMenuPosition(screenshot)
-    return leftSidebarArrows[0] + 15, chatMenuPos[1], chatMenuPos[0] - (leftSidebarArrows[0] + 15), 20
-
-
-# TODO: add unit tests
-# TODO: add perf
-@cacheObjectPosition
-def getChatMessagesContainerPos(screenshot: GrayImage) -> BBox:
+def getChatMessagesContainerPosition(screenshot: GrayImage) -> BBox:
     leftSidebarArrows = getLeftArrowPosition(screenshot)
     chatMenu = getChatMenuPosition(screenshot)
     chatStatus = getChatStatus(screenshot)
@@ -133,15 +138,6 @@ def getChatMessagesContainerPos(screenshot: GrayImage) -> BBox:
 ])
 def getLootTabPosition(_: GrayImage) -> Tuple[BBox, int]:
     pass
-
-
-def lootTabIsSelected(screenshot: GrayImage) -> Union[bool, None]:
-    lootTabPosition = getLootTabPosition(screenshot)
-    if lootTabPosition is None:
-        return None
-    x, y, width, height = lootTabPosition
-    lootTabImage = screenshot[y:y + height, x:x + width]
-    return lootTabImage[0, 0] == 71
 
 
 # TODO: add unit tests

@@ -46,7 +46,7 @@ gameContext = {
                 ('', 'walk', (33221, 32351, 10), {}), # 18
                 ('', 'dropFlasks', (33306, 32289, 7), {}),
                 ('', 'refillChecker', (33306, 32289, 7), { # 20
-                    'minimumOfManaPotions': 100,
+                    'minimumOfManaPotions': 200,
                     'minimumOfHealthPotions': 200,
                     'minimumOfCapacity': 500,
                     'waypointLabelToRedirect': 'caveStart',
@@ -85,6 +85,9 @@ gameContext = {
             ], dtype=Waypoint),
             'state': None
         },
+    },
+    'chat': {
+        'tabs': {}
     },
     'comingFromDirection': None,
     'comboSpells': {
@@ -163,7 +166,7 @@ gameContext = {
         },
         'potions': {
             'firstHealthPotion': {
-                'enabled': False,
+                'enabled': True,
                 'hotkey': '1',
                 'hpPercentageLessThanOrEqual': 50,
                 'manaPercentageGreaterThanOrEqual': None,
@@ -181,9 +184,9 @@ gameContext = {
                 'manaPercentageGreaterThanOrEqual': None,
             },
             'firstManaPotion': {
-                'enabled': False,
+                'enabled': True,
                 'hotkey': '2',
-                'manaPercentageLessThanOrEqual': 90,
+                'manaPercentageLessThanOrEqual': 80,
             },
             'secondManaPotion': {
                 'enabled': False,

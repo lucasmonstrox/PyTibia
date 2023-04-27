@@ -1,4 +1,5 @@
-from src.repositories.chat.core import enableChatOff
+import pyautogui
+from src.repositories.chat.core import getChatStatus
 from ...typings import Context
 from .baseTask import BaseTask
 
@@ -13,5 +14,7 @@ class SetChatOffTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        enableChatOff(context['screenshot'])
+        (_, chatIsOn) = getChatStatus(context['screenshot'])
+        if chatIsOn:
+            pyautogui.press('enter')
         return context
