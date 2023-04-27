@@ -215,11 +215,11 @@ def main():
             gameContext['healing']['spells'][contextKey]['hotkey'] = hotkey
 
     try:
-        # eatFoodObservable.subscribe(eatFoodObserver)
-        # healingPriorityObservable.subscribe(healingPriorityObserver)
-        # healingByPotionsObservable.subscribe(healingByPotionsObserver)
-        # healingBySpellsObservable.subscribe(healingBySpellsObserver)
-        # comboSpellsObservable.subscribe(comboSpellsObserver)
+        eatFoodObservable.subscribe(eatFoodObserver)
+        healingPriorityObservable.subscribe(healingPriorityObserver)
+        healingByPotionsObservable.subscribe(healingByPotionsObserver)
+        healingBySpellsObservable.subscribe(healingBySpellsObserver)
+        comboSpellsObservable.subscribe(comboSpellsObserver)
         gameplayObservable.subscribe(gameplayObserver)
         kivy.context.register_context('game', GameContext)
         MyApp().run()
