@@ -11,5 +11,6 @@ Creature = np.dtype([
     ('coordinate', np.uint16, (3,)),
     ('windowCoordinate', np.uint32, (2,)),
     ('gameWindowCoordinate', np.uint32, (2,)),
+    ('isUnderRoof', np.bool_),
 ])
 CreatureList = NDArray[Any, Any]
