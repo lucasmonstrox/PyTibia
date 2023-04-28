@@ -10,7 +10,6 @@ from .core.tasks.groupOfSingleWalk import GroupOfSingleWalkTasks
 from .core.tasks.groupOfWalk import GroupOfWalkTasks
 from .core.tasks.groupTask import GroupTask
 from .core.tasks.logout import LogoutTask
-from .core.tasks.lureCreatures import LureCreaturesTask
 from .core.tasks.useRopeWaypoint import UseRopeWaypointTask
 from .core.tasks.useShovelWaypoint import UseShovelWaypointTask
 from .typings import Context
@@ -24,8 +23,6 @@ def resolveTasksByWaypoint(context: Context, waypoint: Waypoint) -> Union[BaseTa
         return DepositItemsTask(context, waypoint)
     elif waypoint['type'] == 'dropFlasks':
         return DropFlasksTask(context)
-    elif waypoint['type'] == 'lure':
-        return LureCreaturesTask(waypoint['coordinate'])
     elif waypoint['type'] == 'logout':
         return LogoutTask(context)
     if waypoint['type'] == 'moveDownEast' or waypoint['type'] == 'moveDownNorth' or waypoint['type'] == 'moveDownSouth' or waypoint['type'] == 'moveDownWest':
