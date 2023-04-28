@@ -34,4 +34,4 @@ def shouldAskForCavebotTasks(context: Context) -> bool:
         return False
     if context['currentTask'] is None:
         return True
-    return (context['currentTask'].name not in ['groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfSingleWalk', 'useRopeWaypoint', 'useShovelWaypoint'])
+    return (context['currentTask'].name not in ['dropFlasks', 'groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfSingleWalk', 'moveDownEast', 'moveDownNorth', 'moveDownSouth', 'moveDownWest', 'moveUpEast', 'moveUpNorth', 'moveUpSouth', 'moveUpWest', 'refillChecker', 'useRopeWaypoint', 'useShovelWaypoint'])
