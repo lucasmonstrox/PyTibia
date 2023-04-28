@@ -9,9 +9,11 @@ arrowsImagesPath = f'{imagesPath}/arrows'
 waypointsImagesPath = f'{imagesPath}/waypoints'
 images = {
     'arrows': {
+        'leftGameWindow00': loadFromRGBToGray(f'{arrowsImagesPath}/leftGameWindow00.png'),
         'leftGameWindow01': loadFromRGBToGray(f'{arrowsImagesPath}/leftGameWindow01.png'),
         'leftGameWindow10': loadFromRGBToGray(f'{arrowsImagesPath}/leftGameWindow10.png'),
         'leftGameWindow11': loadFromRGBToGray(f'{arrowsImagesPath}/leftGameWindow11.png'),
+        'rightGameWindow00': loadFromRGBToGray(f'{arrowsImagesPath}/rightGameWindow00.png'),
         'rightGameWindow01': loadFromRGBToGray(f'{arrowsImagesPath}/rightGameWindow01.png'),
         'rightGameWindow10': loadFromRGBToGray(f'{arrowsImagesPath}/rightGameWindow10.png'),
         'rightGameWindow11': loadFromRGBToGray(f'{arrowsImagesPath}/rightGameWindow11.png'),
