@@ -8,5 +8,6 @@ def setBattleListMiddleware(gameContext: Context) -> Context:
     content = getContent(gameContext['screenshot'])
     gameContext['battleList']['creatures'] = getCreatures(content)
     hasBattleListCreatures = len(gameContext['battleList']['creatures']) > 0
+    # TODO: avoid clever code
     gameContext['cavebot']['isAttackingSomeCreature'] = isAttackingSomeCreature(gameContext['battleList']['creatures']) if hasBattleListCreatures else False
     return gameContext
