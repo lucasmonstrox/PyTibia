@@ -57,10 +57,6 @@ Apenas disponível para knight/palaldin
 - Guild gameplay, iniciar uma guerra e dominar um servidor.
 - Levantar fundos e ajudar meus colegas venezuelanos que estão passando por momentos difíceis.
 
-# 🦾 Outro excelente bot enquanto o PyTibia não está pronto
-
-BearSharp é um bot excelente e feito por um amigo e já está funcionando, você pode falar com ele via discord https://discord.gg/kaKgkNxNtD
-
 # 🧰 Instalação
 
 ## Pré-requisitos
