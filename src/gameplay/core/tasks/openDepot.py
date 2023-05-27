@@ -2,7 +2,7 @@ import pyautogui
 from src.repositories.inventory.core import images
 from src.utils.core import locate
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class OpenDepotTask(BaseTask):

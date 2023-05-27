@@ -32,6 +32,7 @@ def resolveCavebotTasks(context: Context) -> Union[Union[GroupOfAttackClosestCre
 def shouldAskForCavebotTasks(context: Context) -> bool:
     if context['way'] != 'cavebot':
         return False
-    if context['currentTask'] is None:
+    currentTask = context['taskOrchestrator'].getCurrentTask()
+    if currentTask is None:
         return True
-    return (context['currentTask'].name not in ['dropFlasks', 'groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfSingleWalk', 'moveDownEast', 'moveDownNorth', 'moveDownSouth', 'moveDownWest', 'moveUpEast', 'moveUpNorth', 'moveUpSouth', 'moveUpWest', 'refillChecker', 'useRopeWaypoint', 'useShovelWaypoint'])
+    return (currentTask.name not in ['dropFlasks', 'groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfSingleWalk', 'moveDownEast', 'moveDownNorth', 'moveDownSouth', 'moveDownWest', 'moveUpEast', 'moveUpNorth', 'moveUpSouth', 'moveUpWest', 'refillChecker', 'useRopeWaypoint', 'useShovelWaypoint'])

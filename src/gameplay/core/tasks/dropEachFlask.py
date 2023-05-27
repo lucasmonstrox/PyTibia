@@ -6,7 +6,7 @@ from src.shared.typings import Slot
 from src.utils.core import hashit, locate
 from src.utils.mouse import mouseDrag
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class DropEachFlaskTask(BaseTask):

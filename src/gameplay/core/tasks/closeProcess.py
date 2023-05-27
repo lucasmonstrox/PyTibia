@@ -1,5 +1,5 @@
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class CloseProcessTask(BaseTask):
@@ -7,7 +7,7 @@ class CloseProcessTask(BaseTask):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.5
-        self.name = 'loseProcess'
+        self.name = 'closeProcess'
         self.value = None
 
     # TODO: add unit tests

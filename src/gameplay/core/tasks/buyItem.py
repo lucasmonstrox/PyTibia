@@ -1,6 +1,6 @@
 from src.repositories.refill.core import buyItem
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 # TODO: check if item was bought

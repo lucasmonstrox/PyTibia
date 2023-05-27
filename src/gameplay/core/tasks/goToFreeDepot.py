@@ -7,10 +7,10 @@ from ...typings import Context
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
-from .groupTask import GroupTask
+from .common.vector import VectorTask
 
 
-class GoToFreeDepotTask(GroupTask):
+class GoToFreeDepotTask(VectorTask):
     def __init__(self, context: Context, waypoint: Waypoint):
         super().__init__()
         self.didTask = False

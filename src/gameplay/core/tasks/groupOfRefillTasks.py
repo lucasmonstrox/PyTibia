@@ -6,13 +6,11 @@ from ..factories.makeBuyItemTask import makeBuyItemTask
 from ..factories.makeCloseNpcTradeBox import makeCloseNpcTradeBoxTask
 from ..factories.makeSetChatOff import makeSetChatOffTask
 from ..factories.makeSay import makeSayTask
-from ..factories.makeSelectChatTab import makeSelectChatTabTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
-from ..typings import Task
-from .groupTask import GroupTask
+from .common.vector import VectorTask
 
 
-class GroupOfRefillTasks(GroupTask):
+class GroupOfRefillTasks(VectorTask):
     def __init__(self, context: Context, waypoint: Waypoint):
         super().__init__()
         self.delayBeforeStart = 1
@@ -48,8 +46,8 @@ class GroupOfRefillTasks(GroupTask):
             context['screenshot'], healthPotionSlot)
         amountOfHealthPotionsToBuy = max(0, context['refill']['health']['quantity'] - \
             healthPotionsAmount)
-        return np.array([
-            makeSelectChatTabTask('local chat'),
+        return [
+            # makeSelectChatTabTask('local chat'),
             makeSayTask('hi'),
             makeSayTask('trade'),
             makeBuyItemTask((context['refill']['mana']['item'], amountOfManaPotionsToBuy)),
@@ -57,10 +55,11 @@ class GroupOfRefillTasks(GroupTask):
             makeCloseNpcTradeBoxTask(),
             makeSetChatOffTask(),
             makeSetNextWaypointTask(),
-        ], dtype=Task)
+        ]
 
     # TODO: add unit tests
     def onDidComplete(self, context: Context) -> Context:
+        # TODO: numbait
         labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.value['options']['waypointLabelToRedirect'])[0]
         if len(labelIndexes) == 0:
             # TODO: raise error

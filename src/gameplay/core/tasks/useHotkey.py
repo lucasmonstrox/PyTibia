@@ -1,12 +1,10 @@
-import numpy as np
 import pyautogui
 from ...typings import Context
-from ..typings import Task
-from .baseTask import BaseTask
-from .groupTask import GroupTask
+from .common.base import BaseTask
+from .common.vector import VectorTask
 
 
-class UseHotkeyGroupTask(GroupTask):
+class UseHotkeyVectorTask(VectorTask):
     def __init__(self, hotkey: str, delayAfterComplete: int=0):
         super().__init__()
         self.name = 'useHotkeyGroup'
@@ -16,9 +14,9 @@ class UseHotkeyGroupTask(GroupTask):
     # TODO: add unit tests
     # TODO: add typings
     def makeTasks(self, hotkey, delayAfterComplete: int):
-        return np.array([
+        return [
             UseHotkeyTask(hotkey, delayAfterComplete=delayAfterComplete),
-        ], dtype=Task)
+        ]
 
 
 class UseHotkeyTask(BaseTask):

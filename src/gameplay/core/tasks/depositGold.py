@@ -1,14 +1,11 @@
-import numpy as np
-from ..typings import Task
 from ..factories.makeSay import makeSayTask
 from ..factories.makeSetChatOff import makeSetChatOffTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
-from ..factories.makeSelectChatTab import makeSelectChatTabTask
-from .groupTask import GroupTask
+from .common.vector import VectorTask
 
 
 # TODO: check if gold was deposited successfully
-class DepositGoldTask(GroupTask):
+class DepositGoldTask(VectorTask):
     def __init__(self):
         super().__init__()
         self.delayBeforeStart = 1
@@ -19,11 +16,11 @@ class DepositGoldTask(GroupTask):
     # TODO: add unit tests
     # TODO: add typings
     def makeTasks(self):
-        return np.array([
-            makeSelectChatTabTask('local chat'),
+        return [
+            # makeSelectChatTabTask('local chat'),
             makeSayTask('hi'),
             makeSayTask('deposit all'),
             makeSayTask('yes'),
             makeSetChatOffTask(),
             makeSetNextWaypointTask(),
-        ], dtype=Task)
+        ]

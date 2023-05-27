@@ -1,6 +1,6 @@
 from src.repositories.chat.core import sendMessage
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 # TODO: implement did method checking if phrase was spelled into chat

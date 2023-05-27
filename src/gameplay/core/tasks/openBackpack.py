@@ -2,9 +2,8 @@ import pyautogui
 from src.repositories.inventory.config import images
 from src.repositories.inventory.core import isBackpackOpen
 from src.utils.core import locate
-from src.utils.image import save
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class OpenBackpackTask(BaseTask):

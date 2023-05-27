@@ -1,5 +1,4 @@
 import numpy as np
-from src.gameplay.core.tasks.selectLootTab import GroupOfSelectLootTabTasks
 from src.repositories.battleList.core import getBeingAttackedCreatureCategory
 from src.repositories.chat.core import hasNewLoot
 from src.repositories.gameWindow.config import gameWindowSizes
@@ -8,6 +7,7 @@ from src.repositories.gameWindow.creatures import getCreatures, getCreaturesByTy
 from src.repositories.gameWindow.typings import Creature
 from ...comboSpells.core import getSpellPath
 from ...typings import Context
+from ..tasks.selectChatTab import SelectChatTabTask
 
 
 # TODO: add unit tests
@@ -38,11 +38,11 @@ def setDirection(gameContext: Context) -> Context:
 # TODO: add unit tests
 def setHandleLoot(gameContext: Context) -> Context:
     endlessTasks = ['depositGold', 'groupOfRefill', 'groupOfSelectLootTab']
-    if (gameContext['currentTask'] is None or gameContext['currentTask'].name not in endlessTasks):
-        lootTab = gameContext['chat']['tabs'].get('loot')
-        hasChatTab = lootTab is not None
-        if hasChatTab and not lootTab['isSelected']:
-            gameContext['currentTask'] = GroupOfSelectLootTabTasks()
+    # if (gameContext['currentTask'] is None or gameContext['currentTask'].name not in endlessTasks):
+    #     lootTab = gameContext['chat']['tabs'].get('loot')
+    #     hasChatTab = lootTab is not None
+    #     if hasChatTab and not lootTab['isSelected']:
+    #         gameContext['currentTask'] = SelectChatTabTask('loot')
     if hasNewLoot(gameContext['screenshot']):
         if gameContext['cavebot']['previousTargetCreature'] is not None:
             gameContext['loot']['corpsesToLoot'] = np.append(gameContext['loot']['corpsesToLoot'], [gameContext['cavebot']['previousTargetCreature']], axis=0)

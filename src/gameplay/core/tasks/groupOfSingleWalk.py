@@ -1,13 +1,11 @@
-import numpy as np
 from src.shared.typings import Coordinate
 from ...typings import Context
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..factories.makeWalk import makeWalkTask
-from ..typings import Task
-from .groupTask import GroupTask
+from .common.vector import VectorTask
 
 
-class GroupOfSingleWalkTasks(GroupTask):
+class GroupOfSingleWalkTasks(VectorTask):
     def __init__(self, context: Context, checkInCoordinate: Coordinate):
         super().__init__()
         self.delayAfterComplete = 2
@@ -18,7 +16,7 @@ class GroupOfSingleWalkTasks(GroupTask):
     # TODO: add unit tests
     # TODO: add typings
     def generateTasks(self, context: Context, checkInCoordinate: Coordinate):
-        return np.array([
+        return [
             makeWalkTask(context, checkInCoordinate),
             makeSetNextWaypointTask(),
-        ], dtype=Task)
+        ]

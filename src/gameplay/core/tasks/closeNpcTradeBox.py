@@ -1,7 +1,7 @@
 from src.repositories.refill.core import getTradeTopPos
 from src.utils.mouse import leftClick
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 # TODO: check if npc tradebox was closed

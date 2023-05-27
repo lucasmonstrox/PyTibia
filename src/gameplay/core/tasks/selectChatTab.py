@@ -1,11 +1,12 @@
 import pyautogui
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class SelectChatTabTask(BaseTask):
     def __init__(self, name):
         super().__init__()
-        self.delayOfTimeout = 1
+        self.delayBeforeStart = 1
+        self.delayAfterComplete = 1
         self.name = 'selectChatTab'
         self.value = name
 

@@ -1,13 +1,10 @@
-import numpy as np
 from src.repositories.gameWindow.typings import Creature
-from ...typings import Context
 from ..factories.makeLootCorpse import makeLootCorpseTask
-from ..typings import Task
-from .groupTask import GroupTask
+from .common.vector import VectorTask
 
 
-class GroupOfLootCorpseTasks(GroupTask):
-    def __init__(self, context: Context, corpse: Creature):
+class GroupOfLootCorpseTasks(VectorTask):
+    def __init__(self, corpse: Creature):
         super().__init__()
         self.name = 'groupOfLootCorpse'
         self.tasks = self.generateTasks(corpse)
@@ -16,6 +13,7 @@ class GroupOfLootCorpseTasks(GroupTask):
     # TODO: add unit tests
     # TODO: add typings
     def generateTasks(self, corpse: Creature):
-        return np.array([
+        return [
+            # TODO: add walkToCoordinate to reach dead corpse
             makeLootCorpseTask(corpse)
-        ], dtype=Task)
+        ]

@@ -4,7 +4,7 @@ from src.repositories.skills.core import getCapacity
 from src.shared.typings import Waypoint
 from src.utils.array import getNextArrayIndex
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class RefillCheckerTask(BaseTask):

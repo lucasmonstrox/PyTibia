@@ -5,7 +5,7 @@ from src.shared.typings import GrayImage
 from src.utils.core import locate
 from src.utils.mouse import mouseDrag
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 # TODO: check if item was moved. Is possible to check by cap

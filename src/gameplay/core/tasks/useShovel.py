@@ -3,7 +3,7 @@ from src.repositories.gameWindow.core import getSlotFromCoordinate, images, isHo
 from src.repositories.gameWindow.slot import clickSlot
 from src.shared.typings import Waypoint
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class UseShovelTask(BaseTask):

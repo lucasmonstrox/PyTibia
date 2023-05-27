@@ -5,7 +5,7 @@ from src.repositories.radar.core import getBreakpointTileMovementSpeed, getTileF
 from src.repositories.skills.core import getSpeed
 from src.utils.coordinate import getDirectionBetweenCoordinates
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class SingleWalkPressTask(BaseTask):

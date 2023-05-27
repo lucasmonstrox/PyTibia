@@ -1,7 +1,7 @@
 import pyautogui
 from src.utils.mouse import leftClick
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class AttackClosestCreatureTask(BaseTask):
@@ -29,5 +29,5 @@ class AttackClosestCreatureTask(BaseTask):
 
     # TODO: add unit tests
     def onDidTimeout(self, context: Context) -> Context:
-        context['currentTask'] = None
+        context['taskOrchestrator'].reset()
         return context

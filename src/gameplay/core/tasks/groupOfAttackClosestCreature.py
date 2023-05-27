@@ -1,15 +1,13 @@
 import numpy as np
 from scipy.spatial import distance
-from src.repositories.radar.typings import Coordinate
 from ...typings import Context
 from ..factories.makeAttackClosestCreature import makeAttackClosestCreatureTask
 from ..factories.makeWalk import makeWalkTask
-from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
-from .groupTask import GroupTask
+from .common.vector import VectorTask
 
 
-class GroupOfAttackClosestCreatureTasks(GroupTask):
+class GroupOfAttackClosestCreatureTasks(VectorTask):
     def __init__(self, context: Context):
         super().__init__()
         self.name = 'groupOfAttackClosestCreature'
@@ -18,16 +16,13 @@ class GroupOfAttackClosestCreatureTasks(GroupTask):
     # TODO: add unit tests
     # TODO: add typings
     def generateTasks(self, context: Context):
-        tasks = np.array([], dtype=Task)
-        tasksToAppend = np.array([
-            makeAttackClosestCreatureTask(),
-        ], dtype=Task)
-        tasks = np.append(tasks, [tasksToAppend])
+        tasks = []
+        tasks.append(makeAttackClosestCreatureTask())
         nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
         for monster in context['gameWindow']['monsters']:
             if np.array_equal(monster['coordinate'], context['cavebot']['closestCreature']['coordinate']) == False:
                 monsterCoordinateTuple = (monster['coordinate'][0], monster['coordinate'][1], monster['coordinate'][2])
-                coordinatesToAppend = np.array([monsterCoordinateTuple], dtype=Coordinate)
+                coordinatesToAppend = [monsterCoordinateTuple]
                 nonWalkableCoordinates = np.append(nonWalkableCoordinates, coordinatesToAppend)
         gameWindowHeight, gameWindowWidth  = context['gameWindow']['img'].shape
         gameWindowCenter = (gameWindowWidth // 2, gameWindowHeight // 2)
@@ -42,11 +37,8 @@ class GroupOfAttackClosestCreatureTasks(GroupTask):
         else:
             walkpoints = generateFloorWalkpoints(
                 context['radar']['coordinate'], context['cavebot']['closestCreature']['coordinate'], nonWalkableCoordinates=nonWalkableCoordinates)
-            hasWalkpoints = len(walkpoints) > 0
-            if hasWalkpoints:
+            if len(walkpoints) > 0:
                 walkpoints.pop()
         for walkpoint in walkpoints:
-            walkpointTask = makeWalkTask(context, walkpoint)
-            taskToAppend = np.array([walkpointTask], dtype=Task)
-            tasks = np.append(tasks, [taskToAppend])
+            tasks.append(makeWalkTask(context, walkpoint))
         return tasks

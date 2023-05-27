@@ -1,5 +1,5 @@
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class PauseBotTask(BaseTask):

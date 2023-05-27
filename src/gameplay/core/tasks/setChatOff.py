@@ -1,7 +1,7 @@
 import pyautogui
 from src.repositories.chat.core import getChatStatus
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 # TODO: implement did method

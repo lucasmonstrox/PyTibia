@@ -3,7 +3,7 @@ from src.repositories.gameWindow.core import getSlotFromCoordinate
 from src.repositories.gameWindow.slot import clickSlot
 from src.shared.typings import Waypoint
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class ClickInCoordinateTask(BaseTask):
@@ -24,5 +24,6 @@ class ClickInCoordinateTask(BaseTask):
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
         res = context['radar']['coordinate'] == context['cavebot']['waypoints']['state']['checkInCoordinate']
+        # TODO: avoid numpy comparison
         didTask = np.all(res) == True
         return didTask

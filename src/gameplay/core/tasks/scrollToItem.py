@@ -3,7 +3,7 @@ from typing import Union
 from src.shared.typings import BBox, GrayImage
 from src.utils.core import locate
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class ScrollToItemTask(BaseTask):

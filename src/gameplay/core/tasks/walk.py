@@ -6,7 +6,7 @@ from src.repositories.skills.core import getSpeed
 from src.shared.typings import Coordinate
 from src.utils.coordinate import getDirectionBetweenCoordinates
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class WalkTask(BaseTask):
@@ -32,22 +32,23 @@ class WalkTask(BaseTask):
     def do(self, context: Context) -> bool:
         walkpoint = self.value
         direction = getDirectionBetweenCoordinates(context['radar']['coordinate'], walkpoint)
-        hasNoNewDirection = direction is None
-        if hasNoNewDirection:
+        if direction is None:
             return context
         futureDirection = None
-        hasMoreTasks = len(context['currentTask'].tasks) > 1
+        currentTask = context['taskOrchestrator'].getCurrentTask()
+        if currentTask is None:
+            return context
+        hasMoreTasks = len(currentTask.tasks) > 1
         if hasMoreTasks:
             freeTaskIndex = None
-            for taskIndex, taskWithName in enumerate(context['currentTask'].tasks):
-                _, possibleFreeTask = taskWithName
+            for taskIndex, possibleFreeTask in enumerate(currentTask.tasks):
                 if possibleFreeTask.status != 'completed':
                     freeTaskIndex = taskIndex
                     break
-            if freeTaskIndex != None and (freeTaskIndex + 1) < len(context['currentTask'].tasks):
-                hasMoreWalkpointTasks = context['currentTask'].tasks[freeTaskIndex + 1]['type'] == 'walk'
+            if freeTaskIndex != None and (freeTaskIndex + 1) < len(currentTask.tasks):
+                hasMoreWalkpointTasks = isinstance(currentTask.tasks[freeTaskIndex + 1], WalkTask)
                 if hasMoreWalkpointTasks:
-                    _, nextTask = context['currentTask'].tasks[freeTaskIndex + 1]
+                    nextTask = currentTask.tasks[freeTaskIndex + 1]
                     futureDirection = getDirectionBetweenCoordinates(walkpoint, nextTask.value)
         if direction != futureDirection:
             if context['lastPressedKey'] is not None:
@@ -56,9 +57,7 @@ class WalkTask(BaseTask):
             else:
                 pyautogui.press(direction)
             return context
-        filterByWalkTasks = context['currentTask'].tasks['type'] == 'walk'
-        walkTasks = context['currentTask'].tasks[filterByWalkTasks]
-        walkTasksLength = len(walkTasks)
+        walkTasksLength = len(currentTask.tasks)
         if direction != context['lastPressedKey']:
             if walkTasksLength > 2:
                 pyautogui.keyDown(direction)
@@ -73,12 +72,12 @@ class WalkTask(BaseTask):
 
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
-        nextWalkpoint = self.value
-        didTask = np.all(context['radar']['coordinate'] == nextWalkpoint) == True
+        # TODO: numbait
+        didTask = np.all(context['radar']['coordinate'] == self.value) == True
         return didTask
 
     # TODO: add unit tests
     def onDidTimeout(self, context: Context) -> Context:
-        context['currentTask'].status = 'completed'
-        context['currentTask'].finishedAt = time()
+        context['taskOrchestrator'].getCurrentTask().status = 'completed'
+        context['taskOrchestrator'].getCurrentTask().finishedAt = time()
         return context

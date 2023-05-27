@@ -2,7 +2,7 @@ from src.repositories.inventory.core import images
 from src.utils.core import locate
 from src.utils.mouse import mouseDrag
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 # TODO: there is not way to check if items was moved to stash. try it soon

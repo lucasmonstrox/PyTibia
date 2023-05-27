@@ -2,7 +2,7 @@ from src.repositories.gameWindow.core import getSlotFromCoordinate
 from src.repositories.gameWindow.slot import rightClickSlot
 from src.repositories.inventory.core import isLockerOpen
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class OpenLockerTask(BaseTask):

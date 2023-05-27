@@ -5,10 +5,10 @@ from ...typings import Context
 from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
-from .groupTask import GroupTask
+from .common.vector import VectorTask
 
 
-class GroupOfFollowTargetCreatureTasks(GroupTask):
+class GroupOfFollowTargetCreatureTasks(VectorTask):
     def __init__(self, context: Context):
         super().__init__()
         self.name = 'groupOfFollowTargetCreature'
@@ -40,8 +40,7 @@ class GroupOfFollowTargetCreatureTasks(GroupTask):
         else:
             walkpoints = generateFloorWalkpoints(
                 context['radar']['coordinate'], targetCreature['coordinate'], nonWalkableCoordinates=nonWalkableCoordinates)
-            hasWalkpoints = len(walkpoints) > 0
-            if hasWalkpoints:
+            if len(walkpoints) > 0:
                 walkpoints.pop()
         for walkpoint in walkpoints:
             walkpointTask = makeWalkTask(context, walkpoint)

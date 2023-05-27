@@ -1,13 +1,11 @@
-import numpy as np
 from src.shared.typings import Waypoint
 from ..factories.makeClickInCoordinate import makeClickInCoordinateTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from ..factories.makeUseShovel import makeUseShovelTask
-from ..typings import Task
-from .groupTask import GroupTask
+from .common.vector import VectorTask
 
 
-class UseShovelWaypointTask(GroupTask):
+class UseShovelWaypointTask(VectorTask):
     def __init__(self, _, waypoint: Waypoint):
         super().__init__()
         self.name = 'useShovelWaypoint'
@@ -15,8 +13,8 @@ class UseShovelWaypointTask(GroupTask):
         self.value = waypoint
 
     def generateTasks(self, waypoint):
-        return np.array([
+        return [
             makeUseShovelTask(waypoint),
             makeClickInCoordinateTask(waypoint),
             makeSetNextWaypointTask(),
-        ], dtype=Task)
+        ]

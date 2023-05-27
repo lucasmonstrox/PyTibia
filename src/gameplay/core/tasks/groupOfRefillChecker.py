@@ -1,11 +1,9 @@
-import numpy as np
 from src.shared.typings import Waypoint
 from ..factories.makeRefillChecker import makeRefillCheckerTask
-from ..typings import Task
-from .groupTask import GroupTask
+from .common.vector import VectorTask
 
 
-class GroupOfRefillCheckerTasks(GroupTask):
+class GroupOfRefillCheckerTasks(VectorTask):
     def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.delayBeforeStart = 1
@@ -17,4 +15,4 @@ class GroupOfRefillCheckerTasks(GroupTask):
     # TODO: add unit tests
     # TODO: add typings
     def generateTasks(self, waypoint: Waypoint):
-        return np.array([makeRefillCheckerTask(waypoint)], dtype=Task)
+        return [makeRefillCheckerTask(waypoint)]

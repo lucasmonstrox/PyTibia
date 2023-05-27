@@ -70,7 +70,7 @@ class CavebotScreen(MDScreen):
 
     def on_row_press(self, _, instance_row):
         '''Called when a table row is clicked.'''
-        print(vars(instance_row))
+        pass
 
     def addWaypoint(self, waypointType):
         gameContext = kivy.context.get_current_context()['game']

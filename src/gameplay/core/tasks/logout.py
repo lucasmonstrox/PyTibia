@@ -1,13 +1,11 @@
-import numpy as np
 from ...typings import Context
 from ..tasks.closeProcess import CloseProcessTask
-from ..tasks.pauseBot import PauseBotTask
+# from ..tasks.pauseBot import PauseBotTask
 from ..tasks.pressLogoutKeys import PressLogoutKeys
-from ..typings import Task
-from .groupTask import GroupTask
+from .common.vector import VectorTask
 
 
-class LogoutTask(GroupTask):
+class LogoutTask(VectorTask):
     def __init__(self, context: Context):
         super().__init__()
         self.delayBeforeStart = 1
@@ -18,8 +16,8 @@ class LogoutTask(GroupTask):
     # TODO: add unit tests
     # TODO: add typings
     def generateTasks(self, context: Context):
-        return np.array([
+        return [
             # ('pauseBot', PauseBotTask()),
             ('pressKeys', PressLogoutKeys(['ctrl', 'q'])),
             ('closeProcess', CloseProcessTask())
-        ], dtype=Task)
+        ]

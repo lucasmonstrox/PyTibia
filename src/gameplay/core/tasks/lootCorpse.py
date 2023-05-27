@@ -3,7 +3,7 @@ import pyautogui
 from ...typings import Context
 from src.repositories.gameWindow.slot import rightClickSlot
 from src.repositories.gameWindow.typings import Creature
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 # TODO: check if something was looted or exactly count was looted

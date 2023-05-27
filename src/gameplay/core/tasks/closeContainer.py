@@ -2,7 +2,7 @@ import pyautogui
 from src.shared.typings import GrayImage
 from src.utils.core import locate
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 # TODO: check if container bar is hide

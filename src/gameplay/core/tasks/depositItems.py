@@ -1,4 +1,3 @@
-import numpy as np
 from src.repositories.inventory.core import images
 from src.shared.typings import Waypoint
 from ...typings import Context
@@ -11,11 +10,10 @@ from ..factories.makeOpenDepot import makeOpenDepotTask
 from ..factories.makeOpenLocker import makeOpenLockerTask
 from ..factories.makeScrollToItem import makeScrollToItemTask
 from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
-from ..typings import Task
-from .groupTask import GroupTask
+from .common.vector import VectorTask
 
 
-class DepositItemsTask(GroupTask):
+class DepositItemsTask(VectorTask):
     def __init__(self, context: Context, waypoint: Waypoint):
         super().__init__()
         self.delayBeforeStart = 1
@@ -27,7 +25,7 @@ class DepositItemsTask(GroupTask):
     # TODO: add unit tests
     # TODO: add typings
     def generateTasks(self, context: Context, waypoint: Waypoint):
-        return np.array([
+        return [
             makeGoToFreeDepotTask(context, waypoint),
             makeOpenLockerTask(),
             makeOpenBackpackTask(context['backpacks']['main']),
@@ -38,4 +36,4 @@ class DepositItemsTask(GroupTask):
             makeDragItemsTask(images['containersBars'][context['backpacks']['loot']], images['slots']['depot chest 2']),
             makeCloseContainerTask(images['containersBars'][context['backpacks']['loot']]),
             makeSetNextWaypointTask(),
-        ], dtype=Task)
+        ]

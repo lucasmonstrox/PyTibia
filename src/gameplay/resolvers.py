@@ -1,22 +1,22 @@
 from typing import Union
 from src.shared.typings import Waypoint
-from .core.tasks.baseTask import BaseTask
+from .core.tasks.common.base import BaseTask
+from .core.tasks.common.vector import VectorTask
 from .core.tasks.depositGold import DepositGoldTask
 from .core.tasks.depositItems import DepositItemsTask
 from .core.tasks.dropFlasks import DropFlasksTask
 from .core.tasks.groupOfRefillChecker import GroupOfRefillCheckerTasks
 from .core.tasks.groupOfRefillTasks import GroupOfRefillTasks
 from .core.tasks.groupOfSingleWalk import GroupOfSingleWalkTasks
-from .core.tasks.groupOfWalk import GroupOfWalkTasks
-from .core.tasks.groupTask import GroupTask
 from .core.tasks.logout import LogoutTask
 from .core.tasks.useRopeWaypoint import UseRopeWaypointTask
 from .core.tasks.useShovelWaypoint import UseShovelWaypointTask
+from .core.tasks.walkToWaypoint import WalkToWaypoint
 from .typings import Context
 
 
 # TODO: add unit tests
-def resolveTasksByWaypoint(context: Context, waypoint: Waypoint) -> Union[BaseTask, GroupTask]:
+def resolveTasksByWaypoint(context: Context, waypoint: Waypoint) -> Union[BaseTask, VectorTask]:
     if waypoint['type'] == 'depositGold':
         return DepositGoldTask()
     elif waypoint['type'] == 'depositItems':
@@ -38,4 +38,4 @@ def resolveTasksByWaypoint(context: Context, waypoint: Waypoint) -> Union[BaseTa
     elif waypoint['type'] == 'useShovel':
         return UseShovelWaypointTask(context, waypoint)
     elif waypoint['type'] == 'walk':
-        return GroupOfWalkTasks(context, waypoint['coordinate'])
+        return WalkToWaypoint(context, waypoint['coordinate'])
