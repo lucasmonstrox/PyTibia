@@ -15,5 +15,5 @@ def test_should_get_container_bottom_bar_pos():
     # save for conference
     result_pos_draw(screenshotImage, containerBottomBarPos, 'test_should_get_container_bottom_bar_pos.png')
     
-    expectedContainerBottomBarPos = (1748, 621, 156, 4)
+    expectedContainerBottomBarPos = (1572, 1036, 156, 4)
     assert containerBottomBarPos == expectedContainerBottomBarPos
