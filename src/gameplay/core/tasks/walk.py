@@ -18,7 +18,7 @@ class WalkTask(BaseTask):
             charSpeed, tileFriction)
         self.delayOfTimeout = (movementSpeed * 2) / 1000
         self.name = 'walk'
-        self.value = coordinate
+        self.walkpoint = coordinate
 
     # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:
@@ -30,26 +30,19 @@ class WalkTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> bool:
-        walkpoint = self.value
-        direction = getDirectionBetweenCoordinates(context['radar']['coordinate'], walkpoint)
+        direction = getDirectionBetweenCoordinates(context['radar']['coordinate'], self.walkpoint)
         if direction is None:
             return context
         futureDirection = None
-        currentTask = context['taskOrchestrator'].getCurrentTask()
-        if currentTask is None:
-            return context
-        hasMoreTasks = len(currentTask.tasks) > 1
-        if hasMoreTasks:
+        if len(self.parentTask.tasks) > 1:
             freeTaskIndex = None
-            for taskIndex, possibleFreeTask in enumerate(currentTask.tasks):
+            for taskIndex, possibleFreeTask in enumerate(self.parentTask.tasks):
                 if possibleFreeTask.status != 'completed':
                     freeTaskIndex = taskIndex
                     break
-            if freeTaskIndex != None and (freeTaskIndex + 1) < len(currentTask.tasks):
-                hasMoreWalkpointTasks = isinstance(currentTask.tasks[freeTaskIndex + 1], WalkTask)
-                if hasMoreWalkpointTasks:
-                    nextTask = currentTask.tasks[freeTaskIndex + 1]
-                    futureDirection = getDirectionBetweenCoordinates(walkpoint, nextTask.value)
+            if freeTaskIndex != None and (freeTaskIndex + 1) < len(self.parentTask.tasks):
+                nextTask = self.parentTask.tasks[freeTaskIndex + 1]
+                futureDirection = getDirectionBetweenCoordinates(self.walkpoint, nextTask.walkpoint)
         if direction != futureDirection:
             if context['lastPressedKey'] is not None:
                 pyautogui.keyUp(context['lastPressedKey'])
@@ -57,7 +50,7 @@ class WalkTask(BaseTask):
             else:
                 pyautogui.press(direction)
             return context
-        walkTasksLength = len(currentTask.tasks)
+        walkTasksLength = len(self.parentTask.tasks)
         if direction != context['lastPressedKey']:
             if walkTasksLength > 2:
                 pyautogui.keyDown(direction)
@@ -78,6 +71,6 @@ class WalkTask(BaseTask):
 
     # TODO: add unit tests
     def onDidTimeout(self, context: Context) -> Context:
-        context['taskOrchestrator'].getCurrentTask().status = 'completed'
-        context['taskOrchestrator'].getCurrentTask().finishedAt = time()
+        context['taskOrchestrator'].getCurrentTask(context).status = 'completed'
+        context['taskOrchestrator'].getCurrentTask(context).finishedAt = time()
         return context

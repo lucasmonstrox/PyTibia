@@ -31,7 +31,7 @@ class LootCorpseTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    def onDidComplete(self, context: Context) -> Context:
+    def onComplete(self, context: Context) -> Context:
         creatureToLoot = context['loot']['corpsesToLoot'][0]
         indexesToDelete = []
         for index, corpseToLoot in enumerate(context['loot']['corpsesToLoot']):

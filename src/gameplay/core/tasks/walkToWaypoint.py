@@ -10,13 +10,13 @@ class WalkToWaypoint(VectorTask):
         super().__init__()
         self.delayAfterComplete = 1
         self.name = 'walkToWaypoint'
-        self.value = coordinate
-        self.tasks = self.generateTasks(context, self.value)
+        self.coordinate = coordinate
 
     # TODO: add return type
     # TODO: add unit tests
-    def generateTasks(self, context: Context, waypointCoordinate: Coordinate):
-        return [
-            WalkToCoordinate(context, waypointCoordinate),
-            SetNextWaypointTask(),
+    def initialize(self, context: Context):
+        self.tasks = [
+            WalkToCoordinate(context, self.coordinate).setParentTask(self),
+            SetNextWaypointTask().setParentTask(self),
         ]
+        return self

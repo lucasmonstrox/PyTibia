@@ -46,7 +46,7 @@ class RefillCheckerTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    def onDidComplete(self, context: Context) -> Context:
+    def onComplete(self, context: Context) -> Context:
         nextWaypointIndex = getNextArrayIndex(
             context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])
         context['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex

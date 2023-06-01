@@ -3,7 +3,7 @@ from ....typings import Context
 
 
 class BaseTask:
-    def __init__(self):
+    def __init__(self, parentTask=None):
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
@@ -11,8 +11,16 @@ class BaseTask:
         self.delayBeforeStart = 0
         self.delayAfterComplete = 0
         self.delayOfTimeout = None
+        self.parentTask = parentTask
         self.status = 'notStarted'
         self.value = None
+
+    def setParentTask(self, parentTask):
+        self.parentTask = parentTask
+        return self
+
+    def initialize(self, context):
+        return self
 
     # TODO: add unit tests
     def shouldIgnore(self, _: Context) -> bool:
@@ -39,9 +47,9 @@ class BaseTask:
         return context
 
     # TODO: add unit tests
-    def onDidComplete(self, context: Context) -> Context:
+    def onComplete(self, context: Context) -> Context:
         return context
 
     # TODO: add unit tests
-    def onDidTimeout(self, context: Context) -> Context:
+    def onTimeout(self, context: Context) -> Context:
         return context

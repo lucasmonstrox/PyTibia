@@ -58,7 +58,7 @@ class GroupOfRefillTasks(VectorTask):
         ]
 
     # TODO: add unit tests
-    def onDidComplete(self, context: Context) -> Context:
+    def onComplete(self, context: Context) -> Context:
         # TODO: numbait
         labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.value['options']['waypointLabelToRedirect'])[0]
         if len(labelIndexes) == 0:

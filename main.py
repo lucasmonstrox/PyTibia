@@ -75,7 +75,7 @@ def main():
     def handleGameplayTasks(context):
         global gameContext
         gameContext = context
-        if gameContext['taskOrchestrator'].getCurrentTask() is not None and gameContext['taskOrchestrator'].getCurrentTask().name == 'groupOfSelectLootTab':
+        if gameContext['taskOrchestrator'].getCurrentTask(gameContext) is not None and gameContext['taskOrchestrator'].getCurrentTask(gameContext).name == 'groupOfSelectLootTab':
             return gameContext
         # if len(gameContext['loot']['corpsesToLoot']) > 0:
         #     gameContext['way'] = 'lootCorpses'
@@ -115,12 +115,11 @@ def main():
         #                 gameContext['currentTask'] = newCurrentTask
         gameContext['way'] = 'waypoint'
         if gameContext['way'] == 'waypoint':
-            if gameContext['taskOrchestrator'].getCurrentTask() is None:
+            if gameContext['taskOrchestrator'].getCurrentTask(gameContext) is None:
                 currentWaypointIndex = gameContext['cavebot']['waypoints']['currentIndex']
                 currentWaypoint = gameContext['cavebot']['waypoints']['points'][currentWaypointIndex]
                 resolvedTasksByWaypoint = resolveTasksByWaypoint(context, currentWaypoint)
-                print('resolvedTasksByWaypoint', resolvedTasksByWaypoint)
-                gameContext['taskOrchestrator'].setTasksOrTask(resolvedTasksByWaypoint)
+                gameContext['taskOrchestrator'].setRootTask(resolvedTasksByWaypoint)
         gameContext['gameWindow']['previousMonsters'] = gameContext['gameWindow']['monsters']
         return gameContext
 
@@ -134,7 +133,7 @@ def main():
         global gameContext
         if gameContext['pause']:
             return
-        if gameContext['taskOrchestrator'].getCurrentTask() is not None:
+        if gameContext['taskOrchestrator'].getCurrentTask(gameContext) is not None:
             gameContext = gameContext['taskOrchestrator'].do(context)
         gameContext['radar']['lastCoordinateVisited'] = gameContext['radar']['coordinate']
 
