@@ -2,26 +2,26 @@ import numpy as np
 from src.repositories.actionBar.core import getSlotCount
 from src.shared.typings import Waypoint
 from ...typings import Context
-from ..factories.makeBuyItemTask import makeBuyItemTask
-from ..factories.makeCloseNpcTradeBox import makeCloseNpcTradeBoxTask
-from ..factories.makeSetChatOff import makeSetChatOffTask
-from ..factories.makeSay import makeSayTask
-from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from .common.vector import VectorTask
+from .buyItem import BuyItemTask
+from .closeNpcTradeBox import CloseNpcTradeBoxTask
+from .say import SayTask
+from .selectChatTab import SelectChatTabTask
+from .setChatOff import SetChatOffTask
+from .setNextWaypoint import SetNextWaypointTask
 
 
-class GroupOfRefillTasks(VectorTask):
-    def __init__(self, context: Context, waypoint: Waypoint):
+class RefillTask(VectorTask):
+    def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
-        self.name = 'groupOfRefill'
-        self.tasks = self.generateTasks(context)
-        self.value = waypoint
+        self.name = 'refill'
+        self.waypoint = waypoint
 
     # TODO: add unit tests
     # TODO: add typings
-    def generateTasks(self, context: Context):
+    def initialize(self, context: Context):
         # TODO: inherit from context bindings
         itemSlot = {
             'great health potion': 1,
@@ -46,16 +46,18 @@ class GroupOfRefillTasks(VectorTask):
             context['screenshot'], healthPotionSlot)
         amountOfHealthPotionsToBuy = max(0, context['refill']['health']['quantity'] - \
             healthPotionsAmount)
-        return [
-            # makeSelectChatTabTask('local chat'),
-            makeSayTask('hi'),
-            makeSayTask('trade'),
-            makeBuyItemTask((context['refill']['mana']['item'], amountOfManaPotionsToBuy)),
-            makeBuyItemTask((context['refill']['health']['item'], amountOfHealthPotionsToBuy)),
-            makeCloseNpcTradeBoxTask(),
-            makeSetChatOffTask(),
-            makeSetNextWaypointTask(),
+        self.tasks = [
+            SelectChatTabTask('local chat').setParentTask(self),
+            SayTask('hi').setParentTask(self),
+            SayTask('trade').setParentTask(self),
+            BuyItemTask((context['refill']['mana']['item'], amountOfManaPotionsToBuy)).setParentTask(self),
+            BuyItemTask((context['refill']['health']['item'], amountOfHealthPotionsToBuy)).setParentTask(self),
+            CloseNpcTradeBoxTask().setParentTask(self),
+            SetChatOffTask().setParentTask(self),
+            SetNextWaypointTask().setParentTask(self),
         ]
+        self.initialized = True
+        return self
 
     # TODO: add unit tests
     def onComplete(self, context: Context) -> Context:

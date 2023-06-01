@@ -5,10 +5,10 @@ from .core.tasks.common.vector import VectorTask
 from .core.tasks.depositGold import DepositGoldTask
 from .core.tasks.depositItems import DepositItemsTask
 from .core.tasks.dropFlasks import DropFlasksTask
-from .core.tasks.groupOfRefillChecker import GroupOfRefillCheckerTasks
-from .core.tasks.groupOfRefillTasks import GroupOfRefillTasks
-from .core.tasks.groupOfSingleWalk import GroupOfSingleWalkTasks
 from .core.tasks.logout import LogoutTask
+from .core.tasks.refill import RefillTask
+from .core.tasks.refillChecker import RefillCheckerTask
+from .core.tasks.singleWalk import SingleWalkTask
 from .core.tasks.useRopeWaypoint import UseRopeWaypointTask
 from .core.tasks.useShovelWaypoint import UseShovelWaypointTask
 from .core.tasks.walkToWaypoint import WalkToWaypoint
@@ -20,22 +20,22 @@ def resolveTasksByWaypoint(context: Context, waypoint: Waypoint) -> Union[BaseTa
     if waypoint['type'] == 'depositGold':
         return DepositGoldTask()
     elif waypoint['type'] == 'depositItems':
-        return DepositItemsTask(context, waypoint)
+        return DepositItemsTask(waypoint)
     elif waypoint['type'] == 'dropFlasks':
-        return DropFlasksTask(context)
+        return DropFlasksTask()
     elif waypoint['type'] == 'logout':
-        return LogoutTask(context)
+        return LogoutTask()
     if waypoint['type'] == 'moveDownEast' or waypoint['type'] == 'moveDownNorth' or waypoint['type'] == 'moveDownSouth' or waypoint['type'] == 'moveDownWest':
-        return GroupOfSingleWalkTasks(context, context['cavebot']['waypoints']['state']['checkInCoordinate'])
+        return SingleWalkTask(context['cavebot']['waypoints']['state']['checkInCoordinate'])
     elif waypoint['type'] == 'moveUpNorth' or waypoint['type'] == 'moveUpSouth' or waypoint['type'] == 'moveUpWest' or waypoint['type'] == 'moveUpEast':
-        return GroupOfSingleWalkTasks(context, context['cavebot']['waypoints']['state']['checkInCoordinate'])
+        return SingleWalkTask(context['cavebot']['waypoints']['state']['checkInCoordinate'])
     elif waypoint['type'] == 'refill':
-        return GroupOfRefillTasks(context, waypoint)
+        return RefillTask(waypoint)
     elif waypoint['type'] == 'refillChecker':
-        return GroupOfRefillCheckerTasks(waypoint)
+        return RefillCheckerTask(waypoint)
     elif waypoint['type'] == 'useRope':
-        return UseRopeWaypointTask(context, waypoint)
+        return UseRopeWaypointTask(waypoint)
     elif waypoint['type'] == 'useShovel':
-        return UseShovelWaypointTask(context, waypoint)
+        return UseShovelWaypointTask(waypoint)
     elif waypoint['type'] == 'walk':
-        return WalkToWaypoint(context, waypoint['coordinate'])
+        return WalkToWaypoint(waypoint['coordinate'])

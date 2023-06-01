@@ -41,6 +41,6 @@ class SingleWalkPressTask(BaseTask):
 
     # TODO: add unit tests
     def onDidTimeout(self, context: Context) -> Context:
-        context['currentTask'].status = 'completed'
-        context['currentTask'].finishedAt = time()
+        self.parentTask.status = 'completed'
+        self.parentTask.finishedAt = time()
         return context

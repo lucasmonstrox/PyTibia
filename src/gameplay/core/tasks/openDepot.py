@@ -20,5 +20,5 @@ class OpenDepotTask(BaseTask):
 
     # TODO: add unit tests
     # TODO: check if depot is opened
-    def did(self, context: Context) -> bool:
+    def did(self, _: Context) -> bool:
         return True

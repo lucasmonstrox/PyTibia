@@ -17,7 +17,7 @@ from src.gameplay.core.middlewares.radar import setRadarMiddleware, setWaypointI
 from src.gameplay.core.middlewares.screenshot import setScreenshot
 from src.gameplay.core.middlewares.tasks import setCleanUpTasksMiddleware
 from src.gameplay.core.middlewares.window import setTibiaWindowMiddleware
-from src.gameplay.core.tasks.groupOfLootCorpse import GroupOfLootCorpseTasks
+from src.gameplay.core.tasks.lootCorpse import LootCorpseTask
 from src.gameplay.resolvers import resolveTasksByWaypoint
 from src.gameplay.healing.observers.eatFood import eatFoodObserver
 from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserver
@@ -75,17 +75,17 @@ def main():
     def handleGameplayTasks(context):
         global gameContext
         gameContext = context
-        if gameContext['taskOrchestrator'].getCurrentTask(gameContext) is not None and gameContext['taskOrchestrator'].getCurrentTask(gameContext).name == 'groupOfSelectLootTab':
+        currentTask = gameContext['taskOrchestrator'].getCurrentTask(gameContext)
+        if currentTask is not None and currentTask.name == 'selectLootTab':
             return gameContext
         # if len(gameContext['loot']['corpsesToLoot']) > 0:
         #     gameContext['way'] = 'lootCorpses'
-        #     if gameContext['taskOrchestrator'].getCurrentTask() is not None and gameContext['taskOrchestrator'].getCurrentTask().name != 'groupOfLootCorpse':
+        #     if gameContext['taskOrchestrator'].getCurrentTask() is not None and gameContext['taskOrchestrator'].getCurrentTask().name != 'lootCorpse':
         #         gameContext['currentTask'] = None
         #     if gameContext['currentTask'] is None:
-        #         gameContext = releaseKeys(gameContext)
         #         # TODO: get closest dead corpse
         #         firstDeadCorpse = gameContext['loot']['corpsesToLoot'][0]
-        #         gameContext['currentTask'] = GroupOfLootCorpseTasks(firstDeadCorpse)
+        #         gameContext['currentTask'] = LootCorpseTask(firstDeadCorpse)
         #     gameContext['gameWindow']['previousMonsters'] = gameContext['gameWindow']['monsters']
         #     return gameContext
         # if hasCreaturesToAttack(context):
@@ -98,7 +98,7 @@ def main():
         #     gameContext['way'] = 'waypoint'
         # if hasCreaturesToAttack(context) and shouldAskForCavebotTasks(gameContext):
         #     hasCurrentTaskAfterCheck = gameContext['currentTask'] is not None
-        #     isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (gameContext['currentTask'].name == 'groupOfAttackClosestCreature' or gameContext['currentTask'].name == 'groupOfFollowTargetCreature')
+        #     isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (gameContext['currentTask'].name == 'attackClosestCreature' or gameContext['currentTask'].name == 'followTargetCreature')
         #     isNotTryingToAttackClosestCreature = not isTryingToAttackClosestCreature
         #     if isNotTryingToAttackClosestCreature:
         #         newCurrentTask = resolveCavebotTasks(context)
@@ -106,12 +106,10 @@ def main():
         #         if hasCurrentTask2:
         #             hasTargetCreature = gameContext['cavebot']['targetCreature'] is not None or gameContext['cavebot']['closestCreature'] is not None
         #             if hasTargetCreature:
-        #                 gameContext = releaseKeys(gameContext)
         #                 gameContext['currentTask'] = newCurrentTask
         #         else:
         #             hasNewCurrentTask = newCurrentTask is not None
         #             if hasNewCurrentTask:
-        #                 gameContext = releaseKeys(gameContext)
         #                 gameContext['currentTask'] = newCurrentTask
         gameContext['way'] = 'waypoint'
         if gameContext['way'] == 'waypoint':
@@ -140,7 +138,7 @@ def main():
     # def continueWhenIsNotChatTask(context):
     #     if context['currentTask'] is None:
     #         return True
-    #     chatTask = ['depositGold', 'groupOfRefill']
+    #     chatTask = ['depositGold', 'refill']
     #     return context['currentTask'].name not in chatTask
 
     # eatFoodObservable = gameObserver.pipe(

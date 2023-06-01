@@ -1,20 +1,21 @@
 from src.shared.typings import Waypoint
-from ..factories.makeUseRope import makeUseRopeTask
-from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from .common.vector import VectorTask
+from .useRope import UseRopeTask
+from .setNextWaypoint import SetNextWaypointTask
 
 
 class UseRopeWaypointTask(VectorTask):
-    def __init__(self, _, waypoint: Waypoint):
+    def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.name = 'useRopeWaypoint'
-        self.tasks = self.generateTasks(waypoint)
-        self.value = waypoint
+        self.waypoint = waypoint
 
     # TODO: add unit tests
     # TODO: add typings
-    def generateTasks(self, waypoint: Waypoint):
-        return [
-            makeUseRopeTask(waypoint),
-            makeSetNextWaypointTask(),
+    def initialize(self, _):
+        self.tasks = [
+            UseRopeTask(self.waypoint).setParentTask(self),
+            SetNextWaypointTask().setParentTask(self),
         ]
+        self.initialized = True
+        return self

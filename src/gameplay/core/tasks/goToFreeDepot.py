@@ -4,10 +4,10 @@ from src.repositories.battleList.typings import CreatureList
 from src.shared.typings import Coordinate, CoordinateList, Waypoint
 from src.wiki.cities import cities
 from ...typings import Context
-from ..factories.makeWalk import makeWalkTask
 from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
 from .common.vector import VectorTask
+from .walk import WalkTask
 
 
 class GoToFreeDepotTask(VectorTask):
@@ -44,7 +44,7 @@ class GoToFreeDepotTask(VectorTask):
             closestFreeDepotCoordinate = freeDepotCoordinates[closestFreeDepotCoordinateIndex]
             self.closestFreeDepotCoordinate = closestFreeDepotCoordinate
             walkpoints = generateFloorWalkpoints(coordinate, closestFreeDepotCoordinate, nonWalkableCoordinates=None)
-            return np.array([makeWalkTask(context, walkpoint) for walkpoint in walkpoints], dtype=Task)
+            return [WalkTask(context, walkpoint).setParentTask(self) for walkpoint in walkpoints]
         else:
             self.state = 'walkingIntoVisibleCoordinates'
             # - gerar caminho até visualizar os próximos depots se necessário

@@ -10,7 +10,7 @@ class PressLogoutKeys(BaseTask):
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
         self.name = 'pressKeys'
-        self.value = keys
+        self.keys = keys
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:

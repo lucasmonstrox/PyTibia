@@ -35,13 +35,8 @@ class WalkTask(BaseTask):
             return context
         futureDirection = None
         if len(self.parentTask.tasks) > 1:
-            freeTaskIndex = None
-            for taskIndex, possibleFreeTask in enumerate(self.parentTask.tasks):
-                if possibleFreeTask.status != 'completed':
-                    freeTaskIndex = taskIndex
-                    break
-            if freeTaskIndex != None and (freeTaskIndex + 1) < len(self.parentTask.tasks):
-                nextTask = self.parentTask.tasks[freeTaskIndex + 1]
+            if self.parentTask.currentTaskIndex + 1 < len(self.parentTask.tasks):
+                nextTask = self.parentTask.tasks[self.parentTask.currentTaskIndex + 1]
                 futureDirection = getDirectionBetweenCoordinates(self.walkpoint, nextTask.walkpoint)
         if direction != futureDirection:
             if context['lastPressedKey'] is not None:
@@ -66,11 +61,11 @@ class WalkTask(BaseTask):
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
         # TODO: numbait
-        didTask = np.all(context['radar']['coordinate'] == self.value) == True
+        didTask = np.all(context['radar']['coordinate'] == self.walkpoint) == True
         return didTask
 
     # TODO: add unit tests
     def onDidTimeout(self, context: Context) -> Context:
-        context['taskOrchestrator'].getCurrentTask(context).status = 'completed'
-        context['taskOrchestrator'].getCurrentTask(context).finishedAt = time()
+        self.parentTask.status = 'completed'
+        self.parentTask.status.finishedAt = time()
         return context

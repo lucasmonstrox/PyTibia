@@ -1,39 +1,40 @@
 from src.repositories.inventory.core import images
 from src.shared.typings import Waypoint
 from ...typings import Context
-from ..factories.makeCloseContainer import makeCloseContainerTask
-from ..factories.makeDragItems import makeDragItemsTask
-from ..factories.makeDropBackpackIntoStash import makeDropBackpackIntoStashTask
-from ..factories.makeGoToFreeDepot import makeGoToFreeDepotTask
-from ..factories.makeOpenBackpack import makeOpenBackpackTask
-from ..factories.makeOpenDepot import makeOpenDepotTask
-from ..factories.makeOpenLocker import makeOpenLockerTask
-from ..factories.makeScrollToItem import makeScrollToItemTask
-from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from .common.vector import VectorTask
+from .closeContainer import CloseContainerTask
+from .dragItems import DragItemsTask
+from .dropBackpackIntoStash import DropBackpackIntoStashTask
+from .goToFreeDepot import GoToFreeDepotTask
+from .openBackpack import OpenBackpackTask
+from .openDepot import OpenDepotTask
+from .openLocker import OpenLockerTask
+from .scrollToItem import ScrollToItemTask
+from .setNextWaypoint import SetNextWaypointTask
 
 
 class DepositItemsTask(VectorTask):
-    def __init__(self, context: Context, waypoint: Waypoint):
+    def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
         self.name = 'depositItems'
-        self.tasks = self.generateTasks(context, waypoint)
-        self.value = waypoint
+        self.waypoint = waypoint
 
     # TODO: add unit tests
     # TODO: add typings
-    def generateTasks(self, context: Context, waypoint: Waypoint):
-        return [
-            makeGoToFreeDepotTask(context, waypoint),
-            makeOpenLockerTask(),
-            makeOpenBackpackTask(context['backpacks']['main']),
-            makeScrollToItemTask(images['containersBars'][context['backpacks']['main']], images['slots'][context['backpacks']['loot']]),
-            makeDropBackpackIntoStashTask(context['backpacks']['loot']),
-            makeOpenDepotTask(),
-            makeOpenBackpackTask(context['backpacks']['loot']),
-            makeDragItemsTask(images['containersBars'][context['backpacks']['loot']], images['slots']['depot chest 2']),
-            makeCloseContainerTask(images['containersBars'][context['backpacks']['loot']]),
-            makeSetNextWaypointTask(),
+    def initialize(self, context: Context):
+        self.tasks = [
+            GoToFreeDepotTask(context, self.waypoint).setParentTask(self),
+            OpenLockerTask().setParentTask(self),
+            OpenBackpackTask(context['backpacks']['main']).setParentTask(self),
+            ScrollToItemTask(images['containersBars'][context['backpacks']['main']], images['slots'][context['backpacks']['loot']]).setParentTask(self),
+            DropBackpackIntoStashTask(context['backpacks']['loot']).setParentTask(self),
+            OpenDepotTask().setParentTask(self),
+            OpenBackpackTask(context['backpacks']['loot']).setParentTask(self),
+            DragItemsTask(images['containersBars'][context['backpacks']['loot']], images['slots']['depot chest 2']).setParentTask(self),
+            CloseContainerTask(images['containersBars'][context['backpacks']['loot']]).setParentTask(self),
+            SetNextWaypointTask().setParentTask(self),
         ]
+        self.initialized = True
+        return self

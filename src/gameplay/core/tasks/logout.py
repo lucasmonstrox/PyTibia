@@ -1,23 +1,23 @@
 from ...typings import Context
-from ..tasks.closeProcess import CloseProcessTask
-# from ..tasks.pauseBot import PauseBotTask
-from ..tasks.pressLogoutKeys import PressLogoutKeys
+# from .pauseBot import PauseBotTask
 from .common.vector import VectorTask
+from .closeProcess import CloseProcessTask
+from .pressLogoutKeys import PressLogoutKeys
 
 
 class LogoutTask(VectorTask):
-    def __init__(self, context: Context):
+    def __init__(self):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
         self.name = 'logout'
-        self.tasks = self.generateTasks(context)
 
     # TODO: add unit tests
     # TODO: add typings
-    def generateTasks(self, context: Context):
-        return [
-            # ('pauseBot', PauseBotTask()),
-            ('pressKeys', PressLogoutKeys(['ctrl', 'q'])),
-            ('closeProcess', CloseProcessTask())
+    def initialize(self, _: Context):
+        self.tasks = [
+            PressLogoutKeys(['ctrl', 'q']).setParentTask(self),
+            CloseProcessTask().setParentTask(self)
         ]
+        self.initialized = True
+        return self

@@ -1,26 +1,27 @@
 from src.repositories.inventory.core import images
 from ...typings import Context
-from ..factories.makeDropEachFlask import makeDropEachFlaskTask
-from ..factories.makeExpandBackpack import makeExpandBackpackTask
-from ..factories.makeOpenBackpack import makeOpenBackpackTask
-from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from .common.vector import VectorTask
+from .dropEachFlask import DropEachFlaskTask
+from .expandBackpack import ExpandBackpackTask
+from .openBackpack import OpenBackpackTask
+from .setNextWaypoint import SetNextWaypointTask
 
 
 class DropFlasksTask(VectorTask):
-    def __init__(self, context: Context):
+    def __init__(self):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
         self.name = 'dropFlasks'
-        self.tasks = self.generateTasks(context)
 
     # TODO: add unit tests
     # TODO: add typings
-    def generateTasks(self, context: Context):
-        return [
-            makeOpenBackpackTask(context['backpacks']['main']),
-            makeExpandBackpackTask(images['containersBars'][context['backpacks']['main']]),
-            makeDropEachFlaskTask(context['backpacks']['main']),
-            makeSetNextWaypointTask(),
+    def initialize(self, context: Context):
+        self.tasks = [
+            DropEachFlaskTask(context['backpacks']['main']).setParentTask(self),
+            ExpandBackpackTask(images['containersBars'][context['backpacks']['main']]).setParentTask(self),
+            OpenBackpackTask(context['backpacks']['main']).setParentTask(self),
+            SetNextWaypointTask().setParentTask(self),
         ]
+        self.initialized = True
+        return self

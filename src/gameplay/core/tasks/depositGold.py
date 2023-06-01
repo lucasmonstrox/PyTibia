@@ -1,7 +1,8 @@
-from ..factories.makeSay import makeSayTask
-from ..factories.makeSetChatOff import makeSetChatOffTask
-from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
 from .common.vector import VectorTask
+from .say import SayTask
+from .selectChatTab import SelectChatTabTask
+from .setChatOff import SetChatOffTask
+from .setNextWaypoint import SetNextWaypointTask
 
 
 # TODO: check if gold was deposited successfully
@@ -11,16 +12,17 @@ class DepositGoldTask(VectorTask):
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
         self.name = 'depositGold'
-        self.tasks = self.makeTasks()
 
     # TODO: add unit tests
     # TODO: add typings
-    def makeTasks(self):
-        return [
-            # makeSelectChatTabTask('local chat'),
-            makeSayTask('hi'),
-            makeSayTask('deposit all'),
-            makeSayTask('yes'),
-            makeSetChatOffTask(),
-            makeSetNextWaypointTask(),
+    def initialize(self):
+        self.tasks = [
+            SelectChatTabTask('local chat').setParentTask(self),
+            SayTask('hi').setParentTask(self),
+            SayTask('deposit all').setParentTask(self),
+            SayTask('yes').setParentTask(self),
+            SetChatOffTask().setParentTask(self),
+            SetNextWaypointTask().setParentTask(self),
         ]
+        self.initialized = True
+        return self

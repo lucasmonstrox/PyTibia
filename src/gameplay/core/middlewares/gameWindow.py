@@ -37,7 +37,7 @@ def setDirection(gameContext: Context) -> Context:
 
 # TODO: add unit tests
 def setHandleLoot(gameContext: Context) -> Context:
-    endlessTasks = ['depositGold', 'groupOfRefill', 'groupOfSelectLootTab']
+    endlessTasks = ['depositGold', 'refill', 'selectLootTab']
     # if (gameContext['currentTask'] is None or gameContext['currentTask'].name not in endlessTasks):
     #     lootTab = gameContext['chat']['tabs'].get('loot')
     #     hasChatTab = lootTab is not None

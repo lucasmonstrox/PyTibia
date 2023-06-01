@@ -6,7 +6,7 @@ from .walkToCoordinate import WalkToCoordinate
 
 
 class WalkToWaypoint(VectorTask):
-    def __init__(self, context: Context, coordinate: Coordinate):
+    def __init__(self, coordinate: Coordinate):
         super().__init__()
         self.delayAfterComplete = 1
         self.name = 'walkToWaypoint'
@@ -14,9 +14,10 @@ class WalkToWaypoint(VectorTask):
 
     # TODO: add return type
     # TODO: add unit tests
-    def initialize(self, context: Context):
+    def initialize(self, _: Context):
         self.tasks = [
-            WalkToCoordinate(context, self.coordinate).setParentTask(self),
+            WalkToCoordinate(self.coordinate).setParentTask(self),
             SetNextWaypointTask().setParentTask(self),
         ]
+        self.initialized = True
         return self

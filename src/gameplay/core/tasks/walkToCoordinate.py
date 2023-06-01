@@ -1,3 +1,4 @@
+import pyautogui
 from src.gameplay.typings import Context
 from src.repositories.radar.typings import Coordinate
 from ...typings import Context
@@ -7,11 +8,10 @@ from .walk import WalkTask
 
 
 class WalkToCoordinate(VectorTask):
-    def __init__(self, context: Context, coordinate: Coordinate):
+    def __init__(self, coordinate: Coordinate):
         super().__init__()
-        self.delayAfterComplete = 1
         self.name = 'walkToCoordinate'
-        self.value = coordinate
+        self.coordinate = coordinate
 
     # TODO: add return type
     # TODO: add unit tests
@@ -23,18 +23,13 @@ class WalkToCoordinate(VectorTask):
         #     nonWalkableCoordinates = np.append(nonWalkableCoordinates, coordinatesToAppend)
         self.tasks = []
         # TODO: make it yield
-        walkpoints = generateFloorWalkpoints(
-            context['radar']['coordinate'], self.value, nonWalkableCoordinates=None)
-        for walkpoint in walkpoints:
+        for walkpoint in generateFloorWalkpoints(
+            context['radar']['coordinate'], self.coordinate, nonWalkableCoordinates=None):
             self.tasks.append(WalkTask(context, walkpoint).setParentTask(self))
         return self
     
-    def shouldRestart(self, _: Context) -> bool:
-        # check if creature is moving
-        return False
-    
     def onBeforeRestart(self, context: Context):
         if context['lastPressedKey'] is not None:
-            # pyautogui.keyUp(context['lastPressedKey'])
+            pyautogui.keyUp(context['lastPressedKey'])
             context['lastPressedKey'] = None
         return context
