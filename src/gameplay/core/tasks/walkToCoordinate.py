@@ -26,6 +26,7 @@ class WalkToCoordinate(VectorTask):
         for walkpoint in generateFloorWalkpoints(
             context['radar']['coordinate'], self.coordinate, nonWalkableCoordinates=None):
             self.tasks.append(WalkTask(context, walkpoint).setParentTask(self))
+        self.initialized = True
         return self
     
     def onBeforeRestart(self, context: Context):

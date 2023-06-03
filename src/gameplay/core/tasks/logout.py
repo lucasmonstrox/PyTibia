@@ -8,9 +8,10 @@ from .pressLogoutKeys import PressLogoutKeys
 class LogoutTask(VectorTask):
     def __init__(self):
         super().__init__()
+        self.name = 'logout'
+        self.isRootTask = True
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
-        self.name = 'logout'
 
     # TODO: add unit tests
     # TODO: add typings

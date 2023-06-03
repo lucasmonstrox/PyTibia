@@ -15,7 +15,7 @@ class DepositGoldTask(VectorTask):
 
     # TODO: add unit tests
     # TODO: add typings
-    def initialize(self):
+    def initialize(self, context):
         self.tasks = [
             SelectChatTabTask('local chat').setParentTask(self),
             SayTask('hi').setParentTask(self),

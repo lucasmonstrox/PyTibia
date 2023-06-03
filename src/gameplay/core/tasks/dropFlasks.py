@@ -12,6 +12,7 @@ class DropFlasksTask(VectorTask):
         super().__init__()
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
+        self.isRootTask = True
         self.name = 'dropFlasks'
 
     # TODO: add unit tests

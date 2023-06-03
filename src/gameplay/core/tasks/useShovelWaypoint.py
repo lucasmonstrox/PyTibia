@@ -6,9 +6,10 @@ from .useShovel import UseShovelTask
 
 
 class UseShovelWaypointTask(VectorTask):
-    def __init__(self, _, waypoint: Waypoint):
+    def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.name = 'useShovelWaypoint'
+        self.isRootTask = True
         self.waypoint = waypoint
 
     # TODO: add parameters type

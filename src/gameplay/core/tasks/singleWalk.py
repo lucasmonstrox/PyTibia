@@ -1,22 +1,23 @@
-from src.shared.typings import Coordinate
 from ...typings import Context
-from .setNextWaypoint import SetNextWaypointTask
-from .walk import WalkTask
 from .common.vector import VectorTask
+from .moveDown import MoveDown
+from .setNextWaypoint import SetNextWaypointTask
 
 
 class SingleWalkTask(VectorTask):
-    def __init__(self, checkInCoordinate: Coordinate):
+    # TODO: add types
+    def __init__(self, direction: str):
         super().__init__()
-        self.delayAfterComplete = 2
         self.name = 'singleWalk'
-        self.checkInCoordinate = checkInCoordinate
+        self.delayAfterComplete = 2
+        self.isRootTask = True
+        self.direction = direction
 
     # TODO: add unit tests
     # TODO: add typings
     def initialize(self, context: Context):
         self.tasks = [
-            WalkTask(context, self.checkInCoordinate).setParentTask(self),
+            MoveDown(context, self.direction).setParentTask(self),
             SetNextWaypointTask().setParentTask(self),
         ]
         self.initialized = True

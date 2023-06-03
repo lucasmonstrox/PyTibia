@@ -7,6 +7,7 @@ class LootCorpseTask(VectorTask):
     def __init__(self, corpse: Creature):
         super().__init__()
         self.name = 'lootCorpse'
+        self.isRootTask = True
         self.corpse = corpse
 
     # TODO: add unit tests

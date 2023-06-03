@@ -11,6 +11,7 @@ class RefillCheckerTask(BaseTask):
     def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.delayAfterComplete = 1
+        self.isRootTask = True
         self.name = 'refillChecker'
         self.value = waypoint
 

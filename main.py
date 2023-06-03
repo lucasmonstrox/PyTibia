@@ -18,6 +18,7 @@ from src.gameplay.core.middlewares.screenshot import setScreenshot
 from src.gameplay.core.middlewares.tasks import setCleanUpTasksMiddleware
 from src.gameplay.core.middlewares.window import setTibiaWindowMiddleware
 from src.gameplay.core.tasks.lootCorpse import LootCorpseTask
+from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 from src.gameplay.resolvers import resolveTasksByWaypoint
 from src.gameplay.healing.observers.eatFood import eatFoodObserver
 from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserver
@@ -29,7 +30,7 @@ from src.repositories.radar.core import getCoordinate
 from src.repositories.radar.typings import Waypoint
 from src.utils.core import getScreenshot
 from src.ui.app import MyApp
-from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
+
 
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0
@@ -78,46 +79,36 @@ def main():
         currentTask = gameContext['taskOrchestrator'].getCurrentTask(gameContext)
         if currentTask is not None and currentTask.name == 'selectLootTab':
             return gameContext
-        # if len(gameContext['loot']['corpsesToLoot']) > 0:
-        #     gameContext['way'] = 'lootCorpses'
-        #     if gameContext['taskOrchestrator'].getCurrentTask() is not None and gameContext['taskOrchestrator'].getCurrentTask().name != 'lootCorpse':
-        #         gameContext['currentTask'] = None
-        #     if gameContext['currentTask'] is None:
-        #         # TODO: get closest dead corpse
-        #         firstDeadCorpse = gameContext['loot']['corpsesToLoot'][0]
-        #         gameContext['currentTask'] = LootCorpseTask(firstDeadCorpse)
-        #     gameContext['gameWindow']['previousMonsters'] = gameContext['gameWindow']['monsters']
-        #     return gameContext
-        # if hasCreaturesToAttack(context):
-        #     targetCreature = getClosestCreature(gameContext['gameWindow']['creatures'], gameContext['radar']['coordinate'])
-        #     if targetCreature is not None:
-        #         gameContext['way'] = 'cavebot'
-        #     else:
-        #         gameContext['way'] = 'waypoint'
-        # else:
-        #     gameContext['way'] = 'waypoint'
-        # if hasCreaturesToAttack(context) and shouldAskForCavebotTasks(gameContext):
-        #     hasCurrentTaskAfterCheck = gameContext['currentTask'] is not None
-        #     isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (gameContext['currentTask'].name == 'attackClosestCreature' or gameContext['currentTask'].name == 'followTargetCreature')
-        #     isNotTryingToAttackClosestCreature = not isTryingToAttackClosestCreature
-        #     if isNotTryingToAttackClosestCreature:
-        #         newCurrentTask = resolveCavebotTasks(context)
-        #         hasCurrentTask2 = gameContext['currentTask'] is not None
-        #         if hasCurrentTask2:
-        #             hasTargetCreature = gameContext['cavebot']['targetCreature'] is not None or gameContext['cavebot']['closestCreature'] is not None
-        #             if hasTargetCreature:
-        #                 gameContext['currentTask'] = newCurrentTask
-        #         else:
-        #             hasNewCurrentTask = newCurrentTask is not None
-        #             if hasNewCurrentTask:
-        #                 gameContext['currentTask'] = newCurrentTask
-        gameContext['way'] = 'waypoint'
-        if gameContext['way'] == 'waypoint':
+        if len(gameContext['loot']['corpsesToLoot']) > 0:
+            gameContext['way'] = 'lootCorpses'
+            if gameContext['taskOrchestrator'].getCurrentTask() is not None and gameContext['taskOrchestrator'].getCurrentTask().name != 'lootCorpse':
+                gameContext['taskOrchestrator'].setRootTask(None)
+            if gameContext['currentTask'] is None:
+                # TODO: get closest dead corpse
+                firstDeadCorpse = gameContext['loot']['corpsesToLoot'][0]
+                gameContext['taskOrchestrator'].setRootTask(LootCorpseTask(firstDeadCorpse))
+            gameContext['gameWindow']['previousMonsters'] = gameContext['gameWindow']['monsters']
+            return gameContext
+        if hasCreaturesToAttack(gameContext):
+            targetCreature = getClosestCreature(gameContext['gameWindow']['creatures'], gameContext['radar']['coordinate'])
+            if targetCreature is not None:
+                gameContext['way'] = 'cavebot'
+            else:
+                gameContext['way'] = 'waypoint'
+        else:
+            gameContext['way'] = 'waypoint'
+        if hasCreaturesToAttack(gameContext) and shouldAskForCavebotTasks(gameContext):
+            hasCurrentTaskAfterCheck = gameContext['currentTask'] is not None
+            isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (gameContext['currentTask'].name == 'attackClosestCreature' or gameContext['currentTask'].name == 'followTargetCreature')
+            isNotTryingToAttackClosestCreature = not isTryingToAttackClosestCreature
+            if isNotTryingToAttackClosestCreature:
+                gameContext = resolveCavebotTasks(gameContext)
+        elif gameContext['way'] == 'waypoint':
             if gameContext['taskOrchestrator'].getCurrentTask(gameContext) is None:
                 currentWaypointIndex = gameContext['cavebot']['waypoints']['currentIndex']
                 currentWaypoint = gameContext['cavebot']['waypoints']['points'][currentWaypointIndex]
-                resolvedTasksByWaypoint = resolveTasksByWaypoint(context, currentWaypoint)
-                gameContext['taskOrchestrator'].setRootTask(resolvedTasksByWaypoint)
+                taskByWapoint = resolveTasksByWaypoint(gameContext, currentWaypoint)
+                gameContext['taskOrchestrator'].setRootTask(taskByWapoint)
         gameContext['gameWindow']['previousMonsters'] = gameContext['gameWindow']['monsters']
         return gameContext
 
@@ -131,8 +122,7 @@ def main():
         global gameContext
         if gameContext['pause']:
             return
-        if gameContext['taskOrchestrator'].getCurrentTask(gameContext) is not None:
-            gameContext = gameContext['taskOrchestrator'].do(context)
+        gameContext = gameContext['taskOrchestrator'].do(context)
         gameContext['radar']['lastCoordinateVisited'] = gameContext['radar']['coordinate']
 
     # def continueWhenIsNotChatTask(context):

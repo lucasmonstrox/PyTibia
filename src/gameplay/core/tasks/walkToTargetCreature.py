@@ -11,7 +11,9 @@ from .walk import WalkTask
 class WalkToTargetCreature(VectorTask):
     def __init__(self):
         super().__init__()
-        self.name = 'WalkToTargetCreature'
+        self.name = 'walkToTargetCreature'
+        self.manuallyTerminable = True
+        self.closestCreatureCoordinateSinceLastRestart = None
 
     # TODO: add return type
     # TODO: add unit tests
@@ -20,8 +22,7 @@ class WalkToTargetCreature(VectorTask):
         for monster in context['gameWindow']['monsters']:
             if np.array_equal(monster['coordinate'], context['cavebot']['closestCreature']['coordinate']) == False:
                 monsterCoordinateTuple = (monster['coordinate'][0], monster['coordinate'][1], monster['coordinate'][2])
-                coordinatesToAppend = [monsterCoordinateTuple]
-                nonWalkableCoordinates = np.append(nonWalkableCoordinates, coordinatesToAppend)
+                nonWalkableCoordinates.append(monsterCoordinateTuple)
         dist = distance.cdist([context['radar']['coordinate']], [context['cavebot']['closestCreature']['coordinate']]).flatten()[0]
         walkpoints = []
         if dist < 2:
@@ -38,14 +39,29 @@ class WalkToTargetCreature(VectorTask):
             if len(walkpoints) > 0:
                 walkpoints.pop()
         for walkpoint in walkpoints:
-            self.tasks.append(WalkTask(context, walkpoint).setParentTask(self))
+            self.tasks.append(WalkTask(context, walkpoint).setParentTask(self).setRootTask(self.rootTask))
+        self.initialized = True
+        self.closestCreatureCoordinateSinceLastRestart = context['cavebot']['closestCreature']['coordinate'].copy()
         return self
 
-    def shouldRestart(self, _: Context) -> bool:
-        # check if creature is moving
+    def shouldRestart(self, context: Context) -> bool:
+        shouldRestart = np.all(context['cavebot']['closestCreature']['coordinate'] != self.closestCreatureCoordinateSinceLastRestart) == True
+        if shouldRestart:
+            return True
+        return False
+
+    def shouldManuallyComplete(self, context: Context) -> bool:
+        if context['cavebot']['isAttackingSomeCreature'] == False:
+            return True
         return False
 
     def onBeforeRestart(self, context: Context) -> Context:
+        if context['lastPressedKey'] is not None:
+            pyautogui.keyUp(context['lastPressedKey'])
+            context['lastPressedKey'] = None
+        return context
+
+    def onComplete(self, context: Context) -> Context:
         if context['lastPressedKey'] is not None:
             pyautogui.keyUp(context['lastPressedKey'])
             context['lastPressedKey'] = None

@@ -15,6 +15,7 @@ class GoToFreeDepotTask(VectorTask):
         super().__init__()
         self.didTask = False
         self.name = 'goToFreeDepot'
+        self.isRootTask = True
         self.closestFreeDepotCoordinate = None
         self.terminable = False
         self.value = waypoint

@@ -16,9 +16,10 @@ from .setNextWaypoint import SetNextWaypointTask
 class DepositItemsTask(VectorTask):
     def __init__(self, waypoint: Waypoint):
         super().__init__()
+        self.name = 'depositItems'
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
-        self.name = 'depositItems'
+        self.isRootTask = True
         self.waypoint = waypoint
 
     # TODO: add unit tests

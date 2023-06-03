@@ -34,7 +34,7 @@ class WalkTask(BaseTask):
         if direction is None:
             return context
         futureDirection = None
-        if len(self.parentTask.tasks) > 1:
+        if self.parentTask and len(self.parentTask.tasks) > 1:
             if self.parentTask.currentTaskIndex + 1 < len(self.parentTask.tasks):
                 nextTask = self.parentTask.tasks[self.parentTask.currentTaskIndex + 1]
                 futureDirection = getDirectionBetweenCoordinates(self.walkpoint, nextTask.walkpoint)

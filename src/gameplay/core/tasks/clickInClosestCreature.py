@@ -7,7 +7,6 @@ from .common.base import BaseTask
 class ClickInClosestCreatureTask(BaseTask):
     def __init__(self):
         super().__init__()
-        self.delayOfTimeout = 1
         self.name = 'clickInClosestCreature'
 
     # TODO: add unit tests
@@ -25,7 +24,8 @@ class ClickInClosestCreatureTask(BaseTask):
 
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
-        return context['cavebot']['isAttackingSomeCreature']
+        didTask = context['cavebot']['isAttackingSomeCreature']
+        return didTask
 
     # TODO: add unit tests
     def onDidTimeout(self, context: Context) -> Context:

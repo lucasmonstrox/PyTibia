@@ -6,25 +6,29 @@ from .typings import Context
 
 # TODO: add unit tests
 def resolveCavebotTasks(context: Context) -> Union[AttackClosestCreatureTask, None]:
+    currentTask = context['taskOrchestrator'].getCurrentTask(context)
     if context['cavebot']['isAttackingSomeCreature']:
         hasNoTargetCreature = context['cavebot']['targetCreature'] == None
         if hasNoTargetCreature:
-            return None
+            return context
         hasNoTargetToTargetCreature = hasTargetToCreature(
             context['gameWindow']['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False
         if hasNoTargetToTargetCreature:
             context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
             hasNoClosestCreature = context['cavebot']['closestCreature'] == None
             if hasNoClosestCreature:
-                return None
-            return AttackClosestCreatureTask(context)
-        # TODO: recalculate route if something cross walkpoints
-        return FollowTargetCreatureTasks(context)
+                return context
+            context['taskOrchestrator'].setRootTask(AttackClosestCreatureTask())
+            return context
+        if currentTask is None or context['taskOrchestrator'].rootTask.name != 'attackClosestCreature':
+            context['taskOrchestrator'].setRootTask(AttackClosestCreatureTask())
+        return context
     context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
     hasNoClosestCreature = context['cavebot']['closestCreature'] == None
     if hasNoClosestCreature:
-        return None
-    return AttackClosestCreatureTask(context)
+        return context
+    context['taskOrchestrator'].setRootTask(AttackClosestCreatureTask())
+    return context
 
 
 # TODO: add unit tests
@@ -34,4 +38,4 @@ def shouldAskForCavebotTasks(context: Context) -> bool:
     currentTask = context['taskOrchestrator'].getCurrentTask(context)
     if currentTask is None:
         return True
-    return (currentTask.name not in ['dropFlasks', 'lootCorpse', 'refillChecker', 'singleWalk', 'moveDownEast', 'moveDownNorth', 'moveDownSouth', 'moveDownWest', 'moveUpEast', 'moveUpNorth', 'moveUpSouth', 'moveUpWest', 'refillChecker', 'useRopeWaypoint', 'useShovelWaypoint'])
+    return (currentTask.name not in ['dropFlasks', 'lootCorpse', 'moveDown', 'moveUp', 'refillChecker', 'singleWalk', 'refillChecker', 'useRopeWaypoint', 'useShovelWaypoint'])

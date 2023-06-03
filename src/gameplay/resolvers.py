@@ -25,10 +25,10 @@ def resolveTasksByWaypoint(context: Context, waypoint: Waypoint) -> Union[BaseTa
         return DropFlasksTask()
     elif waypoint['type'] == 'logout':
         return LogoutTask()
-    if waypoint['type'] == 'moveDownEast' or waypoint['type'] == 'moveDownNorth' or waypoint['type'] == 'moveDownSouth' or waypoint['type'] == 'moveDownWest':
-        return SingleWalkTask(context['cavebot']['waypoints']['state']['checkInCoordinate'])
-    elif waypoint['type'] == 'moveUpNorth' or waypoint['type'] == 'moveUpSouth' or waypoint['type'] == 'moveUpWest' or waypoint['type'] == 'moveUpEast':
-        return SingleWalkTask(context['cavebot']['waypoints']['state']['checkInCoordinate'])
+    if waypoint['type'] == 'moveDown':
+        return SingleWalkTask(waypoint['options']['direction'])
+    elif waypoint['type'] == 'moveUp':
+        return SingleWalkTask(context['options']['direction'])
     elif waypoint['type'] == 'refill':
         return RefillTask(waypoint)
     elif waypoint['type'] == 'refillChecker':

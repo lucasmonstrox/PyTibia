@@ -8,13 +8,17 @@ class AttackClosestCreatureTask(VectorTask):
     def __init__(self):
         super().__init__()
         self.name = 'attackClosestCreature'
+        self.isRootTask = True
 
     # TODO: add unit tests
     # TODO: add typings
     def initialize(self, _: Context):
         self.tasks = [
-            ClickInClosestCreatureTask().setParentTask(self),
-            WalkToTargetCreature().setParentTask(self)
+            ClickInClosestCreatureTask().setParentTask(self).setRootTask(self),
+            WalkToTargetCreature().setParentTask(self).setRootTask(self),
         ]
         self.initialized = True
         return self
+
+    def onComplete(self, context: Context) -> Context:
+        return context

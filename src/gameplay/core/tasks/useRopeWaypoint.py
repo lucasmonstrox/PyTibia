@@ -8,6 +8,7 @@ class UseRopeWaypointTask(VectorTask):
     def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.name = 'useRopeWaypoint'
+        self.isRootTask = True
         self.waypoint = waypoint
 
     # TODO: add unit tests

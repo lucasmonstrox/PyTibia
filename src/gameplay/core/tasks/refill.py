@@ -14,9 +14,10 @@ from .setNextWaypoint import SetNextWaypointTask
 class RefillTask(VectorTask):
     def __init__(self, waypoint: Waypoint):
         super().__init__()
+        self.name = 'refill'
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
-        self.name = 'refill'
+        self.isRootTask = True
         self.waypoint = waypoint
 
     # TODO: add unit tests

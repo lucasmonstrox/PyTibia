@@ -15,27 +15,22 @@ def generateFloorWalkpoints(coordinate: Coordinate, goalCoordinate: Coordinate, 
     yFromTheEndOfRadar = pixelCoordinate[1] + 55
     xOfCoordinate = coordinate[0]
     yOfCoordinate = coordinate[1]
-    level = coordinate[2]
-    walkableFloorSqms = walkableFloorsSqms[level]
-    hasNonWalkableCoordinates = nonWalkableCoordinates is not None
-    if hasNonWalkableCoordinates:
-        floorLevel = coordinate[2]
-        nonWalkableCoordinatesIndexes = nonWalkableCoordinates['z'] == floorLevel
-        nonWalkableCoordinatesByCurrentFloorLevel = nonWalkableCoordinates[nonWalkableCoordinatesIndexes]
-        for coordinate in nonWalkableCoordinatesByCurrentFloorLevel:
-            nonWalkableCoordinateInPixel = getPixelFromCoordinate(coordinate)
-            x = nonWalkableCoordinateInPixel[1]
-            y = nonWalkableCoordinateInPixel[0]
-            # TODO: avoid this, should be copied first
-            walkableFloorSqms[x, y] = 0
+    walkableFloorSqms = walkableFloorsSqms[coordinate[2]]
+    if nonWalkableCoordinates is not None:
+        for nonWalkableCoordinate in nonWalkableCoordinates:
+            if nonWalkableCoordinate[2] == coordinate[2]:
+                nonWalkableCoordinateInPixel = getPixelFromCoordinate(coordinate)
+                x = nonWalkableCoordinateInPixel[1]
+                y = nonWalkableCoordinateInPixel[0]
+                # TODO: avoid this, should be copied first
+                walkableFloorSqms[x, y] = 0
     pf = tcod.path.AStar(walkableFloorSqms[
         yFromTheStartOfRadar:yFromTheEndOfRadar, xFromTheStartOfRadar:xFromTheEndOfRadar], 0)
     x = goalCoordinate[0] - xOfCoordinate + 53
     y = goalCoordinate[1] - yOfCoordinate + 54
     paths = pf.get_path(54, 53, y, x)
-    walkpoints = [[xOfCoordinate + x - 53,
-                   yOfCoordinate + y - 54, level] for y, x in paths]
-    return walkpoints
+    return [[xOfCoordinate + x - 53,
+                   yOfCoordinate + y - 54, coordinate[2]] for y, x in paths]
 
 
 # TODO: add unit tests
@@ -172,28 +167,28 @@ def resolveGoalCoordinate(coordinate: Coordinate, waypoint):
     elif waypoint['type'] == 'useShovel':
         goalCoordinate = resolveUseShovelWaypointCoordinate(
             coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveDownEast':
+    elif waypoint['type'] == 'moveDown':
         goalCoordinate = resolveMoveDownEastCoordinate(
             coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveDownNorth':
+    elif waypoint['type'] == 'moveDown':
         goalCoordinate = resolveMoveDownNorthCoordinate(
             coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveDownSouth':
+    elif waypoint['type'] == 'moveDown':
         goalCoordinate = resolveMoveDownSouthCoordinate(
             coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveDownWest':
+    elif waypoint['type'] == 'moveDown':
         goalCoordinate = resolveMoveDownWestCoordinate(
             coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveUpNorth':
+    elif waypoint['type'] == 'moveUp':
         goalCoordinate = resolveMoveUpNorthCoordinate(
             coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveUpWest':
+    elif waypoint['type'] == 'moveUp':
         goalCoordinate = resolveMoveUpWestCoordinate(
             coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveDownEast':
+    elif waypoint['type'] == 'moveDown':
         goalCoordinate = resolveMoveUpEastCoordinate(
             coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveUpSouth':
+    elif waypoint['type'] == 'moveUp':
         goalCoordinate = resolveMoveUpSouthCoordinate(
             coordinate, waypoint['coordinate'])
     elif waypoint['type'] == 'useHole':

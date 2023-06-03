@@ -9,6 +9,7 @@ class WalkToWaypoint(VectorTask):
     def __init__(self, coordinate: Coordinate):
         super().__init__()
         self.delayAfterComplete = 1
+        self.isRootTask = True
         self.name = 'walkToWaypoint'
         self.coordinate = coordinate
 
