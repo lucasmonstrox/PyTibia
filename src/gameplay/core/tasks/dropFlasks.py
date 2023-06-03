@@ -17,7 +17,7 @@ class DropFlasksTask(VectorTask):
 
     # TODO: add unit tests
     # TODO: add typings
-    def initialize(self, context: Context):
+    def onBeforeStart(self, context: Context):
         self.tasks = [
             DropEachFlaskTask(context['backpacks']['main']).setParentTask(self),
             ExpandBackpackTask(images['containersBars'][context['backpacks']['main']]).setParentTask(self),

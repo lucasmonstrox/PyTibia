@@ -9,13 +9,14 @@ from .setNextWaypoint import SetNextWaypointTask
 class DepositGoldTask(VectorTask):
     def __init__(self):
         super().__init__()
+        self.name = 'depositGold'
+        self.isRootTask = True
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
-        self.name = 'depositGold'
 
     # TODO: add unit tests
     # TODO: add typings
-    def initialize(self, context):
+    def onBeforeStart(self, context):
         self.tasks = [
             SelectChatTabTask('local chat').setParentTask(self),
             SayTask('hi').setParentTask(self),

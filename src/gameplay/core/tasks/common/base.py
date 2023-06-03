@@ -11,6 +11,7 @@ class BaseTask:
         self.delayBeforeStart = delayBeforeStart
         self.delayAfterComplete = delayAfterComplete
         self.delayOfTimeout = delayOfTimeout
+        self.isRetrying = False
         self.isRootTask = isRootTask
         self.manuallyTerminable = manuallyTerminable
         self.name = name
@@ -18,6 +19,7 @@ class BaseTask:
         self.retryCount = 0
         self.rootTask = None
         self.status = 'notStarted'
+        self.statusReason = None
 
     def setParentTask(self, parentTask):
         self.parentTask = parentTask
@@ -28,15 +30,14 @@ class BaseTask:
         return self
 
     # TODO: add unit tests
-    # TODO: add types
-    def initialize(self, _):
-        return self
-
-    # TODO: add unit tests
     def shouldIgnore(self, _: Context) -> bool:
         return False
 
     def shouldManuallyComplete(self, _: Context) -> bool:
+        return False
+
+    # TODO: add unit tests
+    def shouldRestart(self, _: Context) -> bool:
         return False
 
     # TODO: add unit tests
@@ -52,8 +53,12 @@ class BaseTask:
         return True
 
     # TODO: add unit tests
-    def shouldRestart(self, _: Context) -> bool:
-        return False
+    def onBeforeStart(self, context: Context):
+        return context
+
+    # TODO: add unit tests
+    def onBeforeRestart(self, context: Context) -> Context:
+        return context
 
     # TODO: add unit tests
     def onIgnored(self, context: Context) -> Context:
@@ -61,6 +66,10 @@ class BaseTask:
 
     # TODO: add unit tests
     def onComplete(self, context: Context) -> Context:
+        return context
+
+    # TODO: add unit tests
+    def onInterrupt(self, context: Context) -> Context:
         return context
 
     # TODO: add unit tests

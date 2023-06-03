@@ -6,65 +6,73 @@ from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 
 context = {}
 
-def test_get_root_task():
-    baseTask = BaseTask()
-    tasksOrchestrator = TasksOrchestrator(baseTask)
-    currentTask = tasksOrchestrator.getCurrentTask(context)
-    assert currentTask.name == baseTask.name
-
-def test_should_do_task_when_did_in_first_time():
+def test_should_do_single_task():
     tasksOrchestrator = TasksOrchestrator(BaseTask(name='currentTask'))
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'notStarted'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'completed'
+    assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
-def test_should_do_task_when_did_in_second_time(mocker):
+def test_should_do_single_task_when_task_is_done_in_second_attempt(mocker):
     baseTask = BaseTask(name='currentTask')
     tasksOrchestrator = TasksOrchestrator(baseTask)
     mocker.patch.object(baseTask, 'did',  return_value=False)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'notStarted'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'running'
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     mocker.patch.object(baseTask, 'did',  return_value=True)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'completed'
+    assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
-def test_should_do_task_when_task_has_delayBeforeStart():
+def test_should_do_single_task_when_task_has_delayBeforeStart():
     tasksOrchestrator = TasksOrchestrator(BaseTask(name='currentTask', delayBeforeStart=1))
     assert tasksOrchestrator.rootTask.status == 'notStarted'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'awaitingDelayBeforeStart'
+    assert tasksOrchestrator.rootTask.statusReason is None
     sleep(2)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'completed'
+    assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
-def test_should_do_task_when_task_has_delayAfterComplete():
+def test_should_do_single_task_when_task_has_delayAfterComplete():
     tasksOrchestrator = TasksOrchestrator(BaseTask(name='currentTask', delayAfterComplete=1))
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'notStarted'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
-    assert tasksOrchestrator.rootTask.status == 'awaitingDelayAfterComplete'
+    assert tasksOrchestrator.rootTask.status == 'awaitingDelayToComplete'
+    assert tasksOrchestrator.rootTask.statusReason is None
     sleep(2)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'completed'
+    assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_should_do_task_when_task_has_delayOfTimeout(mocker):
     baseTask = BaseTask(name='currentTask', delayOfTimeout=1)
@@ -72,16 +80,20 @@ def test_should_do_task_when_task_has_delayOfTimeout(mocker):
     tasksOrchestrator = TasksOrchestrator(baseTask)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'notStarted'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     sleep(3)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'completed'
+    assert tasksOrchestrator.rootTask.statusReason == 'timeout'
 
 def test_should_do_task_when_task_is_manuallyTerminable(mocker):
     baseTask = BaseTask(name='currentTask', manuallyTerminable=True)
@@ -89,15 +101,19 @@ def test_should_do_task_when_task_is_manuallyTerminable(mocker):
     tasksOrchestrator = TasksOrchestrator(baseTask)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'notStarted'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'awaitingManualTermination'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'completed'
+    assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_do_vector_task():
     context = {}
@@ -112,28 +128,40 @@ def test_do_vector_task():
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
     assert tasksOrchestrator.getCurrentTask(context).name == 'firstTask'
     assert firstTask.status == 'running'
+    assert firstTask.statusReason is None
     assert secondTask.status == 'notStarted'
+    assert firstTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'running'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'vectorTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'completed'
+    assert secondTask.statusReason == 'completed'
     assert tasksOrchestrator.rootTask.status == 'completed'
+    assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_do_vector_task_when_tasks_has_delayBeforeStart():
     context = {}
@@ -148,42 +176,59 @@ def test_do_vector_task_when_tasks_has_delayBeforeStart():
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
     assert tasksOrchestrator.getCurrentTask(context).name == 'firstTask'
     assert firstTask.status == 'awaitingDelayBeforeStart'
+    assert firstTask.statusReason is None
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     sleep(2)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
     assert tasksOrchestrator.getCurrentTask(context).name == 'firstTask'
     assert firstTask.status == 'running'
+    assert firstTask.statusReason is None
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'awaitingDelayBeforeStart'
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     sleep(2)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'running'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'vectorTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'completed'
+    assert secondTask.statusReason == 'completed'
     assert tasksOrchestrator.rootTask.status == 'completed'
+    assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_do_vector_task_when_tasks_has_delayAfterComplete():
     context = {}
@@ -198,42 +243,60 @@ def test_do_vector_task_when_tasks_has_delayAfterComplete():
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
     assert tasksOrchestrator.getCurrentTask(context).name == 'firstTask'
     assert firstTask.status == 'running'
+    assert firstTask.statusReason is None
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
     assert tasksOrchestrator.getCurrentTask(context).name == 'firstTask'
-    assert firstTask.status == 'awaitingDelayAfterComplete'
+    assert firstTask.status == 'awaitingDelayToComplete'
+    assert firstTask.statusReason is None
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     sleep(2)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'running'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
-    assert secondTask.status == 'awaitingDelayAfterComplete'
+    assert firstTask.statusReason == 'completed'
+    assert secondTask.status == 'awaitingDelayToComplete'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     sleep(2)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'vectorTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'completed'
+    assert secondTask.statusReason == 'completed'
     assert tasksOrchestrator.rootTask.status == 'completed'
+    assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_do_vector_task_with_when_tasks_has_delayOfTimeout(mocker):
     context = {}
@@ -250,42 +313,60 @@ def test_do_vector_task_with_when_tasks_has_delayOfTimeout(mocker):
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
     assert tasksOrchestrator.getCurrentTask(context).name == 'firstTask'
     assert firstTask.status == 'running'
+    assert firstTask.statusReason is None
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
     assert tasksOrchestrator.getCurrentTask(context).name == 'firstTask'
     assert firstTask.status == 'running'
+    assert firstTask.statusReason is None
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     sleep(2)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'timeout'
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'timeout'
     assert secondTask.status == 'running'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'timeout'
     assert secondTask.status == 'running'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     sleep(2)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'vectorTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'timeout'
     assert secondTask.status == 'completed'
+    assert secondTask.statusReason == 'timeout'
     assert tasksOrchestrator.rootTask.status == 'completed'
+    assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_do_vector_task_with_when_tasks_are_manuallyTerminable(mocker):
     context = {}
@@ -300,49 +381,143 @@ def test_do_vector_task_with_when_tasks_are_manuallyTerminable(mocker):
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
     assert tasksOrchestrator.getCurrentTask(context).name == 'firstTask'
     assert firstTask.status == 'running'
+    assert firstTask.statusReason is None
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
     assert tasksOrchestrator.getCurrentTask(context).name == 'firstTask'
     assert firstTask.status == 'awaitingManualTermination'
+    assert firstTask.statusReason is None
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
     assert tasksOrchestrator.getCurrentTask(context).name == 'firstTask'
     assert firstTask.status == 'awaitingManualTermination'
+    assert firstTask.statusReason is None
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     mocker.patch.object(firstTask, 'shouldManuallyComplete',  return_value=True)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'notStarted'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'running'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'awaitingManualTermination'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'awaitingManualTermination'
+    assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
     mocker.patch.object(secondTask, 'shouldManuallyComplete',  return_value=True)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.currentTaskIndex == 1
     assert tasksOrchestrator.getCurrentTask(context).name == 'vectorTask'
     assert firstTask.status == 'completed'
+    assert firstTask.statusReason == 'completed'
     assert secondTask.status == 'completed'
+    assert secondTask.statusReason == 'completed'
     assert tasksOrchestrator.rootTask.status == 'completed'
+    assert tasksOrchestrator.rootTask.statusReason == 'completed'
+
+class CustomTask(VectorTask):
+    def __init__(self):
+        super().__init__()
+        self.isRootTask = True
+        self.name = 'custom'
+
+    def onBeforeStart(self, _):
+        self.tasks = [
+            BaseTask(name='firstTask').setParentTask(self),
+            BaseTask(name='secondTask', manuallyTerminable=True).setParentTask(self),
+        ]
+        self.initialized = True
+        return self
+
+def test_should_restart_parent_task(mocker):
+    context = {}
+    customTask = CustomTask()
+    tasksOrchestrator = TasksOrchestrator(customTask)
+    assert tasksOrchestrator.rootTask.status == 'notStarted'
+    assert tasksOrchestrator.rootTask.currentTaskIndex == 0
+    assert len(tasksOrchestrator.rootTask.tasks) == 0
+    tasksOrchestrator.do(context)
+    mocker.patch.object(customTask, 'shouldRestart', return_value=False)
+    assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.currentTaskIndex == 0
+    assert tasksOrchestrator.getCurrentTask(context).name == 'firstTask'
+    assert tasksOrchestrator.rootTask.tasks[0].status == 'running'
+    assert tasksOrchestrator.rootTask.tasks[0].statusReason is None
+    assert tasksOrchestrator.rootTask.tasks[1].status == 'notStarted'
+    assert tasksOrchestrator.rootTask.tasks[1].statusReason is None
+    assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
+    tasksOrchestrator.do(context)
+    assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.currentTaskIndex == 1
+    assert tasksOrchestrator.rootTask.tasks[0].status == 'completed'
+    assert tasksOrchestrator.rootTask.tasks[0].statusReason == 'completed'
+    assert tasksOrchestrator.rootTask.tasks[1].status == 'notStarted'
+    assert tasksOrchestrator.rootTask.tasks[1].statusReason is None
+    assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
+    tasksOrchestrator.do(context)
+    assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.currentTaskIndex == 1
+    assert tasksOrchestrator.rootTask.tasks[0].status == 'completed'
+    assert tasksOrchestrator.rootTask.tasks[0].statusReason == 'completed'
+    assert tasksOrchestrator.rootTask.tasks[1].status == 'running'
+    assert tasksOrchestrator.rootTask.tasks[1].statusReason is None
+    assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
+    tasksOrchestrator.do(context)
+    assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.currentTaskIndex == 1
+    assert tasksOrchestrator.rootTask.tasks[0].status == 'completed'
+    assert tasksOrchestrator.rootTask.tasks[0].statusReason == 'completed'
+    assert tasksOrchestrator.rootTask.tasks[1].status == 'awaitingManualTermination'
+    assert tasksOrchestrator.rootTask.tasks[1].statusReason is None
+    assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None
+    mocker.patch.object(customTask, 'shouldRestart', return_value=True)
+    tasksOrchestrator.do(context)
+    assert tasksOrchestrator.rootTask.currentTaskIndex == 0
+    assert tasksOrchestrator.rootTask.retryCount == 1
+    assert tasksOrchestrator.rootTask.tasks[0].status == 'running'
+    assert tasksOrchestrator.rootTask.tasks[0].statusReason is None
+    assert tasksOrchestrator.rootTask.tasks[1].status == 'notStarted'
+    assert tasksOrchestrator.rootTask.tasks[1].statusReason is None
+    assert tasksOrchestrator.rootTask.status == 'running'
+    assert tasksOrchestrator.rootTask.statusReason is None

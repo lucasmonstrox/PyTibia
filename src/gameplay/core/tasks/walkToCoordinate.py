@@ -15,7 +15,7 @@ class WalkToCoordinate(VectorTask):
 
     # TODO: add return type
     # TODO: add unit tests
-    def initialize(self, context: Context):
+    def onBeforeStart(self, context: Context):
         # nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
         # for monster in context['gameWindow']['monsters']:
         #     monsterCoordinateTuple = (monster['coordinate'][0], monster['coordinate'][1], monster['coordinate'][2])
@@ -29,7 +29,7 @@ class WalkToCoordinate(VectorTask):
         self.initialized = True
         return self
     
-    def onBeforeRestart(self, context: Context):
+    def onComplete(self, context: Context):
         if context['lastPressedKey'] is not None:
             pyautogui.keyUp(context['lastPressedKey'])
             context['lastPressedKey'] = None

@@ -1,9 +1,10 @@
 import pyautogui
 
 
+# TODO: add types
 # TODO: add unit tests
-def leftClick(x: int, y: int):
-    pyautogui.leftClick(x, y)
+def leftClick(windowCoordinate):
+    pyautogui.leftClick(windowCoordinate[0], windowCoordinate[1])
 
 
 # TODO: add unit tests

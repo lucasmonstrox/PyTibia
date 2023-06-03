@@ -15,7 +15,7 @@ class LogoutTask(VectorTask):
 
     # TODO: add unit tests
     # TODO: add typings
-    def initialize(self, _: Context):
+    def onBeforeStart(self, _: Context):
         self.tasks = [
             PressLogoutKeys(['ctrl', 'q']).setParentTask(self),
             CloseProcessTask().setParentTask(self)

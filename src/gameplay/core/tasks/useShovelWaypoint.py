@@ -13,7 +13,7 @@ class UseShovelWaypointTask(VectorTask):
         self.waypoint = waypoint
 
     # TODO: add parameters type
-    def initialize(self, _):
+    def onBeforeStart(self, _):
         self.tasks = [
             UseShovelTask(self.waypoint).setParentTask(self),
             ClickInCoordinateTask(self.waypoint).setParentTask(self),

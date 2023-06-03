@@ -18,8 +18,7 @@ class OpenLockerTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        lockerCoordinate = context['deposit']['lockerCoordinate']
-        slot = getSlotFromCoordinate(context['radar']['coordinate'], lockerCoordinate)
+        slot = getSlotFromCoordinate(context['radar']['coordinate'], context['deposit']['lockerCoordinate'])
         rightClickSlot(slot, context['gameWindow']['coordinate'])
         return context
 

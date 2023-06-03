@@ -89,17 +89,18 @@ def main():
                 gameContext['taskOrchestrator'].setRootTask(LootCorpseTask(firstDeadCorpse))
             gameContext['gameWindow']['previousMonsters'] = gameContext['gameWindow']['monsters']
             return gameContext
-        if hasCreaturesToAttack(gameContext):
-            targetCreature = getClosestCreature(gameContext['gameWindow']['creatures'], gameContext['radar']['coordinate'])
-            if targetCreature is not None:
+        hasCreaturesToAttackAfterCheck = hasCreaturesToAttack(gameContext)
+        if hasCreaturesToAttackAfterCheck:
+            closestCreature = getClosestCreature(gameContext['gameWindow']['creatures'], gameContext['radar']['coordinate'])
+            if closestCreature is not None:
                 gameContext['way'] = 'cavebot'
             else:
                 gameContext['way'] = 'waypoint'
         else:
             gameContext['way'] = 'waypoint'
-        if hasCreaturesToAttack(gameContext) and shouldAskForCavebotTasks(gameContext):
+        if hasCreaturesToAttackAfterCheck and shouldAskForCavebotTasks(gameContext):
             hasCurrentTaskAfterCheck = gameContext['currentTask'] is not None
-            isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (gameContext['currentTask'].name == 'attackClosestCreature' or gameContext['currentTask'].name == 'followTargetCreature')
+            isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and gameContext['currentTask'].name == 'attackClosestCreature'
             isNotTryingToAttackClosestCreature = not isTryingToAttackClosestCreature
             if isNotTryingToAttackClosestCreature:
                 gameContext = resolveCavebotTasks(gameContext)

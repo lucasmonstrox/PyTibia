@@ -19,7 +19,7 @@ class TasksOrchestrator:
     def getNestedTask(self, task, context: Context):
         if hasattr(task, 'tasks'):
             if task.status == 'notStarted':
-                task.initialize(context)
+                task.onBeforeStart(context)
                 task.status = 'running'
             if task.status != 'completed':
                 if len(task.tasks) == 0:
@@ -29,6 +29,27 @@ class TasksOrchestrator:
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
+        currentTask = self.getCurrentTask(context)
+        self.checkTimeouts(currentTask, context)
+        context = self.handleTasks(context)
+        return context
+
+    def checkTimeouts(self, currentTask, context: Context) -> Context:
+        if currentTask.manuallyTerminable and currentTask.shouldManuallyComplete(context):
+            currentTask.status = 'completed'
+            currentTask.statusReason = 'completed'
+            return self.markCurrentTaskAsFinished(currentTask, context, disableManualTermination=True)
+        if currentTask.status != 'notStarted' and currentTask.shouldRestart(context):
+            currentTask.status = 'notStarted'
+            currentTask.retryCount += 1
+            if hasattr(currentTask, 'tasks'):
+                currentTask.currentTaskIndex = 0
+            context = currentTask.onBeforeRestart(context)
+        if currentTask.parentTask:
+            self.checkTimeouts(currentTask.parentTask, context)
+        return context
+
+    def handleTasks(self, context: Context) -> Context:
         if self.rootTask is None:
             return context
         if self.rootTask.status == 'completed':
@@ -37,15 +58,19 @@ class TasksOrchestrator:
         if currentTask.status == 'awaitingManualTermination':
             if currentTask.shouldManuallyComplete(context):
                 currentTask.status = 'completed'
+                currentTask.statusReason = 'completed'
                 return self.markCurrentTaskAsFinished(currentTask, context, disableManualTermination=True)
-            if currentTask.shouldRestart(context):
+            if currentTask.shouldRestart(context) and currentTask.isRestarting == False:
                 currentTask.status = 'notStarted'
+                currentTask.isRestarting = True
                 currentTask.retryCount += 1
                 context = currentTask.onBeforeRestart(context)
             return context
         if currentTask.status == 'notStarted' or currentTask.status == 'awaitingDelayBeforeStart':
+            currentTask.isRestarting = False
             if currentTask.startedAt is None:
                 currentTask.startedAt = time()
+            currentTask.onBeforeStart(context)
             if self.didPassedEnoughTimeToExecute(currentTask):
                 if currentTask.shouldIgnore(context):
                     context = currentTask.onIgnored(context)
@@ -66,17 +91,18 @@ class TasksOrchestrator:
             else:
                 if self.didTaskTimedout(currentTask):
                     context = currentTask.onTimeout(context)
+                    currentTask.statusReason = 'timeout'
                     return self.markCurrentTaskAsFinished(currentTask, context)
                 if currentTask.did(context):
                     currentTask.finishedAt = time()
                     if currentTask.delayAfterComplete > 0:
-                        currentTask.status = 'awaitingDelayAfterComplete'
+                        currentTask.status = 'awaitingDelayToComplete'
                         return context
                     else:
                         return self.markCurrentTaskAsFinished(currentTask, context)
                 else:
                     context = currentTask.ping(context)
-        if currentTask.status == 'awaitingDelayAfterComplete' and self.didPassedEnoughDelayAfterTaskComplete(currentTask):
+        if currentTask.status == 'awaitingDelayToComplete' and self.didPassedEnoughDelayAfterTaskComplete(currentTask):
             return self.markCurrentTaskAsFinished(currentTask, context)
         return context
 
@@ -87,6 +113,8 @@ class TasksOrchestrator:
             return context
         else:
             task.status = 'completed'
+            if task.statusReason is None:
+                task.statusReason = 'completed'
         context = task.onComplete(context)
         if task.parentTask:
             isntLastTask = task.parentTask.currentTaskIndex < len(task.parentTask.tasks) - 1

@@ -12,7 +12,7 @@ class LootCorpseTask(VectorTask):
 
     # TODO: add unit tests
     # TODO: add typings
-    def initialize(self, _):
+    def onBeforeStart(self, _):
         self.tasks = [
             # TODO: add walkToCoordinate to reach dead corpse
             CollectDeadCorpseTask(self.corpse).setParentTask(self)

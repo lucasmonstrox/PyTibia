@@ -15,7 +15,7 @@ class SingleWalkTask(VectorTask):
 
     # TODO: add unit tests
     # TODO: add typings
-    def initialize(self, context: Context):
+    def onBeforeStart(self, context: Context):
         self.tasks = [
             MoveDown(context, self.direction).setParentTask(self),
             SetNextWaypointTask().setParentTask(self),

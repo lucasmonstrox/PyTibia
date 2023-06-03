@@ -15,7 +15,7 @@ class WalkToWaypoint(VectorTask):
 
     # TODO: add return type
     # TODO: add unit tests
-    def initialize(self, _: Context):
+    def onBeforeStart(self, _: Context):
         self.tasks = [
             WalkToCoordinate(self.coordinate).setParentTask(self),
             SetNextWaypointTask().setParentTask(self),

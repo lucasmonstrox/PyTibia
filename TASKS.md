@@ -35,12 +35,18 @@ As tarefas em sequencia podem ter sub tarefas de todos os tipos, simples, sequen
 
 ## Extras
 
+- Implementar número máximo de retries
 - As tarefas podem ser interrompidas(pensar como implementar isso)
+  R: Implementar onInterrupt e shouldInterrupt
 - O que fazer quando as tarefas precisam ser recalculadas(ex: FollowCreature, GoToCoordinate)?
-  R: Usar o shouldRestart para isso e o afterRestart para recalcular
+  R: Usar o shouldRestart para isso e o onBeforeRestart para recalcular
 - As tasks pode saber quem são as tasks irmãs da esquerda e as tasks irmãs da direita
-- Se a task filha der timeout, todas as pais/avos/bisavos irão dar timeout também
 - A task em forma de vector nao tem "do", uma vez que as sub tarefas tem "do"
+- Ao começar o check de timeouts, verificar de cima para baixo, pois se uma pai já deu timeout, não faz sentido verificar as filhas
+- Qual o status da task pai se uma filha der timeout + complete? R:
+- O que fazer com uma tarefa que tem delay de timeout mas é manualmente terminavel? R: Não faz sentido ter delay de timeout
+- O que fazer com uma task que pode ter alguns retries e delay de timeout?
+- Talvez o onBeforeRestart esteja sendo chamada várias vezes
 
 ## Exemplo de tarefa simples:
 

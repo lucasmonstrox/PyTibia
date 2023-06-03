@@ -7,6 +7,7 @@ from .typings import Context
 # TODO: add unit tests
 def resolveCavebotTasks(context: Context) -> Union[AttackClosestCreatureTask, None]:
     currentTask = context['taskOrchestrator'].getCurrentTask(context)
+    context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
     if context['cavebot']['isAttackingSomeCreature']:
         hasNoTargetCreature = context['cavebot']['targetCreature'] == None
         if hasNoTargetCreature:
@@ -14,7 +15,6 @@ def resolveCavebotTasks(context: Context) -> Union[AttackClosestCreatureTask, No
         hasNoTargetToTargetCreature = hasTargetToCreature(
             context['gameWindow']['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False
         if hasNoTargetToTargetCreature:
-            context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
             hasNoClosestCreature = context['cavebot']['closestCreature'] == None
             if hasNoClosestCreature:
                 return context
@@ -23,7 +23,6 @@ def resolveCavebotTasks(context: Context) -> Union[AttackClosestCreatureTask, No
         if currentTask is None or context['taskOrchestrator'].rootTask.name != 'attackClosestCreature':
             context['taskOrchestrator'].setRootTask(AttackClosestCreatureTask())
         return context
-    context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
     hasNoClosestCreature = context['cavebot']['closestCreature'] == None
     if hasNoClosestCreature:
         return context

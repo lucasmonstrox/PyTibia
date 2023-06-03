@@ -18,8 +18,5 @@ class CloseNpcTradeBoxTask(BaseTask):
         tradeTopPos = getTradeTopPos(context['screenshot'])
         if tradeTopPos is None:
             return context
-        (x, y, _, _) = tradeTopPos
-        closeIconX = x + 165
-        closeIconY = y + 7
-        leftClick(closeIconX, closeIconY)
+        leftClick((tradeTopPos[0] + 165, tradeTopPos[1] + 7))
         return context

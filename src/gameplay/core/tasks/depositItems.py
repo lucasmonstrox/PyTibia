@@ -24,7 +24,7 @@ class DepositItemsTask(VectorTask):
 
     # TODO: add unit tests
     # TODO: add typings
-    def initialize(self, context: Context):
+    def onBeforeStart(self, context: Context):
         self.tasks = [
             GoToFreeDepotTask(context, self.waypoint).setParentTask(self),
             OpenLockerTask().setParentTask(self),

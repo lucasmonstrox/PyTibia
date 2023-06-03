@@ -22,7 +22,7 @@ class RefillTask(VectorTask):
 
     # TODO: add unit tests
     # TODO: add typings
-    def initialize(self, context: Context):
+    def onBeforeStart(self, context: Context):
         # TODO: inherit from context bindings
         itemSlot = {
             'great health potion': 1,
