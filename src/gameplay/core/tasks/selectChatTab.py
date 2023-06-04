@@ -12,8 +12,7 @@ class SelectChatTabTask(BaseTask):
 
     def do(self, context):
         tab = context['chat']['tabs'].get(self.value)
-        cannotGetTab = tab is None
-        if cannotGetTab:
+        if tab is None:
             return context
         tabPosition = context['chat']['tabs'][self.value]['position']
         pyautogui.click(tabPosition[0] + 10, tabPosition[1] + 5)

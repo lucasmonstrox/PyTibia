@@ -14,11 +14,9 @@ class LogoutTask(VectorTask):
         self.delayAfterComplete = 1
 
     # TODO: add unit tests
-    # TODO: add typings
-    def onBeforeStart(self, _: Context):
+    def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
-            PressLogoutKeys(['ctrl', 'q']).setParentTask(self),
-            CloseProcessTask().setParentTask(self)
+            PressLogoutKeys(['ctrl', 'q']).setParentTask(self).setRootTask(self),
+            CloseProcessTask().setParentTask(self).setRootTask(self)
         ]
-        self.initialized = True
-        return self
+        return context

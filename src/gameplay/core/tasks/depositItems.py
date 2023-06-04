@@ -23,19 +23,17 @@ class DepositItemsTask(VectorTask):
         self.waypoint = waypoint
 
     # TODO: add unit tests
-    # TODO: add typings
-    def onBeforeStart(self, context: Context):
+    def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
-            GoToFreeDepotTask(context, self.waypoint).setParentTask(self),
-            OpenLockerTask().setParentTask(self),
-            OpenBackpackTask(context['backpacks']['main']).setParentTask(self),
-            ScrollToItemTask(images['containersBars'][context['backpacks']['main']], images['slots'][context['backpacks']['loot']]).setParentTask(self),
-            DropBackpackIntoStashTask(context['backpacks']['loot']).setParentTask(self),
-            OpenDepotTask().setParentTask(self),
-            OpenBackpackTask(context['backpacks']['loot']).setParentTask(self),
-            DragItemsTask(images['containersBars'][context['backpacks']['loot']], images['slots']['depot chest 2']).setParentTask(self),
-            CloseContainerTask(images['containersBars'][context['backpacks']['loot']]).setParentTask(self),
-            SetNextWaypointTask().setParentTask(self),
+            GoToFreeDepotTask(context, self.waypoint).setParentTask(self).setRootTask(self),
+            OpenLockerTask().setParentTask(self).setRootTask(self),
+            OpenBackpackTask(context['backpacks']['main']).setParentTask(self).setRootTask(self),
+            ScrollToItemTask(images['containersBars'][context['backpacks']['main']], images['slots'][context['backpacks']['loot']]).setParentTask(self).setRootTask(self),
+            DropBackpackIntoStashTask(context['backpacks']['loot']).setParentTask(self).setRootTask(self),
+            OpenDepotTask().setParentTask(self).setRootTask(self),
+            OpenBackpackTask(context['backpacks']['loot']).setParentTask(self).setRootTask(self),
+            DragItemsTask(images['containersBars'][context['backpacks']['loot']], images['slots']['depot chest 2']).setParentTask(self).setRootTask(self),
+            CloseContainerTask(images['containersBars'][context['backpacks']['loot']]).setParentTask(self).setRootTask(self),
+            SetNextWaypointTask().setParentTask(self).setRootTask(self),
         ]
-        self.initialized = True
-        return self
+        return context

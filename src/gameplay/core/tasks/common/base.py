@@ -53,7 +53,7 @@ class BaseTask:
         return True
 
     # TODO: add unit tests
-    def onBeforeStart(self, context: Context):
+    def onBeforeStart(self, context: Context) -> Context:
         return context
 
     # TODO: add unit tests

@@ -16,11 +16,9 @@ class WalkToTargetCreature(VectorTask):
         self.targetCreatureCoordinateSinceLastRestart = None
 
     # TODO: add return type
-    # TODO: add unit tests
-    def onBeforeStart(self, context: Context):
+    def onBeforeStart(self, context: Context) -> Context:
         self.calculatePathToTargetCreature(context)
-        self.initialized = True
-        return self
+        return context
 
     def onBeforeRestart(self, context: Context) -> Context:
         if context['lastPressedKey'] is not None:
@@ -35,6 +33,7 @@ class WalkToTargetCreature(VectorTask):
             context['lastPressedKey'] = None
         return context
 
+    # TODO: se nao houver mais criaturas, deveria só recalcular quando chegasse perto da criatura para evitar recalculo a cada movimentação de SQM
     def shouldRestart(self, context: Context) -> bool:
         if context['cavebot']['targetCreature'] is None:
             return True

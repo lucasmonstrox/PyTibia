@@ -75,13 +75,15 @@ def main():
 
     def handleGameplayTasks(context):
         global gameContext
+        # TODO: mover isso fora daqui
         gameContext = context
+        gameContext['cavebot']['closestCreature'] = getClosestCreature(gameContext['gameWindow']['monsters'], gameContext['radar']['coordinate'])
         currentTask = gameContext['taskOrchestrator'].getCurrentTask(gameContext)
         if currentTask is not None and currentTask.name == 'selectLootTab':
             return gameContext
         if len(gameContext['loot']['corpsesToLoot']) > 0:
             gameContext['way'] = 'lootCorpses'
-            if gameContext['taskOrchestrator'].getCurrentTask() is not None and gameContext['taskOrchestrator'].getCurrentTask().name != 'lootCorpse':
+            if currentTask is not None and currentTask.name != 'lootCorpse':
                 gameContext['taskOrchestrator'].setRootTask(None)
             if gameContext['currentTask'] is None:
                 # TODO: get closest dead corpse
@@ -91,8 +93,7 @@ def main():
             return gameContext
         hasCreaturesToAttackAfterCheck = hasCreaturesToAttack(gameContext)
         if hasCreaturesToAttackAfterCheck:
-            closestCreature = getClosestCreature(gameContext['gameWindow']['creatures'], gameContext['radar']['coordinate'])
-            if closestCreature is not None:
+            if gameContext['cavebot']['closestCreature'] is not None:
                 gameContext['way'] = 'cavebot'
             else:
                 gameContext['way'] = 'waypoint'
@@ -100,7 +101,7 @@ def main():
             gameContext['way'] = 'waypoint'
         if hasCreaturesToAttackAfterCheck and shouldAskForCavebotTasks(gameContext):
             hasCurrentTaskAfterCheck = gameContext['currentTask'] is not None
-            isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and gameContext['currentTask'].name == 'attackClosestCreature'
+            isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (gameContext['currentTask'].name == 'attackClosestCreature')
             isNotTryingToAttackClosestCreature = not isTryingToAttackClosestCreature
             if isNotTryingToAttackClosestCreature:
                 gameContext = resolveCavebotTasks(gameContext)
@@ -108,8 +109,7 @@ def main():
             if gameContext['taskOrchestrator'].getCurrentTask(gameContext) is None:
                 currentWaypointIndex = gameContext['cavebot']['waypoints']['currentIndex']
                 currentWaypoint = gameContext['cavebot']['waypoints']['points'][currentWaypointIndex]
-                taskByWapoint = resolveTasksByWaypoint(gameContext, currentWaypoint)
-                gameContext['taskOrchestrator'].setRootTask(taskByWapoint)
+                gameContext['taskOrchestrator'].setRootTask(resolveTasksByWaypoint(gameContext, currentWaypoint))
         gameContext['gameWindow']['previousMonsters'] = gameContext['gameWindow']['monsters']
         return gameContext
 

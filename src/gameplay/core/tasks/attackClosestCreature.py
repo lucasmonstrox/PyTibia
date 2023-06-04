@@ -11,11 +11,9 @@ class AttackClosestCreatureTask(VectorTask):
         self.isRootTask = True
 
     # TODO: add unit tests
-    # TODO: add typings
-    def onBeforeStart(self, _: Context):
+    def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
             ClickInClosestCreatureTask().setParentTask(self).setRootTask(self),
             WalkToTargetCreature().setParentTask(self).setRootTask(self),
         ]
-        self.initialized = True
-        return self
+        return context

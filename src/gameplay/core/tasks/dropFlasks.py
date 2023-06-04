@@ -16,13 +16,11 @@ class DropFlasksTask(VectorTask):
         self.name = 'dropFlasks'
 
     # TODO: add unit tests
-    # TODO: add typings
-    def onBeforeStart(self, context: Context):
+    def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
-            DropEachFlaskTask(context['backpacks']['main']).setParentTask(self),
-            ExpandBackpackTask(images['containersBars'][context['backpacks']['main']]).setParentTask(self),
-            OpenBackpackTask(context['backpacks']['main']).setParentTask(self),
-            SetNextWaypointTask().setParentTask(self),
+            DropEachFlaskTask(context['backpacks']['main']).setParentTask(self).setRootTask(self),
+            ExpandBackpackTask(images['containersBars'][context['backpacks']['main']]).setParentTask(self).setRootTask(self),
+            OpenBackpackTask(context['backpacks']['main']).setParentTask(self).setRootTask(self),
+            SetNextWaypointTask().setParentTask(self).setRootTask(self),
         ]
-        self.initialized = True
-        return self
+        return context

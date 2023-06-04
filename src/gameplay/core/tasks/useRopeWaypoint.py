@@ -1,4 +1,5 @@
 from src.shared.typings import Waypoint
+from ...typings import Context
 from .common.vector import VectorTask
 from .useRope import UseRopeTask
 from .setNextWaypoint import SetNextWaypointTask
@@ -13,10 +14,9 @@ class UseRopeWaypointTask(VectorTask):
 
     # TODO: add unit tests
     # TODO: add typings
-    def onBeforeStart(self, _):
+    def onBeforeStart(self, context) -> Context:
         self.tasks = [
-            UseRopeTask(self.waypoint).setParentTask(self),
-            SetNextWaypointTask().setParentTask(self),
+            UseRopeTask(self.waypoint).setParentTask(self).setRootTask(self),
+            SetNextWaypointTask().setParentTask(self).setRootTask(self),
         ]
-        self.initialized = True
-        return self
+        return context

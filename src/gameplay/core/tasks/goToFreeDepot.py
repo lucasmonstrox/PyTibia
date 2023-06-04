@@ -45,7 +45,7 @@ class GoToFreeDepotTask(VectorTask):
             closestFreeDepotCoordinate = freeDepotCoordinates[closestFreeDepotCoordinateIndex]
             self.closestFreeDepotCoordinate = closestFreeDepotCoordinate
             walkpoints = generateFloorWalkpoints(coordinate, closestFreeDepotCoordinate, nonWalkableCoordinates=None)
-            return [WalkTask(context, walkpoint).setParentTask(self) for walkpoint in walkpoints]
+            return [WalkTask(context, walkpoint).setParentTask(self).setRootTask(self.rootTask) for walkpoint in walkpoints]
         else:
             self.state = 'walkingIntoVisibleCoordinates'
             # - gerar caminho até visualizar os próximos depots se necessário

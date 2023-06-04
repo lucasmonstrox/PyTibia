@@ -1,7 +1,7 @@
 import numpy as np
 from src.repositories.battleList.typings import Creature as BattleListCreature
 from src.repositories.gameWindow.typings import Creature as GameWindowCreature
-from src.repositories.radar.typings import Coordinate, Waypoint
+from src.repositories.radar.typings import Waypoint
 
 
 gameContext = {

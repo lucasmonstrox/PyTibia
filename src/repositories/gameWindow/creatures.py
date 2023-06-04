@@ -60,8 +60,7 @@ def getClosestCreature(gameWindowCreatures: CreatureList, coordinate: Coordinate
     creaturesIndexes = np.delete(creaturesIndexes, nonTargetCreaturesIndexes)
     creaturesGraphWeights = np.delete(
         creaturesGraphWeights, nonTargetCreaturesIndexes)
-    hasOnlyNonTargetCreatures = len(creaturesGraphWeights) == 0
-    if hasOnlyNonTargetCreatures:
+    if len(creaturesGraphWeights) == 0:
         return None
     creaturesDistances = np.where(
         creaturesGraphWeights == np.amin(creaturesGraphWeights))[0]
@@ -71,8 +70,7 @@ def getClosestCreature(gameWindowCreatures: CreatureList, coordinate: Coordinate
                     15, closestCreatureGameWindowIndex // 15]
     closestCreatureIndex = np.where(
         (gameWindowCreatures['slot'] == creatureSlot).all(axis=1))[0][0]
-    closestCreature = gameWindowCreatures[closestCreatureIndex]
-    return closestCreature
+    return gameWindowCreatures[closestCreatureIndex]
 
 
 # TODO: add unit tests

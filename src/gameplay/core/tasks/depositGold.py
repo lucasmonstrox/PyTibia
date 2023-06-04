@@ -1,3 +1,4 @@
+from ...typings import Context
 from .common.vector import VectorTask
 from .say import SayTask
 from .selectChatTab import SelectChatTabTask
@@ -15,15 +16,13 @@ class DepositGoldTask(VectorTask):
         self.delayAfterComplete = 1
 
     # TODO: add unit tests
-    # TODO: add typings
-    def onBeforeStart(self, context):
+    def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
-            SelectChatTabTask('local chat').setParentTask(self),
-            SayTask('hi').setParentTask(self),
-            SayTask('deposit all').setParentTask(self),
-            SayTask('yes').setParentTask(self),
-            SetChatOffTask().setParentTask(self),
-            SetNextWaypointTask().setParentTask(self),
+            SelectChatTabTask('local chat').setParentTask(self).setRootTask(self),
+            SayTask('hi').setParentTask(self).setRootTask(self),
+            SayTask('deposit all').setParentTask(self).setRootTask(self),
+            SayTask('yes').setParentTask(self).setRootTask(self),
+            SetChatOffTask().setParentTask(self).setRootTask(self),
+            SetNextWaypointTask().setParentTask(self).setRootTask(self),
         ]
-        self.initialized = True
-        return self
+        return context

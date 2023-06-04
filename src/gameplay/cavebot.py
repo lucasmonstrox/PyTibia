@@ -1,5 +1,5 @@
 from typing import Union
-from src.repositories.gameWindow.creatures import getClosestCreature, hasTargetToCreature
+from src.repositories.gameWindow.creatures import hasTargetToCreature
 from .core.tasks.attackClosestCreature import AttackClosestCreatureTask
 from .typings import Context
 
@@ -7,24 +7,19 @@ from .typings import Context
 # TODO: add unit tests
 def resolveCavebotTasks(context: Context) -> Union[AttackClosestCreatureTask, None]:
     currentTask = context['taskOrchestrator'].getCurrentTask(context)
-    context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
     if context['cavebot']['isAttackingSomeCreature']:
-        hasNoTargetCreature = context['cavebot']['targetCreature'] == None
-        if hasNoTargetCreature:
+        if context['cavebot']['targetCreature'] == None:
             return context
-        hasNoTargetToTargetCreature = hasTargetToCreature(
-            context['gameWindow']['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False
-        if hasNoTargetToTargetCreature:
-            hasNoClosestCreature = context['cavebot']['closestCreature'] == None
-            if hasNoClosestCreature:
+        if hasTargetToCreature(
+            context['gameWindow']['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False:
+            if context['cavebot']['closestCreature'] == None:
                 return context
             context['taskOrchestrator'].setRootTask(AttackClosestCreatureTask())
             return context
         if currentTask is None or context['taskOrchestrator'].rootTask.name != 'attackClosestCreature':
             context['taskOrchestrator'].setRootTask(AttackClosestCreatureTask())
         return context
-    hasNoClosestCreature = context['cavebot']['closestCreature'] == None
-    if hasNoClosestCreature:
+    if context['cavebot']['closestCreature'] == None:
         return context
     context['taskOrchestrator'].setRootTask(AttackClosestCreatureTask())
     return context

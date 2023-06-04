@@ -13,9 +13,32 @@ class WalkToCoordinate(VectorTask):
         self.name = 'walkToCoordinate'
         self.coordinate = coordinate
 
-    # TODO: add return type
     # TODO: add unit tests
-    def onBeforeStart(self, context: Context):
+    def onBeforeStart(self, context: Context) -> Context:
+        self.calculateWalkpoint(context)
+        return context
+
+    # TODO: add unit tests
+    def onBeforeRestart(self, context: Context) -> Context:
+        self.calculateWalkpoint(context)
+        return context
+
+    def onComplete(self, context: Context):
+        if context['lastPressedKey'] is not None:
+            pyautogui.keyUp(context['lastPressedKey'])
+            context['lastPressedKey'] = None
+        return context
+
+    def shouldRestartAfterAllChildrensComplete(self, context: Context) -> bool:
+        if context['radar']['coordinate'][0] != self.coordinate[0]:
+            return True
+        if context['radar']['coordinate'][1] != self.coordinate[1]:
+            return True
+        if context['radar']['coordinate'][2] != self.coordinate[2]:
+            return True
+        return False
+
+    def calculateWalkpoint(self, context: Context):
         # nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
         # for monster in context['gameWindow']['monsters']:
         #     monsterCoordinateTuple = (monster['coordinate'][0], monster['coordinate'][1], monster['coordinate'][2])
@@ -25,12 +48,4 @@ class WalkToCoordinate(VectorTask):
         # TODO: make it yield
         for walkpoint in generateFloorWalkpoints(
             context['radar']['coordinate'], self.coordinate, nonWalkableCoordinates=None):
-            self.tasks.append(WalkTask(context, walkpoint).setParentTask(self))
-        self.initialized = True
-        return self
-    
-    def onComplete(self, context: Context):
-        if context['lastPressedKey'] is not None:
-            pyautogui.keyUp(context['lastPressedKey'])
-            context['lastPressedKey'] = None
-        return context
+            self.tasks.append(WalkTask(context, walkpoint).setParentTask(self).setRootTask(self.rootTask))

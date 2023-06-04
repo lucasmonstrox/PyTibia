@@ -9,7 +9,7 @@ class ClickInClosestCreatureTask(BaseTask):
     def __init__(self):
         super().__init__()
         self.name = 'clickInClosestCreature'
-        self.delayAfterComplete = 1
+        self.delayAfterComplete = 0.1
         self.delayOfTimeout = 2
 
     def shouldIgnore(self, context: Context) -> bool:

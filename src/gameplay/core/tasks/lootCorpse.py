@@ -1,3 +1,4 @@
+from ...typings import Context
 from src.repositories.gameWindow.typings import Creature
 from .common.vector import VectorTask
 from .collectDeadCorpse import CollectDeadCorpseTask
@@ -12,10 +13,9 @@ class LootCorpseTask(VectorTask):
 
     # TODO: add unit tests
     # TODO: add typings
-    def onBeforeStart(self, _):
+    def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
             # TODO: add walkToCoordinate to reach dead corpse
-            CollectDeadCorpseTask(self.corpse).setParentTask(self)
+            CollectDeadCorpseTask(self.corpse).setParentTask(self).setRootTask(self)
         ]
-        self.initialized = True
-        return self
+        return context

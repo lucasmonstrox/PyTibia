@@ -13,12 +13,10 @@ class WalkToWaypoint(VectorTask):
         self.name = 'walkToWaypoint'
         self.coordinate = coordinate
 
-    # TODO: add return type
     # TODO: add unit tests
-    def onBeforeStart(self, _: Context):
+    def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
-            WalkToCoordinate(self.coordinate).setParentTask(self),
-            SetNextWaypointTask().setParentTask(self),
+            WalkToCoordinate(self.coordinate).setParentTask(self).setRootTask(self),
+            SetNextWaypointTask().setParentTask(self).setRootTask(self),
         ]
-        self.initialized = True
-        return self
+        return context

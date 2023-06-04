@@ -26,9 +26,9 @@ def resolveTasksByWaypoint(context: Context, waypoint: Waypoint) -> Union[BaseTa
     elif waypoint['type'] == 'logout':
         return LogoutTask()
     if waypoint['type'] == 'moveDown':
-        return SingleWalkTask(waypoint['options']['direction'])
+        return SingleWalkTask(waypoint['type'], waypoint['options']['direction'])
     elif waypoint['type'] == 'moveUp':
-        return SingleWalkTask(context['options']['direction'])
+        return SingleWalkTask(waypoint['type'], waypoint['options']['direction'])
     elif waypoint['type'] == 'refill':
         return RefillTask(waypoint)
     elif waypoint['type'] == 'refillChecker':

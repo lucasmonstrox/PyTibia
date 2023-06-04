@@ -116,7 +116,6 @@ def test_should_do_task_when_task_is_manuallyTerminable(mocker):
     assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_do_vector_task():
-    context = {}
     vectorTask = VectorTask(name='vectorTask')
     firstTask = BaseTask(name='firstTask').setParentTask(vectorTask)
     secondTask = BaseTask(name='secondTask').setParentTask(vectorTask)
@@ -164,7 +163,6 @@ def test_do_vector_task():
     assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_do_vector_task_when_tasks_has_delayBeforeStart():
-    context = {}
     vectorTask = VectorTask(name='vectorTask')
     firstTask = BaseTask(name='firstTask', delayBeforeStart=1).setParentTask(vectorTask)
     secondTask = BaseTask(name='secondTask', delayBeforeStart=1).setParentTask(vectorTask)
@@ -231,7 +229,6 @@ def test_do_vector_task_when_tasks_has_delayBeforeStart():
     assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_do_vector_task_when_tasks_has_delayAfterComplete():
-    context = {}
     vectorTask = VectorTask(name='vectorTask')
     firstTask = BaseTask(name='firstTask', delayAfterComplete=1).setParentTask(vectorTask)
     secondTask = BaseTask(name='secondTask', delayAfterComplete=1).setParentTask(vectorTask)
@@ -299,7 +296,6 @@ def test_do_vector_task_when_tasks_has_delayAfterComplete():
     assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_do_vector_task_with_when_tasks_has_delayOfTimeout(mocker):
-    context = {}
     vectorTask = VectorTask(name='vectorTask')
     firstTask = BaseTask(name='firstTask', delayOfTimeout=1).setParentTask(vectorTask)
     secondTask = BaseTask(name='secondTask', delayOfTimeout=1).setParentTask(vectorTask)
@@ -369,7 +365,6 @@ def test_do_vector_task_with_when_tasks_has_delayOfTimeout(mocker):
     assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_do_vector_task_with_when_tasks_are_manuallyTerminable(mocker):
-    context = {}
     vectorTask = VectorTask(name='vectorTask')
     firstTask = BaseTask(name='firstTask', manuallyTerminable=True).setParentTask(vectorTask)
     secondTask = BaseTask(name='secondTask', manuallyTerminable=True).setParentTask(vectorTask)
@@ -458,16 +453,14 @@ class CustomTask(VectorTask):
         self.isRootTask = True
         self.name = 'custom'
 
-    def onBeforeStart(self, _):
+    def onBeforeStart(self, context):
         self.tasks = [
             BaseTask(name='firstTask').setParentTask(self),
             BaseTask(name='secondTask', manuallyTerminable=True).setParentTask(self),
         ]
-        self.initialized = True
-        return self
+        return context
 
 def test_should_restart_parent_task(mocker):
-    context = {}
     customTask = CustomTask()
     tasksOrchestrator = TasksOrchestrator(customTask)
     assert tasksOrchestrator.rootTask.status == 'notStarted'

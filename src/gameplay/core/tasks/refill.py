@@ -21,8 +21,7 @@ class RefillTask(VectorTask):
         self.waypoint = waypoint
 
     # TODO: add unit tests
-    # TODO: add typings
-    def onBeforeStart(self, context: Context):
+    def onBeforeStart(self, context: Context) -> Context:
         # TODO: inherit from context bindings
         itemSlot = {
             'great health potion': 1,
@@ -48,17 +47,16 @@ class RefillTask(VectorTask):
         amountOfHealthPotionsToBuy = max(0, context['refill']['health']['quantity'] - \
             healthPotionsAmount)
         self.tasks = [
-            SelectChatTabTask('local chat').setParentTask(self),
-            SayTask('hi').setParentTask(self),
-            SayTask('trade').setParentTask(self),
-            BuyItemTask((context['refill']['mana']['item'], amountOfManaPotionsToBuy)).setParentTask(self),
-            BuyItemTask((context['refill']['health']['item'], amountOfHealthPotionsToBuy)).setParentTask(self),
-            CloseNpcTradeBoxTask().setParentTask(self),
-            SetChatOffTask().setParentTask(self),
-            SetNextWaypointTask().setParentTask(self),
+            SelectChatTabTask('local chat').setParentTask(self).setRootTask(self),
+            SayTask('hi').setParentTask(self).setRootTask(self),
+            SayTask('trade').setParentTask(self).setRootTask(self),
+            BuyItemTask((context['refill']['mana']['item'], amountOfManaPotionsToBuy)).setParentTask(self).setRootTask(self),
+            BuyItemTask((context['refill']['health']['item'], amountOfHealthPotionsToBuy)).setParentTask(self).setRootTask(self),
+            CloseNpcTradeBoxTask().setParentTask(self).setRootTask(self),
+            SetChatOffTask().setParentTask(self).setRootTask(self),
+            SetNextWaypointTask().setParentTask(self).setRootTask(self),
         ]
-        self.initialized = True
-        return self
+        return context
 
     # TODO: add unit tests
     def onComplete(self, context: Context) -> Context:
