@@ -18,7 +18,7 @@ class UseShovelTask(BaseTask):
     def shouldIgnore(self, context: Context) -> bool:
         holeOpenImage = images[context['resolution']]['holeOpen']
         shouldIgnoreTask = isHoleOpen(
-            context['gameWindow']['img'], holeOpenImage, context['radar']['coordinate'], self.value['coordinate'])
+            context['gameWindow']['image'], holeOpenImage, context['radar']['coordinate'], self.value['coordinate'])
         return shouldIgnoreTask
 
     # TODO: add unit tests
@@ -33,5 +33,5 @@ class UseShovelTask(BaseTask):
     def did(self, context: Context) -> bool:
         holeOpenImage = images[context['resolution']]['holeOpen']
         didTask = isHoleOpen(
-            context['gameWindow']['img'], holeOpenImage, context['radar']['coordinate'], self.value['coordinate'])
+            context['gameWindow']['image'], holeOpenImage, context['radar']['coordinate'], self.value['coordinate'])
         return didTask

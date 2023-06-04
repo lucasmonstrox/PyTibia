@@ -129,7 +129,6 @@ gameContext = {
             }
         ],
     },
-    'currentTask': None,
     'deposit': {
         'lockerCoordinate': None
     },
@@ -137,12 +136,12 @@ gameContext = {
     'currentSpellHealing': None,
     'gameWindow': {
         'coordinate': None,
-        'img': None,
+        'image': None,
         'previousGameWindowImage': None,
-        'walkedPixelsInSqm': 0,
         'previousMonsters': np.array([], dtype=GameWindowCreature),
         'monsters': np.array([], dtype=GameWindowCreature),
         'players': np.array([], dtype=GameWindowCreature),
+        'walkedPixelsInSqm': 0,
     },
     'healing': {
         'enabled': False,

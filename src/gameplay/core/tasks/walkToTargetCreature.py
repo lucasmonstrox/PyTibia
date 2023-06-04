@@ -61,7 +61,7 @@ class WalkToTargetCreature(VectorTask):
         walkpoints = []
         dist = distance.cdist([context['radar']['coordinate']], [context['cavebot']['targetCreature']['coordinate']]).flatten()[0]
         if dist < 2:
-            gameWindowHeight, gameWindowWidth  = context['gameWindow']['img'].shape
+            gameWindowHeight, gameWindowWidth  = context['gameWindow']['image'].shape
             gameWindowCenter = (gameWindowWidth // 2, gameWindowHeight // 2)
             monsterGameWindowCoordinate = context['cavebot']['targetCreature']['gameWindowCoordinate']
             moduleX = abs(gameWindowCenter[0] - monsterGameWindowCoordinate[0])

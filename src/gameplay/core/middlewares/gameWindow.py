@@ -30,7 +30,7 @@ def setDirection(gameContext: Context) -> Context:
         gameContext['comingFromDirection'] = comingFromDirection
     # if gameContext['gameWindow']['previousGameWindowImage'] is not None:
     #     gameContext['gameWindow']['walkedPixelsInSqm'] = getWalkedPixels(gameContext)
-    gameContext['gameWindow']['previousGameWindowImage'] = gameContext['gameWindow']['img']
+    gameContext['gameWindow']['previousGameWindowImage'] = gameContext['gameWindow']['image']
     gameContext['radar']['previousCoordinate'] = gameContext['radar']['coordinate']
     return gameContext
 
@@ -65,7 +65,7 @@ def setGameWindowMiddleware(gameContext: Context) -> Context:
     gameWindowSize = gameWindowSizes[gameContext['resolution']]
     gameContext['gameWindow']['coordinate'] = getCoordinate(
         gameContext['screenshot'], gameWindowSize)
-    gameContext['gameWindow']['img'] = getImageByCoordinate(
+    gameContext['gameWindow']['image'] = getImageByCoordinate(
         gameContext['screenshot'], gameContext['gameWindow']['coordinate'], gameWindowSize)
     return gameContext
 
@@ -75,7 +75,7 @@ def setGameWindowCreatures(gameContext: Context) -> Context:
     beingAttackedCreatureCategory = getBeingAttackedCreatureCategory(gameContext['battleList']['creatures'])
     gameContext['battleList']['beingAttackedCreatureCategory'] = beingAttackedCreatureCategory
     gameContext['gameWindow']['creatures'] = getCreatures(
-        gameContext['battleList']['creatures'], gameContext['comingFromDirection'], gameContext['gameWindow']['coordinate'], gameContext['gameWindow']['img'], gameContext['radar']['coordinate'], beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=gameContext['gameWindow']['walkedPixelsInSqm'])
+        gameContext['battleList']['creatures'], gameContext['comingFromDirection'], gameContext['gameWindow']['coordinate'], gameContext['gameWindow']['image'], gameContext['radar']['coordinate'], beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=gameContext['gameWindow']['walkedPixelsInSqm'])
     hasNoGameWindowCreatures = len(gameContext['gameWindow']['creatures']) == 0
     gameContext['gameWindow']['monsters'] = np.array([], dtype=Creature) if hasNoGameWindowCreatures else getCreaturesByType(gameContext['gameWindow']['creatures'], 'monster')
     gameContext['gameWindow']['players'] = np.array([], dtype=Creature) if hasNoGameWindowCreatures else getCreaturesByType(gameContext['gameWindow']['creatures'], 'player')

@@ -100,10 +100,9 @@ def main():
         else:
             gameContext['way'] = 'waypoint'
         if hasCreaturesToAttackAfterCheck and shouldAskForCavebotTasks(gameContext):
-            hasCurrentTaskAfterCheck = gameContext['currentTask'] is not None
-            isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (gameContext['currentTask'].name == 'attackClosestCreature')
-            isNotTryingToAttackClosestCreature = not isTryingToAttackClosestCreature
-            if isNotTryingToAttackClosestCreature:
+            hasCurrentTaskAfterCheck = currentTask is not None
+            isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (currentTask.name == 'attackClosestCreature')
+            if not isTryingToAttackClosestCreature:
                 gameContext = resolveCavebotTasks(gameContext)
         elif gameContext['way'] == 'waypoint':
             if gameContext['taskOrchestrator'].getCurrentTask(gameContext) is None:
