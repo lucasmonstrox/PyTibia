@@ -1,20 +1,17 @@
-import kivy.context
-import multiprocessing
+# import kivy.context
 import numpy as np
 import pyautogui
-from time import sleep
+from time import sleep, time
 import win32gui
-from rx import interval, operators
-from rx.scheduler import ThreadPoolScheduler
 from src.gameplay.cavebot import resolveCavebotTasks, shouldAskForCavebotTasks
 from src.gameplay.context import gameContext
 from src.gameplay.combo import comboSpellsObserver
 from src.gameplay.core.middlewares.battleList import setBattleListMiddleware
 from src.gameplay.core.middlewares.chat import setChatTabsMiddleware
-from src.gameplay.core.middlewares.gameWindow import setDirection, setHandleLoot, setGameWindowCreatures, setGameWindowMiddleware
+from src.gameplay.core.middlewares.gameWindow import setDirectionMiddleware, setHandleLootMiddleware, setGameWindowCreaturesMiddleware, setGameWindowMiddleware
 from src.gameplay.core.middlewares.playerStatus import setMapPlayerStatusMiddleware
-from src.gameplay.core.middlewares.radar import setRadarMiddleware, setWaypointIndex
-from src.gameplay.core.middlewares.screenshot import setScreenshot
+from src.gameplay.core.middlewares.radar import setRadarMiddleware, setWaypointIndexMiddleware
+from src.gameplay.core.middlewares.screenshot import setScreenshotMiddleware
 from src.gameplay.core.middlewares.tasks import setCleanUpTasksMiddleware
 from src.gameplay.core.middlewares.window import setTibiaWindowMiddleware
 from src.gameplay.core.tasks.lootCorpse import LootCorpseTask
@@ -29,7 +26,7 @@ from src.repositories.gameWindow.creatures import getClosestCreature
 from src.repositories.radar.core import getCoordinate
 from src.repositories.radar.typings import Waypoint
 from src.utils.core import getScreenshot
-from src.ui.app import MyApp
+# from src.ui.app import MyApp
 
 
 pyautogui.FAILSAFE = False
@@ -37,120 +34,76 @@ pyautogui.PAUSE = 0
 
 
 def main():
-    optimalThreadCount = multiprocessing.cpu_count()
-    threadPoolScheduler = ThreadPoolScheduler(optimalThreadCount)
-    fpsCounter = 0.015625
-    fpsObserver = interval(fpsCounter)
+    global gameContext
 
-    def handleGameData(_):
-        global gameContext
-        if 'taskOrchestrator' not in gameContext:
-            gameContext['taskOrchestrator'] = TasksOrchestrator()
-        gameContext = setTibiaWindowMiddleware(gameContext)
-        if gameContext['pause']:
-            return gameContext
-        gameContext = setScreenshot(gameContext)
-        gameContext = setRadarMiddleware(gameContext)
-        gameContext = setChatTabsMiddleware(gameContext)
-        gameContext = setBattleListMiddleware(gameContext)
-        gameContext = setGameWindowMiddleware(gameContext)
-        gameContext = setDirection(gameContext)
-        gameContext = setGameWindowCreatures(gameContext)
-        gameContext = setHandleLoot(gameContext)
-        gameContext = setWaypointIndex(gameContext)
-        gameContext = setMapPlayerStatusMiddleware(gameContext)
-        gameContext = setCleanUpTasksMiddleware(gameContext)
-        return gameContext
+    def handleGameData(context):
+        if 'tasksOrchestrator' not in context:
+            context['tasksOrchestrator'] = TasksOrchestrator()
+        context = setTibiaWindowMiddleware(context)
+        if context['pause']:
+            return context
+        context = setScreenshotMiddleware(context)
+        context = setRadarMiddleware(context)
+        context = setChatTabsMiddleware(context)
+        context = setBattleListMiddleware(context)
+        context = setGameWindowMiddleware(context)
+        context = setDirectionMiddleware(context)
+        context = setGameWindowCreaturesMiddleware(context)
+        context = setHandleLootMiddleware(context)
+        context = setWaypointIndexMiddleware(context)
+        context = setMapPlayerStatusMiddleware(context)
+        context = setCleanUpTasksMiddleware(context)
+        return context
 
-    gameObserver = fpsObserver.pipe(
-        operators.map(handleGameData),
-        operators.filter(lambda ctx: ctx['pause'] == False),
-    )
-
-    def releaseKeys(gameContext):
-        if gameContext['lastPressedKey'] is not None:
-            pyautogui.keyUp(gameContext['lastPressedKey'])
-            gameContext['lastPressedKey'] = None
-        return gameContext
+    def releaseKeys(context):
+        if context['lastPressedKey'] is not None:
+            pyautogui.keyUp(context['lastPressedKey'])
+            context['lastPressedKey'] = None
+        return context
 
     def handleGameplayTasks(context):
-        global gameContext
         # TODO: mover isso fora daqui
-        gameContext = context
-        gameContext['cavebot']['closestCreature'] = getClosestCreature(gameContext['gameWindow']['monsters'], gameContext['radar']['coordinate'])
-        currentTask = gameContext['taskOrchestrator'].getCurrentTask(gameContext)
+        context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
+        currentTask = context['tasksOrchestrator'].getCurrentTask(context)
         if currentTask is not None and currentTask.name == 'selectLootTab':
-            return gameContext
-        if len(gameContext['loot']['corpsesToLoot']) > 0:
-            gameContext['way'] = 'lootCorpses'
+            return context
+        if len(context['loot']['corpsesToLoot']) > 0:
+            context['way'] = 'lootCorpses'
             if currentTask is not None and currentTask.name != 'lootCorpse':
-                gameContext['taskOrchestrator'].setRootTask(None)
-            if gameContext['currentTask'] is None:
+                context['tasksOrchestrator'].setRootTask(None)
+            if context['tasksOrchestrator'].getCurrentTask() is None:
                 # TODO: get closest dead corpse
-                firstDeadCorpse = gameContext['loot']['corpsesToLoot'][0]
-                gameContext['taskOrchestrator'].setRootTask(LootCorpseTask(firstDeadCorpse))
-            gameContext['gameWindow']['previousMonsters'] = gameContext['gameWindow']['monsters']
-            return gameContext
-        hasCreaturesToAttackAfterCheck = hasCreaturesToAttack(gameContext)
+                firstDeadCorpse = context['loot']['corpsesToLoot'][0]
+                context['tasksOrchestrator'].setRootTask(LootCorpseTask(firstDeadCorpse))
+            context['gameWindow']['previousMonsters'] = context['gameWindow']['monsters']
+            return context
+        hasCreaturesToAttackAfterCheck = hasCreaturesToAttack(context)
         if hasCreaturesToAttackAfterCheck:
-            if gameContext['cavebot']['closestCreature'] is not None:
-                gameContext['way'] = 'cavebot'
+            if context['cavebot']['closestCreature'] is not None:
+                context['way'] = 'cavebot'
             else:
-                gameContext['way'] = 'waypoint'
+                context['way'] = 'waypoint'
         else:
-            gameContext['way'] = 'waypoint'
-        if hasCreaturesToAttackAfterCheck and shouldAskForCavebotTasks(gameContext):
-            hasCurrentTaskAfterCheck = currentTask is not None
-            isTryingToAttackClosestCreature = hasCurrentTaskAfterCheck and (currentTask.name == 'attackClosestCreature')
+            context['way'] = 'waypoint'
+        if hasCreaturesToAttackAfterCheck and shouldAskForCavebotTasks(context):
+            currentRootTask = currentTask.rootTask if currentTask is not None else None
+            isTryingToAttackClosestCreature = currentRootTask is not None and (currentRootTask.name == 'attackClosestCreature')
             if not isTryingToAttackClosestCreature:
-                gameContext = resolveCavebotTasks(gameContext)
-        elif gameContext['way'] == 'waypoint':
-            if gameContext['taskOrchestrator'].getCurrentTask(gameContext) is None:
-                currentWaypointIndex = gameContext['cavebot']['waypoints']['currentIndex']
-                currentWaypoint = gameContext['cavebot']['waypoints']['points'][currentWaypointIndex]
-                gameContext['taskOrchestrator'].setRootTask(resolveTasksByWaypoint(gameContext, currentWaypoint))
-        gameContext['gameWindow']['previousMonsters'] = gameContext['gameWindow']['monsters']
-        return gameContext
+                context = resolveCavebotTasks(context)
+        elif context['way'] == 'waypoint':
+            if context['tasksOrchestrator'].getCurrentTask(context) is None:
+                currentWaypointIndex = context['cavebot']['waypoints']['currentIndex']
+                currentWaypoint = context['cavebot']['waypoints']['points'][currentWaypointIndex]
+                context['tasksOrchestrator'].setRootTask(resolveTasksByWaypoint(currentWaypoint))
+        context['gameWindow']['previousMonsters'] = context['gameWindow']['monsters']
+        return context
 
-    gameplayObservable = gameObserver.pipe(
-        operators.filter(lambda ctx: ctx['pause'] == False),
-        operators.map(handleGameplayTasks),
-        operators.subscribe_on(threadPoolScheduler),
-    )
-
-    def gameplayObserver(context):
-        global gameContext
-        if gameContext['pause']:
-            return
-        gameContext = gameContext['taskOrchestrator'].do(context)
-        gameContext['radar']['lastCoordinateVisited'] = gameContext['radar']['coordinate']
-
-    # def continueWhenIsNotChatTask(context):
-    #     if context['currentTask'] is None:
-    #         return True
-    #     chatTask = ['depositGold', 'refill']
-    #     return context['currentTask'].name not in chatTask
-
-    # eatFoodObservable = gameObserver.pipe(
-    #     operators.filter(continueWhenIsNotChatTask),
-    #     operators.subscribe_on(threadPoolScheduler)
-    # )
-    # healingPriorityObservable = gameObserver.pipe(
-    #     operators.filter(continueWhenIsNotChatTask),
-    #     operators.subscribe_on(threadPoolScheduler)
-    # )
-    # healingByPotionsObservable = gameObserver.pipe(
-    #     operators.filter(continueWhenIsNotChatTask),
-    #     operators.subscribe_on(threadPoolScheduler)
-    # )
-    # healingBySpellsObservable = gameObserver.pipe(
-    #     operators.filter(continueWhenIsNotChatTask),
-    #     operators.subscribe_on(threadPoolScheduler)
-    # )
-    # comboSpellsObservable = gameObserver.pipe(
-    #     operators.filter(continueWhenIsNotChatTask),
-    #     operators.subscribe_on(threadPoolScheduler)
-    # )
+    def continueWhenIsNotChatTask(context):
+        currentTask = context['tasksOrchestrator'].getCurrentTask(context)
+        if currentTask is None:
+            return True
+        chatTask = ['depositGold', 'refill']
+        return currentTask.name not in chatTask
 
     class GameContext:
         def addWaypoint(self, waypoint):
@@ -171,7 +124,7 @@ def main():
         def pause(self):
             global gameContext
             gameContext['pause'] = True
-            gameContext['taskOrchestrator'].reset()
+            gameContext['tasksOrchestrator'].reset()
             gameContext = releaseKeys(gameContext)
 
         def getCoordinate(self):
@@ -213,14 +166,21 @@ def main():
             gameContext['healing']['spells'][contextKey]['hotkey'] = hotkey
 
     try:
-        # eatFoodObservable.subscribe(eatFoodObserver)
-        # healingPriorityObservable.subscribe(healingPriorityObserver)
-        # healingByPotionsObservable.subscribe(healingByPotionsObserver)
-        # healingBySpellsObservable.subscribe(healingBySpellsObserver)
-        # comboSpellsObservable.subscribe(comboSpellsObserver)
-        gameplayObservable.subscribe(gameplayObserver)
-        kivy.context.register_context('game', GameContext)
-        MyApp().run()
+        while True:
+            if gameContext['pause']:
+                continue
+            startTime = time()
+            gameContext = handleGameData(gameContext)
+            gameContext = handleGameplayTasks(gameContext)
+            gameContext = gameContext['tasksOrchestrator'].do(gameContext)
+            gameContext['radar']['lastCoordinateVisited'] = gameContext['radar']['coordinate']
+            healingByPotionsObserver(gameContext)
+            comboSpellsObserver(gameContext)
+            endTime = time()
+            diff = endTime - startTime
+            sleep(max(0.045 - diff, 0))
+        # kivy.context.register_context('game', GameContext)
+        # MyApp().run()
     except KeyboardInterrupt:
         raise SystemExit
 

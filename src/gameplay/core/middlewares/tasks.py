@@ -1,19 +1,20 @@
 from ...typings import Context
 
 
-def setCleanUpTasksMiddleware(gameContext: Context) -> Context:
-    currentTask = gameContext['taskOrchestrator'].getCurrentTask(gameContext)
+def setCleanUpTasksMiddleware(context: Context) -> Context:
+    currentTask = context['tasksOrchestrator'].getCurrentTask(context)
     if currentTask is not None:
         # print(' ')
         # print(' ')
-        # print('waypointIndex', gameContext['cavebot']['waypoints']['currentIndex'])
+        # print('lastPressedKey', context['lastPressedKey'])
+        # print('waypointIndex', context['cavebot']['waypoints']['currentIndex'])
         # print('currentTask', currentTask.name)
         # print('currentTask.status', currentTask.status)
         # if hasattr(currentTask, 'tasks'):
         #     print('currentTask.tasks', currentTask.tasks)
         #     print('currentTask.currentTaskIndex', currentTask.currentTaskIndex)
         if currentTask.isRootTask and currentTask.status == 'completed':
-            gameContext['taskOrchestrator'].reset()
+            context['tasksOrchestrator'].reset()
         if currentTask.rootTask is not None:
             # print('currentTask.rootTask', currentTask.rootTask.name)
             # print('currentTask.rootTask.status', currentTask.rootTask.status)
@@ -22,8 +23,9 @@ def setCleanUpTasksMiddleware(gameContext: Context) -> Context:
             #     print('len(currentTask.rootTask.tasks)', len(currentTask.rootTask.tasks))
             #     print('currentTask.rootTask.currentTaskIndex', currentTask.rootTask.currentTaskIndex)
             #     if hasattr(currentTask.rootTask.tasks[0], 'tasks'):
+            #         print('childrenTasks', currentTask.rootTask.tasks[0].tasks)
             #         print('len(currentTask.rootTask.children.tasks)', len(currentTask.rootTask.tasks[0].tasks))
             #         print('currentTask.rootTask.children.currentTaskIndex', currentTask.rootTask.tasks[0].currentTaskIndex)
             if currentTask.rootTask.status == 'completed':
-                gameContext['taskOrchestrator'].reset()
-    return gameContext
+                context['tasksOrchestrator'].reset()
+    return context

@@ -1,10 +1,10 @@
 import numpy as np
-import pyautogui
 from time import time
 from src.repositories.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from src.repositories.skills.core import getSpeed
 from src.shared.typings import Coordinate
 from src.utils.coordinate import getDirectionBetweenCoordinates
+from src.utils.keyboard import keyDown, keyUp, press
 from ...typings import Context
 from .common.base import BaseTask
 
@@ -12,12 +12,12 @@ from .common.base import BaseTask
 class WalkTask(BaseTask):
     def __init__(self, context: Context, coordinate: Coordinate):
         super().__init__()
+        self.name = 'walk'
         charSpeed = getSpeed(context['screenshot'])
         tileFriction = getTileFrictionByCoordinate(coordinate)
         movementSpeed = getBreakpointTileMovementSpeed(
             charSpeed, tileFriction)
         self.delayOfTimeout = (movementSpeed * 2) / 1000
-        self.name = 'walk'
         self.walkpoint = coordinate
 
     # TODO: add unit tests
@@ -40,21 +40,21 @@ class WalkTask(BaseTask):
                 futureDirection = getDirectionBetweenCoordinates(self.walkpoint, nextTask.walkpoint)
         if direction != futureDirection:
             if context['lastPressedKey'] is not None:
-                pyautogui.keyUp(context['lastPressedKey'])
+                keyUp(context['lastPressedKey'])
                 context['lastPressedKey'] = None
             else:
-                pyautogui.press(direction)
+                press(direction)
             return context
         walkTasksLength = len(self.parentTask.tasks)
         if direction != context['lastPressedKey']:
             if walkTasksLength > 2:
-                pyautogui.keyDown(direction)
+                keyDown(direction)
                 context['lastPressedKey'] = direction
             else:
-                pyautogui.press(direction)
+                press(direction)
             return context
         if walkTasksLength == 1 and context['lastPressedKey'] is not None:
-            pyautogui.keyUp(context['lastPressedKey'])
+            keyUp(context['lastPressedKey'])
             context['lastPressedKey'] = None
         return context
 
@@ -66,6 +66,8 @@ class WalkTask(BaseTask):
 
     # TODO: add unit tests
     def onDidTimeout(self, context: Context) -> Context:
-        self.parentTask.status = 'completed'
-        self.parentTask.status.finishedAt = time()
+        if context['lastPressedKey'] is not None:
+            keyUp(context['lastPressedKey'])
+            context['lastPressedKey'] = None
+        context['tasksOrchestrator'].reset()
         return context

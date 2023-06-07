@@ -1,5 +1,5 @@
-from ...typings import Context
 from src.repositories.gameWindow.typings import Creature
+from ...typings import Context
 from .common.vector import VectorTask
 from .collectDeadCorpse import CollectDeadCorpseTask
 

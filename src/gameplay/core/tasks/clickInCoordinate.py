@@ -9,15 +9,15 @@ from .common.base import BaseTask
 class ClickInCoordinateTask(BaseTask):
     def __init__(self, waypoint: Waypoint):
         super().__init__()
+        self.name = 'clickInCoordinate'
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.5
-        self.name = 'clickInCoordinate'
-        self.value = waypoint
+        self.waypoint = waypoint
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
         slot = getSlotFromCoordinate(
-            context['radar']['coordinate'], self.value['coordinate'])
+            context['radar']['coordinate'], self.waypoint['coordinate'])
         clickSlot(slot, context['gameWindow']['coordinate'])
         return context
 

@@ -1,7 +1,7 @@
 import numpy as np
-import pyautogui
 from scipy.spatial import distance
 from src.gameplay.typings import Context
+from src.utils.keyboard import keyUp
 from ...typings import Context
 from ..waypoint import generateFloorWalkpoints
 from .common.vector import VectorTask
@@ -22,19 +22,21 @@ class WalkToTargetCreature(VectorTask):
 
     def onBeforeRestart(self, context: Context) -> Context:
         if context['lastPressedKey'] is not None:
-            pyautogui.keyUp(context['lastPressedKey'])
+            keyUp(context['lastPressedKey'])
             context['lastPressedKey'] = None
         self.calculatePathToTargetCreature(context)
         return context
 
     def onComplete(self, context: Context) -> Context:
         if context['lastPressedKey'] is not None:
-            pyautogui.keyUp(context['lastPressedKey'])
+            keyUp(context['lastPressedKey'])
             context['lastPressedKey'] = None
         return context
 
-    # TODO: se nao houver mais criaturas, deveria só recalcular quando chegasse perto da criatura para evitar recalculo a cada movimentação de SQM
+    # TODO: if there are no more creatures, it should only recalculate when it gets close to the creature to avoid recalculating each SQM move
     def shouldRestart(self, context: Context) -> bool:
+        if len(self.tasks) == 0:
+            return True
         if context['cavebot']['targetCreature'] is None:
             return True
         if context['cavebot']['targetCreature']['coordinate'][0] != self.targetCreatureCoordinateSinceLastRestart[0]:
@@ -56,8 +58,7 @@ class WalkToTargetCreature(VectorTask):
         # TODO: also, detect players
         for monster in context['gameWindow']['monsters']:
             if np.array_equal(monster['coordinate'], context['cavebot']['targetCreature']['coordinate']) == False:
-                monsterCoordinateTuple = (monster['coordinate'][0], monster['coordinate'][1], monster['coordinate'][2])
-                nonWalkableCoordinates.append(monsterCoordinateTuple)
+                nonWalkableCoordinates.append(monster['coordinate'])
         walkpoints = []
         dist = distance.cdist([context['radar']['coordinate']], [context['cavebot']['targetCreature']['coordinate']]).flatten()[0]
         if dist < 2:

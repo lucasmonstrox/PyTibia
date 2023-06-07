@@ -3,15 +3,15 @@ from ...typings import Context
 
 
 # TODO: add unit tests
-def setRadarMiddleware(gameContext: Context) -> Context:
-    gameContext['radar']['coordinate'] = getCoordinate(
-        gameContext['screenshot'], previousCoordinate=gameContext['radar']['previousCoordinate'])
-    return gameContext
+def setRadarMiddleware(context: Context) -> Context:
+    context['radar']['coordinate'] = getCoordinate(
+        context['screenshot'], previousCoordinate=context['radar']['previousCoordinate'])
+    return context
 
 
 # TODO: add unit tests
-def setWaypointIndex(gameContext: Context) -> Context:
-    if gameContext['cavebot']['waypoints']['currentIndex'] == None:
-        gameContext['cavebot']['waypoints']['currentIndex'] = getClosestWaypointIndexFromCoordinate(
-            gameContext['radar']['coordinate'], gameContext['cavebot']['waypoints']['points'])
-    return gameContext
+def setWaypointIndexMiddleware(context: Context) -> Context:
+    if context['cavebot']['waypoints']['currentIndex'] == None:
+        context['cavebot']['waypoints']['currentIndex'] = getClosestWaypointIndexFromCoordinate(
+            context['radar']['coordinate'], context['cavebot']['waypoints']['points'])
+    return context

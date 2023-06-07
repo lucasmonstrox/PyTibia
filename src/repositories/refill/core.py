@@ -1,10 +1,10 @@
-import pyautogui
 from time import sleep
 from typing import Tuple, Union
 from src.shared.typings import BBox, GrayImage
-from src.utils.core import cacheObjectPosition, locate, getScreenshot, press
+from src.utils.core import cacheObjectPosition, locate, getScreenshot
 from src.utils.image import crop
-from src.utils.mouse import leftClick, mouseMove
+from src.utils.keyboard import hotkey, press, write
+from src.utils.mouse import leftClick, move
 from .config import images, npcTradeBarImage, npcTradeOkImage
 
 
@@ -37,7 +37,7 @@ def findItem(screenshot: GrayImage, itemName: str):
     sleep(0.2)
     leftClick((bx + 16, by - 75))
     sleep(0.2)
-    pyautogui.typewrite(itemName)
+    write(itemName)
     sleep(2)
     screenshotAfterFind = getScreenshot()
     itemImg = images[itemName]
@@ -54,10 +54,10 @@ def setAmount(screenshot: GrayImage, amount: int):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     leftClick((bx + 115, by - 42))
     sleep(0.2)
-    pyautogui.hotkey('ctrl', 'a')
+    hotkey('ctrl', 'a')
     sleep(0.2)
     press('backspace')
-    pyautogui.typewrite(str(amount))
+    write(str(amount))
 
 
 # TODO: add unit tests
@@ -73,18 +73,17 @@ def clearSearchBox(screenshot: GrayImage):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     x = bx + 115 + 45
     y = by - 42 - 35
-    mouseMove(x, y)
+    move((x, y))
     leftClick((x, y))
-    mouseMove(x, y + 20)
+    move((x, y + 20))
 
 
 # TODO: add unit tests
 # TODO: add perf
-def buyItem(screenshot: GrayImage, itemAndQuantity: Tuple[str, int]):
-    (itemName, quantity) = itemAndQuantity
+def buyItem(screenshot: GrayImage, itemName: str, itemQuantity: int):
     findItem(screenshot, itemName)
     sleep(1)
-    setAmount(screenshot, quantity)
+    setAmount(screenshot, itemQuantity)
     sleep(1)
     confirmBuyItem(screenshot)
     sleep(1)

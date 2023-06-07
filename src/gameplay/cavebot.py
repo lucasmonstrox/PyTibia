@@ -6,7 +6,7 @@ from .typings import Context
 
 # TODO: add unit tests
 def resolveCavebotTasks(context: Context) -> Union[AttackClosestCreatureTask, None]:
-    currentTask = context['taskOrchestrator'].getCurrentTask(context)
+    currentTask = context['tasksOrchestrator'].getCurrentTask(context)
     if context['cavebot']['isAttackingSomeCreature']:
         if context['cavebot']['targetCreature'] == None:
             return context
@@ -14,14 +14,14 @@ def resolveCavebotTasks(context: Context) -> Union[AttackClosestCreatureTask, No
             context['gameWindow']['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False:
             if context['cavebot']['closestCreature'] == None:
                 return context
-            context['taskOrchestrator'].setRootTask(AttackClosestCreatureTask())
+            context['tasksOrchestrator'].setRootTask(AttackClosestCreatureTask())
             return context
-        if currentTask is None or context['taskOrchestrator'].rootTask.name != 'attackClosestCreature':
-            context['taskOrchestrator'].setRootTask(AttackClosestCreatureTask())
+        if currentTask is None or context['tasksOrchestrator'].rootTask.name != 'attackClosestCreature':
+            context['tasksOrchestrator'].setRootTask(AttackClosestCreatureTask())
         return context
     if context['cavebot']['closestCreature'] == None:
         return context
-    context['taskOrchestrator'].setRootTask(AttackClosestCreatureTask())
+    context['tasksOrchestrator'].setRootTask(AttackClosestCreatureTask())
     return context
 
 
@@ -29,7 +29,7 @@ def resolveCavebotTasks(context: Context) -> Union[AttackClosestCreatureTask, No
 def shouldAskForCavebotTasks(context: Context) -> bool:
     if context['way'] != 'cavebot':
         return False
-    currentTask = context['taskOrchestrator'].getCurrentTask(context)
+    currentTask = context['tasksOrchestrator'].getCurrentTask(context)
     if currentTask is None:
         return True
     return (currentTask.name not in ['dropFlasks', 'lootCorpse', 'moveDown', 'moveUp', 'refillChecker', 'singleWalk', 'refillChecker', 'useRopeWaypoint', 'useShovelWaypoint'])

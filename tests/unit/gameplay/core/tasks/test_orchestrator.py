@@ -97,7 +97,6 @@ def test_should_do_task_when_task_has_delayOfTimeout(mocker):
 
 def test_should_do_task_when_task_is_manuallyTerminable(mocker):
     baseTask = BaseTask(name='currentTask', manuallyTerminable=True)
-    mocker.patch.object(baseTask, 'shouldManuallyComplete',  return_value=True)
     tasksOrchestrator = TasksOrchestrator(baseTask)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'notStarted'
@@ -110,6 +109,7 @@ def test_should_do_task_when_task_is_manuallyTerminable(mocker):
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'awaitingManualTermination'
     assert tasksOrchestrator.rootTask.statusReason is None
+    mocker.patch.object(baseTask, 'shouldManuallyComplete',  return_value=True)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'completed'
@@ -405,7 +405,7 @@ def test_do_vector_task_with_when_tasks_are_manuallyTerminable(mocker):
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
     assert firstTask.statusReason == 'completed'
-    assert secondTask.status == 'notStarted'
+    assert secondTask.status == 'running'
     assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.statusReason is None
@@ -414,7 +414,7 @@ def test_do_vector_task_with_when_tasks_are_manuallyTerminable(mocker):
     assert tasksOrchestrator.getCurrentTask(context).name == 'secondTask'
     assert firstTask.status == 'completed'
     assert firstTask.statusReason == 'completed'
-    assert secondTask.status == 'running'
+    assert secondTask.status == 'awaitingManualTermination'
     assert secondTask.statusReason is None
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.statusReason is None

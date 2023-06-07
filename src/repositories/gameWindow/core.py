@@ -40,7 +40,6 @@ def getLeftArrowPosition(screenshot: GrayImage) -> Union[BBox, None]:
 def getRightArrowPosition(screenshot: GrayImage) -> Union[BBox, None]:
     global gameWindowCache
     if gameWindowCache['right']['position'] is not None:
-        images['arrows'][gameWindowCache['right']['arrow']]
         rightArrowImage = images['arrows'][gameWindowCache['right']['arrow']]
         rightArrowImageHash = hashit(rightArrowImage)
         if arrowsImagesHashes.get(rightArrowImageHash, None) is not None:

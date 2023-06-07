@@ -9,9 +9,11 @@ class TasksOrchestrator:
 
     def setRootTask(self, rootTask):
         self.rootTask = rootTask
+        # terminate all tasks in the tree
 
     def reset(self):
         self.rootTask = None
+        # terminate all tasks in the tree
 
     def getCurrentTask(self, context: Context):
         return self.getNestedTask(self.rootTask, context)
@@ -60,6 +62,7 @@ class TasksOrchestrator:
                 currentTask.statusReason = 'completed'
                 return self.markCurrentTaskAsFinished(currentTask, context, disableManualTermination=True)
             if currentTask.shouldRestart(context) and currentTask.isRestarting == False:
+                currentTask.startedAt = None
                 currentTask.status = 'notStarted'
                 currentTask.isRestarting = True
                 currentTask.retryCount += 1
@@ -116,8 +119,7 @@ class TasksOrchestrator:
                 task.statusReason = 'completed'
         context = task.onComplete(context)
         if task.parentTask:
-            isntLastTask = task.parentTask.currentTaskIndex < len(task.parentTask.tasks) - 1
-            if isntLastTask:
+            if task.parentTask.currentTaskIndex < len(task.parentTask.tasks) - 1:
                 task.parentTask.currentTaskIndex += 1
             else:
                 if task.parentTask.shouldRestartAfterAllChildrensComplete(context):

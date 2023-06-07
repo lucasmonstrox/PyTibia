@@ -8,10 +8,9 @@ from .common.base import BaseTask
 class CloseNpcTradeBoxTask(BaseTask):
     def __init__(self):
         super().__init__()
+        self.name = 'closeNpcTradeBox'
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.5
-        self.name = 'closeNpcTradeBox'
-        self.value = None
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:

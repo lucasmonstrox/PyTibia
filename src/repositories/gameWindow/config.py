@@ -29,9 +29,11 @@ arrowsImagesHashes = {
     hashit(images['arrows']['leftGameWindow01']): 'leftGameWindow01',
     hashit(images['arrows']['leftGameWindow10']): 'leftGameWindow10',
     hashit(images['arrows']['leftGameWindow11']): 'leftGameWindow11',
+    hashit(images['arrows']['leftGameWindow00']): 'leftGameWindow00',
     hashit(images['arrows']['rightGameWindow01']): 'rightGameWindow01',
     hashit(images['arrows']['rightGameWindow10']): 'rightGameWindow10',
     hashit(images['arrows']['rightGameWindow11']): 'rightGameWindow11',
+    hashit(images['arrows']['rightGameWindow00']): 'rightGameWindow00',
 }
 gameWindowSizes = {
     720: (480, 352),

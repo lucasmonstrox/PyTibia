@@ -24,9 +24,9 @@ gameContext = {
             'points': np.array([
                 # werehyaena cave 1
                 # ('', 'logout', (33214, 32458, 8), {}),
-                ('', 'walk', (33214, 32458, 8), {}),
-                ('', 'moveUp', (33214, 32456, 8), {'direction': 'north'}),
-                ('', 'walk', (33217, 32441, 7), {}),
+                # ('', 'walk', (33214, 32458, 8), {}),
+                # ('', 'moveUp', (33214, 32456, 8), {'direction': 'north'}),
+                # ('', 'walk', (33217, 32441, 7), {}),
                 ('endOfCity', 'walk', (33215, 32406, 7), {}),
                 ('', 'walk', (33218, 32377, 7), {}),
                 ('', 'walk', (33212, 32359, 7), {}),
@@ -44,7 +44,7 @@ gameContext = {
                 ('', 'walk', (33196, 32398, 10), {}),
                 ('', 'walk', (33210, 32373, 10), {}),
                 ('', 'walk', (33221, 32351, 10), {}), # 20
-                # ('', 'dropFlasks', (33306, 32289, 7), {}),
+                ('', 'dropFlasks', (33306, 32289, 7), {}),
                 ('', 'refillChecker', (33306, 32289, 7), { # 22
                     'minimumOfManaPotions': 200,
                     'minimumOfHealthPotions': 200,
@@ -60,17 +60,16 @@ gameContext = {
                 ('', 'walk', (33220, 32378, 7), {}),
                 ('', 'walk', (33221, 32387, 7), {}), # 30
                 ('', 'depositGold', (33221, 32387, 7), {}),
-                ('', 'walk', (33215, 32422, 7), {}),
-                ('', 'walk', (33213, 32454, 7), {}),
-                ('', 'moveDown', (33213, 32454, 7), {'direction': 'south'}),
-                ('', 'depositItems', (33214, 32456, 8), {'city': 'Darashia'}),
-                ('', 'walk', (33214, 32456, 8), {}),
-                ('', 'moveUp', (33214, 32456, 8), {'direction': 'north'}),
+                # ('', 'walk', (33215, 32422, 7), {}),
+                # ('', 'walk', (33213, 32454, 7), {}),
+                # ('', 'moveDown', (33213, 32454, 7), {'direction': 'south'}),
+                # ('', 'depositItems', (33214, 32456, 8), {'city': 'Darashia'}),
+                # ('', 'walk', (33214, 32456, 8), {}),
+                # ('', 'moveUp', (33214, 32456, 8), {'direction': 'north'}),
                 ('', 'walk', (33217, 32403, 7), {}),
-                ('', 'refill', (33306, 32289, 7), {
+                ('', 'refill', (33217, 32403, 7), {
                     'waypointLabelToRedirect': 'endOfCity'
                 }),
-                
                 # damselfly
                 # ('', 'walk', (32883, 32044, 10), {}),
                 # ('', 'walk', (32909, 32045, 10), {}),
@@ -91,7 +90,7 @@ gameContext = {
     },
     'comingFromDirection': None,
     'comboSpells': {
-        'enabled': False,
+        'enabled': True,
         'lastUsedSpell': None,
         'items': [
             {
@@ -144,7 +143,7 @@ gameContext = {
         'walkedPixelsInSqm': 0,
     },
     'healing': {
-        'enabled': False,
+        'enabled': True,
         'highPriority': {
             'healthFood': {
                 'enabled': False,
@@ -200,7 +199,7 @@ gameContext = {
         },
         'spells': {
             'criticalHealing': {
-                'enabled': False,
+                'enabled': True,
                 'hotkey': 'f3',
                 'hpPercentageLessThanOrEqual': 90,
                 'spell': {
@@ -220,7 +219,7 @@ gameContext = {
                 }
             },
             'utura': {
-                'enabled': False,
+                'enabled': True,
                 'hotkey': '3',
                 'spell': {
                     'name': 'utura',
@@ -229,7 +228,7 @@ gameContext = {
                 }
             },
             'exuraGranIco': {
-                'enabled': False,
+                'enabled': True,
                 'hotkey': 'f12',
                 'hpPercentageLessThanOrEqual': 60,
                 'manaPercentageGreaterThanOrEqual': 5,
@@ -263,7 +262,7 @@ gameContext = {
         'corpsesToLoot': np.array([], dtype=GameWindowCreature),
     },
     'lastPressedKey': None,
-    'pause': True,
+    'pause': False,
     'radar': {
         'coordinate': None,
         'previousCoordinate': None,

@@ -1,7 +1,7 @@
-import pyautogui
 from typing import Union
 from src.shared.typings import BBox, GrayImage
 from src.utils.core import locate
+from src.utils.mouse import moveTo, scroll
 from ...typings import Context
 from .common.base import BaseTask
 
@@ -23,10 +23,8 @@ class ScrollToItemTask(BaseTask):
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
         containerPosition = locate(context['screenshot'], self.value[0], confidence=0.8)
-        x = containerPosition[0] + 10
-        y = containerPosition[1] + 15
-        pyautogui.moveTo(x, y)
-        pyautogui.scroll(-10)
+        moveTo((containerPosition[0] + 10, containerPosition[1] + 15))
+        scroll(-10)
         return context
 
     # TODO: add unit tests

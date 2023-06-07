@@ -7,30 +7,25 @@ from .typings import Checkpoint
 
 
 # TODO: add unit tests
-def generateFloorWalkpoints(coordinate: Coordinate, goalCoordinate: Coordinate, nonWalkableCoordinates=None) -> CoordinateList:
+def generateFloorWalkpoints(coordinate: Coordinate, goalCoordinate: Coordinate, nonWalkableCoordinates=[]) -> CoordinateList:
     pixelCoordinate = getPixelFromCoordinate(coordinate)
     xFromTheStartOfRadar = pixelCoordinate[0] - 53
     xFromTheEndOfRadar = pixelCoordinate[0] + 53
     yFromTheStartOfRadar = pixelCoordinate[1] - 54
     yFromTheEndOfRadar = pixelCoordinate[1] + 55
-    xOfCoordinate = coordinate[0]
-    yOfCoordinate = coordinate[1]
-    walkableFloorSqms = walkableFloorsSqms[coordinate[2]]
-    if nonWalkableCoordinates is not None:
-        for nonWalkableCoordinate in nonWalkableCoordinates:
-            if nonWalkableCoordinate[2] == coordinate[2]:
-                nonWalkableCoordinateInPixel = getPixelFromCoordinate(coordinate)
-                x = nonWalkableCoordinateInPixel[1]
-                y = nonWalkableCoordinateInPixel[0]
-                # TODO: avoid this, should be copied first
-                walkableFloorSqms[x, y] = 0
-    pf = tcod.path.AStar(walkableFloorSqms[
-        yFromTheStartOfRadar:yFromTheEndOfRadar, xFromTheStartOfRadar:xFromTheEndOfRadar], 0)
-    x = goalCoordinate[0] - xOfCoordinate + 53
-    y = goalCoordinate[1] - yOfCoordinate + 54
-    paths = pf.get_path(54, 53, y, x)
-    return [[xOfCoordinate + x - 53,
-                   yOfCoordinate + y - 54, coordinate[2]] for y, x in paths]
+    copiedWalkableFloorSqms = walkableFloorsSqms[coordinate[2]][
+        yFromTheStartOfRadar:yFromTheEndOfRadar, xFromTheStartOfRadar:xFromTheEndOfRadar].copy()
+    for nonWalkableCoordinate in nonWalkableCoordinates:
+        if nonWalkableCoordinate[2] == coordinate[2]:
+            nonWalkableCoordinateInPixelX, nonWalkableCoordinateInPixelY = getPixelFromCoordinate(nonWalkableCoordinate)
+            leX = nonWalkableCoordinateInPixelX - xFromTheStartOfRadar
+            leY = nonWalkableCoordinateInPixelY - yFromTheStartOfRadar
+            if leX >= 0 and leX <= 106 and leY >= 0 and leY <= 109:
+                copiedWalkableFloorSqms[leY, leX] = 0
+    x = goalCoordinate[0] - coordinate[0] + 53
+    y = goalCoordinate[1] - coordinate[1] + 54
+    return [[coordinate[0] + x - 53,
+                   coordinate[1] + y - 54, coordinate[2]] for y, x in tcod.path.AStar(copiedWalkableFloorSqms, 0).get_path(54, 53, y, x)]
 
 
 # TODO: add unit tests

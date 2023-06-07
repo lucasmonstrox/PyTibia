@@ -5,16 +5,16 @@ from ...typings import Context
 from .common.base import BaseTask
 
 
-class SetChatOffTask(BaseTask):
+class EnableChatTask(BaseTask):
     def __init__(self):
         super().__init__()
-        self.name = 'setChatOff'
-        self.delayBeforeStart = 1
-        self.delayAfterComplete = 1
+        self.name = 'enableChat'
+        self.delayBeforeStart = 2
+        self.delayAfterComplete = 2
 
     def shouldIgnore(self, context: Context) -> bool:
         (_, chatIsOn) = getChatStatus(context['screenshot'])
-        shouldIgnoreTask = chatIsOn == False
+        shouldIgnoreTask = chatIsOn == True
         return shouldIgnoreTask
 
     # TODO: add unit tests

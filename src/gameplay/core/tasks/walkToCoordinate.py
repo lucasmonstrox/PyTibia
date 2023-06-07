@@ -1,6 +1,6 @@
-import pyautogui
 from src.gameplay.typings import Context
 from src.repositories.radar.typings import Coordinate
+from src.utils.keyboard import keyUp
 from ...typings import Context
 from ..waypoint import generateFloorWalkpoints
 from .common.vector import VectorTask
@@ -25,11 +25,13 @@ class WalkToCoordinate(VectorTask):
 
     def onComplete(self, context: Context):
         if context['lastPressedKey'] is not None:
-            pyautogui.keyUp(context['lastPressedKey'])
+            keyUp(context['lastPressedKey'])
             context['lastPressedKey'] = None
         return context
 
     def shouldRestartAfterAllChildrensComplete(self, context: Context) -> bool:
+        if len(self.tasks) == 0:
+            return True
         if context['radar']['coordinate'][0] != self.coordinate[0]:
             return True
         if context['radar']['coordinate'][1] != self.coordinate[1]:
@@ -39,13 +41,11 @@ class WalkToCoordinate(VectorTask):
         return False
 
     def calculateWalkpoint(self, context: Context):
-        # nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
-        # for monster in context['gameWindow']['monsters']:
-        #     monsterCoordinateTuple = (monster['coordinate'][0], monster['coordinate'][1], monster['coordinate'][2])
-        #     coordinatesToAppend = np.array([monsterCoordinateTuple], dtype=Coordinate)
-        #     nonWalkableCoordinates = np.append(nonWalkableCoordinates, coordinatesToAppend)
+        nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
+        for monster in context['gameWindow']['monsters']:
+            nonWalkableCoordinates.append(monster['coordinate'])
         self.tasks = []
         # TODO: make it yield
         for walkpoint in generateFloorWalkpoints(
-            context['radar']['coordinate'], self.coordinate, nonWalkableCoordinates=None):
+            context['radar']['coordinate'], self.coordinate, nonWalkableCoordinates=nonWalkableCoordinates):
             self.tasks.append(WalkTask(context, walkpoint).setParentTask(self).setRootTask(self.rootTask))

@@ -14,20 +14,17 @@ from .typings import FloorLevel, TileFriction
 # TODO: get by cached images coordinates hashes
 def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate=None) -> Union[Coordinate, None]:
     floorLevel = getFloorLevel(screenshot)
-    cannotGetFloorLevel = floorLevel is None
-    if cannotGetFloorLevel:
+    if floorLevel is None:
         return None
     radarToolsPosition = getRadarToolsPosition(screenshot)
-    cannotGetRadarToolsPos = radarToolsPosition is None
-    if cannotGetRadarToolsPos:
+    if radarToolsPosition is None:
         return None
-    radarImg = getRadarImage(screenshot, radarToolsPosition)
-    radarHashedImg = hashitHex(radarImg)
-    shouldGetCoordinateByCachedRadarHashedImg = radarHashedImg in coordinates
-    if shouldGetCoordinateByCachedRadarHashedImg:
+    radarImage = getRadarImage(screenshot, radarToolsPosition)
+    radarHashedImg = hashitHex(radarImage)
+    # TODO: use get instead
+    if radarHashedImg in coordinates:
         return coordinates[radarHashedImg]
-    shouldGetCoordinateByPreviousCoordinateArea = previousCoordinate is not None
-    if shouldGetCoordinateByPreviousCoordinateArea:
+    if previousCoordinate is not None:
         (previousCoordinateXPixel, previousCoordinateYPixel) = getPixelFromCoordinate(
             previousCoordinate)
         paddingSize = 20
@@ -41,7 +38,7 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate=None) ->
             (dimensions['halfWidth'] + paddingSize)
         areaImgToCompare = floorsImgs[floorLevel][yStart:yEnd, xStart:xEnd]
         areaFoundImg = locate(
-            areaImgToCompare, radarImg, confidence=0.9)
+            areaImgToCompare, radarImage, confidence=0.9)
         if areaFoundImg:
             currentCoordinateXPixel = previousCoordinateXPixel - \
                 paddingSize + areaFoundImg[0]
@@ -50,9 +47,8 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate=None) ->
             (currentCoordinateX, currentCoordinateY) = getCoordinateFromPixel(
                 (currentCoordinateXPixel, currentCoordinateYPixel))
             return [currentCoordinateX, currentCoordinateY, floorLevel]
-    imgCoordinate = locate(floorsImgs[floorLevel], radarImg, confidence=0.75)
-    cannotGetImgCoordinate = imgCoordinate is None
-    if cannotGetImgCoordinate:
+    imgCoordinate = locate(floorsImgs[floorLevel], radarImage, confidence=0.75)
+    if imgCoordinate is None:
         return None
     xImgCoordinate = imgCoordinate[0] + dimensions['halfWidth']
     yImgCoordinate = imgCoordinate[1] + dimensions['halfHeight']
@@ -65,8 +61,7 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate=None) ->
 # TODO: add perf
 def getFloorLevel(screenshot: GrayImage) -> Union[FloorLevel, None]:
     radarToolsPosition = getRadarToolsPosition(screenshot)
-    radarToolsPositionIsEmpty = radarToolsPosition is None
-    if radarToolsPositionIsEmpty:
+    if radarToolsPosition is None:
         return None
     left, top, width, height = radarToolsPosition
     left = left + width + 8
@@ -75,11 +70,9 @@ def getFloorLevel(screenshot: GrayImage) -> Union[FloorLevel, None]:
     width = 2
     floorLevelImg = screenshot[top:top + height, left:left + width]
     floorImgHash = hashit(floorLevelImg)
-    hashNotExists = floorImgHash not in floorsLevelsImgsHashes
-    if hashNotExists:
+    if floorImgHash not in floorsLevelsImgsHashes:
         return None
-    floorLevel = floorsLevelsImgsHashes[floorImgHash]
-    return floorLevel
+    return floorsLevelsImgsHashes[floorImgHash]
 
 
 # TODO: add unit tests

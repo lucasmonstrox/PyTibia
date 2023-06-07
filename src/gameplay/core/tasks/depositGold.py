@@ -1,12 +1,13 @@
 from ...typings import Context
 from .common.vector import VectorTask
+from .enableChat import EnableChatTask
 from .say import SayTask
 from .selectChatTab import SelectChatTabTask
 from .setChatOff import SetChatOffTask
 from .setNextWaypoint import SetNextWaypointTask
 
 
-# TODO: check if gold was deposited successfully
+# TODO: check if gold was deposited successfully by shouldRestartAfterAllChildrensComplete
 class DepositGoldTask(VectorTask):
     def __init__(self):
         super().__init__()
@@ -19,8 +20,11 @@ class DepositGoldTask(VectorTask):
     def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
             SelectChatTabTask('local chat').setParentTask(self).setRootTask(self),
+            EnableChatTask().setParentTask(self).setRootTask(self),
             SayTask('hi').setParentTask(self).setRootTask(self),
+            EnableChatTask().setParentTask(self).setRootTask(self),
             SayTask('deposit all').setParentTask(self).setRootTask(self),
+            EnableChatTask().setParentTask(self).setRootTask(self),
             SayTask('yes').setParentTask(self).setRootTask(self),
             SetChatOffTask().setParentTask(self).setRootTask(self),
             SetNextWaypointTask().setParentTask(self).setRootTask(self),

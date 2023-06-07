@@ -10,10 +10,10 @@ from .common.base import BaseTask
 class RefillCheckerTask(BaseTask):
     def __init__(self, waypoint: Waypoint):
         super().__init__()
+        self.name = 'refillChecker'
         self.delayAfterComplete = 1
         self.isRootTask = True
-        self.name = 'refillChecker'
-        self.value = waypoint
+        self.waypoint = waypoint
 
     # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:
@@ -25,19 +25,19 @@ class RefillCheckerTask(BaseTask):
         quantityOfManaPotions = getSlotCount(context['screenshot'], 2)
         if quantityOfManaPotions is None:
             return False
-        hasEnoughHealthPotions = quantityOfHealthPotions > self.value[
+        hasEnoughHealthPotions = quantityOfHealthPotions > self.waypoint[
             'options']['minimumOfHealthPotions']
-        hasEnoughManaPotions = quantityOfManaPotions > self.value['options']['minimumOfManaPotions']
+        hasEnoughManaPotions = quantityOfManaPotions > self.waypoint['options']['minimumOfManaPotions']
         capacity = getCapacity(context['screenshot'])
         if capacity is None:
             return False
-        hasEnoughCapacity = capacity > self.value['options']['minimumOfCapacity']
+        hasEnoughCapacity = capacity > self.waypoint['options']['minimumOfCapacity']
         shouldIgnoreTask = hasEnoughHealthPotions and hasEnoughManaPotions and hasEnoughCapacity
         return shouldIgnoreTask
 
     # TODO: add unit tests
     def onIgnored(self, context: Context) -> Context:
-        labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.value['options']['waypointLabelToRedirect'])[0]
+        labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.waypoint['options']['waypointLabelToRedirect'])[0]
         if len(labelIndexes) == 0:
             # TODO: raise error
             return context

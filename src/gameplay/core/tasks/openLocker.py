@@ -8,13 +8,13 @@ from .common.base import BaseTask
 class OpenLockerTask(BaseTask):
     def __init__(self):
         super().__init__()
+        self.name = 'openLocker'
         self.delayAfterComplete = 1
-        self.name = 'openLockerTask'
 
     # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:
-        isOpen = isLockerOpen(context['screenshot'])
-        return isOpen
+        shouldIgnoreTask = isLockerOpen(context['screenshot'])
+        return shouldIgnoreTask
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:

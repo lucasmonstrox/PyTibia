@@ -12,11 +12,10 @@ from .core.tasks.singleWalk import SingleWalkTask
 from .core.tasks.useRopeWaypoint import UseRopeWaypointTask
 from .core.tasks.useShovelWaypoint import UseShovelWaypointTask
 from .core.tasks.walkToWaypoint import WalkToWaypoint
-from .typings import Context
 
 
 # TODO: add unit tests
-def resolveTasksByWaypoint(context: Context, waypoint: Waypoint) -> Union[BaseTask, VectorTask]:
+def resolveTasksByWaypoint(waypoint: Waypoint) -> Union[BaseTask, VectorTask]:
     if waypoint['type'] == 'depositGold':
         return DepositGoldTask()
     elif waypoint['type'] == 'depositItems':

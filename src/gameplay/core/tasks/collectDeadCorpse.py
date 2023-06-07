@@ -1,34 +1,19 @@
 import numpy as np
-import pyautogui
+from src.gameplay.typings import Context
 from src.repositories.gameWindow.slot import rightClickSlot
 from src.repositories.gameWindow.typings import Creature
+from src.utils.keyboard import keyDown, keyUp
 from ...typings import Context
 from .common.base import BaseTask
 
 
-# TODO: check if something was looted or exactly count was looted
 class CollectDeadCorpseTask(BaseTask):
     def __init__(self, creature: Creature):
         super().__init__()
+        self.name = 'collectDeadCorpse'
         self.delayBeforeStart = 1
         self.delayAfterComplete = 0.25
-        self.name = 'collectDeadCorpse'
         self.creature = creature
-
-    # TODO: add unit tests
-    def do(self, context: Context) -> Context:
-        pyautogui.keyDown('shift')
-        rightClickSlot([6, 4], context['gameWindow']['coordinate'])
-        rightClickSlot([7, 4], context['gameWindow']['coordinate'])
-        rightClickSlot([8, 4], context['gameWindow']['coordinate'])
-        rightClickSlot([6, 5], context['gameWindow']['coordinate'])
-        rightClickSlot([7, 5], context['gameWindow']['coordinate'])
-        rightClickSlot([8, 5], context['gameWindow']['coordinate'])
-        rightClickSlot([6, 6], context['gameWindow']['coordinate'])
-        rightClickSlot([7, 6], context['gameWindow']['coordinate'])
-        rightClickSlot([8, 6], context['gameWindow']['coordinate'])
-        pyautogui.keyUp('shift')
-        return context
 
     # TODO: add unit tests
     def onComplete(self, context: Context) -> Context:
@@ -40,3 +25,22 @@ class CollectDeadCorpseTask(BaseTask):
                 indexesToDelete.append(index)
         context['loot']['corpsesToLoot'] = np.delete(context['loot']['corpsesToLoot'], indexesToDelete)
         return context
+
+    # TODO: add unit tests
+    def do(self, context: Context) -> Context:
+        keyDown('shift')
+        rightClickSlot([6, 4], context['gameWindow']['coordinate'])
+        rightClickSlot([7, 4], context['gameWindow']['coordinate'])
+        rightClickSlot([8, 4], context['gameWindow']['coordinate'])
+        rightClickSlot([6, 5], context['gameWindow']['coordinate'])
+        rightClickSlot([7, 5], context['gameWindow']['coordinate'])
+        rightClickSlot([8, 5], context['gameWindow']['coordinate'])
+        rightClickSlot([6, 6], context['gameWindow']['coordinate'])
+        rightClickSlot([7, 6], context['gameWindow']['coordinate'])
+        rightClickSlot([8, 6], context['gameWindow']['coordinate'])
+        keyUp('shift')
+        return context
+
+    # TODO: check if something was looted or exactly count was looted
+    def did(self, _: Context) -> bool:
+        return True

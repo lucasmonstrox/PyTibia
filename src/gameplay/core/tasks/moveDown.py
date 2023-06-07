@@ -1,5 +1,5 @@
-import pyautogui
 from time import time
+from src.utils.keyboard import press
 from ...typings import Context
 from .common.base import BaseTask
 
@@ -24,7 +24,7 @@ class MoveDown(BaseTask):
             direction = 'left'
         if self.direction == 'east':
             direction = 'right'
-        pyautogui.press(direction)
+        press(direction)
         return context
 
     # TODO: add unit tests
@@ -34,6 +34,8 @@ class MoveDown(BaseTask):
 
     # TODO: add unit tests
     def onDidTimeout(self, context: Context) -> Context:
+        # TODO: avoid it. Task should retry
+        # TODO: add way to cancel/complete parent automatically
         self.parentTask.status = 'completed'
         self.parentTask.status.finishedAt = time()
         return context

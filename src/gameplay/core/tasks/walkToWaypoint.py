@@ -8,9 +8,9 @@ from .walkToCoordinate import WalkToCoordinate
 class WalkToWaypoint(VectorTask):
     def __init__(self, coordinate: Coordinate):
         super().__init__()
+        self.name = 'walkToWaypoint'
         self.delayAfterComplete = 1
         self.isRootTask = True
-        self.name = 'walkToWaypoint'
         self.coordinate = coordinate
 
     # TODO: add unit tests

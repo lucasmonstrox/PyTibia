@@ -1,4 +1,4 @@
-from src.gameplay.core.tasks.useHotkey import UseHotkeyVectorTask
+from src.gameplay.core.tasks.useHotkey import UseHotkeyTask
 from src.repositories.actionBar.core import slotIsAvailable, slotIsEquipped
 from ...typings import Context
 
@@ -18,8 +18,8 @@ def healingPriorityObserver(context: Context):
     if context['healing']['highPriority']['ssa']['enabled']:
         if context['statusBar']['hpPercentage'] <= context['healing']['highPriority']['ssa']['hpPercentageLessThanOrEqual']:
             if not slotIsEquipped(context['screenshot'], 17) and slotIsAvailable(context['screenshot'], 17):
-                currentSpellHealingPriorityTask = UseHotkeyVectorTask(context['healing']['highPriority']['ssa']['hotkey'])
+                currentSpellHealingPriorityTask = UseHotkeyTask(context['healing']['highPriority']['ssa']['hotkey'])
         elif context['statusBar']['hpPercentage'] >= context['healing']['highPriority']['ssa']['hpPercentageGreaterThanOrEqual']:
             if slotIsEquipped(context['screenshot'], 17):
-                currentSpellHealingPriorityTask = UseHotkeyVectorTask(context['healing']['highPriority']['ssa']['hotkey'])
+                currentSpellHealingPriorityTask = UseHotkeyTask(context['healing']['highPriority']['ssa']['hotkey'])
                 return

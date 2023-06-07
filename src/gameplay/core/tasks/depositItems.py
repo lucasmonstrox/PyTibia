@@ -25,7 +25,7 @@ class DepositItemsTask(VectorTask):
     # TODO: add unit tests
     def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
-            GoToFreeDepotTask(context, self.waypoint).setParentTask(self).setRootTask(self),
+            GoToFreeDepotTask(self.waypoint).setParentTask(self).setRootTask(self),
             OpenLockerTask().setParentTask(self).setRootTask(self),
             OpenBackpackTask(context['backpacks']['main']).setParentTask(self).setRootTask(self),
             ScrollToItemTask(images['containersBars'][context['backpacks']['main']], images['slots'][context['backpacks']['loot']]).setParentTask(self).setRootTask(self),
