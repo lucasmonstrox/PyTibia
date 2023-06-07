@@ -6,6 +6,7 @@ from src.utils.core import getPixelFromCoordinate
 from .typings import Checkpoint
 
 
+# TODO: add types
 # TODO: add unit tests
 def generateFloorWalkpoints(coordinate: Coordinate, goalCoordinate: Coordinate, nonWalkableCoordinates=[]) -> CoordinateList:
     pixelCoordinate = getPixelFromCoordinate(coordinate)
@@ -36,97 +37,49 @@ def resolveFloorCoordinate(_, nextCoordinate: Coordinate) -> Checkpoint:
     }
 
 
+# TODO: add types
 # TODO: add unit tests
-def resolveMoveDownEastCoordinate(_, nextCoordinate: Coordinate) -> Checkpoint:
-    (x, y, floorLevel) = nextCoordinate
-    checkInCoordinate = [x + 2, y, floorLevel + 1]
+def resolveMoveDownCoordinate(_, waypoint) -> Checkpoint:
+    checkInCoordinate = None
+    if waypoint['options']['direction'] == 'north':
+        checkInCoordinate = [waypoint['coordinate'][0], waypoint['coordinate'][1] - 2, waypoint['coordinate'][2] + 1]
+    elif waypoint['options']['direction'] == 'south':
+        checkInCoordinate = [waypoint['coordinate'][0], waypoint['coordinate'][1] + 2, waypoint['coordinate'][2] + 1]
+    elif waypoint['options']['direction'] == 'east':
+        checkInCoordinate = [waypoint['coordinate'][0] + 2, waypoint['coordinate'][1], waypoint['coordinate'][2] + 1]
+    else:
+        checkInCoordinate = [waypoint['coordinate'][0] - 2, waypoint['coordinate'][1], waypoint['coordinate'][2] + 1]
     return {
-        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
+        'goalCoordinate': waypoint['coordinate'],
         'checkInCoordinate': checkInCoordinate,
     }
 
 
+# TODO: add types
 # TODO: add unit tests
-def resolveMoveDownNorthCoordinate(_, nextCoordinate: Coordinate) -> Checkpoint:
-    (x, y, floorLevel) = nextCoordinate
-    checkInCoordinate = [x, y - 2, floorLevel + 1]
+def resolveMoveUpCoordinate(_, waypoint) -> Checkpoint:
+    checkInCoordinate = None
+    if waypoint['options']['direction'] == 'north':
+        checkInCoordinate = [waypoint['coordinate'][0], waypoint['coordinate'][1] - 2, waypoint['coordinate'][2] - 1]
+    elif waypoint['options']['direction'] == 'south':
+        checkInCoordinate = [waypoint['coordinate'][0], waypoint['coordinate'][1] + 2, waypoint['coordinate'][2] - 1]
+    elif waypoint['options']['direction'] == 'east':
+        checkInCoordinate = [waypoint['coordinate'][0] + 2, waypoint['coordinate'][1], waypoint['coordinate'][2] - 1]
+    else:
+        checkInCoordinate = [waypoint['coordinate'][0] - 2, waypoint['coordinate'][1], waypoint['coordinate'][2] - 1]
     return {
-        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
+        'goalCoordinate': waypoint['coordinate'],
         'checkInCoordinate': checkInCoordinate,
-    }
-
-
-# TODO: add unit tests
-def resolveMoveDownSouthCoordinate(_, nextCoordinate: Coordinate) -> Checkpoint:
-    (x, y, floorLevel) = nextCoordinate
-    checkInCoordinate = [x, y + 2, floorLevel + 1]
-    return {
-        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
-        'checkInCoordinate': checkInCoordinate,
-    }
-
-
-# TODO: add unit tests
-def resolveMoveDownWestCoordinate(_, nextCoordinate: Coordinate) -> Checkpoint:
-    (x, y, floorLevel) = nextCoordinate
-    checkInCoordinate = [x - 2, y, floorLevel + 1]
-    return {
-        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
-        'checkInCoordinate': checkInCoordinate,
-    }
-
-
-# TODO: add unit tests
-def resolveMoveUpNorthCoordinate(_, nextCoordinate: Coordinate) -> Checkpoint:
-    (x, y, floorLevel) = nextCoordinate
-    goalCoordinate = [x, y - 2, floorLevel - 1]
-    return {
-        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
-        'checkInCoordinate': goalCoordinate,
-    }
-
-
-# TODO: add unit tests
-def resolveMoveUpWestCoordinate(_, nextCoordinate: Coordinate) -> Checkpoint:
-    (x, y, floorLevel) = nextCoordinate
-    goalCoordinate = [x - 2, y, floorLevel - 1]
-    return {
-        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
-        'checkInCoordinate': goalCoordinate,
-    }
-
-
-# TODO: add unit tests
-def resolveMoveUpEastCoordinate(_, nextCoordinate: Coordinate) -> Checkpoint:
-    (x, y, floorLevel) = nextCoordinate
-    goalCoordinate = [x + 2, y, floorLevel - 1]
-    return {
-        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
-        'checkInCoordinate': goalCoordinate,
-    }
-
-
-# TODO: add unit tests
-def resolveMoveUpSouthCoordinate(_, nextCoordinate: Coordinate) -> Checkpoint:
-    (x, y, floorLevel) = nextCoordinate
-    goalCoordinate = [x, y + 2, floorLevel - 1]
-    return {
-        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
-        'checkInCoordinate': goalCoordinate,
     }
 
 
 # TODO: add unit tests
 def resolveUseShovelWaypointCoordinate(coordinate, nextCoordinate: Coordinate) -> Checkpoint:
-    floorLevel = nextCoordinate[2]
-    # TODO: avoid copying whole level
-    walkableFloorSqms = walkableFloorsSqms[floorLevel].copy()
     availableAroundCoordinates = getAvailableAroundCoordinates(
-        nextCoordinate, walkableFloorSqms)
+        nextCoordinate, walkableFloorsSqms[nextCoordinate[2]])
     closestCoordinate = getClosestCoordinate(
         coordinate, availableAroundCoordinates)
-    checkInCoordinate = [nextCoordinate[0],
-                         nextCoordinate[1], nextCoordinate[2] + 1]
+    checkInCoordinate = [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2] + 1]
     return {
         'goalCoordinate': closestCoordinate,
         'checkInCoordinate': checkInCoordinate,
@@ -135,61 +88,30 @@ def resolveUseShovelWaypointCoordinate(coordinate, nextCoordinate: Coordinate) -
 
 # TODO: add unit tests
 def resolveUseRopeWaypointCoordinate(_, nextCoordinate: Coordinate) -> Checkpoint:
-    checkInCoordinate = [nextCoordinate[0],
-                         nextCoordinate[1] + 1, nextCoordinate[2] - 1]
     return {
         'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
-        'checkInCoordinate': checkInCoordinate,
+        'checkInCoordinate': [nextCoordinate[0], nextCoordinate[1] + 1, nextCoordinate[2] - 1],
     }
 
 
 # TODO: add unit tests
 def resolveUseHoleCoordinate(_, nextCoordinate: Coordinate) -> Checkpoint:
-    (x, y, floorLevel) = nextCoordinate
-    goalCoordinate = [x, y, floorLevel + 1]
     return {
-        'goalCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2]],
-        'checkInCoordinate': goalCoordinate,
+        'goalCoordinate': nextCoordinate,
+        'checkInCoordinate': [nextCoordinate[0], nextCoordinate[1], nextCoordinate[2] + 1],
     }
 
 
 # TODO: add unit tests
 def resolveGoalCoordinate(coordinate: Coordinate, waypoint):
-    goalCoordinate = None
     if waypoint['type'] == 'useRope':
-        goalCoordinate = resolveUseRopeWaypointCoordinate(
-            coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'useShovel':
-        goalCoordinate = resolveUseShovelWaypointCoordinate(
-            coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveDown':
-        goalCoordinate = resolveMoveDownEastCoordinate(
-            coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveDown':
-        goalCoordinate = resolveMoveDownNorthCoordinate(
-            coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveDown':
-        goalCoordinate = resolveMoveDownSouthCoordinate(
-            coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveDown':
-        goalCoordinate = resolveMoveDownWestCoordinate(
-            coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveUp':
-        goalCoordinate = resolveMoveUpNorthCoordinate(
-            coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveUp':
-        goalCoordinate = resolveMoveUpWestCoordinate(
-            coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveDown':
-        goalCoordinate = resolveMoveUpEastCoordinate(
-            coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'moveUp':
-        goalCoordinate = resolveMoveUpSouthCoordinate(
-            coordinate, waypoint['coordinate'])
-    elif waypoint['type'] == 'useHole':
-        goalCoordinate = resolveUseHoleCoordinate(
-            coordinate, waypoint['coordinate'])
-    else:
-        goalCoordinate = resolveFloorCoordinate(
-            coordinate, waypoint['coordinate'])
-    return goalCoordinate
+        return resolveUseRopeWaypointCoordinate(coordinate, waypoint['coordinate'])
+    if waypoint['type'] == 'useShovel':
+        return resolveUseShovelWaypointCoordinate(coordinate, waypoint['coordinate'])
+    if waypoint['type'] == 'moveDown':
+        return resolveMoveDownCoordinate(coordinate, waypoint)
+    if waypoint['type'] == 'moveUp':
+        return resolveMoveUpCoordinate(coordinate, waypoint)
+    if waypoint['type'] == 'useHole':
+        return resolveUseHoleCoordinate(coordinate, waypoint['coordinate'])
+    return resolveFloorCoordinate(coordinate, waypoint['coordinate'])

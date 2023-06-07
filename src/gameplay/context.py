@@ -1,4 +1,5 @@
 import numpy as np
+from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 from src.repositories.battleList.typings import Creature as BattleListCreature
 from src.repositories.gameWindow.typings import Creature as GameWindowCreature
 from src.repositories.radar.typings import Waypoint
@@ -292,6 +293,7 @@ gameContext = {
         'canIgnoreCreatures': True,
         'hasIgnorableCreatures' : False,
     },
+    'tasksOrchestrator': TasksOrchestrator(),
     'screenshot': None,
     'way': None,
     'window': None

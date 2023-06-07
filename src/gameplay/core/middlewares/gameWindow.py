@@ -16,14 +16,14 @@ def setDirectionMiddleware(gameContext: Context) -> Context:
         gameContext['radar']['previousCoordinate'] = gameContext['radar']['coordinate']
     if gameContext['radar']['coordinate'][0] != gameContext['radar']['previousCoordinate'][0] or gameContext['radar']['coordinate'][1] != gameContext['radar']['previousCoordinate'][1] or gameContext['radar']['coordinate'][2] != gameContext['radar']['previousCoordinate'][2]:
         comingFromDirection = None
-        if gameContext['radar']['coordinate'][2] != previousCoordinate[2]:
+        if gameContext['radar']['coordinate'][2] != gameContext['radar']['previousCoordinate'][2]:
             comingFromDirection = None
-        elif gameContext['radar']['coordinate'][0] != previousCoordinate[0] and gameContext['radar']['coordinate'][1] != previousCoordinate[1]:
+        elif gameContext['radar']['coordinate'][0] != gameContext['radar']['previousCoordinate'][0] and gameContext['radar']['coordinate'][1] != gameContext['radar']['previousCoordinate'][1]:
             comingFromDirection = None
-        elif gameContext['radar']['coordinate'][0] != previousCoordinate[0]:
-            comingFromDirection = 'left' if gameContext['radar']['coordinate'][0] > previousCoordinate[0] else 'right'
-        elif gameContext['radar']['coordinate'][1] != previousCoordinate[1]:
-            comingFromDirection = 'top' if gameContext['radar']['coordinate'][1] > previousCoordinate[1] else 'bottom'
+        elif gameContext['radar']['coordinate'][0] != gameContext['radar']['previousCoordinate'][0]:
+            comingFromDirection = 'left' if gameContext['radar']['coordinate'][0] > gameContext['radar']['previousCoordinate'][0] else 'right'
+        elif gameContext['radar']['coordinate'][1] != gameContext['radar']['previousCoordinate'][1]:
+            comingFromDirection = 'top' if gameContext['radar']['coordinate'][1] > gameContext['radar']['previousCoordinate'][1] else 'bottom'
         gameContext['comingFromDirection'] = comingFromDirection
     # if gameContext['gameWindow']['previousGameWindowImage'] is not None:
     #     gameContext['gameWindow']['walkedPixelsInSqm'] = getWalkedPixels(gameContext)

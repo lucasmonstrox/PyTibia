@@ -15,7 +15,6 @@ from src.gameplay.core.middlewares.screenshot import setScreenshotMiddleware
 from src.gameplay.core.middlewares.tasks import setCleanUpTasksMiddleware
 from src.gameplay.core.middlewares.window import setTibiaWindowMiddleware
 from src.gameplay.core.tasks.lootCorpse import LootCorpseTask
-from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 from src.gameplay.resolvers import resolveTasksByWaypoint
 from src.gameplay.healing.observers.eatFood import eatFoodObserver
 from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserver
@@ -37,8 +36,6 @@ def main():
     global gameContext
 
     def handleGameData(context):
-        if 'tasksOrchestrator' not in context:
-            context['tasksOrchestrator'] = TasksOrchestrator()
         context = setTibiaWindowMiddleware(context)
         if context['pause']:
             return context

@@ -32,16 +32,15 @@ def comboSpellsObserver(context: Context):
             continue
         if comboSpellDidMatch(comboSpell, nearestCreaturesCount):
             spell = comboSpell['spells'][comboSpell['currentSpellIndex']]
-            hasCooldown = hasCooldownByName(context['screenshot'], spell['name'])
-            if hasCooldown:
+            if hasCooldownByName(context['screenshot'], spell['name']):
                 return
-            hasNoMana = context['statusBar']['mana'] < spell['metadata']['mana']
-            if hasNoMana:
+            if context['statusBar']['mana'] < spell['metadata']['mana']:
                 continue
             press(spell['hotkey'])
             nextIndex = getNextArrayIndex(comboSpell['spells'], comboSpell['currentSpellIndex'])
             # improve indexes without using context
             context['comboSpells']['items'][key]['currentSpellIndex'] = nextIndex
             context['comboSpells']['lastUsedSpell'] = spell['name']
+            # TODO: improve sleep
             time.sleep(0.5)
             break
