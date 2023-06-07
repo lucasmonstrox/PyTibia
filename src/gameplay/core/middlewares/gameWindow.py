@@ -34,12 +34,14 @@ def setDirectionMiddleware(gameContext: Context) -> Context:
 
 # TODO: add unit tests
 def setHandleLootMiddleware(gameContext: Context) -> Context:
-    endlessTasks = ['depositGold', 'refill', 'selectLootTab']
-    # if (gameContext['currentTask'] is None or gameContext['currentTask'].name not in endlessTasks):
-    #     lootTab = gameContext['chat']['tabs'].get('loot')
-    #     hasChatTab = lootTab is not None
-    #     if hasChatTab and not lootTab['isSelected']:
-    #         gameContext['currentTask'] = SelectChatTabTask('loot')
+    endlessTasks = ['depositGold', 'refill', 'selectChatTab']
+    currentTask = gameContext['tasksOrchestrator'].getCurrentTask(gameContext)
+    if (currentTask is None or currentTask.name not in endlessTasks):
+        lootTab = gameContext['chat']['tabs'].get('loot')
+        hasChatTab = lootTab is not None
+        if hasChatTab and not lootTab['isSelected']:
+            gameContext['tasksOrchestrator'].reset()
+            gameContext['tasksOrchestrator'].setRootTask(SelectChatTabTask('loot'))
     if hasNewLoot(gameContext['screenshot']):
         if gameContext['cavebot']['previousTargetCreature'] is not None:
             gameContext['loot']['corpsesToLoot'] = np.append(gameContext['loot']['corpsesToLoot'], [gameContext['cavebot']['previousTargetCreature']], axis=0)
