@@ -1,22 +1,22 @@
-import numpy as np
 from src.shared.typings import Waypoint
-from ..factories.makeUseRope import makeUseRopeTask
-from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
-from ..typings import Task
-from .groupTask import GroupTask
+from ...typings import Context
+from .common.vector import VectorTask
+from .useRope import UseRopeTask
+from .setNextWaypoint import SetNextWaypointTask
 
 
-class UseRopeWaypointTask(GroupTask):
-    def __init__(self, _, waypoint: Waypoint):
+class UseRopeWaypointTask(VectorTask):
+    def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.name = 'useRopeWaypoint'
-        self.tasks = self.generateTasks(waypoint)
-        self.value = waypoint
+        self.isRootTask = True
+        self.waypoint = waypoint
 
     # TODO: add unit tests
     # TODO: add typings
-    def generateTasks(self, waypoint: Waypoint):
-        return np.array([
-            makeUseRopeTask(waypoint),
-            makeSetNextWaypointTask(),
-        ], dtype=Task)
+    def onBeforeStart(self, context) -> Context:
+        self.tasks = [
+            UseRopeTask(self.waypoint).setParentTask(self).setRootTask(self),
+            SetNextWaypointTask().setParentTask(self).setRootTask(self),
+        ]
+        return context

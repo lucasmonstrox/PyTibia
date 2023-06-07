@@ -4,28 +4,26 @@ from src.repositories.battleList.typings import CreatureList
 from src.shared.typings import Coordinate, CoordinateList, Waypoint
 from src.wiki.cities import cities
 from ...typings import Context
-from ..factories.makeWalk import makeWalkTask
-from ..typings import Task
 from ..waypoint import generateFloorWalkpoints
-from .groupTask import GroupTask
+from .common.vector import VectorTask
+from .walk import WalkTask
 
 
-class GoToFreeDepotTask(GroupTask):
-    def __init__(self, context: Context, waypoint: Waypoint):
+class GoToFreeDepotTask(VectorTask):
+    def __init__(self, waypoint: Waypoint):
         super().__init__()
-        self.didTask = False
         self.name = 'goToFreeDepot'
+        self.isRootTask = True
         self.closestFreeDepotCoordinate = None
         self.terminable = False
-        self.value = waypoint
+        self.waypoint = waypoint
         self.state = 'findingVisibleCoordinates'
-        self.tasks = self.makeTasks(context, waypoint)
         self.visitedOrBusyCoordinates = {}
 
     # TODO: add unit tests
     # TODO: add typings
-    def makeTasks(self, context: Context, waypoint: Waypoint):
-        city = waypoint['options']['city']
+    def onBeforeStart(self, context: Context):
+        city = self.waypoint['options']['city']
         depotCoordinates = cities[city]['depotCoordinates']
         coordinate = context['radar']['coordinate']
         visibleDepotCoordinates = self.getVisibleDepotCoordinates(coordinate, depotCoordinates)
@@ -38,13 +36,13 @@ class GoToFreeDepotTask(GroupTask):
                 self.state = 'walkingIntoVisibleCoordinates'
                 for visibleDepotCoordinate in visibleDepotCoordinates:
                     self.visitedOrBusyCoordinates[tuple(visibleDepotCoordinate)] = True
-                return np.array([], dtype=Task)
+                return context
             freeDepotCoordinatesDistances = distance.cdist([coordinate], freeDepotCoordinates, 'euclidean').flatten()
             closestFreeDepotCoordinateIndex = np.argmin(freeDepotCoordinatesDistances)
             closestFreeDepotCoordinate = freeDepotCoordinates[closestFreeDepotCoordinateIndex]
             self.closestFreeDepotCoordinate = closestFreeDepotCoordinate
-            walkpoints = generateFloorWalkpoints(coordinate, closestFreeDepotCoordinate, nonWalkableCoordinates=None)
-            return np.array([makeWalkTask(context, walkpoint) for walkpoint in walkpoints], dtype=Task)
+            walkpoints = generateFloorWalkpoints(coordinate, closestFreeDepotCoordinate)
+            self.tasks = [WalkTask(context, walkpoint).setParentTask(self).setRootTask(self.rootTask) for walkpoint in walkpoints]
         else:
             self.state = 'walkingIntoVisibleCoordinates'
             # - gerar caminho até visualizar os próximos depots se necessário
@@ -54,7 +52,7 @@ class GoToFreeDepotTask(GroupTask):
         # - marcar as coordenadas atuais como ocupadas
         # - começar de novo
         # Observação: ao saber que todas as coordenadas estão ocupadas, marcar todas como não ocupadas, parar o boneco e ficar verificando se sai ou alguem, ou se começa o novo tempo de ronda
-        return []
+        return context
 
     # TODO: add unit tests
     def getFreeDepotCoordinates(self, battleListPlayers: CreatureList, visibleDepotCoordinates: CoordinateList) -> CoordinateList:
@@ -80,7 +78,7 @@ class GoToFreeDepotTask(GroupTask):
             return context
         if self.state == 'walkingIntoFreeDepot' and context['radar']['coordinate'][0] == self.closestFreeDepotCoordinate[0] and context['radar']['coordinate'][1] == self.closestFreeDepotCoordinate[1]:
             self.terminable = True
-            city = self.value['options']['city']
+            city = self.waypoint['options']['city']
             closestFreeDepotCoordinateAsTuple = tuple(self.closestFreeDepotCoordinate)
             context['deposit']['lockerCoordinate'] = cities[city]['depotGoalCoordinates'][closestFreeDepotCoordinateAsTuple]
         return context

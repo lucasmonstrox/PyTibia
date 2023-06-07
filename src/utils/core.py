@@ -1,15 +1,13 @@
 import cv2
 import dxcam
 import numpy as np
-import pyautogui
-import random
-import time
 from typing import Callable, Union
 import xxhash
 from src.shared.typings import BBox, Coordinate, GrayImage, XYCoordinate
 
 
 camera = dxcam.create(output_color='GRAY')
+latestScreenshot = None
 
 
 # TODO: add unit tests
@@ -89,28 +87,9 @@ def locateMultiple(compareImg: GrayImage, img: GrayImage, confidence: float=0.85
 
 # TODO: add unit tests
 def getScreenshot() -> GrayImage:
-    global camera
-    if not camera.is_capturing:
-        camera.start(target_fps=240, video_mode=False)
-    screenshot = camera.get_latest_frame()
-    screenshotHeight = len(screenshot)
-    screenshotWidth = len(screenshot[0])
-    screenshotReshaped = np.array(screenshot, dtype=np.uint8).reshape((screenshotHeight, screenshotWidth))
-    return screenshotReshaped
-
-
-# TODO: add unit tests
-def press(key: str, delay: int=150):
-    pyautogui.keyDown(key)
-    time.sleep(delay / 1000)
-    pyautogui.keyUp(key)
-
-
-# TODO: add unit tests
-def typeKeyboard(phrase: str):
-    words = list(phrase)
-    for word in words:
-        time.sleep(random.randrange(70, 190) / 1000)
-        press(word)
-    time.sleep(random.randrange(70, 190) / 1000)
-    press('enter')
+    global camera, latestScreenshot
+    screenshot = camera.grab()
+    if screenshot is None:
+        return latestScreenshot
+    latestScreenshot = np.array(screenshot, dtype=np.uint8).reshape((len(screenshot), len(screenshot[0])))
+    return latestScreenshot

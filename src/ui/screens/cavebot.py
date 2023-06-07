@@ -70,7 +70,7 @@ class CavebotScreen(MDScreen):
 
     def on_row_press(self, _, instance_row):
         '''Called when a table row is clicked.'''
-        print(vars(instance_row))
+        pass
 
     def addWaypoint(self, waypointType):
         gameContext = kivy.context.get_current_context()['game']
@@ -81,22 +81,22 @@ class CavebotScreen(MDScreen):
             return
         if waypointType == 'moveDown':
             if self.selectedDirection == 'north':
-                waypointType = 'moveDownNorth'
+                waypointType = 'moveDown'
             elif self.selectedDirection == 'south':
-                waypointType = 'moveDownSouth'
+                waypointType = 'moveDown'
             elif self.selectedDirection == 'east':
-                waypointType = 'moveDownEast'
+                waypointType = 'moveDown'
             elif self.selectedDirection == 'west':
-                waypointType = 'moveDownWest'
+                waypointType = 'moveDown'
         elif waypointType == 'moveUp':
             if self.selectedDirection == 'north':
-                waypointType = 'moveUpNorth'
+                waypointType = 'moveUp'
             elif self.selectedDirection == 'south':
-                waypointType = 'moveUpSouth'
+                waypointType = 'moveUp'
             elif self.selectedDirection == 'east':
-                waypointType = 'moveUpEast'
+                waypointType = 'moveUp'
             elif self.selectedDirection == 'west':
-                waypointType = 'moveUpWest'
+                waypointType = 'moveUp'
         waypointRow = ('', waypointType, coordinate[0], coordinate[1], coordinate[2], {})
         self.data_tables.add_row(waypointRow)
         waypoint = (waypointRow[0], waypointRow[1], [waypointRow[2], waypointRow[3], waypointRow[4]], waypointRow[5])

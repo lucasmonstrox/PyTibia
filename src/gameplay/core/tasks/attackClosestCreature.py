@@ -1,33 +1,19 @@
-import pyautogui
-from src.utils.mouse import leftClick
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.vector import VectorTask
+from .clickInClosestCreature import ClickInClosestCreatureTask
+from .walkToTargetCreature import WalkToTargetCreature
 
 
-class AttackClosestCreatureTask(BaseTask):
+class AttackClosestCreatureTask(VectorTask):
     def __init__(self):
         super().__init__()
-        self.delayOfTimeout = 1
         self.name = 'attackClosestCreature'
+        self.isRootTask = True
 
     # TODO: add unit tests
-    def do(self, context: Context) -> Context:
-        ignoreHotkeyAttack = len(context['gameWindow']['players']) > 0 or context['targeting']['hasIgnorableCreatures']
-        if ignoreHotkeyAttack:
-            x, y = context['cavebot']['closestCreature']['windowCoordinate']
-            pyautogui.keyDown('alt')
-            leftClick(x, y)
-            pyautogui.keyUp('alt')
-            return context
-        # TODO: bind automatically
-        pyautogui.press('space')
-        return context
-
-    # TODO: add unit tests
-    def did(self, context: Context) -> bool:
-        return context['cavebot']['isAttackingSomeCreature']
-
-    # TODO: add unit tests
-    def onDidTimeout(self, context: Context) -> Context:
-        context['currentTask'] = None
+    def onBeforeStart(self, context: Context) -> Context:
+        self.tasks = [
+            ClickInClosestCreatureTask().setParentTask(self).setRootTask(self),
+            WalkToTargetCreature().setParentTask(self).setRootTask(self),
+        ]
         return context

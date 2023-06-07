@@ -2,8 +2,9 @@ import pathlib
 from typing import Tuple, Union
 from src.shared.typings import BBox, GrayImage
 from src.repositories.gameWindow.core import getLeftArrowPosition
-from src.utils.core import cacheObjectPosition, hashit, locate, locateMultiple, press, typeKeyboard
-from src.utils.image import cacheChain, convertGraysToBlack, loadFromRGBToGray, save
+from src.utils.core import cacheObjectPosition, hashit, locate, locateMultiple
+from src.utils.keyboard import press, write
+from src.utils.image import cacheChain, convertGraysToBlack, loadFromRGBToGray
 from .config import hashes, images
 
 
@@ -35,12 +36,10 @@ def getTabs(screenshot):
         if firstPixel != 114 and firstPixel != 125:
             shouldFindTabs = False
             continue
-        isTabSelected = firstPixel == 114
         tabImage = chatsTabsContainerImage[2:16, xOfTab + 2:xOfTab + 2 + 92]
-        tabImageHash = hashit(tabImage)
-        tabName = hashes['tabs'].get(tabImageHash, 'Unknown')
+        tabName = hashes['tabs'].get(hashit(tabImage), 'Unknown')
         if tabName != 'Unknown':
-            tabs.setdefault(tabName, {'isSelected': isTabSelected, 'position': (x + xOfTab, y, 92, 14)})
+            tabs.setdefault(tabName, {'isSelected': firstPixel == 114, 'position': (x + xOfTab, y, 92, 14)})
         tabIndex += 1
     return tabs
 
@@ -104,20 +103,12 @@ def getChatOffPosition(screenshot: GrayImage) -> Union[BBox, None]:
 # TODO: add unit tests
 # TODO: add perf
 def getChatStatus(screenshot: GrayImage) -> Tuple[BBox, bool]:
+    # TODO: chat off/on pos is always the same. Get it by hash
     chatOffPos = getChatOffPosition(screenshot)
     if chatOffPos:
         return chatOffPos, False
     chatOnPos = locate(screenshot, chatOnImgTemp, confidence=0.9)
     return chatOnPos, True
-
-
-# TODO: add unit tests
-# TODO: add perf
-def enableChatOn(screenshot: GrayImage):
-    (_, chatIsOn) = getChatStatus(screenshot)
-    chatIsNotOn = chatIsOn is False
-    if chatIsNotOn:
-        press('enter')
 
 
 # TODO: add unit tests
@@ -138,10 +129,3 @@ def getChatMessagesContainerPosition(screenshot: GrayImage) -> BBox:
 ])
 def getLootTabPosition(_: GrayImage) -> Tuple[BBox, int]:
     pass
-
-
-# TODO: add unit tests
-# TODO: add perf
-def sendMessage(screenshot: GrayImage, phrase: str):
-    enableChatOn(screenshot)
-    typeKeyboard(phrase)

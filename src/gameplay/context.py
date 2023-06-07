@@ -1,13 +1,13 @@
 import numpy as np
+from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 from src.repositories.battleList.typings import Creature as BattleListCreature
 from src.repositories.gameWindow.typings import Creature as GameWindowCreature
-from src.repositories.radar.typings import Coordinate, Waypoint
+from src.repositories.radar.typings import Waypoint
 
 
 gameContext = {
     'backpacks': {
         'main': 'brocade backpack',
-        'gold': 'crystal backpack',
         'loot': 'beach backpack',
     },
     'battleList': {
@@ -16,7 +16,7 @@ gameContext = {
     },
     'cavebot': {
         'enabled': True,
-        'holesOrStairs': np.array([], dtype=Coordinate),
+        'holesOrStairs': [],
         'isAttackingSomeCreature': False,
         'previousTargetCreature': None,
         'targetCreature': None,
@@ -24,18 +24,18 @@ gameContext = {
             'currentIndex': None,
             'points': np.array([
                 # werehyaena cave 1
-                ('', 'logout', (33214, 32458, 8), {}),
-                ('', 'walk', (33214, 32458, 8), {}),
-                ('', 'moveUpNorth', (33214, 32456, 8), {}),
-                ('', 'walk', (33217, 32441, 7), {}),
+                # ('', 'logout', (33214, 32458, 8), {}),
+                # ('', 'walk', (33214, 32458, 8), {}),
+                # ('', 'moveUp', (33214, 32456, 8), {'direction': 'north'}),
+                # ('', 'walk', (33217, 32441, 7), {}),
                 ('endOfCity', 'walk', (33215, 32406, 7), {}),
                 ('', 'walk', (33218, 32377, 7), {}),
                 ('', 'walk', (33212, 32359, 7), {}),
                 ('', 'useShovel', (33212, 32358, 7), {}),
                 ('', 'walk', (33227, 32358, 8), {}),
-                ('', 'moveDownEast', (33227, 32358, 8), {}),
+                ('', 'moveDown', (33227, 32358, 8), {'direction': 'east'}),
                 ('', 'walk', (33222, 32355, 9), {}), # 10
-                ('', 'moveDownNorth', (33222, 32355, 9), {}), 
+                ('', 'moveDown', (33222, 32355, 9), {'direction': 'north'}), 
                 ('caveStart', 'walk', (33207, 32353, 10), {}),
                 ('', 'walk', (33189, 32348, 10), {}),
                 ('', 'walk', (33193, 32366, 10), {}),
@@ -53,25 +53,24 @@ gameContext = {
                     'waypointLabelToRedirect': 'caveStart',
                 }),
                 ('', 'walk', (33221, 32353, 10), {}),
-                ('', 'moveUpSouth', (33221, 32353, 10), {}),
+                ('', 'moveUp', (33221, 32353, 10), {'direction': 'south'}),
                 ('', 'walk', (33229, 32358, 9), {}),
-                ('', 'moveUpWest', (33229, 32358, 9), {}),
+                ('', 'moveUp', (33229, 32358, 9), {'direction': 'west'}),
                 ('', 'walk', (33212, 32358, 8), {}),
                 ('', 'useRope', (33212, 32358, 8), {}),
                 ('', 'walk', (33220, 32378, 7), {}),
                 ('', 'walk', (33221, 32387, 7), {}), # 30
                 ('', 'depositGold', (33221, 32387, 7), {}),
-                ('', 'walk', (33215, 32422, 7), {}),
-                ('', 'walk', (33213, 32454, 7), {}),
-                ('', 'moveDownSouth', (33213, 32454, 7), {}),
-                ('', 'depositItems', (33214, 32456, 8), {'city': 'Darashia'}),
-                ('', 'walk', (33214, 32456, 8), {}),
-                ('', 'moveUpNorth', (33214, 32456, 8), {}),
+                # ('', 'walk', (33215, 32422, 7), {}),
+                # ('', 'walk', (33213, 32454, 7), {}),
+                # ('', 'moveDown', (33213, 32454, 7), {'direction': 'south'}),
+                # ('', 'depositItems', (33214, 32456, 8), {'city': 'Darashia'}),
+                # ('', 'walk', (33214, 32456, 8), {}),
+                # ('', 'moveUp', (33214, 32456, 8), {'direction': 'north'}),
                 ('', 'walk', (33217, 32403, 7), {}),
-                ('', 'refill', (33306, 32289, 7), {
+                ('', 'refill', (33217, 32403, 7), {
                     'waypointLabelToRedirect': 'endOfCity'
                 }),
-                
                 # damselfly
                 # ('', 'walk', (32883, 32044, 10), {}),
                 # ('', 'walk', (32909, 32045, 10), {}),
@@ -130,7 +129,6 @@ gameContext = {
             }
         ],
     },
-    'currentTask': None,
     'deposit': {
         'lockerCoordinate': None
     },
@@ -138,12 +136,12 @@ gameContext = {
     'currentSpellHealing': None,
     'gameWindow': {
         'coordinate': None,
-        'img': None,
+        'image': None,
         'previousGameWindowImage': None,
-        'walkedPixelsInSqm': 0,
         'previousMonsters': np.array([], dtype=GameWindowCreature),
         'monsters': np.array([], dtype=GameWindowCreature),
         'players': np.array([], dtype=GameWindowCreature),
+        'walkedPixelsInSqm': 0,
     },
     'healing': {
         'enabled': True,
@@ -202,7 +200,7 @@ gameContext = {
         },
         'spells': {
             'criticalHealing': {
-                'enabled': False,
+                'enabled': True,
                 'hotkey': 'f3',
                 'hpPercentageLessThanOrEqual': 90,
                 'spell': {
@@ -222,7 +220,7 @@ gameContext = {
                 }
             },
             'utura': {
-                'enabled': False,
+                'enabled': True,
                 'hotkey': '3',
                 'spell': {
                     'name': 'utura',
@@ -231,7 +229,7 @@ gameContext = {
                 }
             },
             'exuraGranIco': {
-                'enabled': False,
+                'enabled': True,
                 'hotkey': 'f12',
                 'hpPercentageLessThanOrEqual': 60,
                 'manaPercentageGreaterThanOrEqual': 5,
@@ -265,7 +263,7 @@ gameContext = {
         'corpsesToLoot': np.array([], dtype=GameWindowCreature),
     },
     'lastPressedKey': None,
-    'pause': True,
+    'pause': False,
     'radar': {
         'coordinate': None,
         'previousCoordinate': None,
@@ -295,6 +293,7 @@ gameContext = {
         'canIgnoreCreatures': True,
         'hasIgnorableCreatures' : False,
     },
+    'tasksOrchestrator': TasksOrchestrator(),
     'screenshot': None,
     'way': None,
     'window': None

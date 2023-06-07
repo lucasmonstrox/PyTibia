@@ -1,4 +1,4 @@
-from src.gameplay.core.tasks.useHotkey import UseHotkeyGroupTask
+from src.gameplay.core.tasks.useHotkey import UseHotkeyTask
 from src.repositories.actionBar.core import slotIsAvailable
 from src.repositories.skills.core import getFood
 from ...typings import Context
@@ -21,4 +21,4 @@ def eatFoodObserver(context: Context):
     food = getFood(context['screenshot'])
     if food > context['healing']['eatFood']['eatWhenFoodIslessOrEqual']:
         return
-    eatFoodTask = UseHotkeyGroupTask(context['healing']['eatFood']['hotkey'], delayAfterComplete=0.5)
+    eatFoodTask = UseHotkeyTask(context['healing']['eatFood']['hotkey'], delayAfterComplete=0.5)

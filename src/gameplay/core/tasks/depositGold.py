@@ -1,29 +1,32 @@
-import numpy as np
-from ..typings import Task
-from ..factories.makeSay import makeSayTask
-from ..factories.makeSetChatOff import makeSetChatOffTask
-from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
-from ..factories.makeSelectChatTab import makeSelectChatTabTask
-from .groupTask import GroupTask
+from ...typings import Context
+from .common.vector import VectorTask
+from .enableChat import EnableChatTask
+from .say import SayTask
+from .selectChatTab import SelectChatTabTask
+from .setChatOff import SetChatOffTask
+from .setNextWaypoint import SetNextWaypointTask
 
 
-# TODO: check if gold was deposited successfully
-class DepositGoldTask(GroupTask):
+# TODO: check if gold was deposited successfully by shouldRestartAfterAllChildrensComplete
+class DepositGoldTask(VectorTask):
     def __init__(self):
         super().__init__()
+        self.name = 'depositGold'
+        self.isRootTask = True
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
-        self.name = 'depositGold'
-        self.tasks = self.makeTasks()
 
     # TODO: add unit tests
-    # TODO: add typings
-    def makeTasks(self):
-        return np.array([
-            makeSelectChatTabTask('local chat'),
-            makeSayTask('hi'),
-            makeSayTask('deposit all'),
-            makeSayTask('yes'),
-            makeSetChatOffTask(),
-            makeSetNextWaypointTask(),
-        ], dtype=Task)
+    def onBeforeStart(self, context: Context) -> Context:
+        self.tasks = [
+            SelectChatTabTask('local chat').setParentTask(self).setRootTask(self),
+            EnableChatTask().setParentTask(self).setRootTask(self),
+            SayTask('hi').setParentTask(self).setRootTask(self),
+            EnableChatTask().setParentTask(self).setRootTask(self),
+            SayTask('deposit all').setParentTask(self).setRootTask(self),
+            EnableChatTask().setParentTask(self).setRootTask(self),
+            SayTask('yes').setParentTask(self).setRootTask(self),
+            SetChatOffTask().setParentTask(self).setRootTask(self),
+            SetNextWaypointTask().setParentTask(self).setRootTask(self),
+        ]
+        return context

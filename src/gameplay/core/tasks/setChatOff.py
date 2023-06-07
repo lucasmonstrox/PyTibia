@@ -1,20 +1,27 @@
-import pyautogui
+from src.gameplay.typings import Context
 from src.repositories.chat.core import getChatStatus
+from src.utils.keyboard import press
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
-# TODO: implement did method
 class SetChatOffTask(BaseTask):
     def __init__(self):
         super().__init__()
+        self.name = 'setChatOff'
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
-        self.name = 'setChatOff'
+
+    def shouldIgnore(self, context: Context) -> bool:
+        (_, chatIsOn) = getChatStatus(context['screenshot'])
+        shouldIgnoreTask = chatIsOn == False
+        return shouldIgnoreTask
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        (_, chatIsOn) = getChatStatus(context['screenshot'])
-        if chatIsOn:
-            pyautogui.press('enter')
+        press('enter')
         return context
+
+    # TODO: check if chat is off
+    def did(self, _: Context) -> bool:
+        return True

@@ -1,27 +1,40 @@
 import pyautogui
 
 
+# TODO: add types
 # TODO: add unit tests
-def leftClick(x: int, y: int):
-    pyautogui.leftClick(x, y)
+def drag(x1y1, x2y2):
+    pyautogui.moveTo(x1y1[0], x1y1[1])
+    pyautogui.dragTo(x2y2[0], x2y2[1], button='left')
+
+
+# TODO: add types
+# TODO: add unit tests
+def leftClick(windowCoordinate=None):
+    if windowCoordinate is None:
+        pyautogui.leftClick()
+        return
+    pyautogui.leftClick(windowCoordinate[0], windowCoordinate[1])
+
+
+# TODO: add types
+# TODO: add unit tests
+def move(windowCoordinate):
+    pyautogui.moveTo(windowCoordinate[0], windowCoordinate[1])
+
+
+# TODO: add types
+# TODO: add unit tests
+def moveTo(windowCoordinate):
+    pyautogui.moveTo(windowCoordinate)
 
 
 # TODO: add unit tests
-def rightClick(x: int, y: int):
-    pyautogui.rightClick(x, y)
+def scroll(clicks: int):
+    pyautogui.scroll(clicks)
 
 
+# TODO: add types
 # TODO: add unit tests
-def mouseMove(x: int, y: int):
-    pyautogui.moveTo(x, y)
-
-
-# TODO: add unit tests
-def mouseScroll(scrolls: int):
-    pyautogui.vscroll(scrolls)
-
-
-# TODO: add unit tests
-def mouseDrag(x1: int, y1: int, x2: int, y2: int):
-    pyautogui.moveTo(x1, y1)
-    pyautogui.dragTo(x2, y2, button='left')
+def rightClick(windowCoordinate):
+    pyautogui.rightClick(windowCoordinate[0], windowCoordinate[1])

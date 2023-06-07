@@ -1,22 +1,23 @@
-import numpy as np
 from src.shared.typings import Waypoint
-from ..factories.makeClickInCoordinate import makeClickInCoordinateTask
-from ..factories.makeSetNextWaypoint import makeSetNextWaypointTask
-from ..factories.makeUseShovel import makeUseShovelTask
-from ..typings import Task
-from .groupTask import GroupTask
+from ...typings import Context
+from .common.vector import VectorTask
+from .clickInCoordinate import ClickInCoordinateTask
+from .setNextWaypoint import SetNextWaypointTask
+from .useShovel import UseShovelTask
 
 
-class UseShovelWaypointTask(GroupTask):
-    def __init__(self, _, waypoint: Waypoint):
+class UseShovelWaypointTask(VectorTask):
+    def __init__(self, waypoint: Waypoint):
         super().__init__()
         self.name = 'useShovelWaypoint'
-        self.tasks = self.generateTasks(waypoint)
-        self.value = waypoint
+        self.isRootTask = True
+        self.waypoint = waypoint
 
-    def generateTasks(self, waypoint):
-        return np.array([
-            makeUseShovelTask(waypoint),
-            makeClickInCoordinateTask(waypoint),
-            makeSetNextWaypointTask(),
-        ], dtype=Task)
+    # TODO: add unit tests
+    def onBeforeStart(self, context: Context) -> Context:
+        self.tasks = [
+            UseShovelTask(self.waypoint).setParentTask(self).setRootTask(self),
+            ClickInCoordinateTask(self.waypoint).setParentTask(self).setRootTask(self),
+            SetNextWaypointTask().setParentTask(self).setRootTask(self),
+        ]
+        return context

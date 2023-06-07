@@ -1,19 +1,29 @@
-import pyautogui
-from .baseTask import BaseTask
+from src.gameplay.typings import Context
+from src.utils.mouse import leftClick
+from .common.base import BaseTask
 
 
+# TODO: implement should ignore if tab already selected
 class SelectChatTabTask(BaseTask):
     def __init__(self, name):
         super().__init__()
-        self.delayOfTimeout = 1
         self.name = 'selectChatTab'
-        self.value = name
+        self.delayBeforeStart = 1
+        self.delayAfterComplete = 1
+        self.tabName = name
 
+    # TODO: add unit tests
+    def shouldIgnore(self, context: Context) -> bool:
+        tab = context['chat']['tabs'].get(self.tabName)
+        if tab is None:
+            return False
+        shouldIgnoreTask = tab['isSelected']
+        return shouldIgnoreTask
+
+    # TODO: add unit tests
+    # TODO: what if tab does not exists?
     def do(self, context):
-        tab = context['chat']['tabs'].get(self.value)
-        cannotGetTab = tab is None
-        if cannotGetTab:
-            return context
-        tabPosition = context['chat']['tabs'][self.value]['position']
-        pyautogui.click(tabPosition[0] + 10, tabPosition[1] + 5)
+        tabPosition = context['chat']['tabs'][self.tabName]['position']
+        # TODO: implement random click in BBox
+        leftClick((tabPosition[0] + 10, tabPosition[1] + 5))
         return context

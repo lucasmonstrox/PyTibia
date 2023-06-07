@@ -1,5 +1,5 @@
 from src.shared.typings import BBox, Slot
-import pyautogui
+from src.utils.mouse import leftClick, moveTo, rightClick
 
 
 # TODO: add unit tests
@@ -17,20 +17,20 @@ def getSlotPosition(slot: Slot, gameWindowPosition: BBox) -> Slot:
 # TODO: add unit tests
 # TODO: add perf
 def moveToSlot(slot: Slot, gameWindowPosition: BBox):
-    slotXCoordinate, slotYCoordinate = getSlotPosition(slot, gameWindowPosition)
-    pyautogui.moveTo(slotXCoordinate, slotYCoordinate)
+    slotPosition = getSlotPosition(slot, gameWindowPosition)
+    moveTo(slotPosition)
 
 
 # TODO: add unit tests
 # TODO: add perf
 def clickSlot(slot: Slot, gameWindowPosition: BBox):
     moveToSlot(slot, gameWindowPosition)
-    pyautogui.click()
+    leftClick()
 
 
 # TODO: add unit tests
 # TODO: add perf
 def rightClickSlot(slot: Slot, gameWindowPosition: BBox):
     moveToSlot(slot, gameWindowPosition)
-    pyautogui.rightClick()
+    rightClick()
 

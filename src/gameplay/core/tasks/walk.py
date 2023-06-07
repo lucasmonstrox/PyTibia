@@ -1,24 +1,24 @@
 import numpy as np
-import pyautogui
 from time import time
 from src.repositories.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from src.repositories.skills.core import getSpeed
 from src.shared.typings import Coordinate
 from src.utils.coordinate import getDirectionBetweenCoordinates
+from src.utils.keyboard import keyDown, keyUp, press
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class WalkTask(BaseTask):
     def __init__(self, context: Context, coordinate: Coordinate):
         super().__init__()
+        self.name = 'walk'
         charSpeed = getSpeed(context['screenshot'])
         tileFriction = getTileFrictionByCoordinate(coordinate)
         movementSpeed = getBreakpointTileMovementSpeed(
             charSpeed, tileFriction)
         self.delayOfTimeout = (movementSpeed * 2) / 1000
-        self.name = 'walk'
-        self.value = coordinate
+        self.walkpoint = coordinate
 
     # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:
@@ -30,55 +30,44 @@ class WalkTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> bool:
-        walkpoint = self.value
-        direction = getDirectionBetweenCoordinates(context['radar']['coordinate'], walkpoint)
-        hasNoNewDirection = direction is None
-        if hasNoNewDirection:
+        direction = getDirectionBetweenCoordinates(context['radar']['coordinate'], self.walkpoint)
+        if direction is None:
             return context
         futureDirection = None
-        hasMoreTasks = len(context['currentTask'].tasks) > 1
-        if hasMoreTasks:
-            freeTaskIndex = None
-            for taskIndex, taskWithName in enumerate(context['currentTask'].tasks):
-                _, possibleFreeTask = taskWithName
-                if possibleFreeTask.status != 'completed':
-                    freeTaskIndex = taskIndex
-                    break
-            if freeTaskIndex != None and (freeTaskIndex + 1) < len(context['currentTask'].tasks):
-                hasMoreWalkpointTasks = context['currentTask'].tasks[freeTaskIndex + 1]['type'] == 'walk'
-                if hasMoreWalkpointTasks:
-                    _, nextTask = context['currentTask'].tasks[freeTaskIndex + 1]
-                    futureDirection = getDirectionBetweenCoordinates(walkpoint, nextTask.value)
+        if self.parentTask and len(self.parentTask.tasks) > 1:
+            if self.parentTask.currentTaskIndex + 1 < len(self.parentTask.tasks):
+                nextTask = self.parentTask.tasks[self.parentTask.currentTaskIndex + 1]
+                futureDirection = getDirectionBetweenCoordinates(self.walkpoint, nextTask.walkpoint)
         if direction != futureDirection:
             if context['lastPressedKey'] is not None:
-                pyautogui.keyUp(context['lastPressedKey'])
+                keyUp(context['lastPressedKey'])
                 context['lastPressedKey'] = None
             else:
-                pyautogui.press(direction)
+                press(direction)
             return context
-        filterByWalkTasks = context['currentTask'].tasks['type'] == 'walk'
-        walkTasks = context['currentTask'].tasks[filterByWalkTasks]
-        walkTasksLength = len(walkTasks)
+        walkTasksLength = len(self.parentTask.tasks)
         if direction != context['lastPressedKey']:
             if walkTasksLength > 2:
-                pyautogui.keyDown(direction)
+                keyDown(direction)
                 context['lastPressedKey'] = direction
             else:
-                pyautogui.press(direction)
+                press(direction)
             return context
         if walkTasksLength == 1 and context['lastPressedKey'] is not None:
-            pyautogui.keyUp(context['lastPressedKey'])
+            keyUp(context['lastPressedKey'])
             context['lastPressedKey'] = None
         return context
 
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
-        nextWalkpoint = self.value
-        didTask = np.all(context['radar']['coordinate'] == nextWalkpoint) == True
+        # TODO: numbait
+        didTask = np.all(context['radar']['coordinate'] == self.walkpoint) == True
         return didTask
 
     # TODO: add unit tests
     def onDidTimeout(self, context: Context) -> Context:
-        context['currentTask'].status = 'completed'
-        context['currentTask'].finishedAt = time()
+        if context['lastPressedKey'] is not None:
+            keyUp(context['lastPressedKey'])
+            context['lastPressedKey'] = None
+        context['tasksOrchestrator'].reset()
         return context

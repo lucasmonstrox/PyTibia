@@ -1,37 +1,35 @@
 from typing import Union
-from src.repositories.gameWindow.creatures import getClosestCreature, hasTargetToCreature
-from .core.tasks.groupOfAttackClosestCreature import GroupOfAttackClosestCreatureTasks
-from .core.tasks.groupOfFollowTargetCreature import GroupOfFollowTargetCreatureTasks
+from src.repositories.gameWindow.creatures import hasTargetToCreature
+from .core.tasks.attackClosestCreature import AttackClosestCreatureTask
 from .typings import Context
 
 
 # TODO: add unit tests
-def resolveCavebotTasks(context: Context) -> Union[Union[GroupOfAttackClosestCreatureTasks, GroupOfFollowTargetCreatureTasks], None]:
+def resolveCavebotTasks(context: Context) -> Union[AttackClosestCreatureTask, None]:
+    currentTask = context['tasksOrchestrator'].getCurrentTask(context)
     if context['cavebot']['isAttackingSomeCreature']:
-        hasNoTargetCreature = context['cavebot']['targetCreature'] == None
-        if hasNoTargetCreature:
-            return None
-        hasNoTargetToTargetCreature = hasTargetToCreature(
-            context['gameWindow']['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False
-        if hasNoTargetToTargetCreature:
-            context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
-            hasNoClosestCreature = context['cavebot']['closestCreature'] == None
-            if hasNoClosestCreature:
-                return None
-            return GroupOfAttackClosestCreatureTasks(context)
-        # TODO: recalculate route if something cross walkpoints
-        return GroupOfFollowTargetCreatureTasks(context)
-    context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
-    hasNoClosestCreature = context['cavebot']['closestCreature'] == None
-    if hasNoClosestCreature:
-        return None
-    return GroupOfAttackClosestCreatureTasks(context)
+        if context['cavebot']['targetCreature'] == None:
+            return context
+        if hasTargetToCreature(
+            context['gameWindow']['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False:
+            if context['cavebot']['closestCreature'] == None:
+                return context
+            context['tasksOrchestrator'].setRootTask(AttackClosestCreatureTask())
+            return context
+        if currentTask is None or context['tasksOrchestrator'].rootTask.name != 'attackClosestCreature':
+            context['tasksOrchestrator'].setRootTask(AttackClosestCreatureTask())
+        return context
+    if context['cavebot']['closestCreature'] == None:
+        return context
+    context['tasksOrchestrator'].setRootTask(AttackClosestCreatureTask())
+    return context
 
 
 # TODO: add unit tests
 def shouldAskForCavebotTasks(context: Context) -> bool:
     if context['way'] != 'cavebot':
         return False
-    if context['currentTask'] is None:
+    currentTask = context['tasksOrchestrator'].getCurrentTask(context)
+    if currentTask is None:
         return True
-    return (context['currentTask'].name not in ['dropFlasks', 'groupOfLootCorpse', 'groupOfRefillChecker', 'groupOfSingleWalk', 'moveDownEast', 'moveDownNorth', 'moveDownSouth', 'moveDownWest', 'moveUpEast', 'moveUpNorth', 'moveUpSouth', 'moveUpWest', 'refillChecker', 'useRopeWaypoint', 'useShovelWaypoint'])
+    return (currentTask.name not in ['dropFlasks', 'lootCorpse', 'moveDown', 'moveUp', 'refillChecker', 'singleWalk', 'refillChecker', 'useRopeWaypoint', 'useShovelWaypoint'])

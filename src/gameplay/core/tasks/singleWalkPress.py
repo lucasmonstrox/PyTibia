@@ -1,23 +1,23 @@
 import numpy as np
-import pyautogui
 from time import time
 from src.repositories.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from src.repositories.skills.core import getSpeed
 from src.utils.coordinate import getDirectionBetweenCoordinates
+from src.utils.keyboard import press
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class SingleWalkPressTask(BaseTask):
     # TODO: add types
     def __init__(self, context: Context, value):
         super().__init__()
+        self.name = 'singleWalkPress'
         charSpeed = getSpeed(context['screenshot'])
         tileFriction = getTileFrictionByCoordinate(value)
         movementSpeed = getBreakpointTileMovementSpeed(
             charSpeed, tileFriction)
         self.delayOfTimeout = (movementSpeed * 2) / 1000
-        self.name = 'singleWalkPress'
         self.value = value
 
     # TODO: add unit tests
@@ -30,7 +30,7 @@ class SingleWalkPressTask(BaseTask):
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
         direction = getDirectionBetweenCoordinates(context['radar']['coordinate'], self.value)
-        pyautogui.press(direction)
+        press(direction)
         return context
 
     # TODO: add unit tests
@@ -41,6 +41,6 @@ class SingleWalkPressTask(BaseTask):
 
     # TODO: add unit tests
     def onDidTimeout(self, context: Context) -> Context:
-        context['currentTask'].status = 'completed'
-        context['currentTask'].finishedAt = time()
+        self.parentTask.status = 'completed'
+        self.parentTask.finishedAt = time()
         return context

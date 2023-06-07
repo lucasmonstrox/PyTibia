@@ -20,17 +20,13 @@ def getAroundPixelsCoordinates(pixelCoordinate: XYCoordinate) -> List[XYCoordina
 def getAvailableAroundPixelsCoordinates(aroundPixelsCoordinates: List[XYCoordinate], walkableFloorSqms: np.ndarray) -> List[XYCoordinate]:
     yPixelsCoordinates = aroundPixelsCoordinates[:, 1]
     xPixelsCoordinates = aroundPixelsCoordinates[:, 0]
-    walkableFloorSqmsByPixelsCoordinates = walkableFloorSqms[yPixelsCoordinates,
-                                                             xPixelsCoordinates]
-    nonzero = np.nonzero(walkableFloorSqmsByPixelsCoordinates)[0]
-    availableAroundPixelsCoordinates = np.take(
+    nonzero = np.nonzero(walkableFloorSqms[yPixelsCoordinates, xPixelsCoordinates])[0]
+    return np.take(
         aroundPixelsCoordinates, nonzero, axis=0)
-    return availableAroundPixelsCoordinates
 
 
 # TODO: add unit tests
 def getAvailableAroundCoordinates(coordinate: Coordinate, walkableFloorSqms: np.ndarray) -> CoordinateList:
-    floor = coordinate[2]
     pixelCoordinate = getPixelFromCoordinate(coordinate)
     aroundPixelsCoordinates = getAroundPixelsCoordinates(pixelCoordinate)
     availableAroundPixelsCoordinates = getAvailableAroundPixelsCoordinates(
@@ -38,10 +34,9 @@ def getAvailableAroundCoordinates(coordinate: Coordinate, walkableFloorSqms: np.
     xCoordinates = availableAroundPixelsCoordinates[:, 0] + 31744
     yCoordinates = availableAroundPixelsCoordinates[:, 1] + 30976
     floors = np.broadcast_to(
-        floor, (availableAroundPixelsCoordinates.shape[0]))
-    availableAroundCoordinates = np.column_stack(
+        coordinate[2], (availableAroundPixelsCoordinates.shape[0]))
+    return np.column_stack(
         (xCoordinates, yCoordinates, floors))
-    return availableAroundCoordinates
 
 
 # TODO: add unit tests

@@ -4,37 +4,38 @@ from src.repositories.inventory.config import slotsImagesHashes
 from src.repositories.inventory.core import images
 from src.shared.typings import Slot
 from src.utils.core import hashit, locate
-from src.utils.mouse import mouseDrag
+from src.utils.mouse import drag
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class DropEachFlaskTask(BaseTask):
     def __init__(self, backpack: str):
         super().__init__()
-        self.delayOfTimeout = 1
         self.name = 'dropEachFlask'
+        self.delayOfTimeout = 1
         self.terminable = False
-        self.value = backpack
         self.slotIndex = 0
+        self.backpack = backpack
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
         (item, position) = self.getSlot(context, self.slotIndex)
+        # TODO: also check if item is next backpack
         if item is None:
             self.slotIndex += 1
             return context
         if item == 'empty slot':
             self.terminable = True
             return context
-        slotPosX, slotPosY = getSlotPosition((7, 5), context['gameWindow']['coordinate'])
-        mouseDrag(position[0], position[1], slotPosX, slotPosY)
+        slotPosition = getSlotPosition((7, 5), context['gameWindow']['coordinate'])
+        drag((position[0], position[1]), slotPosition)
         time.sleep(1)
         return context
 
     # TODO: add unit tests
     def getSlot(self, context: Context, slotIndex: int) -> Slot:
-        backpackBarPosition = locate(context['screenshot'], images['containersBars'][self.value], confidence=0.8)
+        backpackBarPosition = locate(context['screenshot'], images['containersBars'][self.backpack], confidence=0.8)
         if backpackBarPosition is None:
             return (None, (0, 0))
         slotXIndex = slotIndex % 4

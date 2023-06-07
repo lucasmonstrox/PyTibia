@@ -4,15 +4,16 @@ from src.repositories.skills.core import getCapacity
 from src.shared.typings import Waypoint
 from src.utils.array import getNextArrayIndex
 from ...typings import Context
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class RefillCheckerTask(BaseTask):
     def __init__(self, waypoint: Waypoint):
         super().__init__()
-        self.delayAfterComplete = 1
         self.name = 'refillChecker'
-        self.value = waypoint
+        self.delayAfterComplete = 1
+        self.isRootTask = True
+        self.waypoint = waypoint
 
     # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:
@@ -24,19 +25,19 @@ class RefillCheckerTask(BaseTask):
         quantityOfManaPotions = getSlotCount(context['screenshot'], 2)
         if quantityOfManaPotions is None:
             return False
-        hasEnoughHealthPotions = quantityOfHealthPotions > self.value[
+        hasEnoughHealthPotions = quantityOfHealthPotions > self.waypoint[
             'options']['minimumOfHealthPotions']
-        hasEnoughManaPotions = quantityOfManaPotions > self.value['options']['minimumOfManaPotions']
+        hasEnoughManaPotions = quantityOfManaPotions > self.waypoint['options']['minimumOfManaPotions']
         capacity = getCapacity(context['screenshot'])
         if capacity is None:
             return False
-        hasEnoughCapacity = capacity > self.value['options']['minimumOfCapacity']
+        hasEnoughCapacity = capacity > self.waypoint['options']['minimumOfCapacity']
         shouldIgnoreTask = hasEnoughHealthPotions and hasEnoughManaPotions and hasEnoughCapacity
         return shouldIgnoreTask
 
     # TODO: add unit tests
     def onIgnored(self, context: Context) -> Context:
-        labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.value['options']['waypointLabelToRedirect'])[0]
+        labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.waypoint['options']['waypointLabelToRedirect'])[0]
         if len(labelIndexes) == 0:
             # TODO: raise error
             return context
@@ -46,7 +47,7 @@ class RefillCheckerTask(BaseTask):
         return context
 
     # TODO: add unit tests
-    def onDidComplete(self, context: Context) -> Context:
+    def onComplete(self, context: Context) -> Context:
         nextWaypointIndex = getNextArrayIndex(
             context['cavebot']['waypoints']['points'], context['cavebot']['waypoints']['currentIndex'])
         context['cavebot']['waypoints']['currentIndex'] = nextWaypointIndex

@@ -1,7 +1,7 @@
 from src.utils.array import getNextArrayIndex
 from ...typings import Context
 from ..waypoint import resolveGoalCoordinate
-from .baseTask import BaseTask
+from .common.base import BaseTask
 
 
 class SetNextWaypointTask(BaseTask):

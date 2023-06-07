@@ -1,25 +1,22 @@
-import numpy as np
 from ...typings import Context
-from ..tasks.closeProcess import CloseProcessTask
-from ..tasks.pauseBot import PauseBotTask
-from ..tasks.pressLogoutKeys import PressLogoutKeys
-from ..typings import Task
-from .groupTask import GroupTask
+# from .pauseBot import PauseBotTask
+from .common.vector import VectorTask
+from .closeProcess import CloseProcessTask
+from .pressLogoutKeys import PressLogoutKeys
 
 
-class LogoutTask(GroupTask):
-    def __init__(self, context: Context):
+class LogoutTask(VectorTask):
+    def __init__(self):
         super().__init__()
+        self.name = 'logout'
+        self.isRootTask = True
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
-        self.name = 'logout'
-        self.tasks = self.generateTasks(context)
 
     # TODO: add unit tests
-    # TODO: add typings
-    def generateTasks(self, context: Context):
-        return np.array([
-            # ('pauseBot', PauseBotTask()),
-            ('pressKeys', PressLogoutKeys(['ctrl', 'q'])),
-            ('closeProcess', CloseProcessTask())
-        ], dtype=Task)
+    def onBeforeStart(self, context: Context) -> Context:
+        self.tasks = [
+            PressLogoutKeys(['ctrl', 'q']).setParentTask(self).setRootTask(self),
+            CloseProcessTask().setParentTask(self).setRootTask(self)
+        ]
+        return context
