@@ -33,7 +33,7 @@ class MoveUp(BaseTask):
         return didTask
 
     # TODO: add unit tests
-    def onDidTimeout(self, context: Context) -> Context:
+    def onTimeout(self, context: Context) -> Context:
         # TODO: avoid it. Task should retry
         self.parentTask.status = 'completed'
         self.parentTask.status.finishedAt = time()
