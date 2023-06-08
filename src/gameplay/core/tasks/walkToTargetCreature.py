@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.spatial import distance
 from src.gameplay.typings import Context
-from src.utils.keyboard import keyUp
 from ...typings import Context
 from ...utils import releaseKeys
 from ..waypoint import generateFloorWalkpoints
@@ -9,7 +8,7 @@ from .common.vector import VectorTask
 from .walk import WalkTask
 
 
-class WalkToTargetCreature(VectorTask):
+class WalkToTargetCreatureTask(VectorTask):
     def __init__(self):
         super().__init__()
         self.name = 'walkToTargetCreature'
