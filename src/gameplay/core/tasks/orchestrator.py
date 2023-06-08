@@ -7,10 +7,22 @@ class TasksOrchestrator:
         super().__init__()
         self.rootTask = rootTask
 
-    def setRootTask(self, rootTask):
-        self.rootTask = rootTask
-        # terminate all tasks in the tree
+    # TODO: add types
+    # TODO: add unit tests
+    def setRootTask(self, context: Context, task):
+        currentTask = self.getCurrentTask(context)
+        if currentTask is not None:
+            self.interruptTasks(context, currentTask)
+        self.rootTask = task
 
+    # TODO: add unit tests
+    def interruptTasks(self, context: Context, task) -> Context:
+        context = task.onInterrupt(context)
+        if task.parentTask is not None:
+            return self.interruptTasks(context, task.parentTask)
+        return context
+
+    # TODO: add unit tests
     def reset(self):
         self.rootTask = None
         # terminate all tasks in the tree

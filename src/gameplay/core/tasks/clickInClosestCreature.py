@@ -33,6 +33,7 @@ class ClickInClosestCreatureTask(BaseTask):
         return didTask
 
     # TODO: add unit tests
-    def onDidTimeout(self, context: Context) -> Context:
+    def onTimeout(self, context: Context) -> Context:
+        # TODO: avoid this, tree should not be reseted manually
         context['tasksOrchestrator'].reset()
         return context

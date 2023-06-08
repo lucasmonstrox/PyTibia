@@ -33,7 +33,7 @@ class MoveDown(BaseTask):
         return didTask
 
     # TODO: add unit tests
-    def onDidTimeout(self, context: Context) -> Context:
+    def onTimeout(self, context: Context) -> Context:
         # TODO: avoid it. Task should retry
         # TODO: add way to cancel/complete parent automatically
         self.parentTask.status = 'completed'

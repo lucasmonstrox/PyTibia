@@ -62,16 +62,16 @@ def main():
         # TODO: mover isso fora daqui
         context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
         currentTask = context['tasksOrchestrator'].getCurrentTask(context)
-        if currentTask is not None and currentTask.name == 'selectLootTab':
+        if currentTask is not None and currentTask.name == 'selectChatTab':
             return context
         if len(context['loot']['corpsesToLoot']) > 0:
             context['way'] = 'lootCorpses'
             if currentTask is not None and currentTask.name != 'lootCorpse':
-                context['tasksOrchestrator'].setRootTask(None)
-            if context['tasksOrchestrator'].getCurrentTask() is None:
+                context['tasksOrchestrator'].setRootTask(context, None)
+            if context['tasksOrchestrator'].getCurrentTask(context) is None:
                 # TODO: get closest dead corpse
                 firstDeadCorpse = context['loot']['corpsesToLoot'][0]
-                context['tasksOrchestrator'].setRootTask(LootCorpseTask(firstDeadCorpse))
+                context['tasksOrchestrator'].setRootTask(context, LootCorpseTask(firstDeadCorpse))
             context['gameWindow']['previousMonsters'] = context['gameWindow']['monsters']
             return context
         hasCreaturesToAttackAfterCheck = hasCreaturesToAttack(context)
@@ -91,7 +91,7 @@ def main():
             if context['tasksOrchestrator'].getCurrentTask(context) is None:
                 currentWaypointIndex = context['cavebot']['waypoints']['currentIndex']
                 currentWaypoint = context['cavebot']['waypoints']['points'][currentWaypointIndex]
-                context['tasksOrchestrator'].setRootTask(resolveTasksByWaypoint(currentWaypoint))
+                context['tasksOrchestrator'].setRootTask(context, resolveTasksByWaypoint(currentWaypoint))
         context['gameWindow']['previousMonsters'] = context['gameWindow']['monsters']
         return context
 

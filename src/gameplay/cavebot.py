@@ -14,14 +14,14 @@ def resolveCavebotTasks(context: Context) -> Union[AttackClosestCreatureTask, No
             context['gameWindow']['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False:
             if context['cavebot']['closestCreature'] == None:
                 return context
-            context['tasksOrchestrator'].setRootTask(AttackClosestCreatureTask())
+            context['tasksOrchestrator'].setRootTask(context, AttackClosestCreatureTask())
             return context
         if currentTask is None or context['tasksOrchestrator'].rootTask.name != 'attackClosestCreature':
-            context['tasksOrchestrator'].setRootTask(AttackClosestCreatureTask())
+            context['tasksOrchestrator'].setRootTask(context, AttackClosestCreatureTask())
         return context
     if context['cavebot']['closestCreature'] == None:
         return context
-    context['tasksOrchestrator'].setRootTask(AttackClosestCreatureTask())
+    context['tasksOrchestrator'].setRootTask(context, AttackClosestCreatureTask())
     return context
 
 

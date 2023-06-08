@@ -11,71 +11,70 @@ from ..tasks.selectChatTab import SelectChatTabTask
 
 
 # TODO: add unit tests
-def setDirectionMiddleware(gameContext: Context) -> Context:
-    if gameContext['radar']['previousCoordinate'] is None:
-        gameContext['radar']['previousCoordinate'] = gameContext['radar']['coordinate']
-    if gameContext['radar']['coordinate'][0] != gameContext['radar']['previousCoordinate'][0] or gameContext['radar']['coordinate'][1] != gameContext['radar']['previousCoordinate'][1] or gameContext['radar']['coordinate'][2] != gameContext['radar']['previousCoordinate'][2]:
+def setDirectionMiddleware(context: Context) -> Context:
+    if context['radar']['previousCoordinate'] is None:
+        context['radar']['previousCoordinate'] = context['radar']['coordinate']
+    if context['radar']['coordinate'][0] != context['radar']['previousCoordinate'][0] or context['radar']['coordinate'][1] != context['radar']['previousCoordinate'][1] or context['radar']['coordinate'][2] != context['radar']['previousCoordinate'][2]:
         comingFromDirection = None
-        if gameContext['radar']['coordinate'][2] != gameContext['radar']['previousCoordinate'][2]:
+        if context['radar']['coordinate'][2] != context['radar']['previousCoordinate'][2]:
             comingFromDirection = None
-        elif gameContext['radar']['coordinate'][0] != gameContext['radar']['previousCoordinate'][0] and gameContext['radar']['coordinate'][1] != gameContext['radar']['previousCoordinate'][1]:
+        elif context['radar']['coordinate'][0] != context['radar']['previousCoordinate'][0] and context['radar']['coordinate'][1] != context['radar']['previousCoordinate'][1]:
             comingFromDirection = None
-        elif gameContext['radar']['coordinate'][0] != gameContext['radar']['previousCoordinate'][0]:
-            comingFromDirection = 'left' if gameContext['radar']['coordinate'][0] > gameContext['radar']['previousCoordinate'][0] else 'right'
-        elif gameContext['radar']['coordinate'][1] != gameContext['radar']['previousCoordinate'][1]:
-            comingFromDirection = 'top' if gameContext['radar']['coordinate'][1] > gameContext['radar']['previousCoordinate'][1] else 'bottom'
-        gameContext['comingFromDirection'] = comingFromDirection
-    # if gameContext['gameWindow']['previousGameWindowImage'] is not None:
-    #     gameContext['gameWindow']['walkedPixelsInSqm'] = getWalkedPixels(gameContext)
-    gameContext['gameWindow']['previousGameWindowImage'] = gameContext['gameWindow']['image']
-    gameContext['radar']['previousCoordinate'] = gameContext['radar']['coordinate']
-    return gameContext
+        elif context['radar']['coordinate'][0] != context['radar']['previousCoordinate'][0]:
+            comingFromDirection = 'left' if context['radar']['coordinate'][0] > context['radar']['previousCoordinate'][0] else 'right'
+        elif context['radar']['coordinate'][1] != context['radar']['previousCoordinate'][1]:
+            comingFromDirection = 'top' if context['radar']['coordinate'][1] > context['radar']['previousCoordinate'][1] else 'bottom'
+        context['comingFromDirection'] = comingFromDirection
+    # if context['gameWindow']['previousGameWindowImage'] is not None:
+    #     context['gameWindow']['walkedPixelsInSqm'] = getWalkedPixels(context)
+    context['gameWindow']['previousGameWindowImage'] = context['gameWindow']['image']
+    context['radar']['previousCoordinate'] = context['radar']['coordinate']
+    return context
 
 
 # TODO: add unit tests
-def setHandleLootMiddleware(gameContext: Context) -> Context:
-    endlessTasks = ['depositGold', 'refill', 'selectChatTab']
-    currentTask = gameContext['tasksOrchestrator'].getCurrentTask(gameContext)
-    if (currentTask is None or currentTask.name not in endlessTasks):
-        lootTab = gameContext['chat']['tabs'].get('loot')
-        hasChatTab = lootTab is not None
-        if hasChatTab and not lootTab['isSelected']:
-            gameContext['tasksOrchestrator'].reset()
-            gameContext['tasksOrchestrator'].setRootTask(SelectChatTabTask('loot'))
-    if hasNewLoot(gameContext['screenshot']):
-        if gameContext['cavebot']['previousTargetCreature'] is not None:
-            gameContext['loot']['corpsesToLoot'] = np.append(gameContext['loot']['corpsesToLoot'], [gameContext['cavebot']['previousTargetCreature']], axis=0)
-            gameContext['cavebot']['previousTargetCreature'] = None
-        hasSpelledExoriCategory = gameContext['comboSpells']['lastUsedSpell'] is not None and gameContext['comboSpells']['lastUsedSpell'] in ['exori', 'exori gran', 'exori mas']
-        if hasSpelledExoriCategory:
-            spellPath = getSpellPath(gameContext['comboSpells']['lastUsedSpell'])
-            if len(spellPath) > 0:
-                differentCreatures = getDifferentCreaturesBySlots(gameContext['gameWindow']['previousMonsters'], gameContext['gameWindow']['monsters'], spellPath)
-                gameContext['loot']['corpsesToLoot'] = np.append(gameContext['loot']['corpsesToLoot'], differentCreatures, axis=0)
-            gameContext['comboSpells']['lastUsedSpell'] = None
-    gameContext['cavebot']['targetCreature'] = getTargetCreature(gameContext['gameWindow']['monsters'])
-    if gameContext['cavebot']['targetCreature'] is not None:
-        gameContext['cavebot']['previousTargetCreature'] = gameContext['cavebot']['targetCreature']
-    return gameContext
+def setHandleLootMiddleware(context: Context) -> Context:
+    # endlessTasks = ['depositGold', 'refill', 'selectChatTab']
+    # currentTask = context['tasksOrchestrator'].getCurrentTask(context)
+    # if (currentTask is None or currentTask.name not in endlessTasks):
+    #     lootTab = context['chat']['tabs'].get('loot')
+    #     hasChatTab = lootTab is not None
+    #     if hasChatTab and not lootTab['isSelected']:
+    #         context['tasksOrchestrator'].setRootTask(context, SelectChatTabTask('loot'))
+    # if hasNewLoot(context['screenshot']):
+    #     if context['cavebot']['previousTargetCreature'] is not None:
+    #         context['loot']['corpsesToLoot'] = np.append(context['loot']['corpsesToLoot'], [context['cavebot']['previousTargetCreature']], axis=0)
+    #         context['cavebot']['previousTargetCreature'] = None
+    #     hasSpelledExoriCategory = context['comboSpells']['lastUsedSpell'] is not None and context['comboSpells']['lastUsedSpell'] in ['exori', 'exori gran', 'exori mas']
+    #     if hasSpelledExoriCategory:
+    #         spellPath = getSpellPath(context['comboSpells']['lastUsedSpell'])
+    #         if len(spellPath) > 0:
+    #             differentCreatures = getDifferentCreaturesBySlots(context['gameWindow']['previousMonsters'], context['gameWindow']['monsters'], spellPath)
+    #             context['loot']['corpsesToLoot'] = np.append(context['loot']['corpsesToLoot'], differentCreatures, axis=0)
+    #         context['comboSpells']['lastUsedSpell'] = None
+    context['cavebot']['targetCreature'] = getTargetCreature(context['gameWindow']['monsters'])
+    if context['cavebot']['targetCreature'] is not None:
+        context['cavebot']['previousTargetCreature'] = context['cavebot']['targetCreature']
+    return context
 
 
 # TODO: add unit tests
-def setGameWindowMiddleware(gameContext: Context) -> Context:
-    gameWindowSize = gameWindowSizes[gameContext['resolution']]
-    gameContext['gameWindow']['coordinate'] = getCoordinate(
-        gameContext['screenshot'], gameWindowSize)
-    gameContext['gameWindow']['image'] = getImageByCoordinate(
-        gameContext['screenshot'], gameContext['gameWindow']['coordinate'], gameWindowSize)
-    return gameContext
+def setGameWindowMiddleware(context: Context) -> Context:
+    gameWindowSize = gameWindowSizes[context['resolution']]
+    context['gameWindow']['coordinate'] = getCoordinate(
+        context['screenshot'], gameWindowSize)
+    context['gameWindow']['image'] = getImageByCoordinate(
+        context['screenshot'], context['gameWindow']['coordinate'], gameWindowSize)
+    return context
 
 
 # TODO: add unit tests
-def setGameWindowCreaturesMiddleware(gameContext: Context) -> Context:
-    beingAttackedCreatureCategory = getBeingAttackedCreatureCategory(gameContext['battleList']['creatures'])
-    gameContext['battleList']['beingAttackedCreatureCategory'] = beingAttackedCreatureCategory
-    gameContext['gameWindow']['creatures'] = getCreatures(
-        gameContext['battleList']['creatures'], gameContext['comingFromDirection'], gameContext['gameWindow']['coordinate'], gameContext['gameWindow']['image'], gameContext['radar']['coordinate'], beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=gameContext['gameWindow']['walkedPixelsInSqm'])
-    hasNoGameWindowCreatures = len(gameContext['gameWindow']['creatures']) == 0
-    gameContext['gameWindow']['monsters'] = np.array([], dtype=Creature) if hasNoGameWindowCreatures else getCreaturesByType(gameContext['gameWindow']['creatures'], 'monster')
-    gameContext['gameWindow']['players'] = np.array([], dtype=Creature) if hasNoGameWindowCreatures else getCreaturesByType(gameContext['gameWindow']['creatures'], 'player')
-    return gameContext
+def setGameWindowCreaturesMiddleware(context: Context) -> Context:
+    beingAttackedCreatureCategory = getBeingAttackedCreatureCategory(context['battleList']['creatures'])
+    context['battleList']['beingAttackedCreatureCategory'] = beingAttackedCreatureCategory
+    context['gameWindow']['creatures'] = getCreatures(
+        context['battleList']['creatures'], context['comingFromDirection'], context['gameWindow']['coordinate'], context['gameWindow']['image'], context['radar']['coordinate'], beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=context['gameWindow']['walkedPixelsInSqm'])
+    hasNoGameWindowCreatures = len(context['gameWindow']['creatures']) == 0
+    context['gameWindow']['monsters'] = np.array([], dtype=Creature) if hasNoGameWindowCreatures else getCreaturesByType(context['gameWindow']['creatures'], 'monster')
+    context['gameWindow']['players'] = np.array([], dtype=Creature) if hasNoGameWindowCreatures else getCreaturesByType(context['gameWindow']['creatures'], 'player')
+    return context
