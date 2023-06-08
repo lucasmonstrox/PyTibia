@@ -1,10 +1,10 @@
-from src.utils.keyboard import keyDown, keyUp, press
-from src.utils.mouse import leftClick
+import src.utils.keyboard as keyboard
+import src.utils.mouse as mouse
 from ...typings import Context
 from .common.base import BaseTask
 
 
-# TODO: make task retriable
+# TODO: make task retriable like 2/3 times until destroy
 class ClickInClosestCreatureTask(BaseTask):
     def __init__(self):
         super().__init__()
@@ -15,19 +15,17 @@ class ClickInClosestCreatureTask(BaseTask):
         shouldIgnoreTask = context['cavebot']['targetCreature'] is not None
         return shouldIgnoreTask
 
-    # TODO: add unit tests
     def do(self, context: Context) -> Context:
         ignoreHotkeyAttack = len(context['gameWindow']['players']) > 0 or context['targeting']['hasIgnorableCreatures']
         if ignoreHotkeyAttack:
-            keyDown('alt')
-            leftClick(context['cavebot']['closestCreature']['windowCoordinate'])
-            keyUp('alt')
+            keyboard.keyDown('alt')
+            mouse.leftClick(context['cavebot']['closestCreature']['windowCoordinate'])
+            keyboard.keyUp('alt')
             return context
         # TODO: bind automatically
-        press('space')
+        keyboard.press('space')
         return context
 
-    # TODO: add unit tests
     def did(self, context: Context) -> bool:
         didTask = context['cavebot']['isAttackingSomeCreature']
         return didTask
