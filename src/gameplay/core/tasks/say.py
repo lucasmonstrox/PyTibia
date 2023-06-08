@@ -13,7 +13,6 @@ class SayTask(BaseTask):
         self.delayAfterComplete = 2
         self.phrase = phrase
 
-    # TODO: add unit tests
     def do(self, context: Context) -> Context:
         keyboard.write(self.phrase)
         keyboard.press('enter')
