@@ -23,7 +23,7 @@ def comboSpellsObserver(context: Context):
             tasksOrchestrator.do(context)
             return
     nearestCreaturesCount = getNearestCreaturesCount(context['gameWindow']['monsters'])
-    if getNearestCreaturesCount(context['gameWindow']['monsters']) == 0:
+    if nearestCreaturesCount == 0:
         return
     if context['comboSpells']['enabled'] == False:
         return
