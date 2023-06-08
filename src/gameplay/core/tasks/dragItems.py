@@ -9,6 +9,7 @@ from ...typings import Context
 from .common.base import BaseTask
 
 
+# TODO: check if item was moved on did. Is possible to check it by cap
 class DragItemsTask(BaseTask):
     def __init__(self, containerBarImage: GrayImage, targetContainerImage: GrayImage):
         super().__init__()
@@ -35,7 +36,3 @@ class DragItemsTask(BaseTask):
             return context
         self.terminable = True
         return context
-
-    # TODO: check if item was moved. Is possible to check it by cap
-    def did(self, _: Context) -> bool:
-        return True
