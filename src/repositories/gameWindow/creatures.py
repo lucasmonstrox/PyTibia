@@ -410,4 +410,4 @@ def makeCreature(creatureName: str, creatureType: str, creatureBar: Tuple[int, i
     windowCoordinate = (gameWindowCoordinate[0] + xCoordinate, gameWindowCoordinate[1] + yCoordinate)
     gameWindowCoordinate = (xCoordinate + gameWindowMisalignmentX, yCoordinate + gameWindowMisalignmentY)
     isUnderRoof = gameWindowImage[creatureBar[1] + 1, creatureBar[0] + 1] == 192
-    return (creatureName, creatureType, isBeingAttacked, slot, coordinate, windowCoordinate , gameWindowCoordinate, isUnderRoof)
+    return (creatureName, creatureType, isBeingAttacked, slot, coordinate, windowCoordinate, gameWindowCoordinate, isUnderRoof)
