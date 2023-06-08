@@ -22,7 +22,6 @@ class DepositItemsTask(VectorTask):
         self.isRootTask = True
         self.waypoint = waypoint
 
-    # TODO: add unit tests
     def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
             GoToFreeDepotTask(self.waypoint).setParentTask(self).setRootTask(self),

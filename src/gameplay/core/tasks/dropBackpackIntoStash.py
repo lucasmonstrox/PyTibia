@@ -11,11 +11,11 @@ class DropBackpackIntoStashTask(BaseTask):
         super().__init__()
         self.name = 'dropBackpackIntoStash'
         self.delayAfterComplete = 1
-        self.value = backpack
+        self.backpack = backpack
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        backpackPosition = locate(context['screenshot'], images['slots'][self.value], confidence=0.8)
+        backpackPosition = locate(context['screenshot'], images['slots'][self.backpack], confidence=0.8)
         stashPosition = locate(context['screenshot'], images['slots']['stash'])
         drag((backpackPosition[0], backpackPosition[1]), (stashPosition[0], stashPosition[1]))
         return context

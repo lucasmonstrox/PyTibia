@@ -11,18 +11,17 @@ class ScrollToItemTask(BaseTask):
         super().__init__()
         self.name = 'scrollToItem'
         self.terminable = False
-        self.value = (containerImage, itemImage)
-        self.itemPosition = None
+        self.containerImage = containerImage
+        self.itemImage = itemImage
 
     # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:
-        itemPosition = self.getItemPosition(context['screenshot'])
-        isItemVisible = itemPosition is not None
-        return isItemVisible
+        shouldIgnoreTask = self.getItemPosition(context['screenshot']) is not None
+        return shouldIgnoreTask
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        containerPosition = locate(context['screenshot'], self.value[0], confidence=0.8)
+        containerPosition = locate(context['screenshot'], self.containerImage, confidence=0.8)
         moveTo((containerPosition[0] + 10, containerPosition[1] + 15))
         scroll(-10)
         return context
@@ -30,11 +29,10 @@ class ScrollToItemTask(BaseTask):
     # TODO: add unit tests
     def ping(self, context: Context) -> Context:
         itemPosition = self.getItemPosition(context['screenshot'])
-        isItemVisible = itemPosition is not None
-        if isItemVisible:
+        if itemPosition is not None:
             self.terminable = True
         return context
 
     # TODO: add unit tests
     def getItemPosition(self, screenshot: GrayImage) -> Union[BBox, None]:
-        return locate(screenshot, self.value[1], confidence=0.8)
+        return locate(screenshot, self.itemImage, confidence=0.8)
