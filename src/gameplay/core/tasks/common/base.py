@@ -63,6 +63,10 @@ class BaseTask:
     # TODO: add unit tests
     def onIgnored(self, context: Context) -> Context:
         return context
+    
+    # TODO: add unit tests
+    def onInterrupt(self, context: Context) -> Context:
+        return context
 
     # TODO: add unit tests
     def onComplete(self, context: Context) -> Context:
