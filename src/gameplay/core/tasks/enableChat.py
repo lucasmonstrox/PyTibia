@@ -1,10 +1,11 @@
 from src.gameplay.typings import Context
-from src.repositories.chat.core import getChatStatus
-from src.utils.keyboard import press
+import src.repositories.chat.core as chatCore
+import src.utils.keyboard as keyboard
 from ...typings import Context
 from .common.base import BaseTask
 
 
+# TODO: check if chat is off on did
 class EnableChatTask(BaseTask):
     def __init__(self):
         super().__init__()
@@ -13,15 +14,10 @@ class EnableChatTask(BaseTask):
         self.delayAfterComplete = 2
 
     def shouldIgnore(self, context: Context) -> bool:
-        (_, chatIsOn) = getChatStatus(context['screenshot'])
+        (_, chatIsOn) = chatCore.getChatStatus(context['screenshot'])
         shouldIgnoreTask = chatIsOn == True
         return shouldIgnoreTask
 
-    # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        press('enter')
+        keyboard.press('enter')
         return context
-
-    # TODO: check if chat is off
-    def did(self, _: Context) -> bool:
-        return True
