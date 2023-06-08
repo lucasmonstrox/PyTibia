@@ -36,5 +36,8 @@ def scroll(clicks: int):
 
 # TODO: add types
 # TODO: add unit tests
-def rightClick(windowCoordinate):
+def rightClick(windowCoordinate=None):
+    if windowCoordinate is None:
+        pyautogui.rightClick()
+        return
     pyautogui.rightClick(windowCoordinate[0], windowCoordinate[1])
