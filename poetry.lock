@@ -2547,14 +2547,6 @@ dev = ["pre-commit (==2.21.0)", "pre-commit (==3.2.2)", "pytest (==7.3.0)", "pyt
 docs = ["furo (==2023.3.27)", "pyenchant (==3.2.2)", "sphinx (==6.1.3)", "sphinx-autobuild (==2021.3.14)", "sphinx-tabs (==3.4.1)", "sphinxcontrib-spelling (==8.0.0)"]
 
 [[package]]
-name = "rx"
-version = "3.2.0"
-description = "Reactive Extensions (Rx) for Python"
-category = "main"
-optional = false
-python-versions = ">=3.6.0"
-
-[[package]]
 name = "scipy"
 version = "1.10.1"
 description = "Fundamental algorithms for scientific computing in Python"
@@ -2650,7 +2642,7 @@ python-versions = ">=3.6"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.9.13"
-content-hash = "1e639e4132591f93bd8506e5c9d2447ce5f9c4aa77461d4dad55cbde6dad7b60"
+content-hash = "fd011b167b25276e84f0b5ab50bec9d888e0462f39cd43ba51e10ab07811ce45"
 
 [metadata.files]
 certifi = [
@@ -4086,10 +4078,6 @@ requests = [
 rubicon-objc = [
     {file = "rubicon-objc-0.4.6.tar.gz", hash = "sha256:faa6e373deab93ba70881354b884137b80403ce78fca2380f189cb338b350926"},
     {file = "rubicon_objc-0.4.6-py3-none-any.whl", hash = "sha256:d4ec8892771bf7ac9569c1310c3beb80bb516c3df0323e6ffd63442b246dfddd"},
-]
-rx = [
-    {file = "Rx-3.2.0-py3-none-any.whl", hash = "sha256:922c5f4edb3aa1beaa47bf61d65d5380011ff6adcd527f26377d05cb73ed8ec8"},
-    {file = "Rx-3.2.0.tar.gz", hash = "sha256:b657ca2b45aa485da2f7dcfd09fac2e554f7ac51ff3c2f8f2ff962ecd963d91c"},
 ]
 scipy = [
     {file = "scipy-1.10.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:e7354fd7527a4b0377ce55f286805b34e8c54b91be865bac273f527e1b839019"},
