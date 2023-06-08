@@ -11,7 +11,7 @@ from .core.tasks.refillChecker import RefillCheckerTask
 from .core.tasks.singleWalk import SingleWalkTask
 from .core.tasks.useRopeWaypoint import UseRopeWaypointTask
 from .core.tasks.useShovelWaypoint import UseShovelWaypointTask
-from .core.tasks.walkToWaypoint import WalkToWaypoint
+from .core.tasks.walkToWaypoint import WalkToWaypointTask
 
 
 # TODO: add unit tests
@@ -37,4 +37,4 @@ def resolveTasksByWaypoint(waypoint: Waypoint) -> Union[BaseTask, VectorTask]:
     elif waypoint['type'] == 'useShovel':
         return UseShovelWaypointTask(waypoint)
     elif waypoint['type'] == 'walk':
-        return WalkToWaypoint(waypoint['coordinate'])
+        return WalkToWaypointTask(waypoint['coordinate'])

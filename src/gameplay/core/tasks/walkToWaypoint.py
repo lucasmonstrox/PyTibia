@@ -2,10 +2,10 @@ from src.repositories.radar.typings import Coordinate
 from ...typings import Context
 from .common.vector import VectorTask
 from .setNextWaypoint import SetNextWaypointTask
-from .walkToCoordinate import WalkToCoordinate
+from .walkToCoordinate import WalkToCoordinateTask
 
 
-class WalkToWaypoint(VectorTask):
+class WalkToWaypointTask(VectorTask):
     def __init__(self, coordinate: Coordinate):
         super().__init__()
         self.name = 'walkToWaypoint'
@@ -13,10 +13,9 @@ class WalkToWaypoint(VectorTask):
         self.isRootTask = True
         self.coordinate = coordinate
 
-    # TODO: add unit tests
     def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
-            WalkToCoordinate(self.coordinate).setParentTask(self).setRootTask(self),
+            WalkToCoordinateTask(self.coordinate).setParentTask(self).setRootTask(self),
             SetNextWaypointTask().setParentTask(self).setRootTask(self),
         ]
         return context

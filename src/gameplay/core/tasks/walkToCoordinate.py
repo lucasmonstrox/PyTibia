@@ -8,7 +8,7 @@ from .common.vector import VectorTask
 from .walk import WalkTask
 
 
-class WalkToCoordinate(VectorTask):
+class WalkToCoordinateTask(VectorTask):
     def __init__(self, coordinate: Coordinate):
         super().__init__()
         self.name = 'walkToCoordinate'
