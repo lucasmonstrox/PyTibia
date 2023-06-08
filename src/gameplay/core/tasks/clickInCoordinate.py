@@ -1,6 +1,6 @@
-import numpy as np
-from src.repositories.gameWindow.core import getSlotFromCoordinate
-from src.repositories.gameWindow.slot import clickSlot
+import src.gameplay.utils as utils
+import src.repositories.gameWindow.core as gameWindowCore
+import src.repositories.gameWindow.slot as gameWindowSlot
 from src.shared.typings import Waypoint
 from ...typings import Context
 from .common.base import BaseTask
@@ -14,16 +14,12 @@ class ClickInCoordinateTask(BaseTask):
         self.delayAfterComplete = 0.5
         self.waypoint = waypoint
 
-    # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        slot = getSlotFromCoordinate(
+        slot = gameWindowCore.getSlotFromCoordinate(
             context['radar']['coordinate'], self.waypoint['coordinate'])
-        clickSlot(slot, context['gameWindow']['coordinate'])
+        gameWindowSlot.clickSlot(slot, context['gameWindow']['coordinate'])
         return context
 
-    # TODO: add unit tests
     def did(self, context: Context) -> bool:
-        res = context['radar']['coordinate'] == context['cavebot']['waypoints']['state']['checkInCoordinate']
-        # TODO: numbait
-        didTask = np.all(res) == True
+        didTask = utils.coordinatesAreEqual(context['radar']['coordinate'], context['cavebot']['waypoints']['state']['checkInCoordinate'])
         return didTask

@@ -1,5 +1,15 @@
 from src.utils.keyboard import keyUp
 
+
+def coordinatesAreEqual(firstCoordinate, secondCoordinate) -> bool:
+    if firstCoordinate[0] != secondCoordinate[0]:
+        return False
+    if firstCoordinate[1] != secondCoordinate[1]:
+        return False
+    if firstCoordinate[2] != secondCoordinate[2]:
+        return False
+    return True
+
 def releaseKeys(context):
     if context['lastPressedKey'] is not None:
         keyUp(context['lastPressedKey'])
