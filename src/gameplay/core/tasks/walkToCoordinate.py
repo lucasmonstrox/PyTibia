@@ -20,8 +20,7 @@ class WalkToCoordinate(VectorTask):
 
     # TODO: add unit tests
     def onBeforeRestart(self, context: Context) -> Context:
-        self.calculateWalkpoint(context)
-        return context
+        return self.onBeforeStart(context)
 
     def onComplete(self, context: Context):
         if context['lastPressedKey'] is not None:
