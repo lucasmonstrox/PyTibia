@@ -4,7 +4,6 @@ from ...typings import Context
 from .common.base import BaseTask
 
 
-# TODO: make task retriable like 2/3 times until destroy
 class ClickInClosestCreatureTask(BaseTask):
     def __init__(self):
         super().__init__()
