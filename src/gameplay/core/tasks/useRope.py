@@ -1,7 +1,7 @@
-from src.repositories.gameWindow.core import getSlotFromCoordinate
-from src.repositories.gameWindow.slot import clickSlot
+import src.repositories.gameWindow.core as gameWindowCore
+import src.repositories.gameWindow.slot as gameWindowSlot
 from src.shared.typings import Waypoint
-from src.utils.keyboard import press
+import src.utils.keyboard as keyboard
 from ...typings import Context
 from .common.base import BaseTask
 
@@ -17,8 +17,8 @@ class UseRopeTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        slot = getSlotFromCoordinate(
+        slot = gameWindowCore.getSlotFromCoordinate(
             context['radar']['coordinate'], self.waypoint['coordinate'])
-        press(context['hotkeys']['rope'])
-        clickSlot(slot, context['gameWindow']['coordinate'])
+        keyboard.press(context['hotkeys']['rope'])
+        gameWindowSlot.clickSlot(slot, context['gameWindow']['coordinate'])
         return context
