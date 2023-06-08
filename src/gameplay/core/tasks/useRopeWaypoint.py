@@ -13,8 +13,7 @@ class UseRopeWaypointTask(VectorTask):
         self.waypoint = waypoint
 
     # TODO: add unit tests
-    # TODO: add typings
-    def onBeforeStart(self, context) -> Context:
+    def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
             UseRopeTask(self.waypoint).setParentTask(self).setRootTask(self),
             SetNextWaypointTask().setParentTask(self).setRootTask(self),
