@@ -1,5 +1,5 @@
-from src.repositories.refill.core import getTradeTopPos
-from src.utils.mouse import leftClick
+import src.repositories.refill.core as refillCore
+import src.utils.mouse as mouse
 from ...typings import Context
 from .common.base import BaseTask
 
@@ -14,8 +14,8 @@ class CloseNpcTradeBoxTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        tradeTopPos = getTradeTopPos(context['screenshot'])
-        if tradeTopPos is None:
+        tradeTopPosition = refillCore.getTradeTopPosition(context['screenshot'])
+        if tradeTopPosition is None:
             return context
-        leftClick((tradeTopPos[0] + 165, tradeTopPos[1] + 7))
+        mouse.leftClick((tradeTopPosition[0] + 165, tradeTopPosition[1] + 7))
         return context

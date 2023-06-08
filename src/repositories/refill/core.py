@@ -11,7 +11,7 @@ from .config import images, npcTradeBarImage, npcTradeOkImage
 # TODO: add unit tests
 # TODO: add perf
 @cacheObjectPosition
-def getTradeTopPos(screenshot: GrayImage) -> Union[BBox, None]:
+def getTradeTopPosition(screenshot: GrayImage) -> Union[BBox, None]:
     return locate(screenshot, npcTradeBarImage)
 
 
@@ -19,7 +19,7 @@ def getTradeTopPos(screenshot: GrayImage) -> Union[BBox, None]:
 # TODO: add perf
 @cacheObjectPosition
 def getTradeBottomPos(screenshot: GrayImage) -> Union[BBox, None]:
-    tradeTopPos = getTradeTopPos(screenshot)
+    tradeTopPos = getTradeTopPosition(screenshot)
     if tradeTopPos is None:
         return None
     (x, y, _, _) = tradeTopPos
