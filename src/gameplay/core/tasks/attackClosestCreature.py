@@ -13,6 +13,7 @@ class AttackClosestCreatureTask(VectorTask):
     # TODO: add unit tests
     def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
+            # TODO: task should have like 5 retries until all tree is destroyed
             ClickInClosestCreatureTask().setParentTask(self).setRootTask(self),
             WalkToTargetCreature().setParentTask(self).setRootTask(self),
         ]
