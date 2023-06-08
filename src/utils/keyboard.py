@@ -21,4 +21,4 @@ def press(*args):
 
 # TODO: add unit tests
 def write(phrase: str):
-    pyautogui.typewrite(phrase)
+    pyautogui.write(phrase)

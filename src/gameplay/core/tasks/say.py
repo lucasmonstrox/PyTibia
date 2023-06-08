@@ -1,9 +1,10 @@
 from src.gameplay.typings import Context
-from src.utils.keyboard import press, write
+import src.utils.keyboard as keyboard
 from ...typings import Context
 from .common.base import BaseTask
 
 
+# TODO: add way to check if phrase is spelled into the chat when did
 class SayTask(BaseTask):
     def __init__(self, phrase: str):
         super().__init__()
@@ -14,10 +15,6 @@ class SayTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        write(self.phrase)
-        press('enter')
+        keyboard.write(self.phrase)
+        keyboard.press('enter')
         return context
-
-    # TODO: add way to check if phrase is spelled into the chat
-    def did(self, _: Context) -> bool:
-        return True
