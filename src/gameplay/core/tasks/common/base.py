@@ -29,53 +29,41 @@ class BaseTask:
         self.rootTask = rootTask
         return self
 
-    # TODO: add unit tests
     def shouldIgnore(self, _: Context) -> bool:
         return False
 
     def shouldManuallyComplete(self, _: Context) -> bool:
         return False
 
-    # TODO: add unit tests
     def shouldRestart(self, _: Context) -> bool:
         return False
 
-    # TODO: add unit tests
     def do(self, context: Context) -> Context:
         return context
 
-    # TODO: add unit tests
-    def ping(self, context: Context) -> Context:
-        return context
-
-    # TODO: add unit tests
     def did(self, _: Context) -> bool:
         return True
 
-    # TODO: add unit tests
+    def ping(self, context: Context) -> Context:
+        return context
+
     def onBeforeStart(self, context: Context) -> Context:
         return context
 
-    # TODO: add unit tests
     def onBeforeRestart(self, context: Context) -> Context:
         return context
 
-    # TODO: add unit tests
     def onIgnored(self, context: Context) -> Context:
         return context
     
-    # TODO: add unit tests
     def onInterrupt(self, context: Context) -> Context:
         return context
 
-    # TODO: add unit tests
     def onComplete(self, context: Context) -> Context:
         return context
 
-    # TODO: add unit tests
     def onInterrupt(self, context: Context) -> Context:
         return context
 
-    # TODO: add unit tests
     def onTimeout(self, context: Context) -> Context:
         return context
