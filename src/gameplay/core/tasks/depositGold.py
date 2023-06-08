@@ -16,7 +16,6 @@ class DepositGoldTask(VectorTask):
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
 
-    # TODO: add unit tests
     def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
             SelectChatTabTask('local chat').setParentTask(self).setRootTask(self),
