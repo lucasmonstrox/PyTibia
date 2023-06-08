@@ -1,6 +1,4 @@
-import numpy as np
 from src.gameplay.core.tasks.useHole import UseHoleTask
-from src.repositories.radar.typings import Waypoint
 
 
 def test_should_test_default_params():
