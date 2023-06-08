@@ -21,6 +21,7 @@ from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserv
 from src.gameplay.healing.observers.healingByPotions import healingByPotionsObserver
 from src.gameplay.healing.observers.healingPriority import healingPriorityObserver
 from src.gameplay.targeting import hasCreaturesToAttack
+from src.gameplay.utils import releaseKeys
 from src.repositories.gameWindow.creatures import getClosestCreature
 from src.repositories.radar.core import getCoordinate
 from src.repositories.radar.typings import Waypoint
@@ -50,12 +51,6 @@ def main():
         context = setWaypointIndexMiddleware(context)
         context = setMapPlayerStatusMiddleware(context)
         context = setCleanUpTasksMiddleware(context)
-        return context
-
-    def releaseKeys(context):
-        if context['lastPressedKey'] is not None:
-            pyautogui.keyUp(context['lastPressedKey'])
-            context['lastPressedKey'] = None
         return context
 
     def handleGameplayTasks(context):

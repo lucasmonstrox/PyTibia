@@ -3,6 +3,7 @@ from scipy.spatial import distance
 from src.gameplay.typings import Context
 from src.utils.keyboard import keyUp
 from ...typings import Context
+from ...utils import releaseKeys
 from ..waypoint import generateFloorWalkpoints
 from .common.vector import VectorTask
 from .walk import WalkTask
@@ -21,22 +22,14 @@ class WalkToTargetCreature(VectorTask):
         return context
 
     def onBeforeRestart(self, context: Context) -> Context:
-        if context['lastPressedKey'] is not None:
-            keyUp(context['lastPressedKey'])
-            context['lastPressedKey'] = None
+        context = releaseKeys(context)
         return self.onBeforeStart(context)
 
     def onInterrupt(self, context: Context) -> Context:
-        if context['lastPressedKey'] is not None:
-            keyUp(context['lastPressedKey'])
-            context['lastPressedKey'] = None
-        return context
+        return releaseKeys(context)
 
     def onComplete(self, context: Context) -> Context:
-        if context['lastPressedKey'] is not None:
-            keyUp(context['lastPressedKey'])
-            context['lastPressedKey'] = None
-        return context
+        return releaseKeys(context)
 
     # TODO: if there are no more creatures, it should only recalculate when it gets close to the creature to avoid recalculating each SQM move
     def shouldRestart(self, context: Context) -> bool:

@@ -2,6 +2,7 @@ from src.gameplay.typings import Context
 from src.repositories.radar.typings import Coordinate
 from src.utils.keyboard import keyUp
 from ...typings import Context
+from ...utils import releaseKeys
 from ..waypoint import generateFloorWalkpoints
 from .common.vector import VectorTask
 from .walk import WalkTask
@@ -23,10 +24,7 @@ class WalkToCoordinate(VectorTask):
         return self.onBeforeStart(context)
 
     def onComplete(self, context: Context):
-        if context['lastPressedKey'] is not None:
-            keyUp(context['lastPressedKey'])
-            context['lastPressedKey'] = None
-        return context
+        return releaseKeys(context)
 
     def shouldRestartAfterAllChildrensComplete(self, context: Context) -> bool:
         if len(self.tasks) == 0:

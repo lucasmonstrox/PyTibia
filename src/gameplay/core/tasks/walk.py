@@ -1,11 +1,11 @@
 import numpy as np
-from time import time
 from src.repositories.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from src.repositories.skills.core import getSpeed
 from src.shared.typings import Coordinate
 from src.utils.coordinate import getDirectionBetweenCoordinates
-from src.utils.keyboard import keyDown, keyUp, press
+from src.utils.keyboard import keyDown, press
 from ...typings import Context
+from ...utils import releaseKeys
 from .common.base import BaseTask
 
 
@@ -39,8 +39,7 @@ class WalkTask(BaseTask):
                 futureDirection = getDirectionBetweenCoordinates(self.walkpoint, nextTask.walkpoint)
         if direction != futureDirection:
             if context['lastPressedKey'] is not None:
-                keyUp(context['lastPressedKey'])
-                context['lastPressedKey'] = None
+                context = releaseKeys(context)
             else:
                 press(direction)
             return context
@@ -53,8 +52,7 @@ class WalkTask(BaseTask):
                 press(direction)
             return context
         if walkTasksLength == 1 and context['lastPressedKey'] is not None:
-            keyUp(context['lastPressedKey'])
-            context['lastPressedKey'] = None
+            context = releaseKeys(context)
         return context
 
     # TODO: add unit tests
@@ -65,16 +63,11 @@ class WalkTask(BaseTask):
 
     # TODO: add unit tests
     def onInterrupt(self, context: Context) -> Context:
-        if context['lastPressedKey'] is not None:
-            keyUp(context['lastPressedKey'])
-            context['lastPressedKey'] = None
-        return context
+        return releaseKeys(context)
 
     # TODO: add unit tests
     def onTimeout(self, context: Context) -> Context:
-        if context['lastPressedKey'] is not None:
-            keyUp(context['lastPressedKey'])
-            context['lastPressedKey'] = None
+        context = releaseKeys(context)
         # TODO: avoid this, tree should not be reseted manually
         context['tasksOrchestrator'].reset()
         return context
