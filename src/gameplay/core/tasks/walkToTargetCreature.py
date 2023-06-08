@@ -24,7 +24,12 @@ class WalkToTargetCreature(VectorTask):
         if context['lastPressedKey'] is not None:
             keyUp(context['lastPressedKey'])
             context['lastPressedKey'] = None
-        self.calculatePathToTargetCreature(context)
+        return self.onBeforeStart(context)
+
+    def onInterrupt(self, context: Context) -> Context:
+        if context['lastPressedKey'] is not None:
+            keyUp(context['lastPressedKey'])
+            context['lastPressedKey'] = None
         return context
 
     def onComplete(self, context: Context) -> Context:
