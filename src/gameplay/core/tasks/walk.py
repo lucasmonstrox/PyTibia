@@ -22,7 +22,6 @@ class WalkTask(BaseTask):
 
     # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:
-        # TODO: improve clever code
         if context['radar']['lastCoordinateVisited'] is None:
             return True
         isStartingFromLastCoordinate = context['radar']['coordinate'][0] != context['radar']['lastCoordinateVisited'][0] and context['radar']['coordinate'][1] != context['radar']['lastCoordinateVisited'][1] and context['radar']['coordinate'][2] != context['radar']['lastCoordinateVisited'][2]
@@ -65,9 +64,18 @@ class WalkTask(BaseTask):
         return didTask
 
     # TODO: add unit tests
-    def onDidTimeout(self, context: Context) -> Context:
+    def onInterrupt(self, context: Context) -> Context:
         if context['lastPressedKey'] is not None:
             keyUp(context['lastPressedKey'])
             context['lastPressedKey'] = None
+        return context
+
+    # TODO: add unit tests
+    def onTimeout(self, context: Context) -> Context:
+        if context['lastPressedKey'] is not None:
+            keyUp(context['lastPressedKey'])
+            context['lastPressedKey'] = None
+        # TODO: avoid this, tree should not be reseted manually
         context['tasksOrchestrator'].reset()
         return context
+    
