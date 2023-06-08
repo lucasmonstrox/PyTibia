@@ -4,6 +4,7 @@ context = {}
 
 def test_should_test_default_params():
     task = SayTask('hello')
+    assert task.name == 'say'
     assert task.delayBeforeStart == 2
     assert task.delayAfterComplete == 2
     assert task.phrase == 'hello'
