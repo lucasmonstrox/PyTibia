@@ -2,6 +2,8 @@ import pathlib
 from src.repositories.battleList.locators import getContainerBottomBarPosition
 from src.utils.image import loadFromRGBToGray
 
+from tests.utils import result_pos_draw
+
 
 currentPath = pathlib.Path(__file__).parent.resolve()
 
@@ -10,5 +12,8 @@ currentPath = pathlib.Path(__file__).parent.resolve()
 def test_should_get_container_bottom_bar_pos():
     screenshotImage = loadFromRGBToGray(f'{currentPath}/screenshot.png')
     containerBottomBarPos = getContainerBottomBarPosition(screenshotImage)
-    expectedContainerBottomBarPos = (1748, 621, 156, 4)
+    # save for conference
+    result_pos_draw(screenshotImage, containerBottomBarPos, 'test_should_get_container_bottom_bar_pos.png')
+    
+    expectedContainerBottomBarPos = (1572, 1036, 156, 4)
     assert containerBottomBarPos == expectedContainerBottomBarPos

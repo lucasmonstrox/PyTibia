@@ -27,3 +27,5 @@ var/
 .idea/
 .vscode/
 venv
+env39
+tests/validation_images/*.png

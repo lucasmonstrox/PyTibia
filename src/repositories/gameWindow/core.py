@@ -1,13 +1,19 @@
-from typing import Tuple, Union
+from typing import Tuple, Union, Dict
 from src.shared.typings import BBox, Coordinate, GrayImage, Slot
 from src.utils.core import hashit, locate
 from .config import arrowsImagesHashes, gameWindowCache, images
 
+def get_global_game_cache_window_cache() -> Dict:
+    """
+    function to ease mocking the cache
+    """
+    global gameWindowCache
+    return gameWindowCache
 
 # TODO: add unit tests
 # TODO: add perf
 def getLeftArrowPosition(screenshot: GrayImage) -> Union[BBox, None]:
-    global gameWindowCache
+    gameWindowCache = get_global_game_cache_window_cache()
     if gameWindowCache['left']['position'] is not None:
         leftArrowImage = images['arrows'][gameWindowCache['left']['arrow']]
         leftArrowImageHash = hashit(leftArrowImage)
@@ -38,7 +44,7 @@ def getLeftArrowPosition(screenshot: GrayImage) -> Union[BBox, None]:
 # TODO: add unit tests
 # TODO: add perf
 def getRightArrowPosition(screenshot: GrayImage) -> Union[BBox, None]:
-    global gameWindowCache
+    gameWindowCache = get_global_game_cache_window_cache()
     if gameWindowCache['right']['position'] is not None:
         rightArrowImage = images['arrows'][gameWindowCache['right']['arrow']]
         rightArrowImageHash = hashit(rightArrowImage)
