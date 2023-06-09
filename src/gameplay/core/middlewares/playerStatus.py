@@ -4,9 +4,9 @@ from ...typings import Context
 
 
 # TODO: add unit tests
-def setMapPlayerStatusMiddleware(gameContext: Context) -> Context:
-    gameContext['statusBar']['hp'] = getHp(gameContext['screenshot'])
-    gameContext['statusBar']['hpPercentage'] = getHpPercentage(gameContext['screenshot'])
-    gameContext['statusBar']['mana'] = getMana(gameContext['screenshot'])
-    gameContext['statusBar']['manaPercentage'] = getManaPercentage(gameContext['screenshot'])
-    return gameContext
+def setMapPlayerStatusMiddleware(context: Context) -> Context:
+    context['statusBar']['hp'] = getHp(context['screenshot'])
+    context['statusBar']['hpPercentage'] = getHpPercentage(context['screenshot'])
+    context['statusBar']['mana'] = getMana(context['screenshot'])
+    context['statusBar']['manaPercentage'] = getManaPercentage(context['screenshot'])
+    return context

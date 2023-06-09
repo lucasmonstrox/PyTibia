@@ -3,6 +3,6 @@ from ...typings import Context
 
 
 # TODO: add unit tests
-def setChatTabsMiddleware(gameContext: Context) -> Context:
-    gameContext['chat']['tabs'] = getTabs(gameContext['screenshot'])
-    return gameContext
+def setChatTabsMiddleware(context: Context) -> Context:
+    context['chat']['tabs'] = getTabs(context['screenshot'])
+    return context
