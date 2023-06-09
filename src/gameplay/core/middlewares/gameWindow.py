@@ -34,9 +34,8 @@ def setDirectionMiddleware(context: Context) -> Context:
 
 # TODO: add unit tests
 def setHandleLootMiddleware(context: Context) -> Context:
-    endlessTasks = ['depositGold', 'refill', 'selectChatTab']
-    currentTask = context['tasksOrchestrator'].getCurrentTask(context)
-    if (currentTask is None or currentTask.name not in endlessTasks):
+    currentTaskName = context['tasksOrchestrator'].getCurrentTaskName(context)
+    if (currentTaskName not in ['depositGold', 'refill', 'selectChatTab']):
         lootTab = context['chat']['tabs'].get('loot')
         hasChatTab = lootTab is not None
         if hasChatTab and not lootTab['isSelected']:

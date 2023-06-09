@@ -1,18 +1,17 @@
 from time import time
 from ...typings import Context
-
+from .common.base import BaseTask
 
 class TasksOrchestrator:
-    def __init__(self, rootTask=None):
-        super().__init__()
-        self.rootTask = rootTask
+    rootTask = None
 
-    # TODO: add types
     # TODO: add unit tests
-    def setRootTask(self, context: Context, task):
+    def setRootTask(self, context: Context, task: BaseTask):
         currentTask = self.getCurrentTask(context)
         if currentTask is not None:
             self.interruptTasks(context, currentTask)
+        if task is not None:
+            task.isRootTask = True
         self.rootTask = task
 
     # TODO: add unit tests
@@ -29,6 +28,14 @@ class TasksOrchestrator:
 
     def getCurrentTask(self, context: Context):
         return self.getNestedTask(self.rootTask, context)
+
+    def getCurrentTaskName(self, context: Context):
+        currentTask = self.getNestedTask(self.rootTask, context)
+        if currentTask is None:
+            return 'unknown'
+        if currentTask.isRootTask:
+            return currentTask.name
+        return currentTask.rootTask.name
 
     def getNestedTask(self, task, context: Context):
         if hasattr(task, 'tasks'):

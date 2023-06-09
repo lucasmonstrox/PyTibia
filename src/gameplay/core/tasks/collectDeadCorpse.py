@@ -1,5 +1,6 @@
 import numpy as np
 from src.gameplay.typings import Context
+import src.gameplay.utils as gameplayUtils
 from src.repositories.gameWindow.slot import rightClickSlot
 from src.repositories.gameWindow.typings import Creature
 from src.utils.keyboard import keyDown, keyUp
@@ -12,8 +13,7 @@ class CollectDeadCorpseTask(BaseTask):
     def __init__(self, creature: Creature):
         super().__init__()
         self.name = 'collectDeadCorpse'
-        self.delayBeforeStart = 1
-        self.delayAfterComplete = 0.25
+        self.delayBeforeStart = 0.85
         self.creature = creature
 
     # TODO: add unit tests
@@ -21,8 +21,7 @@ class CollectDeadCorpseTask(BaseTask):
         creatureToLoot = context['loot']['corpsesToLoot'][0]
         indexesToDelete = []
         for index, corpseToLoot in enumerate(context['loot']['corpsesToLoot']):
-            coordinateDidMatch = creatureToLoot['coordinate'][0] == corpseToLoot['coordinate'][0] and creatureToLoot['coordinate'][1] == corpseToLoot['coordinate'][1] and creatureToLoot['coordinate'][2] == corpseToLoot['coordinate'][2]
-            if coordinateDidMatch:
+            if gameplayUtils.coordinatesAreEqual(creatureToLoot['coordinate'], corpseToLoot['coordinate']):
                 indexesToDelete.append(index)
         context['loot']['corpsesToLoot'] = np.delete(context['loot']['corpsesToLoot'], indexesToDelete)
         return context
