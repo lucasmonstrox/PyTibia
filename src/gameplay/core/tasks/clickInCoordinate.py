@@ -1,4 +1,4 @@
-import src.gameplay.utils as utils
+import src.gameplay.utils as gameplayUtils
 import src.repositories.gameWindow.core as gameWindowCore
 import src.repositories.gameWindow.slot as gameWindowSlot
 from src.shared.typings import Waypoint
@@ -21,5 +21,5 @@ class ClickInCoordinateTask(BaseTask):
         return context
 
     def did(self, context: Context) -> bool:
-        didTask = utils.coordinatesAreEqual(context['radar']['coordinate'], context['cavebot']['waypoints']['state']['checkInCoordinate'])
+        didTask = gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], context['cavebot']['waypoints']['state']['checkInCoordinate'])
         return didTask
