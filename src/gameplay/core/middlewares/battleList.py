@@ -4,8 +4,8 @@ from ...typings import Context
 
 
 # TODO: add unit tests
-def setBattleListMiddleware(gameContext: Context) -> Context:
-    content = getContent(gameContext['screenshot'])
-    gameContext['battleList']['creatures'] = getCreatures(content)
-    gameContext['cavebot']['isAttackingSomeCreature'] = isAttackingSomeCreature(gameContext['battleList']['creatures'])
-    return gameContext
+def setBattleListMiddleware(context: Context) -> Context:
+    content = getContent(context['screenshot'])
+    context['battleList']['creatures'] = getCreatures(content)
+    context['cavebot']['isAttackingSomeCreature'] = isAttackingSomeCreature(context['battleList']['creatures'])
+    return context
