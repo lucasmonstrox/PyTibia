@@ -1,6 +1,7 @@
 import numpy as np
 from time import sleep
 import win32gui
+from src.gameplay.typings import Context
 from src.gameplay.utils import releaseKeys
 from src.repositories.radar.core import getCoordinate
 from src.repositories.radar.typings import Waypoint
@@ -8,8 +9,7 @@ from src.utils.core import getScreenshot
 
 
 class GameContext:
-    # TODO: add types
-    def __init__(self, context):
+    def __init__(self, context: Context):
         self.context = context
 
     def addWaypoint(self, waypoint):
