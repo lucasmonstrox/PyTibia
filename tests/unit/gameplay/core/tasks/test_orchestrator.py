@@ -7,7 +7,8 @@ from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 context = {}
 
 def test_should_do_single_task():
-    tasksOrchestrator = TasksOrchestrator(BaseTask(name='currentTask'))
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, BaseTask(name='currentTask'))
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'notStarted'
     assert tasksOrchestrator.rootTask.statusReason is None
@@ -22,7 +23,8 @@ def test_should_do_single_task():
 
 def test_should_do_single_task_when_task_is_done_in_second_attempt(mocker):
     baseTask = BaseTask(name='currentTask')
-    tasksOrchestrator = TasksOrchestrator(baseTask)
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, baseTask)
     mocker.patch.object(baseTask, 'did',  return_value=False)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'notStarted'
@@ -41,7 +43,8 @@ def test_should_do_single_task_when_task_is_done_in_second_attempt(mocker):
     assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_should_do_single_task_when_task_has_delayBeforeStart():
-    tasksOrchestrator = TasksOrchestrator(BaseTask(name='currentTask', delayBeforeStart=1))
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, BaseTask(name='currentTask', delayBeforeStart=1))
     assert tasksOrchestrator.rootTask.status == 'notStarted'
     assert tasksOrchestrator.rootTask.statusReason is None
     tasksOrchestrator.do(context)
@@ -56,7 +59,8 @@ def test_should_do_single_task_when_task_has_delayBeforeStart():
     assert tasksOrchestrator.rootTask.statusReason == 'completed'
 
 def test_should_do_single_task_when_task_has_delayAfterComplete():
-    tasksOrchestrator = TasksOrchestrator(BaseTask(name='currentTask', delayAfterComplete=1))
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, BaseTask(name='currentTask', delayAfterComplete=1))
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'notStarted'
     assert tasksOrchestrator.rootTask.statusReason is None
@@ -77,7 +81,8 @@ def test_should_do_single_task_when_task_has_delayAfterComplete():
 def test_should_do_task_when_task_has_delayOfTimeout(mocker):
     baseTask = BaseTask(name='currentTask', delayOfTimeout=1)
     mocker.patch.object(baseTask, 'did',  return_value=False)
-    tasksOrchestrator = TasksOrchestrator(baseTask)
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, baseTask)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'notStarted'
     assert tasksOrchestrator.rootTask.statusReason is None
@@ -97,7 +102,8 @@ def test_should_do_task_when_task_has_delayOfTimeout(mocker):
 
 def test_should_do_task_when_task_is_manuallyTerminable(mocker):
     baseTask = BaseTask(name='currentTask', manuallyTerminable=True)
-    tasksOrchestrator = TasksOrchestrator(baseTask)
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, baseTask)
     assert tasksOrchestrator.rootTask.name == 'currentTask'
     assert tasksOrchestrator.rootTask.status == 'notStarted'
     assert tasksOrchestrator.rootTask.statusReason is None
@@ -121,7 +127,8 @@ def test_do_vector_task():
     secondTask = BaseTask(name='secondTask').setParentTask(vectorTask)
     vectorTask.tasks.append(firstTask)
     vectorTask.tasks.append(secondTask)
-    tasksOrchestrator = TasksOrchestrator(vectorTask)
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, vectorTask)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
@@ -168,7 +175,8 @@ def test_do_vector_task_when_tasks_has_delayBeforeStart():
     secondTask = BaseTask(name='secondTask', delayBeforeStart=1).setParentTask(vectorTask)
     vectorTask.tasks.append(firstTask)
     vectorTask.tasks.append(secondTask)
-    tasksOrchestrator = TasksOrchestrator(vectorTask)
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, vectorTask)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
@@ -234,7 +242,8 @@ def test_do_vector_task_when_tasks_has_delayAfterComplete():
     secondTask = BaseTask(name='secondTask', delayAfterComplete=1).setParentTask(vectorTask)
     vectorTask.tasks.append(firstTask)
     vectorTask.tasks.append(secondTask)
-    tasksOrchestrator = TasksOrchestrator(vectorTask)
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, vectorTask)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
@@ -303,7 +312,8 @@ def test_do_vector_task_with_when_tasks_has_delayOfTimeout(mocker):
     mocker.patch.object(secondTask, 'did',  return_value=False)
     vectorTask.tasks.append(firstTask)
     vectorTask.tasks.append(secondTask)
-    tasksOrchestrator = TasksOrchestrator(vectorTask)
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, vectorTask)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
@@ -370,7 +380,8 @@ def test_do_vector_task_with_when_tasks_are_manuallyTerminable(mocker):
     secondTask = BaseTask(name='secondTask', manuallyTerminable=True).setParentTask(vectorTask)
     vectorTask.tasks.append(firstTask)
     vectorTask.tasks.append(secondTask)
-    tasksOrchestrator = TasksOrchestrator(vectorTask)
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, vectorTask)
     tasksOrchestrator.do(context)
     assert tasksOrchestrator.rootTask.status == 'running'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
@@ -462,7 +473,8 @@ class CustomTask(VectorTask):
 
 def test_should_restart_parent_task(mocker):
     customTask = CustomTask()
-    tasksOrchestrator = TasksOrchestrator(customTask)
+    tasksOrchestrator = TasksOrchestrator()
+    tasksOrchestrator.setRootTask(context, customTask)
     assert tasksOrchestrator.rootTask.status == 'notStarted'
     assert tasksOrchestrator.rootTask.currentTaskIndex == 0
     assert len(tasksOrchestrator.rootTask.tasks) == 0
