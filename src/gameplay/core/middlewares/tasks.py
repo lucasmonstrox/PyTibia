@@ -1,6 +1,7 @@
 from ...typings import Context
 
 
+# TODO: add unit tests
 def setCleanUpTasksMiddleware(context: Context) -> Context:
     currentTask = context['tasksOrchestrator'].getCurrentTask(context)
     if currentTask is not None:
