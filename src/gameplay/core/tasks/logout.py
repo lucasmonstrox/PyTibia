@@ -1,5 +1,4 @@
 from ...typings import Context
-# from .pauseBot import PauseBotTask
 from .common.vector import VectorTask
 from .closeProcess import CloseProcessTask
 from .pressLogoutKeys import PressLogoutKeys
@@ -16,7 +15,7 @@ class LogoutTask(VectorTask):
     # TODO: add unit tests
     def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
-            PressLogoutKeys(['ctrl', 'q']).setParentTask(self).setRootTask(self),
+            PressLogoutKeys().setParentTask(self).setRootTask(self),
             CloseProcessTask().setParentTask(self).setRootTask(self)
         ]
         return context
