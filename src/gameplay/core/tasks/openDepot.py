@@ -1,5 +1,5 @@
 from src.repositories.inventory.core import images
-import src.utils.core as utilsCore
+import src.utils.core as coreUtils
 import src.utils.mouse as mouse
 from ...typings import Context
 from .common.base import BaseTask
@@ -15,7 +15,7 @@ class OpenDepotTask(BaseTask):
         self.delayAfterComplete = 1
 
     def do(self, context: Context) -> Context:
-        depotPosition = utilsCore.locate(context['screenshot'], images['slots']['depot'])
+        depotPosition = coreUtils.locate(context['screenshot'], images['slots']['depot'])
         # TODO: click inside BBox
         mouse.rightClick((depotPosition[0] + 5, depotPosition[1] + 5))
         return context
