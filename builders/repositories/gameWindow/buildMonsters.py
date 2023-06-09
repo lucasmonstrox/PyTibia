@@ -9,7 +9,7 @@ def main():
         for index, letter in enumerate(monster):
             letter = letter if letter != ' ' else 'space'
             letter = letter if letter != '.' else 'dot'
-            letterBasePath = 'src/features/gameWindow/images/letters/uppercase' if letter.isupper() else 'src/features/gameWindow/images/letters/lowercase'
+            letterBasePath = 'src/repositories/gameWindow/images/letters/uppercase' if letter.isupper() else 'src/repositories/gameWindow/images/letters/lowercase'
             letterFullPath = '{0}/{1}.png'.format(letterBasePath, letter)
             letterAsArray = loadFromRGBToGray(letterFullPath).copy()
             letterAsArray[np.nonzero(letterAsArray == 0)] = 1
@@ -42,7 +42,7 @@ def main():
         monsterLetters[np.nonzero(monsterLetters == 1)] = 0
         monsterLetters[np.nonzero(monsterLetters == 2)] = 0
         save(
-            monsterLetters, 'src/features/gameWindow/images/monsters/{}.png'.format(monster))
+            monsterLetters, 'src/repositories/gameWindow/images/monsters/{}.png'.format(monster))
 
 
 if __name__ == '__main__':

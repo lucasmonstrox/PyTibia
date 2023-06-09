@@ -6,7 +6,7 @@ from src.utils.image import loadFromRGBToGray
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
-accessoriesEquippedImg = loadFromRGBToGray('src/features/radar/images/radar-tools.png')
+accessoriesEquippedImg = loadFromRGBToGray('src/repositories/radar/images/radar-tools.png')
 bleedingImg = loadFromRGBToGray(f'{currentPath}/images/bleeding.png')
 cursedImg = loadFromRGBToGray(f'{currentPath}/images/cursed.png')
 burningImg = loadFromRGBToGray(f'{currentPath}/images/burning.png')

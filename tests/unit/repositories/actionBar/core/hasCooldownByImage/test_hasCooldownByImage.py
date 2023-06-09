@@ -3,7 +3,7 @@ from src.repositories.actionBar.core import hasCooldownByImage
 from src.utils.image import loadFromRGBToGray
 
 
-actionBarPath = 'src/features/actionBar'
+actionBarPath = 'src/repositories/actionBar'
 currentPath = pathlib.Path(__file__).parent.resolve()
 screenshotImage = loadFromRGBToGray(f'{currentPath}/screenshot.png')
 listOfCooldownsImage = loadFromRGBToGray(f'{currentPath}/listOfCooldownsImage.png')
