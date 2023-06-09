@@ -3,6 +3,7 @@ import win32gui
 from ...typings import Context
 
 
+# TODO: add unit tests
 def setTibiaWindowMiddleware(context: Context):
     if context['window'] is None:
         windowsList: list = []
