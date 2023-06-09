@@ -1,10 +1,10 @@
 from time import sleep
-from typing import Tuple, Union
+from typing import Union
 from src.shared.typings import BBox, GrayImage
 from src.utils.core import cacheObjectPosition, locate, getScreenshot
 from src.utils.image import crop
 from src.utils.keyboard import hotkey, press, write
-from src.utils.mouse import leftClick, move
+from src.utils.mouse import leftClick, moveTo
 from .config import images, npcTradeBarImage, npcTradeOkImage
 
 
@@ -73,9 +73,9 @@ def clearSearchBox(screenshot: GrayImage):
     (bx, by, _, _) = getTradeBottomPos(screenshot)
     x = bx + 115 + 45
     y = by - 42 - 35
-    move((x, y))
+    moveTo((x, y))
     leftClick((x, y))
-    move((x, y + 20))
+    moveTo((x, y + 20))
 
 
 # TODO: add unit tests
