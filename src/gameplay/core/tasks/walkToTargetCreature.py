@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.spatial import distance
 from src.gameplay.typings import Context
+import src.gameplay.utils as gameplayUtils
 from ...typings import Context
 from ...utils import releaseKeys
 from ..waypoint import generateFloorWalkpoints
@@ -15,7 +16,6 @@ class WalkToTargetCreatureTask(VectorTask):
         self.manuallyTerminable = True
         self.targetCreatureCoordinateSinceLastRestart = None
 
-    # TODO: add return type
     def onBeforeStart(self, context: Context) -> Context:
         self.calculatePathToTargetCreature(context)
         return context
@@ -36,9 +36,7 @@ class WalkToTargetCreatureTask(VectorTask):
             return True
         if context['cavebot']['targetCreature'] is None:
             return True
-        if context['cavebot']['targetCreature']['coordinate'][0] != self.targetCreatureCoordinateSinceLastRestart[0]:
-            return True
-        if context['cavebot']['targetCreature']['coordinate'][1] != self.targetCreatureCoordinateSinceLastRestart[1]:
+        if not gameplayUtils.coordinatesAreEqual(context['cavebot']['targetCreature']['coordinate'], self.targetCreatureCoordinateSinceLastRestart):
             return True
         return False
 

@@ -1,6 +1,7 @@
 from src.utils.keyboard import keyUp
 
 
+# TODO: add parameters types
 def coordinatesAreEqual(firstCoordinate, secondCoordinate) -> bool:
     if firstCoordinate[0] != secondCoordinate[0]:
         return False
@@ -10,6 +11,7 @@ def coordinatesAreEqual(firstCoordinate, secondCoordinate) -> bool:
         return False
     return True
 
+# TODO: add parameter type
 def releaseKeys(context):
     if context['lastPressedKey'] is not None:
         keyUp(context['lastPressedKey'])
