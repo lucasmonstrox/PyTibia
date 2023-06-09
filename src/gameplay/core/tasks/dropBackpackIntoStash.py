@@ -1,11 +1,11 @@
 from src.repositories.inventory.core import images
-from src.utils.core import locate
-from src.utils.mouse import drag
+import src.utils.core as coreUtils
+import src.utils.mouse as mouseUtils
 from ...typings import Context
 from .common.base import BaseTask
 
 
-# TODO: there is not way to check if items was moved to stash. try it soon
+# TODO: by cap, is possible to detect if task was did. But it can happen that the backpack is empty.
 class DropBackpackIntoStashTask(BaseTask):
     def __init__(self, backpack: str):
         super().__init__()
@@ -13,9 +13,8 @@ class DropBackpackIntoStashTask(BaseTask):
         self.delayAfterComplete = 1
         self.backpack = backpack
 
-    # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        backpackPosition = locate(context['screenshot'], images['slots'][self.backpack], confidence=0.8)
-        stashPosition = locate(context['screenshot'], images['slots']['stash'])
-        drag((backpackPosition[0], backpackPosition[1]), (stashPosition[0], stashPosition[1]))
+        backpackPosition = coreUtils.locate(context['screenshot'], images['slots'][self.backpack], confidence=0.8)
+        stashPosition = coreUtils.locate(context['screenshot'], images['slots']['stash'])
+        mouseUtils.drag((backpackPosition[0], backpackPosition[1]), (stashPosition[0], stashPosition[1]))
         return context
