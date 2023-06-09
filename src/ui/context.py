@@ -26,7 +26,7 @@ class GameContext:
 
     def pause(self):
         self.context['pause'] = True
-        self.context['tasksOrchestrator'].reset()
+        self.context['tasksOrchestrator'].setRootTask(None, self.context)
         self.context = releaseKeys(self.context)
 
     def getCoordinate(self):
