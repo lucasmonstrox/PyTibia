@@ -3,7 +3,6 @@ from typing import Tuple, Union
 from src.shared.typings import BBox, GrayImage
 from src.repositories.gameWindow.core import getLeftArrowPosition
 from src.utils.core import cacheObjectPosition, hashit, locate, locateMultiple
-from src.utils.keyboard import press, write
 from src.utils.image import cacheChain, convertGraysToBlack, loadFromRGBToGray
 from .config import hashes, images
 
