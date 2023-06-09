@@ -21,7 +21,6 @@ class GoToFreeDepotTask(VectorTask):
         self.visitedOrBusyCoordinates = {}
 
     # TODO: add unit tests
-    # TODO: add typings
     def onBeforeStart(self, context: Context):
         city = self.waypoint['options']['city']
         depotCoordinates = cities[city]['depotCoordinates']
