@@ -33,6 +33,12 @@ def test_should_call_onComplete(mocker):
     assert task.onComplete(context) == context
     releaseKeysSpy.assert_called_once_with(context)
 
+def test_should_method_onInterrupt_call_releaseKeys(mocker):
+    task = WalkToCoordinateTask(coordinate)
+    releaseKeysSpy = mocker.patch('src.gameplay.utils.releaseKeys', return_value=context)
+    assert task.onInterrupt(context) == context
+    releaseKeysSpy.assert_called_once_with(context)
+
 def test_should_method_shouldRestartAfterAllChildrensComplete_return_True_when_there_are_no_tasks(mocker):
     task = WalkToCoordinateTask(coordinate)
     coordinatesAreEqualSpy = mocker.patch('src.gameplay.utils.coordinatesAreEqual')
