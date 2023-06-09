@@ -5,6 +5,7 @@ from src.repositories.actionBar.core import hasCooldownByName
 from src.repositories.gameWindow.creatures import getNearestCreaturesCount
 from src.utils.array import getNextArrayIndex
 from src.utils.keyboard import press
+from .core.tasks.useHotkey import UseHotkeyTask
 from .typings import Context
 
 
@@ -36,11 +37,9 @@ def comboSpellsObserver(context: Context):
                 return
             if context['statusBar']['mana'] < spell['metadata']['mana']:
                 continue
-            press(spell['hotkey'])
+            tasksOrchestrator.setRootTask(context, UseHotkeyTask(spell['hotkey'], delayAfterComplete=0.1))
             nextIndex = getNextArrayIndex(comboSpell['spells'], comboSpell['currentSpellIndex'])
             # improve indexes without using context
             context['comboSpells']['items'][key]['currentSpellIndex'] = nextIndex
             context['comboSpells']['lastUsedSpell'] = spell['name']
-            # TODO: improve sleep
-            time.sleep(0.5)
             break
