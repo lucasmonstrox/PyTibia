@@ -6,9 +6,8 @@ from src.utils.core import getPixelFromCoordinate
 from .typings import Checkpoint
 
 
-# TODO: add types
 # TODO: add unit tests
-def generateFloorWalkpoints(coordinate: Coordinate, goalCoordinate: Coordinate, nonWalkableCoordinates=[]) -> CoordinateList:
+def generateFloorWalkpoints(coordinate: Coordinate, goalCoordinate: Coordinate, nonWalkableCoordinates: CoordinateList = []) -> CoordinateList:
     pixelCoordinate = getPixelFromCoordinate(coordinate)
     xFromTheStartOfRadar = pixelCoordinate[0] - 53
     xFromTheEndOfRadar = pixelCoordinate[0] + 53
