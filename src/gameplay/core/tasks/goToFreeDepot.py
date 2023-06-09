@@ -21,15 +21,14 @@ class GoToFreeDepotTask(VectorTask):
         self.visitedOrBusyCoordinates = {}
 
     # TODO: add unit tests
-    def onBeforeStart(self, context: Context):
+    def onBeforeStart(self, context: Context) -> Context:
         city = self.waypoint['options']['city']
         depotCoordinates = cities[city]['depotCoordinates']
         coordinate = context['radar']['coordinate']
         visibleDepotCoordinates = self.getVisibleDepotCoordinates(coordinate, depotCoordinates)
         if len(visibleDepotCoordinates) > 0:
             self.state = 'walkingIntoFreeDepot'
-            battleListPlayers = context['gameWindow']['players']
-            freeDepotCoordinates = self.getFreeDepotCoordinates(battleListPlayers, visibleDepotCoordinates)
+            freeDepotCoordinates = self.getFreeDepotCoordinates(context['gameWindow']['players'], visibleDepotCoordinates)
             hasNoFreeDepotCoordinates = len(freeDepotCoordinates) == 0
             if hasNoFreeDepotCoordinates:
                 self.state = 'walkingIntoVisibleCoordinates'
@@ -38,9 +37,8 @@ class GoToFreeDepotTask(VectorTask):
                 return context
             freeDepotCoordinatesDistances = distance.cdist([coordinate], freeDepotCoordinates, 'euclidean').flatten()
             closestFreeDepotCoordinateIndex = np.argmin(freeDepotCoordinatesDistances)
-            closestFreeDepotCoordinate = freeDepotCoordinates[closestFreeDepotCoordinateIndex]
-            self.closestFreeDepotCoordinate = closestFreeDepotCoordinate
-            walkpoints = generateFloorWalkpoints(coordinate, closestFreeDepotCoordinate)
+            self.closestFreeDepotCoordinate = freeDepotCoordinates[closestFreeDepotCoordinateIndex]
+            walkpoints = generateFloorWalkpoints(coordinate, self.closestFreeDepotCoordinate)
             self.tasks = [WalkTask(context, walkpoint).setParentTask(self).setRootTask(self.rootTask) for walkpoint in walkpoints]
         else:
             self.state = 'walkingIntoVisibleCoordinates'
@@ -55,13 +53,11 @@ class GoToFreeDepotTask(VectorTask):
 
     # TODO: add unit tests
     def getFreeDepotCoordinates(self, battleListPlayers: CreatureList, visibleDepotCoordinates: CoordinateList) -> CoordinateList:
-        hasNoPlayers = len(battleListPlayers) == 0
-        if hasNoPlayers:
+        if len(battleListPlayers) == 0:
             return visibleDepotCoordinates
         battleListPlayersCoordinates = [playerCoordinate for playerCoordinate in battleListPlayers['coordinate'].tolist()]
         delta = set(map(tuple, battleListPlayersCoordinates))
-        freeDepotCoordinates = np.array([x for x in visibleDepotCoordinates if tuple(x) not in delta])
-        return freeDepotCoordinates
+        return np.array([x for x in visibleDepotCoordinates if tuple(x) not in delta])
 
     # TODO: add unit tests
     def getVisibleDepotCoordinates(self, coordinate: Coordinate, depotCoordinates: CoordinateList) -> CoordinateList:
@@ -73,6 +69,7 @@ class GoToFreeDepotTask(VectorTask):
 
     # TODO: add unit tests
     def ping(self, context: Context) -> Context:
+        print('GoToFreeDepotTask.ping')
         if self.closestFreeDepotCoordinate is None:
             return context
         if self.state == 'walkingIntoFreeDepot' and context['radar']['coordinate'][0] == self.closestFreeDepotCoordinate[0] and context['radar']['coordinate'][1] == self.closestFreeDepotCoordinate[1]:
