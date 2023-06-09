@@ -12,7 +12,6 @@ class LootCorpseTask(VectorTask):
         self.corpse = corpse
 
     # TODO: add unit tests
-    # TODO: add typings
     def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
             # TODO: add walkToCoordinate to reach dead corpse

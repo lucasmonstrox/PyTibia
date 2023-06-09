@@ -7,6 +7,7 @@ from ...typings import Context
 from .common.base import BaseTask
 
 
+# TODO: check if something was looted or exactly count was looted
 class CollectDeadCorpseTask(BaseTask):
     def __init__(self, creature: Creature):
         super().__init__()
@@ -40,7 +41,3 @@ class CollectDeadCorpseTask(BaseTask):
         rightClickSlot([8, 6], context['gameWindow']['coordinate'])
         keyUp('shift')
         return context
-
-    # TODO: check if something was looted or exactly count was looted
-    def did(self, _: Context) -> bool:
-        return True

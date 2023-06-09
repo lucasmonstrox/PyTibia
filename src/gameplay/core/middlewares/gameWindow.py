@@ -34,24 +34,24 @@ def setDirectionMiddleware(context: Context) -> Context:
 
 # TODO: add unit tests
 def setHandleLootMiddleware(context: Context) -> Context:
-    # endlessTasks = ['depositGold', 'refill', 'selectChatTab']
-    # currentTask = context['tasksOrchestrator'].getCurrentTask(context)
-    # if (currentTask is None or currentTask.name not in endlessTasks):
-    #     lootTab = context['chat']['tabs'].get('loot')
-    #     hasChatTab = lootTab is not None
-    #     if hasChatTab and not lootTab['isSelected']:
-    #         context['tasksOrchestrator'].setRootTask(context, SelectChatTabTask('loot'))
-    # if hasNewLoot(context['screenshot']):
-    #     if context['cavebot']['previousTargetCreature'] is not None:
-    #         context['loot']['corpsesToLoot'] = np.append(context['loot']['corpsesToLoot'], [context['cavebot']['previousTargetCreature']], axis=0)
-    #         context['cavebot']['previousTargetCreature'] = None
-    #     hasSpelledExoriCategory = context['comboSpells']['lastUsedSpell'] is not None and context['comboSpells']['lastUsedSpell'] in ['exori', 'exori gran', 'exori mas']
-    #     if hasSpelledExoriCategory:
-    #         spellPath = getSpellPath(context['comboSpells']['lastUsedSpell'])
-    #         if len(spellPath) > 0:
-    #             differentCreatures = getDifferentCreaturesBySlots(context['gameWindow']['previousMonsters'], context['gameWindow']['monsters'], spellPath)
-    #             context['loot']['corpsesToLoot'] = np.append(context['loot']['corpsesToLoot'], differentCreatures, axis=0)
-    #         context['comboSpells']['lastUsedSpell'] = None
+    endlessTasks = ['depositGold', 'refill', 'selectChatTab']
+    currentTask = context['tasksOrchestrator'].getCurrentTask(context)
+    if (currentTask is None or currentTask.name not in endlessTasks):
+        lootTab = context['chat']['tabs'].get('loot')
+        hasChatTab = lootTab is not None
+        if hasChatTab and not lootTab['isSelected']:
+            context['tasksOrchestrator'].setRootTask(context, SelectChatTabTask('loot'))
+    if hasNewLoot(context['screenshot']):
+        if context['cavebot']['previousTargetCreature'] is not None:
+            context['loot']['corpsesToLoot'] = np.append(context['loot']['corpsesToLoot'], [context['cavebot']['previousTargetCreature']], axis=0)
+            context['cavebot']['previousTargetCreature'] = None
+        hasSpelledExoriCategory = context['comboSpells']['lastUsedSpell'] is not None and context['comboSpells']['lastUsedSpell'] in ['exori', 'exori gran', 'exori mas']
+        if hasSpelledExoriCategory:
+            spellPath = getSpellPath(context['comboSpells']['lastUsedSpell'])
+            if len(spellPath) > 0:
+                differentCreatures = getDifferentCreaturesBySlots(context['gameWindow']['previousMonsters'], context['gameWindow']['monsters'], spellPath)
+                context['loot']['corpsesToLoot'] = np.append(context['loot']['corpsesToLoot'], differentCreatures, axis=0)
+            context['comboSpells']['lastUsedSpell'] = None
     context['cavebot']['targetCreature'] = getTargetCreature(context['gameWindow']['monsters'])
     if context['cavebot']['targetCreature'] is not None:
         context['cavebot']['previousTargetCreature'] = context['cavebot']['targetCreature']
