@@ -26,11 +26,11 @@ class WalkToCoordinateTask(VectorTask):
     def shouldRestartAfterAllChildrensComplete(self, context: Context) -> bool:
         if len(self.tasks) == 0:
             return True
-        print('AKEEEE', context['radar']['coordinate'], self.coordinate)
         if not gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], self.coordinate):
             return True
         return False
 
+    # TODO: add unit tests
     def calculateWalkpoint(self, context: Context):
         nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
         for monster in context['gameWindow']['monsters']:
