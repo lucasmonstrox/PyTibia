@@ -1,8 +1,7 @@
 from src.gameplay.typings import Context
+import src.gameplay.utils as gameplayUtils
 from src.repositories.radar.typings import Coordinate
-from src.utils.keyboard import keyUp
 from ...typings import Context
-from ...utils import releaseKeys
 from ..waypoint import generateFloorWalkpoints
 from .common.vector import VectorTask
 from .walk import WalkTask
@@ -14,26 +13,21 @@ class WalkToCoordinateTask(VectorTask):
         self.name = 'walkToCoordinate'
         self.coordinate = coordinate
 
-    # TODO: add unit tests
     def onBeforeStart(self, context: Context) -> Context:
         self.calculateWalkpoint(context)
         return context
 
-    # TODO: add unit tests
     def onBeforeRestart(self, context: Context) -> Context:
         return self.onBeforeStart(context)
 
     def onComplete(self, context: Context):
-        return releaseKeys(context)
+        return gameplayUtils.releaseKeys(context)
 
     def shouldRestartAfterAllChildrensComplete(self, context: Context) -> bool:
         if len(self.tasks) == 0:
             return True
-        if context['radar']['coordinate'][0] != self.coordinate[0]:
-            return True
-        if context['radar']['coordinate'][1] != self.coordinate[1]:
-            return True
-        if context['radar']['coordinate'][2] != self.coordinate[2]:
+        print('AKEEEE', context['radar']['coordinate'], self.coordinate)
+        if not gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], self.coordinate):
             return True
         return False
 
@@ -42,7 +36,6 @@ class WalkToCoordinateTask(VectorTask):
         for monster in context['gameWindow']['monsters']:
             nonWalkableCoordinates.append(monster['coordinate'])
         self.tasks = []
-        # TODO: make it yield
         for walkpoint in generateFloorWalkpoints(
             context['radar']['coordinate'], self.coordinate, nonWalkableCoordinates=nonWalkableCoordinates):
             self.tasks.append(WalkTask(context, walkpoint).setParentTask(self).setRootTask(self.rootTask))
