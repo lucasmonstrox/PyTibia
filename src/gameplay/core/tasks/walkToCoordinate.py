@@ -20,6 +20,9 @@ class WalkToCoordinateTask(VectorTask):
     def onBeforeRestart(self, context: Context) -> Context:
         return self.onBeforeStart(context)
 
+    def onInterrupt(self, context: Context) -> Context:
+        return gameplayUtils.releaseKeys(context)
+
     def onComplete(self, context: Context):
         return gameplayUtils.releaseKeys(context)
 
