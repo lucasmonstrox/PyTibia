@@ -61,7 +61,7 @@ def main():
             return context
         if len(context['loot']['corpsesToLoot']) > 0:
             context['way'] = 'lootCorpses'
-            if currentTask is not None and currentTask.name != 'lootCorpse':
+            if currentTask is not None and currentTask.rootTask is not None and currentTask.rootTask.name != 'lootCorpse':
                 context['tasksOrchestrator'].setRootTask(context, None)
             if context['tasksOrchestrator'].getCurrentTask(context) is None:
                 # TODO: get closest dead corpse
@@ -89,13 +89,6 @@ def main():
                 context['tasksOrchestrator'].setRootTask(context, resolveTasksByWaypoint(currentWaypoint))
         context['gameWindow']['previousMonsters'] = context['gameWindow']['monsters']
         return context
-
-    def continueWhenIsNotChatTask(context):
-        currentTask = context['tasksOrchestrator'].getCurrentTask(context)
-        if currentTask is None:
-            return True
-        chatTask = ['depositGold', 'refill']
-        return currentTask.name not in chatTask
 
     class GameContext:
         def addWaypoint(self, waypoint):
