@@ -1,8 +1,6 @@
 # import kivy.context
-import numpy as np
 import pyautogui
 from time import sleep, time
-import win32gui
 from src.gameplay.cavebot import resolveCavebotTasks, shouldAskForCavebotTasks
 from src.gameplay.context import gameContext
 from src.gameplay.combo import comboSpellsObserver
@@ -21,11 +19,8 @@ from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserv
 from src.gameplay.healing.observers.healingByPotions import healingByPotionsObserver
 from src.gameplay.healing.observers.healingPriority import healingPriorityObserver
 from src.gameplay.targeting import hasCreaturesToAttack
-from src.gameplay.utils import releaseKeys
 from src.repositories.gameWindow.creatures import getClosestCreature
-from src.repositories.radar.core import getCoordinate
-from src.repositories.radar.typings import Waypoint
-from src.utils.core import getScreenshot
+# from src.ui.context import GameContext
 # from src.ui.app import MyApp
 
 
@@ -90,67 +85,9 @@ def main():
         context['gameWindow']['previousMonsters'] = context['gameWindow']['monsters']
         return context
 
-    class GameContext:
-        def addWaypoint(self, waypoint):
-            global gameContext
-            gameContext['cavebot']['waypoints']['points'] = np.append(gameContext['cavebot']['waypoints']['points'], np.array([waypoint], dtype=Waypoint))
-
-        def focusInTibia(self):
-            global gameContext
-            win32gui.ShowWindow(gameContext['window'], 3)
-            win32gui.SetForegroundWindow(gameContext['window'])
-
-        def play(self):
-            global gameContext
-            self.focusInTibia()
-            sleep(1)
-            gameContext['pause'] = False
-
-        def pause(self):
-            global gameContext
-            gameContext['pause'] = True
-            gameContext['tasksOrchestrator'].reset()
-            gameContext = releaseKeys(gameContext)
-
-        def getCoordinate(self):
-            global gameContext
-            screenshot = getScreenshot()
-            coordinate = getCoordinate(screenshot, previousCoordinate=gameContext['radar']['previousCoordinate'])
-            return coordinate
-
-        def toggleHealingPotionsByKey(self, healthPotionType, enabled):
-            global gameContext
-            gameContext['healing']['potions'][healthPotionType]['enabled'] = enabled
-
-        def setHealthPotionHotkeyByKey(self, healthPotionType, hotkey):
-            global gameContext
-            gameContext['healing']['potions'][healthPotionType]['hotkey'] = hotkey
-
-        def setHealthPotionHpPercentageLessThanOrEqual(self, healthPotionType, hpPercentage):
-            global gameContext
-            gameContext['healing']['potions'][healthPotionType]['hpPercentageLessThanOrEqual'] = hpPercentage
-
-        def toggleManaPotionsByKey(self, manaPotionType, enabled):
-            global gameContext
-            gameContext['healing']['potions'][manaPotionType]['enabled'] = enabled
-
-        def setManaPotionManaPercentageLessThanOrEqual(self, manaPotionType, manaPercentage):
-            global gameContext
-            gameContext['healing']['potions'][manaPotionType]['manaPercentageLessThanOrEqual'] = manaPercentage
-
-        def toggleHealingSpellsByKey(self, contextKey, enabled):
-            global gameContext
-            gameContext['healing']['spells'][contextKey]['enabled'] = enabled
-
-        def setHealingSpellsHpPercentage(self, contextKey, hpPercentage):
-            global gameContext
-            gameContext['healing']['spells'][contextKey]['hpPercentageLessThanOrEqual'] = hpPercentage
-
-        def setHealingSpellsHotkey(self, contextKey, hotkey):
-            global gameContext
-            gameContext['healing']['spells'][contextKey]['hotkey'] = hotkey
-
     try:
+        # kivy.context.register_context('game', GameContext, gameContext)
+        # MyApp().run()
         while True:
             if gameContext['pause']:
                 continue
@@ -164,8 +101,6 @@ def main():
             endTime = time()
             diff = endTime - startTime
             sleep(max(0.045 - diff, 0))
-        # kivy.context.register_context('game', GameContext)
-        # MyApp().run()
     except KeyboardInterrupt:
         raise SystemExit
 
