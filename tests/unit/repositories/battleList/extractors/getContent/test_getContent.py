@@ -9,8 +9,8 @@ screenshotImage = loadFromRGBToGray(f'{currentPath}/screenshot.png')
 
 
 def test_should_return_None_when_container_top_bar_position_is_None(mocker):
-    getContainerTopBarPositionSpy = mocker.patch('battleList.extractors.getContainerTopBarPosition', return_value=None)
-    getContainerBottomBarPositionSpy = mocker.patch('battleList.extractors.getContainerBottomBarPosition', return_value=None)
+    getContainerTopBarPositionSpy = mocker.patch('src.repositories.battleList.extractors.getContainerTopBarPosition', return_value=None)
+    getContainerBottomBarPositionSpy = mocker.patch('src.repositories.battleList.extractors.getContainerBottomBarPosition', return_value=None)
     content = getContent(screenshotImage)
     expectedContent = None
     assert content == expectedContent
@@ -19,8 +19,8 @@ def test_should_return_None_when_container_top_bar_position_is_None(mocker):
 
 
 def test_should_return_None_when_container_bottom_bar_position_is_None(mocker):
-    getContainerTopBarPositionSpy = mocker.patch('battleList.extractors.getContainerTopBarPosition', return_value=(1572, 25, 81, 13))
-    getContainerBottomBarPositionSpy = mocker.patch('battleList.extractors.getContainerBottomBarPosition', return_value=None)
+    getContainerTopBarPositionSpy = mocker.patch('src.repositories.battleList.extractors.getContainerTopBarPosition', return_value=(1572, 25, 81, 13))
+    getContainerBottomBarPositionSpy = mocker.patch('src.repositories.battleList.extractors.getContainerBottomBarPosition', return_value=None)
     content = getContent(screenshotImage)
     expectedContent = None
     assert content == expectedContent

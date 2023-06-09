@@ -11,9 +11,9 @@ listOfCooldownsImage = loadFromRGBToGray(f'{currentPath}/listOfCooldownsImage.pn
 
 def test_should_return_None_when_cannot_get_left_arrows_position(mocker):
     getLeftArrowsPositionSpy = mocker.patch(
-        'actionBar.locators.getLeftArrowsPosition', return_value=None)
+        'src.repositories.actionBar.locators.getLeftArrowsPosition', return_value=None)
     getRightArrowsPositionSpy = mocker.patch(
-        'actionBar.locators.getRightArrowsPosition', return_value=None)
+        'src.repositories.actionBar.locators.getRightArrowsPosition', return_value=None)
     cooldownsImage = getCooldownsImage(screenshotImage)
     expectedCooldownsImage = None
     assert cooldownsImage is expectedCooldownsImage
@@ -23,9 +23,9 @@ def test_should_return_None_when_cannot_get_left_arrows_position(mocker):
 
 def test_should_return_None_when_cannot_get_right_arrows_position(mocker):
     getLeftArrowsPositionSpy = mocker.patch(
-        'actionBar.locators.getLeftArrowsPosition', return_value=(0, 392, 17, 34))
+        'src.repositories.actionBar.locators.getLeftArrowsPosition', return_value=(0, 392, 17, 34))
     getRightArrowsPositionSpy = mocker.patch(
-        'actionBar.locators.getRightArrowsPosition', return_value=None)
+        'src.repositories.actionBar.locators.getRightArrowsPosition', return_value=None)
     result = getCooldownsImage(screenshotImage)
     assert result == None
     getLeftArrowsPositionSpy.assert_called_once_with(screenshotImage)
