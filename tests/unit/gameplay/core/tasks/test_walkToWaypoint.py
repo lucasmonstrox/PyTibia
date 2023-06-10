@@ -1,6 +1,6 @@
-from src.gameplay.core.tasks.walkToWaypoint import WalkToWaypointTask
 from src.gameplay.core.tasks.setNextWaypoint import SetNextWaypointTask
 from src.gameplay.core.tasks.walkToCoordinate import WalkToCoordinateTask
+from src.gameplay.core.tasks.walkToWaypoint import WalkToWaypointTask
 
 
 context = {}
