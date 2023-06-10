@@ -21,7 +21,6 @@ class ClickInClosestCreatureTask(BaseTask):
             mouse.leftClick(context['cavebot']['closestCreature']['windowCoordinate'])
             keyboard.keyUp('alt')
             return context
-        # TODO: bind automatically
         keyboard.press('space')
         return context
 
