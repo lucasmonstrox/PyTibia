@@ -69,7 +69,6 @@ class GoToFreeDepotTask(VectorTask):
 
     # TODO: add unit tests
     def ping(self, context: Context) -> Context:
-        print('GoToFreeDepotTask.ping')
         if self.closestFreeDepotCoordinate is None:
             return context
         if self.state == 'walkingIntoFreeDepot' and context['radar']['coordinate'][0] == self.closestFreeDepotCoordinate[0] and context['radar']['coordinate'][1] == self.closestFreeDepotCoordinate[1]:
