@@ -3,7 +3,6 @@ from src.utils.keyboard import keyUp
 from .typings import Context
 
 
-# TODO: add unit tests
 def coordinatesAreEqual(firstCoordinate: Coordinate, secondCoordinate: Coordinate) -> bool:
     if firstCoordinate[0] != secondCoordinate[0]:
         return False
