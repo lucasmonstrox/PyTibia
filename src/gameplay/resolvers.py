@@ -6,6 +6,7 @@ from .core.tasks.depositGold import DepositGoldTask
 from .core.tasks.depositItems import DepositItemsTask
 from .core.tasks.dropFlasks import DropFlasksTask
 from .core.tasks.logout import LogoutTask
+from .core.tasks.lure import LureWaypointTask
 from .core.tasks.refill import RefillTask
 from .core.tasks.refillChecker import RefillCheckerTask
 from .core.tasks.singleWalk import SingleWalkTask
@@ -24,6 +25,8 @@ def resolveTasksByWaypoint(waypoint: Waypoint) -> Union[BaseTask, VectorTask]:
         return DropFlasksTask()
     elif waypoint['type'] == 'logout':
         return LogoutTask()
+    elif waypoint['type'] == 'lure':
+        return LureWaypointTask(waypoint)
     elif waypoint['type'] == 'moveDown':
         return SingleWalkTask(waypoint['type'], waypoint['options']['direction'])
     elif waypoint['type'] == 'moveUp':

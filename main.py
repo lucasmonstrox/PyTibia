@@ -65,13 +65,16 @@ def main():
             context['gameWindow']['previousMonsters'] = context['gameWindow']['monsters']
             return context
         hasCreaturesToAttackAfterCheck = hasCreaturesToAttack(context)
-        if hasCreaturesToAttackAfterCheck:
-            if context['cavebot']['closestCreature'] is not None:
-                context['way'] = 'cavebot'
+        if context['targeting']['enabled'] == False:
+            context['way'] = 'waypoint'
+        else:
+            if hasCreaturesToAttackAfterCheck:
+                if context['cavebot']['closestCreature'] is not None:
+                    context['way'] = 'cavebot'
+                else:
+                    context['way'] = 'waypoint'
             else:
                 context['way'] = 'waypoint'
-        else:
-            context['way'] = 'waypoint'
         if hasCreaturesToAttackAfterCheck and shouldAskForCavebotTasks(context):
             currentRootTask = currentTask.rootTask if currentTask is not None else None
             isTryingToAttackClosestCreature = currentRootTask is not None and (currentRootTask.name == 'attackClosestCreature')
