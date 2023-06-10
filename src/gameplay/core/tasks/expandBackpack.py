@@ -8,13 +8,13 @@ from .common.base import BaseTask
 
 
 class ExpandBackpackTask(BaseTask):
-    def __init__(self, backpackBarImage: GrayImage):
+    def __init__(self, backpack: str):
         super().__init__()
         self.name = 'expandBackpack'
         self.delayBeforeStart = 1
         self.delayAfterComplete = 1
         self.terminable = False
-        self.backpackBarImage = backpackBarImage
+        self.backpack = backpack
 
     # TODO: ignore if backpack already expanded
     # TODO: add unit tests
@@ -23,8 +23,9 @@ class ExpandBackpackTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
+        backpackBarImage = images['containersBars'][context['backpacks']['main']]
         # TODO: locate should be done in right content position to avoid calculation in whole screen
-        backpackBarPosition = locate(context['screenshot'], self.backpackBarImage, confidence=0.8)
+        backpackBarPosition = locate(context['screenshot'], backpackBarImage, confidence=0.8)
         croppedImage = context['screenshot'][backpackBarPosition[1]:, backpackBarPosition[0]:]
         backpackBottomBarPosition = locate(croppedImage, images['containersBars']['backpack bottom'], confidence=0.8)
         backpackBottomBarPositionX = backpackBottomBarPosition[0] + backpackBarPosition[0]
