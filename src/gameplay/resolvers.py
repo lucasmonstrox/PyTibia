@@ -24,7 +24,7 @@ def resolveTasksByWaypoint(waypoint: Waypoint) -> Union[BaseTask, VectorTask]:
         return DropFlasksTask()
     elif waypoint['type'] == 'logout':
         return LogoutTask()
-    if waypoint['type'] == 'moveDown':
+    elif waypoint['type'] == 'moveDown':
         return SingleWalkTask(waypoint['type'], waypoint['options']['direction'])
     elif waypoint['type'] == 'moveUp':
         return SingleWalkTask(waypoint['type'], waypoint['options']['direction'])
