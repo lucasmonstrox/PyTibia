@@ -4,7 +4,6 @@ from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 from src.repositories.actionBar.core import hasCooldownByName
 from src.repositories.gameWindow.creatures import getNearestCreaturesCount
 from src.utils.array import getNextArrayIndex
-from src.utils.keyboard import press
 from .core.tasks.useHotkey import UseHotkeyTask
 from .typings import Context
 
