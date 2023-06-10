@@ -21,7 +21,7 @@ oldListOfLootCheck = []
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add tests
-def getTabs(screenshot):
+def getTabs(screenshot: GrayImage):
     shouldFindTabs = True
     tabIndex = 0
     tabs = {}
