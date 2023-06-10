@@ -20,21 +20,17 @@ def cacheObjectPosition(func: Callable) -> Callable:
     def inner(screenshot):
         nonlocal lastX, lastY, lastW, lastH, lastImgHash
         if lastX != None and lastY != None and lastW != None and lastH != None:
-            copiedImg = screenshot[lastY:lastY + lastH, lastX:lastX + lastW]
-            copiedImgHash = hashit(copiedImg)
-            if copiedImgHash == lastImgHash:
+            if hashit(screenshot[lastY:lastY + lastH, lastX:lastX + lastW]) == lastImgHash:
                 return (lastX, lastY, lastW, lastH)
         res = func(screenshot)
-        didntMatch = res is None
-        if didntMatch:
+        if res is None:
             return None
         (x, y, w, h) = res
         lastX = x
         lastY = y
         lastW = w
         lastH = h
-        lastImg = screenshot[lastY:lastY + lastH, lastX:lastX + lastW]
-        lastImgHash = hashit(lastImg)
+        lastImgHash = hashit(screenshot[lastY:lastY + lastH, lastX:lastX + lastW])
         return (x, y, w, h)
     return inner
 
@@ -63,14 +59,9 @@ def hashitHex(arr: np.ndarray) -> str:
 def locate(compareImage: GrayImage, img: GrayImage, confidence: float=0.85) -> Union[BBox, None]:
     match = cv2.matchTemplate(compareImage, img, cv2.TM_CCOEFF_NORMED)
     res = cv2.minMaxLoc(match)
-    matchConfidence = res[1]
-    didntMatch = matchConfidence <= confidence
-    if didntMatch:
+    if res[1] <= confidence:
         return None
-    (x, y) = res[3]
-    width = len(img[0])
-    height = len(img)
-    return x, y, width, height
+    return res[3][0], res[3][1], len(img[0]), len(img)
 
 
 # TODO: add unit tests

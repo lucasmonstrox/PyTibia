@@ -8,6 +8,7 @@ from .locators import getHpIconPosition, getManaIconPosition
 
 # TODO: add unit tests
 # TODO: add perf
+# TODO: change to numba to increase performance
 def getFilledBarPercentage(bar, size: int=100, allowedPixelsColors=[]) -> int:
     bar = np.where(np.isin(bar, allowedPixelsColors), 0, bar)
     barPercent = np.count_nonzero(bar == 0)
