@@ -81,8 +81,11 @@ poetry run python main.py
 ## 🧪 Testes de execução
 
 ```bash
-# unit tests
+# testes unitários
 poetry run python -m pytest
+
+# testes unitários com cobertura de teste
+poetry run python -m pytest --cov=src
 ```
 
 # ✅ TODO

@@ -83,6 +83,9 @@ poetry run python main.py
 ```bash
 # unit tests
 poetry run python -m pytest
+
+# unit tests with code coverage
+poetry run python -m pytest --cov=src
 ```
 
 # ✅ TODO
