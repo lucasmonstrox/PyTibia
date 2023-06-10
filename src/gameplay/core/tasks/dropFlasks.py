@@ -1,4 +1,3 @@
-from src.repositories.inventory.core import images
 from ...typings import Context
 from .common.vector import VectorTask
 from .dropEachFlask import DropEachFlaskTask
@@ -15,11 +14,10 @@ class DropFlasksTask(VectorTask):
         self.delayAfterComplete = 1
         self.isRootTask = True
 
-    # TODO: add unit tests
     def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
             OpenBackpackTask(context['backpacks']['main']).setParentTask(self).setRootTask(self),
-            ExpandBackpackTask(images['containersBars'][context['backpacks']['main']]).setParentTask(self).setRootTask(self),
+            ExpandBackpackTask(context['backpacks']['main']).setParentTask(self).setRootTask(self),
             DropEachFlaskTask(context['backpacks']['main']).setParentTask(self).setRootTask(self),
             SetNextWaypointTask().setParentTask(self).setRootTask(self),
         ]
