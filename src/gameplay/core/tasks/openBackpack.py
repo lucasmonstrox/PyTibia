@@ -21,8 +21,7 @@ class OpenBackpackTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        backpackImage = images['slots'][self.backpack]
-        backpackPosition = locate(context['screenshot'], backpackImage, confidence=0.8)
+        backpackPosition = locate(context['screenshot'], images['slots'][self.backpack], confidence=0.8)
         if backpackPosition is None:
             return context
         # TODO: click in random BBOX coordinate
