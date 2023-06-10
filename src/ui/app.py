@@ -18,5 +18,5 @@ class MyApp(MDApp):
         Window.bind(on_restore=self.onRestore)
 
     def onRestore(self, _):
-        gameContext = kivy.context.get_current_context()['game']
-        gameContext.pause()
+        context = kivy.context.get_current_context()['game']
+        context.pause()

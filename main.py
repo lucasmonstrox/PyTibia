@@ -2,7 +2,7 @@
 import pyautogui
 from time import sleep, time
 from src.gameplay.cavebot import resolveCavebotTasks, shouldAskForCavebotTasks
-from src.gameplay.context import gameContext
+from src.gameplay.context import context
 from src.gameplay.combo import comboSpellsObserver
 from src.gameplay.core.middlewares.battleList import setBattleListMiddleware
 from src.gameplay.core.middlewares.chat import setChatTabsMiddleware
@@ -29,7 +29,7 @@ pyautogui.PAUSE = 0
 
 
 def main():
-    global gameContext
+    global context
 
     def handleGameData(context):
         context = setTibiaWindowMiddleware(context)
@@ -86,18 +86,18 @@ def main():
         return context
 
     try:
-        # kivy.context.register_context('game', GameContext, gameContext)
+        # kivy.context.register_context('game', GameContext, context)
         # MyApp().run()
         while True:
-            if gameContext['pause']:
+            if context['pause']:
                 continue
             startTime = time()
-            gameContext = handleGameData(gameContext)
-            gameContext = handleGameplayTasks(gameContext)
-            gameContext = gameContext['tasksOrchestrator'].do(gameContext)
-            gameContext['radar']['lastCoordinateVisited'] = gameContext['radar']['coordinate']
-            healingByPotionsObserver(gameContext)
-            comboSpellsObserver(gameContext)
+            context = handleGameData(context)
+            context = handleGameplayTasks(context)
+            context = context['tasksOrchestrator'].do(context)
+            context['radar']['lastCoordinateVisited'] = context['radar']['coordinate']
+            healingByPotionsObserver(context)
+            comboSpellsObserver(context)
             endTime = time()
             diff = endTime - startTime
             sleep(max(0.045 - diff, 0))

@@ -20,7 +20,7 @@ class MyTextInput(TextInput):
 class ManaPotionCard(BoxLayout):
     def __init__(self, healthPotionType, labelText='', **kwargs):
         super().__init__(**kwargs, orientation='vertical')
-        self.gameContext = get_current_context()['game']
+        self.context = get_current_context()['game']
         self.healthPotionType = healthPotionType
         header = BoxLayout()
         label = MDLabel(text=labelText)
@@ -51,10 +51,10 @@ class ManaPotionCard(BoxLayout):
         self.add_widget(card)
 
     def toggleManaPotion(self, _, enabled):
-        self.gameContext.toggleManaPotionsByKey(self.healthPotionType, enabled)
+        self.context.toggleManaPotionsByKey(self.healthPotionType, enabled)
 
     def onManaPercentageChange(self, _, value):
-        self.gameContext.setManaPotionManaPercentageLessThanOrEqual(self.healthPotionType, value)
+        self.context.setManaPotionManaPercentageLessThanOrEqual(self.healthPotionType, value)
 
     def keyboard_on_key_down(self, instance, window, keyCode, text, modifiers):
         _, hotkey = keyCode
@@ -67,6 +67,6 @@ class ManaPotionCard(BoxLayout):
             toast('Invalid hotkey')
             return
         if hotkey and not modifiers:
-            gameContext = get_current_context()['game']
-            gameContext.setManaPotionHotkeyByKey(self.healthPotionType, hotkey)
+            context = get_current_context()['game']
+            context.setManaPotionHotkeyByKey(self.healthPotionType, hotkey)
             instance.text = hotkey

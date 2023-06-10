@@ -73,8 +73,8 @@ class CavebotScreen(MDScreen):
         pass
 
     def addWaypoint(self, waypointType):
-        gameContext = kivy.context.get_current_context()['game']
-        coordinate = gameContext.getCoordinate()
+        context = kivy.context.get_current_context()['game']
+        coordinate = context.getCoordinate()
         cannotGetCoordinate = coordinate is None
         if cannotGetCoordinate:
             toast('Não foi possível obter a coordenada! Verifique se o minimapa do cliente está aberto.')
@@ -100,19 +100,19 @@ class CavebotScreen(MDScreen):
         waypointRow = ('', waypointType, coordinate[0], coordinate[1], coordinate[2], {})
         self.data_tables.add_row(waypointRow)
         waypoint = (waypointRow[0], waypointRow[1], [waypointRow[2], waypointRow[3], waypointRow[4]], waypointRow[5])
-        gameContext.addWaypoint(waypoint)
+        context.addWaypoint(waypoint)
 
     def addUseRopeWaypoint(self, _):
-        gameContext = kivy.context.get_current_context()['game']
-        coordinate = gameContext.getCoordinate()
+        context = kivy.context.get_current_context()['game']
+        coordinate = context.getCoordinate()
         waypointRow = ('', 'useRope', coordinate[0], coordinate[1], coordinate[2], {})
         self.data_tables.add_row(waypointRow)
         waypoint = ('', 'useRope', coordinate, {})
-        gameContext.addWaypoint(waypoint)
+        context.addWaypoint(waypoint)
 
     def addUseShovelWaypoint(self, _):
-        gameContext = kivy.context.get_current_context()['game']
-        coordinate = gameContext.getCoordinate()
+        context = kivy.context.get_current_context()['game']
+        coordinate = context.getCoordinate()
         if self.selectedDirection == 'north':
             coordinate[1] -= 1
         elif self.selectedDirection == 'south':
@@ -124,4 +124,4 @@ class CavebotScreen(MDScreen):
         waypointRow = ('', 'useShovel', coordinate[0], coordinate[1], coordinate[2], {})
         self.data_tables.add_row(waypointRow)
         waypoint = ('', 'useShovel', coordinate, {})
-        gameContext.addWaypoint(waypoint)
+        context.addWaypoint(waypoint)

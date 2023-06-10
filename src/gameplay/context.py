@@ -5,7 +5,7 @@ from src.repositories.gameWindow.typings import Creature as GameWindowCreature
 from src.repositories.radar.typings import Waypoint
 
 
-gameContext = {
+context = {
     'backpacks': {
         'main': 'brocade backpack',
         'loot': 'beach backpack',

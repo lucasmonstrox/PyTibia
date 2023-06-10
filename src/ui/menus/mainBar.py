@@ -19,10 +19,10 @@ class MainBar(BoxLayout):
         self.add_widget(stopButton)
 
     def play(self, _):
-        gameContext = kivy.context.get_current_context()['game']
+        context = kivy.context.get_current_context()['game']
         self.parent.parent.parent.minimize()
-        gameContext.play()
+        context.play()
 
     def pause(self, _):
-        gameContext = kivy.context.get_current_context()['game']
-        gameContext.pause()
+        context = kivy.context.get_current_context()['game']
+        context.pause()
