@@ -2,6 +2,7 @@ import math
 from numba import njit
 import numpy as np
 import pathlib
+from scipy.spatial import distance
 import tcod
 from typing import List, Tuple, Union
 from scipy.sparse import csr_matrix
@@ -128,8 +129,8 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
     centersBars = np.broadcast_to([x, y], (len(creaturesBars), 2))
     absolute = np.absolute(creaturesBars - centersBars)
     power = np.power(absolute, 2)
-    sum = np.sum(power, axis=1)
-    sqrt = np.sqrt(sum)
+    sumOfPower = np.sum(power, axis=1)
+    sqrt = np.sqrt(sumOfPower)
     creaturesBarsSortedIndexes = np.argsort(sqrt)
     discoverTarget = beingAttackedCreatureCategory is not None
     for creatureBarSortedIndex in creaturesBarsSortedIndexes:
@@ -344,6 +345,36 @@ def isCreatureBeingAttacked(gameWindowImage: GrayImage, borderX: int, yOfCreatur
         if bottomBorder[i] == 76 or bottomBorder[i] == 166:
             pixelsCount += 1
     return pixelsCount > 50
+
+
+# TODO: add unit tests
+# TODO: add perf
+def isTrappedByCreatures(gameWindowCreatures: CreatureList, radarCoordinate: Coordinate) -> bool:
+    pixelRadarCoordinate = getPixelFromCoordinate(radarCoordinate)
+    playerBox = walkableFloorsSqms[radarCoordinate[2], pixelRadarCoordinate[1] - 1: pixelRadarCoordinate[1] + 2, pixelRadarCoordinate[0] - 1: pixelRadarCoordinate[0] + 2].copy()
+    for gameWindowCreature in gameWindowCreatures:
+        distanceOf = distance.cdist([gameWindowCreature['coordinate']], [radarCoordinate], 'euclidean').flatten()[0]
+        if distanceOf < 1.42:
+            x = gameWindowCreature['coordinate'][0] - radarCoordinate[0] + 1
+            y = gameWindowCreature['coordinate'][1] - radarCoordinate[1] + 1
+            playerBox[y, x] = 0
+    if playerBox[0, 0] == 1:
+        return False
+    if playerBox[0, 1] == 1:
+        return False
+    if playerBox[0, 2] == 1:
+        return False
+    if playerBox[1, 0] == 1:
+        return False
+    if playerBox[1, 2] == 1:
+        return False
+    if playerBox[2, 0] == 1:
+        return False
+    if playerBox[2, 1] == 1:
+        return False
+    if playerBox[2, 2] == 1:
+        return False
+    return True
 
 
 # TODO: add unit tests
