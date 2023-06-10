@@ -1,7 +1,5 @@
 import numpy as np
 from time import time
-from src.repositories.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
-from src.repositories.skills.core import getSpeed
 from src.shared.typings import Coordinate
 from src.utils.coordinate import getDirectionBetweenCoordinates
 from src.utils.keyboard import press
@@ -13,11 +11,7 @@ class SingleWalkPressTask(BaseTask):
     def __init__(self, context: Context, coordinate: Coordinate):
         super().__init__()
         self.name = 'singleWalkPress'
-        charSpeed = getSpeed(context['screenshot'])
-        tileFriction = getTileFrictionByCoordinate(coordinate)
-        movementSpeed = getBreakpointTileMovementSpeed(
-            charSpeed, tileFriction)
-        self.delayOfTimeout = (movementSpeed * 2) / 1000
+        self.delayOfTimeout = (context['skills']['movementSpeed'] * 2) / 1000
         self.coordinate = coordinate
 
     # TODO: add unit tests

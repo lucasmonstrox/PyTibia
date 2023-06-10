@@ -10,6 +10,7 @@ from src.gameplay.core.middlewares.gameWindow import setDirectionMiddleware, set
 from src.gameplay.core.middlewares.playerStatus import setMapPlayerStatusMiddleware
 from src.gameplay.core.middlewares.radar import setRadarMiddleware, setWaypointIndexMiddleware
 from src.gameplay.core.middlewares.screenshot import setScreenshotMiddleware
+from src.gameplay.core.middlewares.skills import setCharSkillsMiddleware
 from src.gameplay.core.middlewares.tasks import setCleanUpTasksMiddleware
 from src.gameplay.core.middlewares.window import setTibiaWindowMiddleware
 from src.gameplay.core.tasks.lootCorpse import LootCorpseTask
@@ -37,6 +38,7 @@ def main():
             return context
         context = setScreenshotMiddleware(context)
         context = setRadarMiddleware(context)
+        context = setCharSkillsMiddleware(context)
         context = setChatTabsMiddleware(context)
         context = setBattleListMiddleware(context)
         context = setGameWindowMiddleware(context)
@@ -100,7 +102,8 @@ def main():
             comboSpellsObserver(gameContext)
             endTime = time()
             diff = endTime - startTime
-            sleep(max(0.045 - diff, 0))
+            cenas = ((gameContext['skills']['movementSpeed'] / 1000) / 4) - diff
+            sleep(max(cenas, 0))
     except KeyboardInterrupt:
         raise SystemExit
 

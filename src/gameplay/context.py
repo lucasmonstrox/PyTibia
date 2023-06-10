@@ -275,6 +275,11 @@ gameContext = {
         'manaPercentage': None,
         'mana': None,
     },
+    'skills': {
+        'movementSpeed': 0,
+        'speed': 0,
+        'tileFriction': 0
+    },
     'targeting': {
         'enabled': False,
         'creatures': {},
