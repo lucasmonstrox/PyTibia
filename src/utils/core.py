@@ -41,14 +41,12 @@ def cacheObjectPosition(func: Callable) -> Callable:
 
 # TODO: add unit tests
 def getCoordinateFromPixel(pixel: XYCoordinate) -> Coordinate:
-    x, y = pixel
-    return x + 31744, y + 30976
+    return pixel[0] + 31744, pixel[1] + 30976
 
 
 # TODO: add unit tests
 def getPixelFromCoordinate(coordinate: Coordinate) -> XYCoordinate:
-    x, y, _ = coordinate
-    return x - 31744, y - 30976
+    return coordinate[0] - 31744, coordinate[1] - 30976
 
 
 # TODO: add unit tests
