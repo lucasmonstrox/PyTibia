@@ -97,7 +97,6 @@ poetry run python -m pytest --cov=src
 - Add mypy to CI
 - Add unit tests to CI
 - Add screenshot adapter on linux
-- Apply statemachine pattern to manage tasks
 
 # 👷 Authors
 

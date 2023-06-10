@@ -97,7 +97,6 @@ poetry run python -m pytest --cov=src
 - Adicionar mypy na CI
 - Adicionar testes unitários na CI
 - Adicionar adaptador de screenshot no linux
-- Aplicar padrão de código statemachine para gerenciar tarefas
 
 # 👷 Autores
 
