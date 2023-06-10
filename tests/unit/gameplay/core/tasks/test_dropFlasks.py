@@ -6,7 +6,6 @@ from src.gameplay.core.tasks.setNextWaypoint import SetNextWaypointTask
 
 
 context = {'backpacks': {'main': 'beach backpack'}}
-coordinate = (1, 2, 3)
 
 def test_should_test_default_params():
     task = DropFlasksTask()
