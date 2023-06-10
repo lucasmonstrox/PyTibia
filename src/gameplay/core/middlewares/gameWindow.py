@@ -5,7 +5,7 @@ from src.repositories.gameWindow.config import gameWindowSizes
 from src.repositories.gameWindow.core import getCoordinate, getImageByCoordinate
 from src.repositories.gameWindow.creatures import getCreatures, getCreaturesByType, getDifferentCreaturesBySlots, getTargetCreature
 from src.repositories.gameWindow.typings import Creature
-from ...comboSpells.core import getSpellPath
+from ...comboSpells.core import spellsPath
 from ...typings import Context
 from ..tasks.selectChatTab import SelectChatTabTask
 
@@ -46,7 +46,7 @@ def setHandleLootMiddleware(context: Context) -> Context:
             context['cavebot']['previousTargetCreature'] = None
         hasSpelledExoriCategory = context['comboSpells']['lastUsedSpell'] is not None and context['comboSpells']['lastUsedSpell'] in ['exori', 'exori gran', 'exori mas']
         if hasSpelledExoriCategory:
-            spellPath = getSpellPath(context['comboSpells']['lastUsedSpell'])
+            spellPath = spellsPath.get(context['comboSpells']['lastUsedSpell'], [])
             if len(spellPath) > 0:
                 differentCreatures = getDifferentCreaturesBySlots(context['gameWindow']['previousMonsters'], context['gameWindow']['monsters'], spellPath)
                 context['loot']['corpsesToLoot'] = np.append(context['loot']['corpsesToLoot'], differentCreatures, axis=0)

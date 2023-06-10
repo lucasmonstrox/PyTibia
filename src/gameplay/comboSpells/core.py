@@ -24,9 +24,3 @@ def comboSpellDidMatch(comboSpell, nearestCreaturesCount: int) -> bool:
     if comboSpell['creatures']['compare'] == 'greaterThanOrEqual':
         return nearestCreaturesCount >= comboSpell['creatures']['value']
     return False
-
-
-# TODO: add unit tests
-# TODO: add typings
-def getSpellPath(spell):
-    return spellsPath.get(spell, [])
