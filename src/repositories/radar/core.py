@@ -135,16 +135,11 @@ def getBreakpointTileMovementSpeed(charSpeed: int, tileFriction: TileFriction) -
     tileFrictionNotFound = tileFriction not in tilesFrictionsWithBreakpoints
     if tileFrictionNotFound:
         closestTilesFrictions = np.flatnonzero(availableTilesFrictions > tileFriction)
-        hasClosestTilesFrictions = len(closestTilesFrictions) > 0
-        tileFriction = availableTilesFrictions[closestTilesFrictions[0]] if hasClosestTilesFrictions else 250
-    breakpoints = tilesFrictionsWithBreakpoints[tileFriction]
-    availableBreakpointsIndexes = np.flatnonzero(charSpeed >= breakpoints)
-    hasNoAvailableBreakpointsIndexes = len(availableBreakpointsIndexes) == 0
-    if hasNoAvailableBreakpointsIndexes:
+        tileFriction = availableTilesFrictions[closestTilesFrictions[0]] if len(closestTilesFrictions) > 0 else 250
+    availableBreakpointsIndexes = np.flatnonzero(charSpeed >= tilesFrictionsWithBreakpoints[tileFriction])
+    if len(availableBreakpointsIndexes) == 0:
         return breakpointTileMovementSpeed[1]
-    firstBreakpointIndex = availableBreakpointsIndexes[-1] + 1
-    tileMovementSpeed = breakpointTileMovementSpeed.get(firstBreakpointIndex)
-    return tileMovementSpeed
+    return breakpointTileMovementSpeed.get(availableBreakpointsIndexes[-1] + 1)
 
 
 # TODO: add unit tests
