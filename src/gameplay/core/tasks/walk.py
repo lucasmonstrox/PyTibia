@@ -1,4 +1,5 @@
 import numpy as np
+import src.gameplay.utils as gameplayUtils
 from src.repositories.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from src.repositories.skills.core import getSpeed
 from src.shared.typings import Coordinate
@@ -24,8 +25,7 @@ class WalkTask(BaseTask):
     def shouldIgnore(self, context: Context) -> bool:
         if context['radar']['lastCoordinateVisited'] is None:
             return True
-        isStartingFromLastCoordinate = context['radar']['coordinate'][0] != context['radar']['lastCoordinateVisited'][0] and context['radar']['coordinate'][1] != context['radar']['lastCoordinateVisited'][1] and context['radar']['coordinate'][2] != context['radar']['lastCoordinateVisited'][2]
-        return isStartingFromLastCoordinate
+        return not gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], context['radar']['lastCoordinateVisited'])
 
     # TODO: add unit tests
     def do(self, context: Context) -> bool:
@@ -35,8 +35,7 @@ class WalkTask(BaseTask):
         futureDirection = None
         if self.parentTask and len(self.parentTask.tasks) > 1:
             if self.parentTask.currentTaskIndex + 1 < len(self.parentTask.tasks):
-                nextTask = self.parentTask.tasks[self.parentTask.currentTaskIndex + 1]
-                futureDirection = getDirectionBetweenCoordinates(self.walkpoint, nextTask.walkpoint)
+                futureDirection = getDirectionBetweenCoordinates(self.walkpoint, self.parentTask.tasks[self.parentTask.currentTaskIndex + 1].walkpoint)
         if direction != futureDirection:
             if context['lastPressedKey'] is not None:
                 context = releaseKeys(context)
@@ -57,9 +56,7 @@ class WalkTask(BaseTask):
 
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
-        # TODO: numbait
-        didTask = np.all(context['radar']['coordinate'] == self.walkpoint) == True
-        return didTask
+        return gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], self.walkpoint)
 
     # TODO: add unit tests
     def onInterrupt(self, context: Context) -> Context:
