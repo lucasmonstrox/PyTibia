@@ -12,8 +12,7 @@ from .locators import getHpIconPosition, getManaIconPosition
 def getFilledBarPercentage(bar, size: int=100, allowedPixelsColors=[]) -> int:
     bar = np.where(np.isin(bar, allowedPixelsColors), 0, bar)
     barPercent = np.count_nonzero(bar == 0)
-    percent = (barPercent * 100 // size)
-    return percent
+    return (barPercent * 100 // size)
 
 
 # TODO: add unit tests
@@ -34,6 +33,5 @@ def getManaPercentage(screenshot: GrayImage) -> Union[int, None]:
     if manaIconPosition == None:
         return None
     bar = getManaBar(screenshot, manaIconPosition)
-    percent = getFilledBarPercentage(bar, size=barSize,
+    return getFilledBarPercentage(bar, size=barSize,
                                      allowedPixelsColors=manaBarAllowedPixelsColors)
-    return percent
