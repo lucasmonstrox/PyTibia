@@ -1,4 +1,5 @@
 import cv2
+from numba import njit
 import numpy as np
 from PIL import Image
 from typing import Union
@@ -39,8 +40,13 @@ def cacheChain(imageList):
 
 
 # TODO: add unit tests
+@njit(cache=True, fastmath=True)
 def convertGraysToBlack(arr: np.ndarray) -> np.ndarray:
-    return np.array(np.where(np.logical_and(arr >= 50, arr <= 100), 0, arr), dtype=np.uint8)
+    for i in range(len(arr[0])):
+        for j in range(len(arr)):
+            if arr[i, j] >= 50 and arr[i, j] <= 100:
+                arr[i, j] = 0
+    return arr
 
 
 # TODO: add unit tests
