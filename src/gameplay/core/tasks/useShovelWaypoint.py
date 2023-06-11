@@ -13,7 +13,6 @@ class UseShovelWaypointTask(VectorTask):
         self.isRootTask = True
         self.waypoint = waypoint
 
-    # TODO: add unit tests
     def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
             UseShovelTask(self.waypoint).setParentTask(self).setRootTask(self),
