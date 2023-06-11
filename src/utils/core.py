@@ -25,13 +25,12 @@ def cacheObjectPosition(func: Callable) -> Callable:
         res = func(screenshot)
         if res is None:
             return None
-        (x, y, w, h) = res
-        lastX = x
-        lastY = y
-        lastW = w
-        lastH = h
+        lastX = res[0]
+        lastY = res[1]
+        lastW = res[2]
+        lastH = res[3]
         lastImgHash = hashit(screenshot[lastY:lastY + lastH, lastX:lastX + lastW])
-        return (x, y, w, h)
+        return res
     return inner
 
 
