@@ -42,15 +42,14 @@ class WalkTask(BaseTask):
             else:
                 press(direction)
             return context
-        walkTasksLength = len(self.parentTask.tasks)
         if direction != context['lastPressedKey']:
-            if walkTasksLength > 2:
+            if len(self.parentTask.tasks) > 2:
                 keyDown(direction)
                 context['lastPressedKey'] = direction
             else:
                 press(direction)
             return context
-        if walkTasksLength == 1 and context['lastPressedKey'] is not None:
+        if len(self.parentTask.tasks) == 1 and context['lastPressedKey'] is not None:
             context = releaseKeys(context)
         return context
 
