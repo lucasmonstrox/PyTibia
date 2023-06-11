@@ -15,7 +15,6 @@ class UseRopeTask(BaseTask):
         self.delayAfterComplete = 1
         self.waypoint = waypoint
 
-    # TODO: add unit tests
     def do(self, context: Context) -> Context:
         slot = gameWindowCore.getSlotFromCoordinate(
             context['radar']['coordinate'], self.waypoint['coordinate'])
