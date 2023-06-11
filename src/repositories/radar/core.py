@@ -46,7 +46,7 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate=None) ->
                 paddingSize + areaFoundImg[1]
             (currentCoordinateX, currentCoordinateY) = getCoordinateFromPixel(
                 (currentCoordinateXPixel, currentCoordinateYPixel))
-            return [currentCoordinateX, currentCoordinateY, floorLevel]
+            return (currentCoordinateX, currentCoordinateY, floorLevel)
     imgCoordinate = locate(floorsImgs[floorLevel], radarImage, confidence=0.75)
     if imgCoordinate is None:
         return None
@@ -54,7 +54,7 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate=None) ->
     yImgCoordinate = imgCoordinate[1] + dimensions['halfHeight']
     xCoordinate, yCoordinate = getCoordinateFromPixel(
         (xImgCoordinate, yImgCoordinate))
-    return [xCoordinate, yCoordinate, floorLevel]
+    return (xCoordinate, yCoordinate, floorLevel)
 
 
 # TODO: add unit tests
