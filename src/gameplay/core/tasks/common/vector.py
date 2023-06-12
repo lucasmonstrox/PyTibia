@@ -8,6 +8,5 @@ class VectorTask(BaseTask):
         self.currentTaskIndex = 0
         self.tasks = []
 
-    # TODO: add unit tests
     def shouldRestartAfterAllChildrensComplete(self, _: Context) -> bool:
         return False
