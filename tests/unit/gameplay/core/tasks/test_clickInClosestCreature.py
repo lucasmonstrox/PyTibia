@@ -58,3 +58,14 @@ def test_should_do_and_ignore_hotkey_attack_when_there_ignorable_creatures(mocke
     leftClickSpy.assert_called_once_with(context['cavebot']['closestCreature']['windowCoordinate'])
     keyUpSpy.assert_called_once_with('alt')
     pressSpy.assert_not_called()
+
+def test_should_do_and_press_space_hotkey_when_there_is_no_players_or_ignorable_creatures(mocker):
+    context = {
+        'cavebot': {'closestCreature': {'windowCoordinate': (0, 0)}},
+        'gameWindow': {'players': []},
+        'targeting': {'hasIgnorableCreatures': False}
+    }
+    pressSpy = mocker.patch('src.utils.keyboard.press')
+    task = ClickInClosestCreatureTask()
+    assert task.do(context) == context
+    pressSpy.assert_called_once_with('space')
