@@ -11,12 +11,11 @@ class ClickInClosestCreatureTask(BaseTask):
         self.delayOfTimeout = 1
 
     def shouldIgnore(self, context: Context) -> bool:
-        shouldIgnoreTask = context['cavebot']['targetCreature'] is not None
-        return shouldIgnoreTask
+        return context['cavebot']['targetCreature'] is not None
 
     def do(self, context: Context) -> Context:
-        ignoreHotkeyAttack = len(context['gameWindow']['players']) > 0 or context['targeting']['hasIgnorableCreatures']
-        if ignoreHotkeyAttack:
+        # ignore hotkey attack
+        if  len(context['gameWindow']['players']) > 0 or context['targeting']['hasIgnorableCreatures']:
             keyboard.keyDown('alt')
             mouse.leftClick(context['cavebot']['closestCreature']['windowCoordinate'])
             keyboard.keyUp('alt')
@@ -25,8 +24,7 @@ class ClickInClosestCreatureTask(BaseTask):
         return context
 
     def did(self, context: Context) -> bool:
-        didTask = context['cavebot']['isAttackingSomeCreature']
-        return didTask
+        return context['cavebot']['isAttackingSomeCreature']
 
     # TODO: add unit tests
     def onTimeout(self, context: Context) -> Context:
