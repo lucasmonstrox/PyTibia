@@ -29,7 +29,6 @@ def getAdjacencyMatrix(arr: np.ndarray) -> np.ndarray:
     return connections
 
 
-# TODO: add unit tests
 @njit(cache=True, fastmath=True)
 def hasMatrixInsideOther(matrix: GrayImage, other: GrayImage) -> bool:
     for i in range(matrix.shape[0]):
