@@ -15,8 +15,7 @@ class BuyItemTask(BaseTask):
         self.itemQuantity = itemQuantity
 
     def shouldIgnore(self, _: Context) -> bool:
-        shouldIgnoreTask = self.itemQuantity <= 0
-        return shouldIgnoreTask
+        return self.itemQuantity <= 0
 
     def do(self, context: Context) -> Context:
         # TODO: split into multiple tasks

@@ -21,5 +21,4 @@ class ClickInCoordinateTask(BaseTask):
         return context
 
     def did(self, context: Context) -> bool:
-        didTask = gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], context['cavebot']['waypoints']['state']['checkInCoordinate'])
-        return didTask
+        return gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], context['cavebot']['waypoints']['state']['checkInCoordinate'])

@@ -29,8 +29,7 @@ class MoveUp(BaseTask):
 
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
-        didTask = context['radar']['coordinate'][2] == self.floorLevel
-        return didTask
+        return context['radar']['coordinate'][2] == self.floorLevel
 
     # TODO: add unit tests
     def onTimeout(self, context: Context) -> Context:

@@ -15,8 +15,7 @@ class EnableChatTask(BaseTask):
 
     def shouldIgnore(self, context: Context) -> bool:
         (_, chatIsOn) = chatCore.getChatStatus(context['screenshot'])
-        shouldIgnoreTask = chatIsOn == True
-        return shouldIgnoreTask
+        return chatIsOn
 
     def do(self, context: Context) -> Context:
         keyboard.press('enter')

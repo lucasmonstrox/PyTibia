@@ -30,5 +30,4 @@ class OpenBackpackTask(BaseTask):
 
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
-        didTask = isBackpackOpen(context['screenshot'], self.backpack)
-        return didTask
+        return isBackpackOpen(context['screenshot'], self.backpack)
