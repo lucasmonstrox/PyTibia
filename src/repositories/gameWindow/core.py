@@ -91,35 +91,28 @@ def getImageByCoordinate(screenshot: GrayImage, coordinate, gameWindowSize) -> G
 # TODO: add unit tests
 # TODO: add perf
 def getSlotFromCoordinate(currentCoordinate: Coordinate, coordinate: Coordinate) -> Union[Slot, None]:
-    diffX = coordinate[0] - currentCoordinate[0]
-    diffXAbs = abs(diffX)
-    if diffXAbs > 7:
+    diffX = abs(coordinate[0] - currentCoordinate[0])
+    if diffX > 7:
         return None
-    diffY = coordinate[1] - currentCoordinate[1]
-    diffYAbs = abs(diffY)
-    if diffYAbs > 5:
+    diffY = abs(coordinate[1] - currentCoordinate[1])
+    if diffY > 5:
         return None
-    gameWindowCoordinateX = 7 + diffX
-    gameWindowCoordinateY = 5 + diffY
-    return gameWindowCoordinateX, gameWindowCoordinateY
+    return 7 + diffX, 5 + diffY
 
 
 # TODO: add unit tests
 # TODO: add perf
 def getSlotImage(gameWindowImg: GrayImage, slot: Tuple[int, int], slotWidth: int) -> GrayImage:
-    xOfSlot, yOfSlot = slot
-    x = xOfSlot * slotWidth
-    y = yOfSlot * slotWidth
-    slotImg = gameWindowImg[y:y + slotWidth, x:x + slotWidth]
-    return slotImg
+    x = slot[0] * slotWidth
+    y = slot[1] * slotWidth
+    return gameWindowImg[y:y + slotWidth, x:x + slotWidth]
 
 
 # TODO: add unit tests
 # TODO: add perf
-def isHoleOpen(gameWindowImg: GrayImage, holeOpenImg: GrayImage, coordinate: Coordinate, targetCoordinate: Coordinate) -> bool:
+def isHoleOpen(gameWindowImg: GrayImage, holeOpenImg: GrayImage, coordinate: Coordinate, targetCoordinate: Coordinate) -> bool
+    # TODO: export from config
     slotWidth = len(gameWindowImg[1]) // 15
     slot = getSlotFromCoordinate(coordinate, targetCoordinate)
     slotImg = getSlotImage(gameWindowImg, slot, slotWidth)
-    holeOpenLocation = locate(slotImg, holeOpenImg)
-    isOpen = holeOpenLocation is not None
-    return isOpen
+    return locate(slotImg, holeOpenImg) is not None
