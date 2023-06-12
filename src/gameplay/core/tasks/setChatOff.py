@@ -5,6 +5,7 @@ from ...typings import Context
 from .common.base import BaseTask
 
 
+# TODO: check if chat is off on did
 class SetChatOffTask(BaseTask):
     def __init__(self):
         super().__init__()
@@ -21,7 +22,3 @@ class SetChatOffTask(BaseTask):
     def do(self, context: Context) -> Context:
         press('enter')
         return context
-
-    # TODO: check if chat is off
-    def did(self, _: Context) -> bool:
-        return True
