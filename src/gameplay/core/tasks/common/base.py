@@ -62,8 +62,5 @@ class BaseTask:
     def onComplete(self, context: Context) -> Context:
         return context
 
-    def onInterrupt(self, context: Context) -> Context:
-        return context
-
     def onTimeout(self, context: Context) -> Context:
         return context
