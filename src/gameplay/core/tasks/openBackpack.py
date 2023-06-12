@@ -1,7 +1,7 @@
 from src.repositories.inventory.config import images
-from src.repositories.inventory.core import isBackpackOpen
-from src.utils.core import locate
-from src.utils.mouse import rightClick
+import src.repositories.inventory.core as inventoryCore
+import src.utils.core as utilsCore
+import src.utils.mouse as utilsMouse
 from ...typings import Context
 from .common.base import BaseTask
 
@@ -14,19 +14,16 @@ class OpenBackpackTask(BaseTask):
         self.delayAfterComplete = 1
         self.backpack = backpack
 
-    # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:
-        return isBackpackOpen(context['screenshot'], self.backpack)
+        return inventoryCore.isBackpackOpen(context['screenshot'], self.backpack)
 
-    # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        backpackPosition = locate(context['screenshot'], images['slots'][self.backpack], confidence=0.8)
+        backpackPosition = utilsCore.locate(context['screenshot'], images['slots'][self.backpack], confidence=0.8)
         if backpackPosition is None:
             return context
         # TODO: click in random BBOX coordinate
-        rightClick((backpackPosition[0] + 5, backpackPosition[1] + 5))
+        utilsMouse.rightClick((backpackPosition[0] + 5, backpackPosition[1] + 5))
         return context
 
-    # TODO: add unit tests
     def did(self, context: Context) -> bool:
-        return isBackpackOpen(context['screenshot'], self.backpack)
+        return self.shouldIgnore(context)
