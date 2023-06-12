@@ -52,16 +52,13 @@ def getClosestCoordinate(coordinate: Coordinate, coordinates: CoordinateList) ->
     return closestCoordinate
 
 
-# TODO: add unit tests
 def getDirectionBetweenCoordinates(coordinate: Coordinate, nextCoordinate: Coordinate) -> Union[str, None]:
-    (xOfCurrentCoordinate, yOfCurrentCoordinate, _) = coordinate
-    (xOfNextWaypointCoordinate, yOfNextWaypointCoordinate, _) = nextCoordinate
-    if xOfCurrentCoordinate < xOfNextWaypointCoordinate:
+    if coordinate[0] < nextCoordinate[0]:
         return 'right'
-    if xOfNextWaypointCoordinate < xOfCurrentCoordinate:
+    if nextCoordinate[0] < coordinate[0]:
         return 'left'
-    if yOfCurrentCoordinate < yOfNextWaypointCoordinate:
+    if coordinate[1] < nextCoordinate[1]:
         return 'down'
-    if yOfNextWaypointCoordinate < yOfCurrentCoordinate:
+    if nextCoordinate[1] < coordinate[1]:
         return 'up'
     return None
