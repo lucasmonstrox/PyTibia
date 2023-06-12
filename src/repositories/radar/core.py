@@ -4,7 +4,7 @@ from typing import Union
 from src.shared.typings import Coordinate, GrayImage, GrayPixel, Waypoint, WaypointList
 from src.utils.core import hashit, hashitHex, locate
 from src.utils.coordinate import getCoordinateFromPixel, getPixelFromCoordinate
-from .config import coordinates, dimensions, floorsImgs, floorsLevelsImgsHashes, floorsPathsSqms, nonWalkablePixelsColors, walkableFloorsSqms
+from .config import availableTilesFrictions, breakpointTileMovementSpeed, coordinates, dimensions, floorsImgs, floorsLevelsImgsHashes, floorsPathsSqms, nonWalkablePixelsColors, tilesFrictionsWithBreakpoints, walkableFloorsSqms
 from .extractors import getRadarImage
 from .locators import getRadarToolsPosition
 from .typings import FloorLevel, TileFriction
@@ -90,45 +90,7 @@ def getClosestWaypointIndexFromCoordinate(coordinate: Coordinate, waypoints: Way
         waypointsIndexesOfCurrentFloor]
     lowestWaypointIndex = np.argmin(
         waypointsCoordinatesDistancesOfCurrentFloor)
-    lowestWaypointIndexOfCurrentFloor = waypointsIndexesOfCurrentFloor[lowestWaypointIndex]
-    return lowestWaypointIndexOfCurrentFloor
-
-
-availableTilesFrictions = np.array([70, 90, 95, 100, 110, 125, 140, 150, 160, 200, 250])
-
-breakpointTileMovementSpeed = {
-    1: 850,
-    2: 800,
-    3: 750,
-    4: 700,
-    5: 650,
-    6: 600,
-    7: 550,
-    8: 500,
-    9: 450,
-    10: 400,
-    11: 350,
-    12: 300,
-    13: 250,
-    14: 200,
-    15: 150,
-    16: 100,
-    17: 50,
-}
-
-tilesFrictionsWithBreakpoints = {
-    70:  np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 111, 142, 200, 342, 1070]),
-    90:  np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 147, 192, 278, 499, 1842]),
-    95:  np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 157, 205, 299, 543, 2096]),
-    100: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 113, 135, 167, 219, 321, 592, 2382]),
-    110: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 150, 187, 248, 367, 696, 3060]),
-    125: np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 175, 219, 293, 444, 876, 4419]),
-    140: np.array([0, 0, 0, 0, 0, 0, 0, 111, 125, 143, 167, 201, 254, 344, 531, 1092, 6341]),
-    150: np.array([0, 0, 0, 0, 0, 0, 0, 120, 135, 155, 181, 219, 278, 380, 595, 1258, 8036]),
-    160: np.array([0, 0, 0, 0, 0, 0, 116, 129, 145, 167, 196, 238, 304, 419, 663, 1443, 10167]),
-    200: np.array([0, 0, 0, 114, 124, 135, 149, 167, 190, 219, 261, 322, 419, 597, 998, 2444, 25761]),
-    250: np.array([117, 126, 135, 146, 160, 175, 195, 220, 252, 295, 356, 446, 598, 884, 1591, 4557, 81351]),
-}
+    return waypointsIndexesOfCurrentFloor[lowestWaypointIndex]
 
 
 # TODO: add perf
@@ -164,8 +126,7 @@ def isCloseToCoordinate(currentCoordinate: Coordinate, possibleCloseCoordinate: 
         xOfPossibleCloseCoordinate, yOfPossibleCloseCoordinate)
     euclideanDistance = distance.cdist(
         [XYOfCurrentCoordinate], [XYOfPossibleCloseCoordinate])
-    isClose = euclideanDistance <= distanceTolerance
-    return isClose
+    return euclideanDistance <= distanceTolerance
 
 
 # TODO: add unit tests
@@ -179,5 +140,4 @@ def isCoordinateWalkable(coordinate: Coordinate) -> bool:
 # TODO: add unit tests
 # TODO: add perf
 def isNonWalkablePixelColor(pixelColor: GrayPixel) -> bool:
-    isNonWalkable = np.isin(pixelColor, nonWalkablePixelsColors)
-    return isNonWalkable
+    return np.isin(pixelColor, nonWalkablePixelsColors)
