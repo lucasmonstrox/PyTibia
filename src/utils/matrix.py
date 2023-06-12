@@ -3,7 +3,6 @@ import numpy as np
 from src.shared.typings import GrayImage
 
 
-# TODO: add unit tests
 def getAdjacencyMatrix(arr: np.ndarray) -> np.ndarray:
     repArrHorizontal = np.ravel(arr)
     arrDim = arr.shape[0] * arr.shape[1]
