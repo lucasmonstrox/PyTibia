@@ -104,17 +104,17 @@ def getSlotFromCoordinate(currentCoordinate: Coordinate, coordinate: Coordinate)
 
 # TODO: add unit tests
 # TODO: add perf
-def getSlotImage(gameWindowImg: GrayImage, slot: Tuple[int, int], slotWidth: int) -> GrayImage:
+def getSlotImage(gameWindowImage: GrayImage, slot: Tuple[int, int], slotWidth: int) -> GrayImage:
     x = slot[0] * slotWidth
     y = slot[1] * slotWidth
-    return gameWindowImg[y:y + slotWidth, x:x + slotWidth]
+    return gameWindowImage[y:y + slotWidth, x:x + slotWidth]
 
 
 # TODO: add unit tests
 # TODO: add perf
-def isHoleOpen(gameWindowImg: GrayImage, holeOpenImg: GrayImage, coordinate: Coordinate, targetCoordinate: Coordinate) -> bool:
+def isHoleOpen(gameWindowImage: GrayImage, holeOpenImg: GrayImage, coordinate: Coordinate, targetCoordinate: Coordinate) -> bool:
     # TODO: export from config
-    slotWidth = len(gameWindowImg[1]) // 15
+    slotWidth = len(gameWindowImage[1]) // 15
     slot = getSlotFromCoordinate(coordinate, targetCoordinate)
-    slotImg = getSlotImage(gameWindowImg, slot, slotWidth)
+    slotImg = getSlotImage(gameWindowImage, slot, slotWidth)
     return locate(slotImg, holeOpenImg) is not None
