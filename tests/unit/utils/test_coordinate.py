@@ -1,5 +1,9 @@
-from src.utils.coordinate import getDirectionBetweenCoordinates
+from src.utils.coordinate import getCoordinateFromPixel, getDirectionBetweenCoordinates, getPixelFromCoordinate
 
+
+def test_should_return_pixel_from_coordinate():
+    pixelCoordinate = (0, 0)
+    assert getCoordinateFromPixel(pixelCoordinate) == (31744, 30976)
 
 def test_should_return_right_when_next_x_coordinate_is_greather_than_current_x_coordinate():
     coordinate = (0, 0, 0)
@@ -25,3 +29,7 @@ def test_should_return_None_when_x_or_y_are_equals():
     coordinate = (0, 0, 0)
     nextCoordinate = (0, 0, 0)
     assert getDirectionBetweenCoordinates(coordinate, nextCoordinate) is None
+
+def test_should_return_pixel_from_coordinate():
+    coordinate = (31744, 30976, 7)
+    assert getPixelFromCoordinate(coordinate) == (0, 0)

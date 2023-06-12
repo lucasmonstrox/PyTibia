@@ -51,7 +51,6 @@ def getClosestCoordinate(coordinate: Coordinate, coordinates: CoordinateList) ->
     return closestCoordinate
 
 
-# TODO: add unit tests
 def getCoordinateFromPixel(pixel: XYCoordinate) -> Coordinate:
     return pixel[0] + 31744, pixel[1] + 30976
 
@@ -68,6 +67,5 @@ def getDirectionBetweenCoordinates(coordinate: Coordinate, nextCoordinate: Coord
     return None
 
 
-# TODO: add unit tests
 def getPixelFromCoordinate(coordinate: Coordinate) -> XYCoordinate:
     return coordinate[0] - 31744, coordinate[1] - 30976
