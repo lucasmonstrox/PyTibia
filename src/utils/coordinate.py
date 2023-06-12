@@ -2,7 +2,6 @@ import numpy as np
 from typing import List, Union
 from scipy.spatial import distance
 from src.shared.typings import Coordinate, CoordinateList, XYCoordinate
-from .core import getPixelFromCoordinate
 
 
 # TODO: add unit tests
@@ -52,6 +51,11 @@ def getClosestCoordinate(coordinate: Coordinate, coordinates: CoordinateList) ->
     return closestCoordinate
 
 
+# TODO: add unit tests
+def getCoordinateFromPixel(pixel: XYCoordinate) -> Coordinate:
+    return pixel[0] + 31744, pixel[1] + 30976
+
+
 def getDirectionBetweenCoordinates(coordinate: Coordinate, nextCoordinate: Coordinate) -> Union[str, None]:
     if coordinate[0] < nextCoordinate[0]:
         return 'right'
@@ -62,3 +66,8 @@ def getDirectionBetweenCoordinates(coordinate: Coordinate, nextCoordinate: Coord
     if nextCoordinate[1] < coordinate[1]:
         return 'up'
     return None
+
+
+# TODO: add unit tests
+def getPixelFromCoordinate(coordinate: Coordinate) -> XYCoordinate:
+    return coordinate[0] - 31744, coordinate[1] - 30976

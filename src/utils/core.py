@@ -35,16 +35,6 @@ def cacheObjectPosition(func: Callable) -> Callable:
 
 
 # TODO: add unit tests
-def getCoordinateFromPixel(pixel: XYCoordinate) -> Coordinate:
-    return pixel[0] + 31744, pixel[1] + 30976
-
-
-# TODO: add unit tests
-def getPixelFromCoordinate(coordinate: Coordinate) -> XYCoordinate:
-    return coordinate[0] - 31744, coordinate[1] - 30976
-
-
-# TODO: add unit tests
 def hashit(arr: np.ndarray) -> int:
     return xxhash.xxh64(np.ascontiguousarray(arr), seed=20220605).intdigest()
 

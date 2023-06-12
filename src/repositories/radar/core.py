@@ -2,7 +2,8 @@ import numpy as np
 from scipy.spatial import distance
 from typing import Union
 from src.shared.typings import Coordinate, GrayImage, GrayPixel, Waypoint, WaypointList
-from src.utils.core import getCoordinateFromPixel, getPixelFromCoordinate, hashit, hashitHex, locate
+from src.utils.core import hashit, hashitHex, locate
+from src.utils.coordinate import getCoordinateFromPixel, getPixelFromCoordinate
 from .config import coordinates, dimensions, floorsImgs, floorsLevelsImgsHashes, floorsPathsSqms, nonWalkablePixelsColors, walkableFloorsSqms
 from .extractors import getRadarImage
 from .locators import getRadarToolsPosition
