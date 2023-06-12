@@ -66,8 +66,8 @@ def save(arr: GrayImage, name: str):
 
 
 # TODO: add unit tests
-def crop(img: GrayImage, x: int, y: int, width: int, height: int) -> GrayImage:
-    return img[y:y + height, x:x + width]
+def crop(image: GrayImage, x: int, y: int, width: int, height: int) -> GrayImage:
+    return image[y:y + height, x:x + width]
 
 
 # TODO: add unit tests
