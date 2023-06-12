@@ -1,6 +1,6 @@
 import numpy as np
-from typing import List, Union
 from scipy.spatial import distance
+from typing import List, Union
 from src.shared.typings import Coordinate, CoordinateList, XYCoordinate
 
 
@@ -38,17 +38,13 @@ def getAvailableAroundCoordinates(coordinate: Coordinate, walkableFloorSqms: np.
         (xCoordinates, yCoordinates, floors))
 
 
-# TODO: add unit tests
 def getClosestCoordinate(coordinate: Coordinate, coordinates: CoordinateList) -> Coordinate:
-    xOfCoordinate, yOfCoordinate, _ = coordinate
-    coordinateWithoutFloor = [xOfCoordinate, yOfCoordinate]
-    coordinatesWithoutFloor = coordinates[:, [0, 1]]
+    coordinateWithoutFloor = (coordinate[0], coordinate[1])
+    coordinatesWithoutFloor = [(x[0], x[1]) for x in coordinates]
     distancesOfCoordinates = distance.cdist(
         [coordinateWithoutFloor], coordinatesWithoutFloor)[0]
-    sortedDistancesOfCoordinates = np.argsort(distancesOfCoordinates)
-    closestCoordinateIndex = sortedDistancesOfCoordinates[0]
-    closestCoordinate = coordinates[closestCoordinateIndex]
-    return closestCoordinate
+    closestCoordinateIndex = np.argsort(distancesOfCoordinates)[0]
+    return coordinates[closestCoordinateIndex]
 
 
 def getCoordinateFromPixel(pixel: XYCoordinate) -> Coordinate:

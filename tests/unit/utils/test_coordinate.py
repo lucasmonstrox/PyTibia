@@ -1,5 +1,11 @@
-from src.utils.coordinate import getCoordinateFromPixel, getDirectionBetweenCoordinates, getPixelFromCoordinate
+from src.utils.coordinate import getClosestCoordinate, getCoordinateFromPixel, getDirectionBetweenCoordinates, getPixelFromCoordinate
 
+
+def test_should_call_function_getClosestCoordinate_and_return_closest_coordinate():
+    coordinate = (1, 1, 1)
+    closestCoordinate = (2, 2, 1)
+    coordinates = [(9, 9, 1), closestCoordinate]
+    assert getClosestCoordinate(coordinate, coordinates) == closestCoordinate
 
 def test_should_return_pixel_from_coordinate():
     pixelCoordinate = (0, 0)
