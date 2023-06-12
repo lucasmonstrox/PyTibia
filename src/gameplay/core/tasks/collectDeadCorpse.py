@@ -17,16 +17,6 @@ class CollectDeadCorpseTask(BaseTask):
         self.creature = creature
 
     # TODO: add unit tests
-    def onComplete(self, context: Context) -> Context:
-        creatureToLoot = context['loot']['corpsesToLoot'][0]
-        indexesToDelete = []
-        for index, corpseToLoot in enumerate(context['loot']['corpsesToLoot']):
-            if gameplayUtils.coordinatesAreEqual(creatureToLoot['coordinate'], corpseToLoot['coordinate']):
-                indexesToDelete.append(index)
-        context['loot']['corpsesToLoot'] = np.delete(context['loot']['corpsesToLoot'], indexesToDelete)
-        return context
-
-    # TODO: add unit tests
     def do(self, context: Context) -> Context:
         keyDown('shift')
         rightClickSlot([6, 4], context['gameWindow']['coordinate'])
@@ -39,4 +29,14 @@ class CollectDeadCorpseTask(BaseTask):
         rightClickSlot([7, 6], context['gameWindow']['coordinate'])
         rightClickSlot([8, 6], context['gameWindow']['coordinate'])
         keyUp('shift')
+        return context
+
+        # TODO: add unit tests
+    def onComplete(self, context: Context) -> Context:
+        creatureToLoot = context['loot']['corpsesToLoot'][0]
+        indexesToDelete = []
+        for index, corpseToLoot in enumerate(context['loot']['corpsesToLoot']):
+            if gameplayUtils.coordinatesAreEqual(creatureToLoot['coordinate'], corpseToLoot['coordinate']):
+                indexesToDelete.append(index)
+        context['loot']['corpsesToLoot'] = np.delete(context['loot']['corpsesToLoot'], indexesToDelete)
         return context
