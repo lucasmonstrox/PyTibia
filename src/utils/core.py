@@ -3,7 +3,7 @@ import dxcam
 import numpy as np
 from typing import Callable, Union
 import xxhash
-from src.shared.typings import BBox, Coordinate, GrayImage, XYCoordinate
+from src.shared.typings import BBox, GrayImage
 
 
 camera = dxcam.create(output_color='GRAY')
