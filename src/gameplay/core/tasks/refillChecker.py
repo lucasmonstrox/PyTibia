@@ -25,15 +25,13 @@ class RefillCheckerTask(BaseTask):
         quantityOfManaPotions = getSlotCount(context['screenshot'], 2)
         if quantityOfManaPotions is None:
             return False
-        hasEnoughHealthPotions = quantityOfHealthPotions > self.waypoint[
-            'options']['minimumOfHealthPotions']
-        hasEnoughManaPotions = quantityOfManaPotions > self.waypoint['options']['minimumOfManaPotions']
         capacity = getCapacity(context['screenshot'])
         if capacity is None:
             return False
+        hasEnoughHealthPotions = quantityOfHealthPotions > self.waypoint['options']['minimumOfHealthPotions']
+        hasEnoughManaPotions = quantityOfManaPotions > self.waypoint['options']['minimumOfManaPotions']
         hasEnoughCapacity = capacity > self.waypoint['options']['minimumOfCapacity']
-        shouldIgnoreTask = hasEnoughHealthPotions and hasEnoughManaPotions and hasEnoughCapacity
-        return shouldIgnoreTask
+        return hasEnoughHealthPotions and hasEnoughManaPotions and hasEnoughCapacity
 
     # TODO: add unit tests
     def onIgnored(self, context: Context) -> Context:

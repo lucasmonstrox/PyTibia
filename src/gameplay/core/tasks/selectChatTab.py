@@ -17,8 +17,7 @@ class SelectChatTabTask(BaseTask):
         tab = context['chat']['tabs'].get(self.tabName)
         if tab is None:
             return False
-        shouldIgnoreTask = tab['isSelected']
-        return shouldIgnoreTask
+        return tab['isSelected']
 
     # TODO: add unit tests
     # TODO: what if tab does not exists?

@@ -12,8 +12,7 @@ class OpenLockerTask(BaseTask):
         self.delayAfterComplete = 1
 
     def shouldIgnore(self, context: Context) -> bool:
-        shouldIgnoreTask = inventoryCore.isLockerOpen(context['screenshot'])
-        return shouldIgnoreTask
+        return inventoryCore.isLockerOpen(context['screenshot'])
 
     def do(self, context: Context) -> Context:
         slot = gameWindowCore.getSlotFromCoordinate(context['radar']['coordinate'], context['deposit']['lockerCoordinate'])

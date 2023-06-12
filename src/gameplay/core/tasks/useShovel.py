@@ -15,9 +15,8 @@ class UseShovelTask(BaseTask):
         self.waypoint = waypoint
 
     def shouldIgnore(self, context: Context) -> bool:
-        shouldIgnoreTask = gameWindowCore.isHoleOpen(
+        return gameWindowCore.isHoleOpen(
             context['gameWindow']['image'], gameWindowCore.images[context['resolution']]['holeOpen'], context['radar']['coordinate'], self.waypoint['coordinate'])
-        return shouldIgnoreTask
 
     def do(self, context: Context) -> Context:
         slot = gameWindowCore.getSlotFromCoordinate(

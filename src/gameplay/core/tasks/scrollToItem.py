@@ -16,8 +16,7 @@ class ScrollToItemTask(BaseTask):
 
     # TODO: add unit tests
     def shouldIgnore(self, context: Context) -> bool:
-        shouldIgnoreTask = self.getItemPosition(context['screenshot']) is not None
-        return shouldIgnoreTask
+        return self.getItemPosition(context['screenshot']) is not None
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
