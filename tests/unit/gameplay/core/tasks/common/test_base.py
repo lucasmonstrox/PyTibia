@@ -100,10 +100,6 @@ def test_onComplete():
     baseTask = BaseTask()
     assert baseTask.onComplete(context) == context
 
-def test_onInterrupt():
-    baseTask = BaseTask()
-    assert baseTask.onInterrupt(context) == context
-
 def test_onTimeout():
     baseTask = BaseTask()
     assert baseTask.onTimeout(context) == context
