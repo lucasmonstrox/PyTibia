@@ -10,10 +10,7 @@ def getContent(screenshot: GrayImage) -> Union[GrayImage, None]:
     containerTopBarPos = getContainerTopBarPosition(screenshot)
     if containerTopBarPos is None:
         return None
-    (contentLeft, contentTop, _, contentHeight) = containerTopBarPos
-    startingY = contentTop + contentHeight
-    endingX = contentLeft + 156
-    content = screenshot[startingY:, contentLeft:endingX]
+    content = screenshot[containerTopBarPos[1] + containerTopBarPos[3]:, containerTopBarPos[0]:containerTopBarPos[0] + 156]
     containerBottomBarPos = getContainerBottomBarPosition(content)
     if containerBottomBarPos is None:
         return None
