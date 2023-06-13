@@ -1,4 +1,4 @@
-# import kivy.context
+import kivy.context
 import pyautogui
 from time import sleep, time
 from src.gameplay.cavebot import resolveCavebotTasks, shouldAskForCavebotTasks
@@ -20,8 +20,8 @@ from src.gameplay.healing.observers.healingByPotions import healingByPotionsObse
 from src.gameplay.healing.observers.healingPriority import healingPriorityObserver
 from src.gameplay.targeting import hasCreaturesToAttack
 from src.repositories.gameWindow.creatures import getClosestCreature
-# from src.ui.context import GameContext
-# from src.ui.app import MyApp
+from src.ui.context import GameContext
+from src.ui.app import MyApp
 
 
 pyautogui.FAILSAFE = False
@@ -86,21 +86,21 @@ def main():
         return context
 
     try:
-        # kivy.context.register_context('game', GameContext, context)
-        # MyApp().run()
-        while True:
-            if context['pause']:
-                continue
-            startTime = time()
-            context = handleGameData(context)
-            context = handleGameplayTasks(context)
-            context = context['tasksOrchestrator'].do(context)
-            context['radar']['lastCoordinateVisited'] = context['radar']['coordinate']
-            healingByPotionsObserver(context)
-            comboSpellsObserver(context)
-            endTime = time()
-            diff = endTime - startTime
-            sleep(max(0.045 - diff, 0))
+        kivy.context.register_context('game', GameContext, context)
+        MyApp().run()
+        # while True:
+        #     if context['pause']:
+        #         continue
+        #     startTime = time()
+        #     context = handleGameData(context)
+        #     context = handleGameplayTasks(context)
+        #     context = context['tasksOrchestrator'].do(context)
+        #     context['radar']['lastCoordinateVisited'] = context['radar']['coordinate']
+        #     healingByPotionsObserver(context)
+        #     comboSpellsObserver(context)
+        #     endTime = time()
+        #     diff = endTime - startTime
+        #     sleep(max(0.045 - diff, 0))
     except KeyboardInterrupt:
         raise SystemExit
 
