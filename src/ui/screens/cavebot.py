@@ -50,12 +50,14 @@ class CavebotScreen(MDScreen):
         buttonsLayout.add_widget(eastCheckbox)
         buttonsLayout.add_widget(southCheckbox)
 
+        dropFlasksButton = MDFlatButton(text='Dropar flasks', on_press=self.addDropFlasksWaypoint)
         moveDownButton = MDFlatButton(text='Mover abaixo', on_press=lambda _: self.addWaypoint('moveDown'))
         moveUpButton = MDFlatButton(text='Mover acima', on_press=lambda _: self.addWaypoint('moveUp'))
         walkButton = MDFlatButton(text='Andar', on_press=lambda _: self.addWaypoint('walk'))
         useRopeButton = MDFlatButton(text='Usar corda', on_press=self.addUseRopeWaypoint)
         useShovelButton = MDFlatButton(text='Usar pá', on_press=self.addUseShovelWaypoint)
         buttonsLayout.add_widget(walkButton)
+        buttonsLayout.add_widget(dropFlasksButton)
         buttonsLayout.add_widget(moveDownButton)
         buttonsLayout.add_widget(moveUpButton)
         buttonsLayout.add_widget(useRopeButton)
@@ -72,11 +74,15 @@ class CavebotScreen(MDScreen):
         '''Called when a table row is clicked.'''
         pass
 
+    def addDropFlasksWaypoint(self):
+        context = kivy.context.get_current_context()['game']
+        # coordinate = context.getCoordinate()
+        pass
+
     def addWaypoint(self, waypointType):
         context = kivy.context.get_current_context()['game']
         coordinate = context.getCoordinate()
-        cannotGetCoordinate = coordinate is None
-        if cannotGetCoordinate:
+        if coordinate is None:
             toast('Não foi possível obter a coordenada! Verifique se o minimapa do cliente está aberto.')
             return
         if waypointType == 'moveDown':
