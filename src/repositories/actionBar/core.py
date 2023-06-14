@@ -36,8 +36,7 @@ def hasCooldownByImage(screenshot: GrayImage, cooldownImage: GrayImage) -> Union
     cooldownImagePosition = coreUtils.locate(listOfCooldownsImage, cooldownImage)
     if cooldownImagePosition is None:
         return False
-    percentBar = listOfCooldownsImage[20:21, cooldownImagePosition[0]:cooldownImagePosition[0] + cooldownImagePosition[2]]
-    return percentBar[0][0] == 255
+    return listOfCooldownsImage[20:21, cooldownImagePosition[0]:cooldownImagePosition[0] + cooldownImagePosition[2]] == 255
 
 
 # TODO: add unit tests
