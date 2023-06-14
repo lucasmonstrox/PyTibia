@@ -30,7 +30,8 @@ class GameContext:
         return True
 
     def pause(self):
-        self.context['tasksOrchestrator'].setRootTask(None, self.context)
+        if self.context['tasksOrchestrator'].getCurrentTaskName(self.context) != 'unknown':
+            self.context['tasksOrchestrator'].setRootTask(None, self.context)
         sleep(1)
         self.context['pause'] = True
 
