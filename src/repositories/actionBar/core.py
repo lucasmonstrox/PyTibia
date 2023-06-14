@@ -87,10 +87,8 @@ def slotIsEquipped(screenshot: GrayImage, slot: int) -> Union[bool, None]:
     leftSideArrowsPos = actionBarLocators.getLeftArrowsPosition(screenshot)
     if leftSideArrowsPos is None:
         return None
-    (xOfLeftSideArrowsPos, yOfLeftSideArrowsPos, widthOfLeftSideArrowsPos, _) = leftSideArrowsPos
-    x0 = xOfLeftSideArrowsPos + widthOfLeftSideArrowsPos + (slot * 2) + ((slot - 1) * 34)
-    y0 = yOfLeftSideArrowsPos
-    slotImage = screenshot[y0:y0 + 34, x0:x0 + 34]
+    x0 = leftSideArrowsPos[0] + leftSideArrowsPos[2] + (slot * 2) + ((slot - 1) * 34)
+    slotImage = screenshot[leftSideArrowsPos[1]:leftSideArrowsPos[1] + 34, x0:x0 + 34]
     return slotImage[0, 0] == 41
 
 
