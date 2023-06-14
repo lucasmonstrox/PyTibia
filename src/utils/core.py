@@ -6,7 +6,7 @@ import xxhash
 from src.shared.typings import BBox, GrayImage
 
 
-camera = dxcam.create(output_color='GRAY')
+camera = dxcam.create(output_color='BGRA')
 latestScreenshot = None
 
 
@@ -69,5 +69,5 @@ def getScreenshot() -> GrayImage:
     screenshot = camera.grab()
     if screenshot is None:
         return latestScreenshot
-    latestScreenshot = np.array(screenshot, dtype=np.uint8).reshape((len(screenshot), len(screenshot[0])))
+    latestScreenshot = np.ascontiguousarray(cv2.cvtColor(screenshot, cv2.COLOR_BGRA2GRAY)).reshape((len(screenshot), len(screenshot[0])))
     return latestScreenshot

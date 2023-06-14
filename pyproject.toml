@@ -6,7 +6,7 @@ authors = ["lucasmonstro <joao.galiano.silva@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-dxcam = {git = "https://github.com/ra1nty/DXcam"}
+dxcam = {git = "https://github.com/Agade09/DXcam"}
 kivy = "^2.1.0"
 kivymd = "^1.1.1"
 mypy = "^1.1.1"
