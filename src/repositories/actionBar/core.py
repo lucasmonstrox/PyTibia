@@ -12,17 +12,13 @@ def getSlotCount(screenshot: GrayImage, slot: int) -> Union[int, None]:
     leftSideArrowsPos = actionBarLocators.getLeftArrowsPosition(screenshot)
     if leftSideArrowsPos is None:
         return None
-    (xOfLeftSideArrowsPos, yOfLeftSideArrowsPos, widthOfLeftSideArrowsPos, _) = leftSideArrowsPos
-    x0 = xOfLeftSideArrowsPos + widthOfLeftSideArrowsPos + (slot * 2) + ((slot - 1) * 34)
-    y0 = yOfLeftSideArrowsPos
-    slotImage = screenshot[y0:y0 + 34, x0:x0 + 34]
+    x0 = leftSideArrowsPos[0] + leftSideArrowsPos[2] + (slot * 2) + ((slot - 1) * 34)
+    slotImage = screenshot[leftSideArrowsPos[1]:leftSideArrowsPos[1] + 34, x0:x0 + 34]
     digits = slotImage[24:32, 3:33]
     count = 0
     for i in range(5):
         x = (6 * (5 - i) - 3)
-        numberImage = digits[2:6, x:x + 1]
-        numberHash = coreUtils.hashit(numberImage)
-        number = images['digits'].get(numberHash, None)
+        number = images['digits'].get(coreUtils.hashit(digits[2:6, x:x + 1]), None)
         if number is None:
             break
         count += number * math.pow(10, i)
