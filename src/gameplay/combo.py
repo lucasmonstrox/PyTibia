@@ -38,7 +38,7 @@ def comboSpellsObserver(context: Context):
                 continue
             tasksOrchestrator.setRootTask(context, UseHotkeyTask(spell['hotkey'], delayAfterComplete=0.1))
             nextIndex = getNextArrayIndex(comboSpell['spells'], comboSpell['currentSpellIndex'])
-            # improve indexes without using context
+            # TODO: improve indexes without using context
             context['comboSpells']['items'][key]['currentSpellIndex'] = nextIndex
             context['comboSpells']['lastUsedSpell'] = spell['name']
             break
