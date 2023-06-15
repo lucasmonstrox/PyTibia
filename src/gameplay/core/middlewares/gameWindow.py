@@ -68,10 +68,9 @@ def setGameWindowMiddleware(context: Context) -> Context:
 
 # TODO: add unit tests
 def setGameWindowCreaturesMiddleware(context: Context) -> Context:
-    beingAttackedCreatureCategory = getBeingAttackedCreatureCategory(context['battleList']['creatures'])
-    context['battleList']['beingAttackedCreatureCategory'] = beingAttackedCreatureCategory
+    context['battleList']['beingAttackedCreatureCategory'] = getBeingAttackedCreatureCategory(context['battleList']['creatures'])
     context['gameWindow']['creatures'] = getCreatures(
-        context['battleList']['creatures'], context['comingFromDirection'], context['gameWindow']['coordinate'], context['gameWindow']['image'], context['radar']['coordinate'], beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=context['gameWindow']['walkedPixelsInSqm'])
+        context['battleList']['creatures'], context['comingFromDirection'], context['gameWindow']['coordinate'], context['gameWindow']['image'], context['radar']['coordinate'], beingAttackedCreatureCategory=context['battleList']['beingAttackedCreatureCategory'], walkedPixelsInSqm=context['gameWindow']['walkedPixelsInSqm'])
     hasNoGameWindowCreatures = len(context['gameWindow']['creatures']) == 0
     context['gameWindow']['monsters'] = np.array([], dtype=Creature) if hasNoGameWindowCreatures else getCreaturesByType(context['gameWindow']['creatures'], 'monster')
     context['gameWindow']['players'] = np.array([], dtype=Creature) if hasNoGameWindowCreatures else getCreaturesByType(context['gameWindow']['creatures'], 'player')
