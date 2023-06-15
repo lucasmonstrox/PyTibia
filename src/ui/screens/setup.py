@@ -34,6 +34,4 @@ class SetupScreen(MDScreen):
                 "on_release": lambda x=tibiaWindow.title: self.menu_callback(x),
             } for tibiaWindow in windowsFilter
         ]
-        print('self.menu.items', self.menu.items)
         self.menu.items = menu_items
-        print('self.menu.items', self.menu.items)
