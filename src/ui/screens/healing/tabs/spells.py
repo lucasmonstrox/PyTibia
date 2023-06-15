@@ -11,6 +11,7 @@ class SpellsTab(MDFloatLayout, MDTabsBase):
         layout = BoxLayout(padding=[20, 20, 20, 20], spacing=20)
         firstRow = BoxLayout()
         firstRow.add_widget(CriticalHealingCard(labelText='Critical Healing'))
+        firstRow.add_widget(LightHealingCard(labelText='Medium Healing'))
         firstRow.add_widget(LightHealingCard(labelText='Light Healing'))
         layout.add_widget(firstRow)
         self.add_widget(layout)
