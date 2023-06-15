@@ -188,9 +188,8 @@ tilesFrictionsWithBreakpoints = {
 for floor in floors:
     floorHash = hashit(floorsLevelsImgs[floor])
     floorsLevelsImgsHashes[floorHash] = floor
-    walkableFloorSqms = np.where(
+    walkableFloorsSqms[floor] = np.where(
         np.isin(floorsPathsImgs[floor], [105, 226]), 0, 1)
-    walkableFloorsSqms[floor] = walkableFloorSqms
 
 # radarImagesCoordinates = np.load(f'{currentPath}/npys/radarImagesCoordinates.npy', allow_pickle=True)
 # walkableFloorsSqms = np.load(f'{currentPath}/npys/walkableFloorsSqms.npy')
