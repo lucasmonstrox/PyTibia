@@ -59,11 +59,10 @@ def setHandleLootMiddleware(context: Context) -> Context:
 
 # TODO: add unit tests
 def setGameWindowMiddleware(context: Context) -> Context:
-    gameWindowSize = gameWindowSizes[context['resolution']]
     context['gameWindow']['coordinate'] = getCoordinate(
-        context['screenshot'], gameWindowSize)
+        context['screenshot'], gameWindowSizes[context['resolution']])
     context['gameWindow']['image'] = getImageByCoordinate(
-        context['screenshot'], context['gameWindow']['coordinate'], gameWindowSize)
+        context['screenshot'], context['gameWindow']['coordinate'], gameWindowSizes[context['resolution']])
     return context
 
 
