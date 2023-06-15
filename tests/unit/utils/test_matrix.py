@@ -1,19 +1,6 @@
 import numpy as np
-from src.utils.matrix import getAdjacencyMatrix, hasMatrixInsideOther
+from src.utils.matrix import hasMatrixInsideOther
 
-
-def test_should_call_function_getAdjacencyMatrix_and_return_correct_adjacency_matrix():
-    matrix = np.array([
-        [1, 1],
-        [0, 1]
-    ])
-    correctAdjacencyMatrix = np.array([
-        [0, 1, 0, 0],
-        [1, 0, 0, 1],
-        [0, 0, 0, 0],
-        [0, 1, 0, 0]
-    ])
-    assert np.array_equal(getAdjacencyMatrix(matrix), correctAdjacencyMatrix) == True
 
 def test_should_return_False_when_has_no_matrix_inside_other():
     firstMatrix = np.array([[0, 1]])

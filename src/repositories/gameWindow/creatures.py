@@ -5,15 +5,13 @@ import pathlib
 from scipy.spatial import distance
 import tcod
 from typing import List, Tuple, Union
-from scipy.sparse import csr_matrix
-from scipy.sparse.csgraph import dijkstra
 from src.repositories.radar.config import walkableFloorsSqms
 from src.repositories.radar.core import isCoordinateWalkable
 from src.shared.typings import Coordinate, GrayImage, Slot, SlotWidth, XYCoordinate
 from src.utils.core import hashitHex
 from src.utils.coordinate import getPixelFromCoordinate
 from src.utils.image import loadFromRGBToGray
-from src.utils.matrix import getAdjacencyMatrix, hasMatrixInsideOther
+from src.utils.matrix import hasMatrixInsideOther
 from src.wiki.creatures import creatures as wikiCreatures
 from .typings import Creature, CreatureList
 
@@ -37,41 +35,30 @@ for creature in wikiCreatures:
         f'{currentPath}/images/monsters/{creature}.png')
 
 
-# TODO: improve performance
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
 def getClosestCreature(gameWindowCreatures: CreatureList, coordinate: Coordinate):
     if len(gameWindowCreatures) == 0:
         return None
+    if len(gameWindowCreatures) == 1:
+        return gameWindowCreatures[0]
     gameWindowWalkableFloorsSqms = getGameWindowWalkableFloorsSqms(
         walkableFloorsSqms[coordinate[2]], coordinate)
-    adjacencyMatrix = getAdjacencyMatrix(gameWindowWalkableFloorsSqms)
-    sqmsGraph = csr_matrix(adjacencyMatrix)
-    playerGameWindowIndex = 82
-    sqmsGraphWeights = dijkstra(
-        sqmsGraph, directed=True, indices=playerGameWindowIndex, unweighted=False)
-    creaturesSlots = gameWindowCreatures['slot'][:, [1, 0]]
-    gameWindowWalkableFloorsSqmsCreatures = np.zeros((11, 15))
-    gameWindowWalkableFloorsSqmsCreatures[creaturesSlots[:,
-                                                  0], creaturesSlots[:, 1]] = 1
-    creaturesIndexes = np.nonzero(
-        gameWindowWalkableFloorsSqmsCreatures.flatten() == 1)[0]
-    creaturesGraphWeights = np.take(sqmsGraphWeights, creaturesIndexes)
-    nonTargetCreaturesIndexes = np.where(creaturesGraphWeights == np.inf)[0]
-    creaturesIndexes = np.delete(creaturesIndexes, nonTargetCreaturesIndexes)
-    creaturesGraphWeights = np.delete(
-        creaturesGraphWeights, nonTargetCreaturesIndexes)
-    if len(creaturesGraphWeights) == 0:
-        return None
-    creaturesDistances = np.where(
-        creaturesGraphWeights == np.amin(creaturesGraphWeights))[0]
-    closestCreatureGameWindowIndex = creaturesIndexes[np.random.choice(
-        creaturesDistances)]
-    creatureSlot = [closestCreatureGameWindowIndex %
-                    15, closestCreatureGameWindowIndex // 15]
-    closestCreatureIndex = np.where(
-        (gameWindowCreatures['slot'] == creatureSlot).all(axis=1))[0][0]
+    graph = tcod.path.SimpleGraph(cost=gameWindowWalkableFloorsSqms, cardinal=1, diagonal=0)
+    pf = tcod.path.Pathfinder(graph)
+    pf.add_root((5, 7))
+    closestCreatureSlot = None
+    closestCreatureIndex = 0
+    for creatureIndex, gameWindowCreature in enumerate(gameWindowCreatures):
+        creatureSlot = (gameWindowCreature['slot'][1], gameWindowCreature['slot'][0])
+        pf.resolve(creatureSlot)
+        if closestCreatureSlot is None:
+            closestCreatureSlot = creatureSlot
+            continue
+        if pf.distance[creatureSlot[0], creatureSlot[1]] < pf.distance[closestCreatureSlot[0], closestCreatureSlot[1]]:
+            closestCreatureSlot = creatureSlot
+            closestCreatureIndex = creatureIndex
     return gameWindowCreatures[closestCreatureIndex]
 
 

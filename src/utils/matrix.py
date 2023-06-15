@@ -3,31 +3,6 @@ import numpy as np
 from src.shared.typings import GrayImage
 
 
-def getAdjacencyMatrix(arr: np.ndarray) -> np.ndarray:
-    repArrHorizontal = np.ravel(arr)
-    arrDim = arr.shape[0] * arr.shape[1]
-    arrShape = (arrDim, arrDim)
-    repArr = np.broadcast_to(repArrHorizontal, arrShape)
-    seqArr = np.arange(1, arrDim + 1)
-    verticesWithPossibleRightConnections = np.eye(arrDim, k=1)
-    indexesWithPossibleRightConnections = np.where(seqArr % arr.shape[1] == 0, 0, 1)
-    indexesWithPossibleRightConnections = np.broadcast_to(indexesWithPossibleRightConnections, arrShape)
-    indexesWithPossibleRightConnections = np.rot90(indexesWithPossibleRightConnections, k=-1)
-    rightConnections = np.multiply(verticesWithPossibleRightConnections, indexesWithPossibleRightConnections)
-    verticesWithPossibleLeftConnections = np.eye(arrDim, k=-1)
-    indexesWithPossibleLeftConnections = np.flip(indexesWithPossibleRightConnections)
-    leftConnections = np.multiply(verticesWithPossibleLeftConnections, indexesWithPossibleLeftConnections)
-    topConnections = np.eye(arrDim, k=-arr.shape[1])
-    bottomConnections = np.eye(arrDim, k=arr.shape[1])
-    topBottomConnections = np.add(topConnections, bottomConnections)
-    leftRightConnections = np.add(leftConnections, rightConnections)
-    connections = np.add(topBottomConnections, leftRightConnections)
-    connections = np.multiply(connections, repArr)
-    connections = np.multiply(connections, np.rot90(repArr, k=-1))
-    connections = np.array(connections, dtype=np.uint)
-    return connections
-
-
 @njit(cache=True, fastmath=True)
 def hasMatrixInsideOther(matrix: GrayImage, other: GrayImage) -> bool:
     for i in range(matrix.shape[0]):
