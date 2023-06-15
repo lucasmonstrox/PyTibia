@@ -69,5 +69,5 @@ def getScreenshot() -> GrayImage:
     screenshot = camera.grab()
     if screenshot is None:
         return latestScreenshot
-    latestScreenshot = np.ascontiguousarray(cv2.cvtColor(screenshot, cv2.COLOR_BGRA2GRAY), dtype=np.uint8)
+    latestScreenshot = cv2.cvtColor(screenshot, cv2.COLOR_BGRA2GRAY)
     return latestScreenshot
