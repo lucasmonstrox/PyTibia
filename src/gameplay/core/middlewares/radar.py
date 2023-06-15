@@ -11,7 +11,7 @@ def setRadarMiddleware(context: Context) -> Context:
 
 # TODO: add unit tests
 def setWaypointIndexMiddleware(context: Context) -> Context:
-    if context['cavebot']['waypoints']['currentIndex'] == None:
+    if context['cavebot']['waypoints']['currentIndex'] is None:
         context['cavebot']['waypoints']['currentIndex'] = getClosestWaypointIndexFromCoordinate(
             context['radar']['coordinate'], context['cavebot']['waypoints']['points'])
     return context

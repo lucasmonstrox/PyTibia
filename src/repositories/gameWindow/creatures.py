@@ -203,23 +203,6 @@ def getCreaturesByType(gameWindowCreatures: CreatureList, creatureType):
 
 # TODO: add unit tests
 # TODO: add perf
-# TODO: add typings
-def getCreaturesGraph(gameWindowCreatures: CreatureList, coordinate: Coordinate):
-    floorLevel = gameWindowCreatures[0]['coordinate'][2]
-    walkableFloorsSqms = walkableFloorsSqms[floorLevel]
-    gameWindowWalkableFloorsSqms = getGameWindowWalkableFloorsSqms(
-        walkableFloorsSqms, coordinate)
-    adjacencyMatrix = getAdjacencyMatrix(gameWindowWalkableFloorsSqms)
-    graph = csr_matrix(adjacencyMatrix)
-    playerGameWindowIndex = 82
-    graphWeights = dijkstra(graph, directed=True, indices=playerGameWindowIndex, unweighted=False)
-    graphWeights = graphWeights.reshape(11, 15)
-    availableCreatures = [gameWindowCreature for gameWindowCreature in gameWindowCreatures if graphWeights[gameWindowCreature['slot'][1], gameWindowCreature['slot'][0]] != np.inf]
-    return np.array(availableCreatures, dtype=Creature)
-
-
-# TODO: add unit tests
-# TODO: add perf
 # TODO: improve performance
 def getDifferentCreaturesBySlots(previousGameWindowCreatures: CreatureList, currentGameWindowCreatures: CreatureList, slots: List[Slot]) -> CreatureList:
     previousGameWindowCreaturesBySlots = np.array(
@@ -288,29 +271,21 @@ def getTargetCreature(gameWindowCreatures: CreatureList):
 def hasTargetToCreatureBySlot(gameWindowCreatures: CreatureList, slot: Slot, coordinate: Coordinate) -> bool:
     if len(gameWindowCreatures) == 0:
         return False
-    xOfCoordinate, yOfCoordinate, floorLevel = coordinate
     gameWindowWalkableFloorsSqms = getGameWindowWalkableFloorsSqms(
-        walkableFloorsSqms[floorLevel], coordinate)
+        walkableFloorsSqms[coordinate[2]], coordinate)
     creaturesSlots = gameWindowCreatures['slot'][:, [1, 0]]
     gameWindowWalkableFloorsSqms[creaturesSlots[:, 0], creaturesSlots[:, 1]] = 0
     gameWindowWalkableFloorsSqms[slot[1], slot[0]] = 1
-    pf = tcod.path.AStar(gameWindowWalkableFloorsSqms, 0)
-    xOfGoalCoordinate = coordinate[0] + slot[0] - 7
-    yOfGoalCoordinate = coordinate[1] + slot[1] - 5
-    x = xOfGoalCoordinate - xOfCoordinate + 7
-    y = yOfGoalCoordinate - yOfCoordinate + 5
-    paths = pf.get_path(5, 7, y, x)
-    walkpoints = [[xOfCoordinate + x - 7,
-                   yOfCoordinate + y - 5, floorLevel] for y, x in paths]
-    return len(walkpoints) > 0
+    x = coordinate[0] + slot[0] - coordinate[0]
+    y = coordinate[1] + slot[1] - coordinate[1]
+    return len(tcod.path.AStar(gameWindowWalkableFloorsSqms, 0).get_path(5, 7, y, x)) > 0
 
 
 # TODO: add unit tests
 # TODO: add perf
 def hasTargetToCreature(gameWindowCreatures: CreatureList, gameWindowCreature: Creature, coordinate: Coordinate) -> bool:
-    hasTarget = hasTargetToCreatureBySlot(
+    return hasTargetToCreatureBySlot(
         gameWindowCreatures, gameWindowCreature['slot'], coordinate)
-    return hasTarget
 
 
 # TODO: add unit tests
@@ -324,27 +299,27 @@ def isCreatureBeingAttacked(gameWindowImage: GrayImage, borderX: int, yOfCreatur
     borderGap = 4 if slotWidth == 64 else 2
     yOfBorder = slotWidth - borderGap
     topBorder = borderedCreatureImg[0:borderGap, :].flatten()
+    bottomBorder = borderedCreatureImg[yOfBorder:, :].flatten()
     for i in range(len(topBorder)):
         if topBorder[i] == 76 or topBorder[i] == 166:
             pixelsCount += 1
             if pixelsCount > 50:
                 return True
+        if bottomBorder[i] == 76 or bottomBorder[i] == 166:
+            pixelsCount += 1
+            if pixelsCount > 50:
+                return True
     leftBorder = borderedCreatureImg[borderGap:yOfBorder, 0:borderGap].flatten()
+    rightBorder = borderedCreatureImg[borderGap:yOfBorder, yOfBorder:].flatten()
     for i in range(len(leftBorder)):
         if leftBorder[i] == 76 or leftBorder[i] == 166:
             pixelsCount += 1
             if pixelsCount > 50:
                 return True
-    rightBorder = borderedCreatureImg[borderGap:yOfBorder, yOfBorder:].flatten()
-    for i in range(len(rightBorder)):
         if rightBorder[i] == 76 or rightBorder[i] == 166:
             pixelsCount += 1
             if pixelsCount > 50:
                 return True
-    bottomBorder = borderedCreatureImg[yOfBorder:, :].flatten()
-    for i in range(len(bottomBorder)):
-        if bottomBorder[i] == 76 or bottomBorder[i] == 166:
-            pixelsCount += 1
     return pixelsCount > 50
 
 
