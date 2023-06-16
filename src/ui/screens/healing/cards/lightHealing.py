@@ -17,6 +17,7 @@ class MyTextInput(TextInput):
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         self.callback(self, window, keycode, text, modifiers)
 
+
 class LightHealingCard(BoxLayout):
     def __init__(self, labelText='', **kwargs):
         super().__init__(**kwargs, orientation='vertical')
@@ -30,11 +31,13 @@ class LightHealingCard(BoxLayout):
         header.add_widget(switch)
         self.add_widget(header)
         card = MDCard()
-        content = BoxLayout(orientation='vertical', padding=[10, 10, 10, 10], spacing=5)
+        content = BoxLayout(orientation='vertical', padding=[
+                            10, 10, 10, 10], spacing=5)
         hpLabel = MDLabel(text='HP% less than:', theme_text_color='Error')
         hpContent = BoxLayout(orientation='vertical')
         hpContent.add_widget(hpLabel)
-        slider = MDSlider(color='red', hint_bg_color='red', hint_text_color='white', thumb_color_active='red', thumb_color_inactive='red', min=10, step=10)
+        slider = MDSlider(color='red', hint_bg_color='red', hint_text_color='white',
+                          thumb_color_active='red', thumb_color_inactive='red', min=10, step=10)
         slider.bind(value=self.onHpPercentageChange)
         hpContent.add_widget(slider)
         cardHeader = BoxLayout()
@@ -57,16 +60,15 @@ class LightHealingCard(BoxLayout):
         self.context.setHealingSpellsHpPercentage(self.contextKey, value)
 
     def keyboard_on_key_down(self, instance, window, keyCode, text, modifiers):
-        _, hotkey = keyCode
         allowedHotkeys = [
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12']
-        isNotAllowedHotkey = hotkey not in allowedHotkeys
+        isNotAllowedHotkey = keyCode[1] not in allowedHotkeys
         if isNotAllowedHotkey:
             # TODO: improve phrase
             toast('Invalid hotkey')
             return
-        if hotkey and not modifiers:
+        if keyCode[1] and not modifiers:
             context = get_current_context()['game']
-            context.setHealingSpellsHotkey(self.contextKey, hotkey)
-            instance.text = hotkey
+            context.setHealingSpellsHotkey(self.contextKey, keyCode[1])
+            instance.text = keyCode[1]
