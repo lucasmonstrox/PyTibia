@@ -4,6 +4,7 @@ from time import sleep, time
 from src.gameplay.cavebot import resolveCavebotTasks, shouldAskForCavebotTasks
 from src.gameplay.context import context
 from src.gameplay.combo import comboSpellsObserver
+from src.gameplay.core.load import loadConfigByJson, loadContextFromConfig
 from src.gameplay.core.middlewares.battleList import setBattleListMiddleware
 from src.gameplay.core.middlewares.chat import setChatTabsMiddleware
 from src.gameplay.core.middlewares.gameWindow import setDirectionMiddleware, setHandleLootMiddleware, setGameWindowCreaturesMiddleware, setGameWindowMiddleware
@@ -50,7 +51,8 @@ def main():
 
     def handleGameplayTasks(context):
         # TODO: mover isso fora daqui
-        context['cavebot']['closestCreature'] = getClosestCreature(context['gameWindow']['monsters'], context['radar']['coordinate'])
+        context['cavebot']['closestCreature'] = getClosestCreature(
+            context['gameWindow']['monsters'], context['radar']['coordinate'])
         currentTask = context['tasksOrchestrator'].getCurrentTask(context)
         if currentTask is not None and currentTask.name == 'selectChatTab':
             return context
@@ -61,7 +63,8 @@ def main():
             if context['tasksOrchestrator'].getCurrentTask(context) is None:
                 # TODO: get closest dead corpse
                 firstDeadCorpse = context['loot']['corpsesToLoot'][0]
-                context['tasksOrchestrator'].setRootTask(context, LootCorpseTask(firstDeadCorpse))
+                context['tasksOrchestrator'].setRootTask(
+                    context, LootCorpseTask(firstDeadCorpse))
             context['gameWindow']['previousMonsters'] = context['gameWindow']['monsters']
             return context
         hasCreaturesToAttackAfterCheck = hasCreaturesToAttack(context)
@@ -74,20 +77,24 @@ def main():
             context['way'] = 'waypoint'
         if hasCreaturesToAttackAfterCheck and shouldAskForCavebotTasks(context):
             currentRootTask = currentTask.rootTask if currentTask is not None else None
-            isTryingToAttackClosestCreature = currentRootTask is not None and (currentRootTask.name == 'attackClosestCreature')
+            isTryingToAttackClosestCreature = currentRootTask is not None and (
+                currentRootTask.name == 'attackClosestCreature')
             if not isTryingToAttackClosestCreature:
                 context = resolveCavebotTasks(context)
         elif context['way'] == 'waypoint':
             if context['tasksOrchestrator'].getCurrentTask(context) is None:
                 currentWaypointIndex = context['cavebot']['waypoints']['currentIndex']
                 currentWaypoint = context['cavebot']['waypoints']['points'][currentWaypointIndex]
-                context['tasksOrchestrator'].setRootTask(context, resolveTasksByWaypoint(currentWaypoint))
+                context['tasksOrchestrator'].setRootTask(
+                    context, resolveTasksByWaypoint(currentWaypoint))
         context['gameWindow']['previousMonsters'] = context['gameWindow']['monsters']
         return context
 
     try:
         # kivy.context.register_context('game', GameContext, context)
         # MyApp().run()
+        config = loadConfigByJson('config.json')
+        context = loadContextFromConfig(config, context)
         while True:
             if context['pause']:
                 continue
