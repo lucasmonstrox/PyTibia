@@ -14,7 +14,8 @@ class CloseNpcTradeBoxTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        tradeTopPosition = refillCore.getTradeTopPosition(context['screenshot'])
+        tradeTopPosition = refillCore.getTradeTopPosition(
+            context['screenshot'])
         if tradeTopPosition is None:
             return context
         mouse.leftClick((tradeTopPosition[0] + 165, tradeTopPosition[1] + 7))
