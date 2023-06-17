@@ -67,7 +67,7 @@ class WalkToTargetCreatureTask(VectorTask):
         else:
             walkpoints = generateFloorWalkpoints(
                 context['radar']['coordinate'], context['cavebot']['targetCreature']['coordinate'], nonWalkableCoordinates=nonWalkableCoordinates)
-            if len(walkpoints) > 0:
+            if walkpoints:
                 walkpoints.pop()
         for walkpoint in walkpoints:
             self.tasks.append(WalkTask(context, walkpoint).setParentTask(
