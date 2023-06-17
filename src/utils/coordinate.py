@@ -10,16 +10,15 @@ def getAroundPixelsCoordinates(pixelCoordinate: XYCoordinate) -> List[XYCoordina
         [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]])
     pixelCoordinates = np.broadcast_to(
         pixelCoordinate, aroundPixelsCoordinatesIndexes.shape)
-    aroundPixelsCoordinates = np.add(
-        aroundPixelsCoordinatesIndexes, pixelCoordinates)
-    return aroundPixelsCoordinates
+    return np.add(aroundPixelsCoordinatesIndexes, pixelCoordinates)
 
 
 # TODO: add unit tests
 def getAvailableAroundPixelsCoordinates(aroundPixelsCoordinates: List[XYCoordinate], walkableFloorSqms: np.ndarray) -> List[XYCoordinate]:
     yPixelsCoordinates = aroundPixelsCoordinates[:, 1]
     xPixelsCoordinates = aroundPixelsCoordinates[:, 0]
-    nonzero = np.nonzero(walkableFloorSqms[yPixelsCoordinates, xPixelsCoordinates])[0]
+    nonzero = np.nonzero(
+        walkableFloorSqms[yPixelsCoordinates, xPixelsCoordinates])[0]
     return np.take(
         aroundPixelsCoordinates, nonzero, axis=0)
 
@@ -60,7 +59,6 @@ def getDirectionBetweenCoordinates(coordinate: Coordinate, nextCoordinate: Coord
         return 'down'
     if nextCoordinate[1] < coordinate[1]:
         return 'up'
-    return None
 
 
 def getPixelFromCoordinate(coordinate: Coordinate) -> XYCoordinate:
