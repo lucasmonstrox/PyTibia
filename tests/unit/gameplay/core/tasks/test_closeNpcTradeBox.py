@@ -7,18 +7,22 @@ def test_should_test_default_params():
     assert task.delayBeforeStart == 1
     assert task.delayAfterComplete == 0.5
 
+
 def test_should_not_call_leftClick_when_getTradeTopPosition_return_None(mocker):
     context = {'screenshot': []}
-    getTradeTopPositionSpy = mocker.patch('src.repositories.refill.core.getTradeTopPosition', return_value=None)
+    getTradeTopPositionSpy = mocker.patch(
+        'src.repositories.refill.core.getTradeTopPosition', return_value=None)
     leftClickSpy = mocker.patch('src.utils.mouse.leftClick')
     task = CloseNpcTradeBoxTask()
     assert task.do(context) == context
     getTradeTopPositionSpy.assert_called_once_with(context['screenshot'])
     leftClickSpy.assert_not_called()
 
-def test_should_not_call_leftClick_when_getTradeTopPosition_return_None(mocker):
+
+def test_should_call_leftClick_when_getTradeTopPosition_return_correct_Position(mocker):
     context = {'screenshot': []}
-    getTradeTopPositionSpy = mocker.patch('src.repositories.refill.core.getTradeTopPosition', return_value=(0, 0, 0, 0))
+    getTradeTopPositionSpy = mocker.patch(
+        'src.repositories.refill.core.getTradeTopPosition', return_value=(0, 0, 0, 0))
     leftClickSpy = mocker.patch('src.utils.mouse.leftClick')
     task = CloseNpcTradeBoxTask()
     assert task.do(context) == context
