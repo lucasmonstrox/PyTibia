@@ -14,10 +14,11 @@ class ClickInClosestCreatureTask(BaseTask):
         return context['cavebot']['targetCreature'] is not None
 
     def do(self, context: Context) -> Context:
-        # do not ignore hotkey attack when there are players on screen or ignorable creatures
-        if  len(context['gameWindow']['players']) > 0 or context['targeting']['hasIgnorableCreatures']:
+        # attack by mouse click when there are players on screen or ignorable creatures
+        if context['gameWindow']['players'] or context['targeting']['hasIgnorableCreatures']:
             keyboard.keyDown('alt')
-            mouse.leftClick(context['cavebot']['closestCreature']['windowCoordinate'])
+            mouse.leftClick(context['cavebot']
+                            ['closestCreature']['windowCoordinate'])
             keyboard.keyUp('alt')
             return context
         keyboard.press('space')
