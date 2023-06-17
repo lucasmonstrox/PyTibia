@@ -32,13 +32,11 @@ class WalkToTargetCreatureTask(VectorTask):
 
     # TODO: if there are no more creatures, it should only recalculate when it gets close to the creature to avoid recalculating each SQM move
     def shouldRestart(self, context: Context) -> bool:
-        if len(self.tasks) == 0:
+        if not self.tasks:
             return True
         if context['cavebot']['targetCreature'] is None:
             return True
-        if not gameplayUtils.coordinatesAreEqual(context['cavebot']['targetCreature']['coordinate'], self.targetCreatureCoordinateSinceLastRestart):
-            return True
-        return False
+        return not gameplayUtils.coordinatesAreEqual(context['cavebot']['targetCreature']['coordinate'], self.targetCreatureCoordinateSinceLastRestart)
 
     def shouldManuallyComplete(self, context: Context) -> bool:
         if context['cavebot']['isAttackingSomeCreature'] == False:
@@ -55,20 +53,24 @@ class WalkToTargetCreatureTask(VectorTask):
             if np.array_equal(monster['coordinate'], context['cavebot']['targetCreature']['coordinate']) == False:
                 nonWalkableCoordinates.append(monster['coordinate'])
         walkpoints = []
-        dist = distance.cdist([context['radar']['coordinate']], [context['cavebot']['targetCreature']['coordinate']]).flatten()[0]
+        dist = distance.cdist([context['radar']['coordinate']], [
+                              context['cavebot']['targetCreature']['coordinate']]).flatten()[0]
         if dist < 2:
-            gameWindowHeight, gameWindowWidth  = context['gameWindow']['image'].shape
+            gameWindowHeight, gameWindowWidth = context['gameWindow']['image'].shape
             gameWindowCenter = (gameWindowWidth // 2, gameWindowHeight // 2)
             monsterGameWindowCoordinate = context['cavebot']['targetCreature']['gameWindowCoordinate']
             moduleX = abs(gameWindowCenter[0] - monsterGameWindowCoordinate[0])
             moduleY = abs(gameWindowCenter[1] - monsterGameWindowCoordinate[1])
             if moduleX > 64 or moduleY > 64:
-                walkpoints.append(context['cavebot']['targetCreature']['coordinate'])
+                walkpoints.append(context['cavebot']
+                                  ['targetCreature']['coordinate'])
         else:
             walkpoints = generateFloorWalkpoints(
                 context['radar']['coordinate'], context['cavebot']['targetCreature']['coordinate'], nonWalkableCoordinates=nonWalkableCoordinates)
             if len(walkpoints) > 0:
                 walkpoints.pop()
         for walkpoint in walkpoints:
-            self.tasks.append(WalkTask(context, walkpoint).setParentTask(self).setRootTask(self.rootTask))
-        self.targetCreatureCoordinateSinceLastRestart = context['cavebot']['targetCreature']['coordinate'].copy()
+            self.tasks.append(WalkTask(context, walkpoint).setParentTask(
+                self).setRootTask(self.rootTask))
+        self.targetCreatureCoordinateSinceLastRestart = context['cavebot']['targetCreature']['coordinate'].copy(
+        )
