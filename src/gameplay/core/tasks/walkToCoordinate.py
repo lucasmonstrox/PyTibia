@@ -13,6 +13,13 @@ class WalkToCoordinateTask(VectorTask):
         self.name = 'walkToCoordinate'
         self.coordinate = coordinate
 
+    def shouldRestartAfterAllChildrensComplete(self, context: Context) -> bool:
+        if not self.tasks:
+            return True
+        if not gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], self.coordinate):
+            return True
+        return False
+
     def onBeforeStart(self, context: Context) -> Context:
         self.calculateWalkpoint(context)
         return context
@@ -26,13 +33,6 @@ class WalkToCoordinateTask(VectorTask):
     def onComplete(self, context: Context):
         return gameplayUtils.releaseKeys(context)
 
-    def shouldRestartAfterAllChildrensComplete(self, context: Context) -> bool:
-        if len(self.tasks) == 0:
-            return True
-        if not gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], self.coordinate):
-            return True
-        return False
-
     # TODO: add unit tests
     def calculateWalkpoint(self, context: Context):
         nonWalkableCoordinates = context['cavebot']['holesOrStairs'].copy()
@@ -40,5 +40,6 @@ class WalkToCoordinateTask(VectorTask):
             nonWalkableCoordinates.append(monster['coordinate'])
         self.tasks = []
         for walkpoint in generateFloorWalkpoints(
-            context['radar']['coordinate'], self.coordinate, nonWalkableCoordinates=nonWalkableCoordinates):
-            self.tasks.append(WalkTask(context, walkpoint).setParentTask(self).setRootTask(self.rootTask))
+                context['radar']['coordinate'], self.coordinate, nonWalkableCoordinates=nonWalkableCoordinates):
+            self.tasks.append(WalkTask(context, walkpoint).setParentTask(
+                self).setRootTask(self.rootTask))
