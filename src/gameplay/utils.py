@@ -12,6 +12,7 @@ def coordinatesAreEqual(firstCoordinate: Coordinate, secondCoordinate: Coordinat
         return False
     return True
 
+
 # TODO: add unit tests
 def releaseKeys(context: Context) -> Context:
     if context['lastPressedKey'] is not None:
