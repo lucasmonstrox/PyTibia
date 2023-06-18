@@ -1,5 +1,5 @@
 from typing import Union
-from src.repositories.radar import config
+from src.repositories.radar.config import images
 from src.shared.typings import BBox, GrayImage
 from src.utils.core import cacheObjectPosition, locate
 
@@ -8,4 +8,4 @@ from src.utils.core import cacheObjectPosition, locate
 # TODO: add perf
 @cacheObjectPosition
 def getRadarToolsPosition(screenshot: GrayImage) -> Union[BBox, None]:
-    return locate(screenshot, config.images['tools'])
+    return locate(screenshot, images['tools'])
