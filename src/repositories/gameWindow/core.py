@@ -13,22 +13,26 @@ def getLeftArrowPosition(screenshot: GrayImage) -> Union[BBox, None]:
         leftArrowImageHash = hashit(leftArrowImage)
         if arrowsImagesHashes.get(leftArrowImageHash, None) is not None:
             return gameWindowCache['left']['position']
-    leftGameWindow01Position = locate(screenshot, images['arrows']['leftGameWindow01'])
+    leftGameWindow01Position = locate(
+        screenshot, images['arrows']['leftGameWindow01'])
     if leftGameWindow01Position is not None:
         gameWindowCache['left']['arrow'] = 'leftGameWindow01'
         gameWindowCache['left']['position'] = leftGameWindow01Position
         return leftGameWindow01Position
-    leftGameWindow11Position = locate(screenshot, images['arrows']['leftGameWindow11'])
+    leftGameWindow11Position = locate(
+        screenshot, images['arrows']['leftGameWindow11'])
     if leftGameWindow11Position is not None:
         gameWindowCache['left']['arrow'] = 'leftGameWindow11'
         gameWindowCache['left']['position'] = leftGameWindow11Position
         return leftGameWindow11Position
-    leftGameWindow10Position = locate(screenshot, images['arrows']['leftGameWindow10'])
+    leftGameWindow10Position = locate(
+        screenshot, images['arrows']['leftGameWindow10'])
     if leftGameWindow10Position is not None:
         gameWindowCache['left']['arrow'] = 'leftGameWindow10'
         gameWindowCache['left']['position'] = leftGameWindow10Position
         return leftGameWindow10Position
-    leftGameWindow00Position = locate(screenshot, images['arrows']['leftGameWindow00'])
+    leftGameWindow00Position = locate(
+        screenshot, images['arrows']['leftGameWindow00'])
     if leftGameWindow00Position is not None:
         gameWindowCache['left']['arrow'] = 'leftGameWindow00'
         gameWindowCache['left']['position'] = leftGameWindow00Position
@@ -44,22 +48,26 @@ def getRightArrowPosition(screenshot: GrayImage) -> Union[BBox, None]:
         rightArrowImageHash = hashit(rightArrowImage)
         if arrowsImagesHashes.get(rightArrowImageHash, None) is not None:
             return gameWindowCache['right']['position']
-    rightGameWindow01Position = locate(screenshot, images['arrows']['rightGameWindow01'])
+    rightGameWindow01Position = locate(
+        screenshot, images['arrows']['rightGameWindow01'])
     if rightGameWindow01Position is not None:
         gameWindowCache['right']['arrow'] = 'rightGameWindow01'
         gameWindowCache['right']['position'] = rightGameWindow01Position
         return rightGameWindow01Position
-    rightGameWindow11Position = locate(screenshot, images['arrows']['rightGameWindow11'])
+    rightGameWindow11Position = locate(
+        screenshot, images['arrows']['rightGameWindow11'])
     if rightGameWindow11Position is not None:
         gameWindowCache['right']['arrow'] = 'rightGameWindow11'
         gameWindowCache['right']['position'] = rightGameWindow11Position
         return rightGameWindow11Position
-    rightGameWindow10Position = locate(screenshot, images['arrows']['rightGameWindow10'])
+    rightGameWindow10Position = locate(
+        screenshot, images['arrows']['rightGameWindow10'])
     if rightGameWindow10Position is not None:
         gameWindowCache['right']['arrow'] = 'rightGameWindow10'
         gameWindowCache['right']['position'] = rightGameWindow10Position
         return rightGameWindow10Position
-    rightGameWindow00Position = locate(screenshot, images['arrows']['rightGameWindow00'])
+    rightGameWindow00Position = locate(
+        screenshot, images['arrows']['rightGameWindow00'])
     if rightGameWindow00Position is not None:
         gameWindowCache['right']['arrow'] = 'rightGameWindow00'
         gameWindowCache['right']['position'] = rightGameWindow00Position
@@ -85,19 +93,17 @@ def getCoordinate(screenshot: GrayImage, _) -> Union[BBox, None]:
 # TODO: add perf
 def getImageByCoordinate(screenshot: GrayImage, coordinate, gameWindowSize) -> GrayImage:
     return screenshot[coordinate[1]:coordinate[1] +
-                     gameWindowSize[1], coordinate[0]:coordinate[0] + gameWindowSize[0]]
+                      gameWindowSize[1], coordinate[0]:coordinate[0] + gameWindowSize[0]]
 
 
 # TODO: add unit tests
 # TODO: add perf
 def getSlotFromCoordinate(currentCoordinate: Coordinate, coordinate: Coordinate) -> Union[Slot, None]:
     diffX = coordinate[0] - currentCoordinate[0]
-    diffXAbs = abs(diffX)
-    if diffXAbs > 7:
+    if abs(diffX) > 7:
         return None
     diffY = coordinate[1] - currentCoordinate[1]
-    diffYAbs = abs(diffY)
-    if diffYAbs > 5:
+    if abs(diffY) > 5:
         return None
     return 7 + diffX, 5 + diffY
 
