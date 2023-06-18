@@ -39,19 +39,21 @@ for creature in wikiCreatures:
 # TODO: add perf
 # TODO: add typings
 def getClosestCreature(gameWindowCreatures: CreatureList, coordinate: Coordinate):
-    if len(gameWindowCreatures) == 0:
+    if not gameWindowCreatures:
         return None
     if len(gameWindowCreatures) == 1:
         return gameWindowCreatures[0]
     gameWindowWalkableFloorsSqms = getGameWindowWalkableFloorsSqms(
         walkableFloorsSqms[coordinate[2]], coordinate)
-    graph = tcod.path.SimpleGraph(cost=gameWindowWalkableFloorsSqms, cardinal=1, diagonal=0)
+    graph = tcod.path.SimpleGraph(
+        cost=gameWindowWalkableFloorsSqms, cardinal=1, diagonal=0)
     pf = tcod.path.Pathfinder(graph)
     pf.add_root((5, 7))
     closestCreatureSlot = None
     closestCreatureIndex = 0
     for creatureIndex, gameWindowCreature in enumerate(gameWindowCreatures):
-        creatureSlot = (gameWindowCreature['slot'][1], gameWindowCreature['slot'][0])
+        creatureSlot = (
+            gameWindowCreature['slot'][1], gameWindowCreature['slot'][0])
         pf.resolve(creatureSlot)
         if closestCreatureSlot is None:
             closestCreatureSlot = creatureSlot
@@ -69,7 +71,7 @@ def getCreaturesBars(gameWindowImage: GrayImage):
     imgHeight, imgWidth = gameWindowImage.shape
     for j in range(imgHeight - 3):
         i = -1
-        while(i < (imgWidth - 27)):
+        while (i < (imgWidth - 27)):
             i += 1
             if gameWindowImage[j, i + 26] == 0:
                 if gameWindowImage[j, i] == 0:
@@ -103,11 +105,12 @@ def getCreaturesBars(gameWindowImage: GrayImage):
 # TODO: maximum creatures allowed should be equal battle list size
 # TODO: Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
 # TODO: Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars
-def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordinate, gameWindowImage: GrayImage, coordinate: Coordinate, beingAttackedCreatureCategory: str=None, walkedPixelsInSqm: int=0):
-    if len(battleListCreatures) == 0:
+def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordinate, gameWindowImage: GrayImage, coordinate: Coordinate, beingAttackedCreatureCategory: str = None, walkedPixelsInSqm: int = 0):
+    if not battleListCreatures:
         return np.array([], dtype=Creature)
-    creaturesBars = [creatureBar for creatureBar in getCreaturesBars(gameWindowImage)]
-    if len(creaturesBars) == 0:
+    creaturesBars = [
+        creatureBar for creatureBar in getCreaturesBars(gameWindowImage)]
+    if not creaturesBars:
         return np.array([], dtype=Creature)
     creatures = []
     gameWindowWidth = len(gameWindowImage[1])
@@ -125,58 +128,78 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
         nonCreaturesForCurrentBar = {}
         for battleListIndex in range(len(battleListCreatures)):
             if battleListCreatures[battleListIndex]['name'] == 'Unknown':
-                creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'player', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage, coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
+                creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'player', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage,
+                                        coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
                 break
             if nonCreaturesForCurrentBar.get(battleListCreatures[battleListIndex]['name'], None) is not None:
                 continue
-            creatureNameImg = creaturesNamesHashes.get(battleListCreatures[battleListIndex]['name']).copy()
-            (creatureBarX, creatureBarY) = creaturesBars[creatureBarSortedIndex]
+            creatureNameImg = creaturesNamesHashes.get(
+                battleListCreatures[battleListIndex]['name']).copy()
+            (creatureBarX,
+             creatureBarY) = creaturesBars[creatureBarSortedIndex]
             creatureBarY0 = creatureBarY - 13
             creatureBarY1 = creatureBarY0 + 11
             creatureNameImgHalfWidth = math.floor(creatureNameImg.shape[1] / 2)
             leftDiff = max(creatureNameImgHalfWidth - 13, 0)
             gapLeft = 0 if creatureBarX > leftDiff else leftDiff - creatureBarX
-            gapInnerLeft = 0 if creatureNameImg.shape[1] > 27 else math.ceil((27 - creatureNameImg.shape[1]) / 2)
-            rightDiff = max(creatureNameImg.shape[1] - creatureNameImgHalfWidth - 14, 0)
-            gapRight = 0 if gameWindowWidth > (creatureBarX + 27 + rightDiff) else creatureBarX + 27 + rightDiff - gameWindowWidth
-            gapInnerRight = 0 if creatureNameImg.shape[1] > 27 else math.floor((27 - creatureNameImg.shape[1]) / 2)
+            gapInnerLeft = 0 if creatureNameImg.shape[1] > 27 else math.ceil(
+                (27 - creatureNameImg.shape[1]) / 2)
+            rightDiff = max(
+                creatureNameImg.shape[1] - creatureNameImgHalfWidth - 14, 0)
+            gapRight = 0 if gameWindowWidth > (
+                creatureBarX + 27 + rightDiff) else creatureBarX + 27 + rightDiff - gameWindowWidth
+            gapInnerRight = 0 if creatureNameImg.shape[1] > 27 else math.floor(
+                (27 - creatureNameImg.shape[1]) / 2)
             gg = 13 + gapLeft + gapInnerLeft - gapRight - gapInnerRight
             startingX = max(0, creatureBarX - creatureNameImgHalfWidth + gg)
-            endingX = min(gameWindowWidth, creatureBarX + creatureNameImgHalfWidth + gg)
-            creatureWithDirtNameImg = gameWindowImage[creatureBarY0:creatureBarY1, startingX:endingX]
+            endingX = min(gameWindowWidth, creatureBarX +
+                          creatureNameImgHalfWidth + gg)
+            creatureWithDirtNameImg = gameWindowImage[creatureBarY0:creatureBarY1,
+                                                      startingX:endingX]
             if creatureNameImg.shape[1] != creatureWithDirtNameImg.shape[1]:
-                creatureWithDirtNameImg = gameWindowImage[creatureBarY0:creatureBarY1, startingX:endingX + 1]
+                creatureWithDirtNameImg = gameWindowImage[creatureBarY0:creatureBarY1,
+                                                          startingX:endingX + 1]
             if hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg):
-                creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'monster', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage, coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
+                creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'monster', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage,
+                                        coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
                 break
-            creatureNameImg2 = creaturesNamesHashes.get(battleListCreatures[battleListIndex]['name']).copy()
-            creatureWithDirtNameImg2 = gameWindowImage[creatureBarY0:creatureBarY1, startingX + 1:endingX + 1]
+            creatureNameImg2 = creaturesNamesHashes.get(
+                battleListCreatures[battleListIndex]['name']).copy()
+            creatureWithDirtNameImg2 = gameWindowImage[creatureBarY0:creatureBarY1,
+                                                       startingX + 1:endingX + 1]
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
-                creatureNameImg2 = creatureNameImg2[:, 0:creatureNameImg2.shape[1] - 1]
+                creatureNameImg2 = creatureNameImg2[:,
+                                                    0:creatureNameImg2.shape[1] - 1]
             if hasMatrixInsideOther(creatureWithDirtNameImg2, creatureNameImg2):
-                creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'monster', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage, coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
+                creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'monster', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage,
+                                        coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
                 break
-            creatureWithDirtNameImg3 = gameWindowImage[creatureBarY0:creatureBarY1, startingX:endingX - 1]
-            creatureNameImg3 = creaturesNamesHashes.get(battleListCreatures[battleListIndex]['name']).copy()
+            creatureWithDirtNameImg3 = gameWindowImage[creatureBarY0:creatureBarY1,
+                                                       startingX:endingX - 1]
+            creatureNameImg3 = creaturesNamesHashes.get(
+                battleListCreatures[battleListIndex]['name']).copy()
             creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
             if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
-                creatureNameImg3 = creatureNameImg3[:, 0:creatureNameImg3.shape[1] - 1]
+                creatureNameImg3 = creatureNameImg3[:,
+                                                    0:creatureNameImg3.shape[1] - 1]
             if hasMatrixInsideOther(creatureWithDirtNameImg3, creatureNameImg3):
-                creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'monster', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage, coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
+                creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'monster', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage,
+                                        coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
                 if creature[2]:
                     discoverTarget = False
                 creatures.append(creature)
                 break
-            nonCreaturesForCurrentBar[battleListCreatures[battleListIndex]['name']] = True
+            nonCreaturesForCurrentBar[battleListCreatures[battleListIndex]
+                                      ['name']] = True
     return np.array(creatures, dtype=Creature)
 
 
@@ -227,7 +250,7 @@ def getGameWindowWalkableFloorsSqms(walkableFloorsSqms: np.ndarray, coordinate: 
     (xOfPixelCoordinate, yOfPixelCoordinate) = getPixelFromCoordinate(
         coordinate)
     return walkableFloorsSqms[yOfPixelCoordinate -
-                                               5:yOfPixelCoordinate+6, xOfPixelCoordinate-7:xOfPixelCoordinate+8].copy()
+                              5:yOfPixelCoordinate+6, xOfPixelCoordinate-7:xOfPixelCoordinate+8].copy()
 
 
 # TODO: add unit tests
@@ -246,7 +269,7 @@ def getNearestCreaturesCount(creatures: CreatureList) -> int:
 # TODO: add perf
 @njit(cache=True, fastmath=True)
 def getTargetCreature(gameWindowCreatures: CreatureList):
-    if len(gameWindowCreatures) == 0:
+    if not gameWindowCreatures:
         return None
     for gameWindowCreature in gameWindowCreatures:
         if gameWindowCreature['isBeingAttacked']:
@@ -256,12 +279,13 @@ def getTargetCreature(gameWindowCreatures: CreatureList):
 # TODO: add unit tests
 # TODO: add perf
 def hasTargetToCreatureBySlot(gameWindowCreatures: CreatureList, slot: Slot, coordinate: Coordinate) -> bool:
-    if len(gameWindowCreatures) == 0:
+    if not gameWindowCreatures:
         return False
     gameWindowWalkableFloorsSqms = getGameWindowWalkableFloorsSqms(
         walkableFloorsSqms[coordinate[2]], coordinate)
     creaturesSlots = gameWindowCreatures['slot'][:, [1, 0]]
-    gameWindowWalkableFloorsSqms[creaturesSlots[:, 0], creaturesSlots[:, 1]] = 0
+    gameWindowWalkableFloorsSqms[creaturesSlots[:,
+                                                0], creaturesSlots[:, 1]] = 0
     gameWindowWalkableFloorsSqms[slot[1], slot[0]] = 1
     x = coordinate[0] + slot[0] - coordinate[0]
     y = coordinate[1] + slot[1] - coordinate[1]
@@ -282,7 +306,7 @@ def hasTargetToCreature(gameWindowCreatures: CreatureList, gameWindowCreature: C
 def isCreatureBeingAttacked(gameWindowImage: GrayImage, borderX: int, yOfCreatureBar: int, slotWidth: int) -> bool:
     pixelsCount = 0
     borderedCreatureImg = gameWindowImage[yOfCreatureBar + 5:yOfCreatureBar +
-                                    5 + slotWidth, borderX:borderX + slotWidth]
+                                          5 + slotWidth, borderX:borderX + slotWidth]
     borderGap = 4 if slotWidth == 64 else 2
     yOfBorder = slotWidth - borderGap
     topBorder = borderedCreatureImg[0:borderGap, :].flatten()
@@ -296,8 +320,10 @@ def isCreatureBeingAttacked(gameWindowImage: GrayImage, borderX: int, yOfCreatur
             pixelsCount += 1
             if pixelsCount > 50:
                 return True
-    leftBorder = borderedCreatureImg[borderGap:yOfBorder, 0:borderGap].flatten()
-    rightBorder = borderedCreatureImg[borderGap:yOfBorder, yOfBorder:].flatten()
+    leftBorder = borderedCreatureImg[borderGap:yOfBorder,
+                                     0:borderGap].flatten()
+    rightBorder = borderedCreatureImg[borderGap:yOfBorder, yOfBorder:].flatten(
+    )
     for i in range(len(leftBorder)):
         if leftBorder[i] == 76 or leftBorder[i] == 166:
             pixelsCount += 1
@@ -314,9 +340,11 @@ def isCreatureBeingAttacked(gameWindowImage: GrayImage, borderX: int, yOfCreatur
 # TODO: add perf
 def isTrappedByCreatures(gameWindowCreatures: CreatureList, radarCoordinate: Coordinate) -> bool:
     pixelRadarCoordinate = getPixelFromCoordinate(radarCoordinate)
-    playerBox = walkableFloorsSqms[radarCoordinate[2], pixelRadarCoordinate[1] - 1: pixelRadarCoordinate[1] + 2, pixelRadarCoordinate[0] - 1: pixelRadarCoordinate[0] + 2].copy()
+    playerBox = walkableFloorsSqms[radarCoordinate[2], pixelRadarCoordinate[1] -
+                                   1: pixelRadarCoordinate[1] + 2, pixelRadarCoordinate[0] - 1: pixelRadarCoordinate[0] + 2].copy()
     for gameWindowCreature in gameWindowCreatures:
-        distanceOf = distance.cdist([gameWindowCreature['coordinate']], [radarCoordinate], 'euclidean').flatten()[0]
+        distanceOf = distance.cdist([gameWindowCreature['coordinate']], [
+                                    radarCoordinate], 'euclidean').flatten()[0]
         if distanceOf < 1.42:
             x = gameWindowCreature['coordinate'][0] - radarCoordinate[0] + 1
             y = gameWindowCreature['coordinate'][1] - radarCoordinate[1] + 1
@@ -346,25 +374,32 @@ def isTrappedByCreatures(gameWindowCreatures: CreatureList, radarCoordinate: Coo
 # TODO: windowCoordinate should be improved for gameWindow edges
 # TODO: detect being attacked creature by category
 # TODO: since there is only one creature in gameWindow and one in battleList being attacked, avoid computing if creature is being attacked on gameWindow
-def makeCreature(creatureName: str, creatureType: str, creatureBar: Tuple[int, int], direction: str, gameWindowCoordinate: XYCoordinate, gameWindowImage: GrayImage, coordinate: Coordinate, slotWidth: SlotWidth, discoverTarget: bool=True, beingAttackedCreatureCategory: Union[str, None]=None, walkedPixelsInSqm: int=0):
+def makeCreature(creatureName: str, creatureType: str, creatureBar: Tuple[int, int], direction: str, gameWindowCoordinate: XYCoordinate, gameWindowImage: GrayImage, coordinate: Coordinate, slotWidth: SlotWidth, discoverTarget: bool = True, beingAttackedCreatureCategory: Union[str, None] = None, walkedPixelsInSqm: int = 0):
     isBigGameWindow = slotWidth == 64
     gameWindowMisalignment = {'x': 0, 'y': 0}
     if creatureType == 'monster':
-        gameWindowMisalignment = wikiCreatures.get(creatureName).get('gameWindowMisalignment', {'x': 0, 'y': 0})
-    gameWindowMisalignmentX = gameWindowMisalignment['x'] if isBigGameWindow else gameWindowMisalignment['x'] / 2
-    gameWindowMisalignmentY = gameWindowMisalignment['y'] if isBigGameWindow else gameWindowMisalignment['y'] / 2
+        gameWindowMisalignment = wikiCreatures.get(creatureName).get(
+            'gameWindowMisalignment', {'x': 0, 'y': 0})
+    gameWindowMisalignmentX = gameWindowMisalignment[
+        'x'] if isBigGameWindow else gameWindowMisalignment['x'] / 2
+    gameWindowMisalignmentY = gameWindowMisalignment[
+        'y'] if isBigGameWindow else gameWindowMisalignment['y'] / 2
     distanceBetweenSlotPixelLifeBar = 19 if isBigGameWindow else 3
     xCoordinate = creatureBar[0] - distanceBetweenSlotPixelLifeBar
     # xCoordinate = xCoordinate - walkedPixelsInSqm if direction == 'left' else xCoordinate + walkedPixelsInSqm
-    xSlot = max(min(round((xCoordinate + gameWindowMisalignmentX) / slotWidth), 14), 0)
+    xSlot = max(
+        min(round((xCoordinate + gameWindowMisalignmentX) / slotWidth), 14), 0)
     yCoordinate = 0 if creatureBar[1] <= 14 else creatureBar[1] + 5
-    ySlot = max(min(round((yCoordinate + gameWindowMisalignmentY) / slotWidth), 10), 0)
+    ySlot = max(
+        min(round((yCoordinate + gameWindowMisalignmentY) / slotWidth), 10), 0)
     borderX = max(creatureBar[0] - distanceBetweenSlotPixelLifeBar, 0)
     isBeingAttacked = False
     if discoverTarget and beingAttackedCreatureCategory is not None and beingAttackedCreatureCategory == creatureName:
-        isBeingAttacked = isCreatureBeingAttacked(gameWindowImage, borderX, creatureBar[1], slotWidth)
+        isBeingAttacked = isCreatureBeingAttacked(
+            gameWindowImage, borderX, creatureBar[1], slotWidth)
     slot = (xSlot, ySlot)
-    coordinate = [coordinate[0] - 7 + xSlot, coordinate[1] - 5 + ySlot, coordinate[2]]
+    coordinate = [coordinate[0] - 7 + xSlot,
+                  coordinate[1] - 5 + ySlot, coordinate[2]]
     if not isCoordinateWalkable(coordinate):
         if direction == 'left' or direction == 'right':
             leftCoordinate = [coordinate[0] - 1, coordinate[1], coordinate[2]]
@@ -375,7 +410,8 @@ def makeCreature(creatureName: str, creatureType: str, creatureBar: Tuple[int, i
                 xSlot = max(xSlot, 0)
                 slot = (xSlot, slot[1])
             else:
-                rightCoordinate = [coordinate[0] + 1, coordinate[1], coordinate[2]]
+                rightCoordinate = [coordinate[0] +
+                                   1, coordinate[1], coordinate[2]]
                 if isCoordinateWalkable(rightCoordinate):
                     coordinate = rightCoordinate
                     xSlot = slot[0] + 1
@@ -391,7 +427,8 @@ def makeCreature(creatureName: str, creatureType: str, creatureBar: Tuple[int, i
                 ySlot = max(ySlot, 0)
                 slot = (slot[0], ySlot)
             else:
-                bottomCoordinate = [coordinate[0], coordinate[1] + 1, coordinate[2]]
+                bottomCoordinate = [coordinate[0],
+                                    coordinate[1] + 1, coordinate[2]]
                 if isCoordinateWalkable(bottomCoordinate):
                     coordinate = bottomCoordinate
                     ySlot = slot[1] + 1
@@ -399,9 +436,14 @@ def makeCreature(creatureName: str, creatureType: str, creatureBar: Tuple[int, i
                     ySlot = max(ySlot, 0)
                     slot = (slot[0], ySlot)
     halfOfSlot = (slotWidth / 2)
-    xCoordinate = min(max(xCoordinate + halfOfSlot, halfOfSlot), gameWindowImage.shape[1] - halfOfSlot)
-    yCoordinate = min(max(yCoordinate + halfOfSlot, halfOfSlot), gameWindowImage.shape[0] - halfOfSlot)
-    windowCoordinate = (gameWindowCoordinate[0] + xCoordinate, gameWindowCoordinate[1] + yCoordinate)
-    gameWindowCoordinate = (xCoordinate + gameWindowMisalignmentX, yCoordinate + gameWindowMisalignmentY)
-    isUnderRoof = gameWindowImage[creatureBar[1] + 1, creatureBar[0] + 1] == 192
+    xCoordinate = min(max(xCoordinate + halfOfSlot, halfOfSlot),
+                      gameWindowImage.shape[1] - halfOfSlot)
+    yCoordinate = min(max(yCoordinate + halfOfSlot, halfOfSlot),
+                      gameWindowImage.shape[0] - halfOfSlot)
+    windowCoordinate = (
+        gameWindowCoordinate[0] + xCoordinate, gameWindowCoordinate[1] + yCoordinate)
+    gameWindowCoordinate = (
+        xCoordinate + gameWindowMisalignmentX, yCoordinate + gameWindowMisalignmentY)
+    isUnderRoof = gameWindowImage[creatureBar[1] +
+                                  1, creatureBar[0] + 1] == 192
     return (creatureName, creatureType, isBeingAttacked, slot, coordinate, windowCoordinate, gameWindowCoordinate, isUnderRoof)
