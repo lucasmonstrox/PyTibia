@@ -10,8 +10,7 @@ def getHpBar(screenshot: GrayImage, heartPos: BBox) -> GrayImage:
     y1 = y0 + 1
     x0 = left + 13
     x1 = x0 + barSize
-    bar = screenshot[y0:y1, x0:x1][0]
-    return bar
+    return screenshot[y0:y1, x0:x1][0]
 
 
 # TODO: add unit tests
@@ -22,5 +21,4 @@ def getManaBar(screenshot: GrayImage, heartPos: BBox) -> GrayImage:
     y1 = y0 + 1
     x0 = left + 14
     x1 = x0 + barSize
-    bar = screenshot[y0:y1, x0:x1][0]
-    return bar
+    return screenshot[y0:y1, x0:x1][0]
