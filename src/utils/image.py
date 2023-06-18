@@ -15,13 +15,15 @@ def cacheChain(imageList):
         lastY = None
         lastW = None
         lastH = None
-        lastImgHash = None
+        lastImageHash = None
+
         def inner(screenshot: GrayImage) -> Union[BBox, None]:
-            nonlocal lastX, lastY, lastW, lastH, lastImgHash
+            nonlocal lastX, lastY, lastW, lastH, lastImageHash
             if lastX != None and lastY != None and lastW != None and lastH != None:
-                copiedImg = screenshot[lastY:lastY + lastH, lastX:lastX + lastW]
-                copiedImgHash = hashit(copiedImg)
-                if copiedImgHash == lastImgHash:
+                copiedImage = screenshot[lastY:lastY +
+                                         lastH, lastX:lastX + lastW]
+                copiedImageHash = hashit(copiedImage)
+                if copiedImageHash == lastImageHash:
                     return (lastX, lastY, lastW, lastH)
             for image in imageList:
                 imagePosition = locate(screenshot, image)
@@ -31,8 +33,9 @@ def cacheChain(imageList):
                     lastY = y
                     lastW = w
                     lastH = h
-                    lastImg = screenshot[lastY:lastY + lastH, lastX:lastX + lastW]
-                    lastImgHash = hashit(lastImg)
+                    lastImage = screenshot[lastY:lastY +
+                                           lastH, lastX:lastX + lastW]
+                    lastImageHash = hashit(lastImage)
                     return (x, y, w, h)
             return None
         return inner
