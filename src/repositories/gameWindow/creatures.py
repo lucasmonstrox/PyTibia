@@ -39,7 +39,7 @@ for creature in wikiCreatures:
 # TODO: add perf
 # TODO: add typings
 def getClosestCreature(gameWindowCreatures: CreatureList, coordinate: Coordinate):
-    if not gameWindowCreatures:
+    if len(gameWindowCreatures) == 0:
         return None
     if len(gameWindowCreatures) == 1:
         return gameWindowCreatures[0]
@@ -106,11 +106,11 @@ def getCreaturesBars(gameWindowImage: GrayImage):
 # TODO: Find a way to avoid 3 calculation times when comparing names since some words have a wrong location
 # TODO: Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars
 def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordinate, gameWindowImage: GrayImage, coordinate: Coordinate, beingAttackedCreatureCategory: str = None, walkedPixelsInSqm: int = 0):
-    if not battleListCreatures:
+    if len(battleListCreatures) == 0:
         return np.array([], dtype=Creature)
     creaturesBars = [
         creatureBar for creatureBar in getCreaturesBars(gameWindowImage)]
-    if not creaturesBars:
+    if len(creaturesBars) == 0:
         return np.array([], dtype=Creature)
     creatures = []
     gameWindowWidth = len(gameWindowImage[1])
@@ -269,7 +269,7 @@ def getNearestCreaturesCount(creatures: CreatureList) -> int:
 # TODO: add perf
 @njit(cache=True, fastmath=True)
 def getTargetCreature(gameWindowCreatures: CreatureList):
-    if not gameWindowCreatures:
+    if len(gameWindowCreatures) == 0:
         return None
     for gameWindowCreature in gameWindowCreatures:
         if gameWindowCreature['isBeingAttacked']:
@@ -279,7 +279,7 @@ def getTargetCreature(gameWindowCreatures: CreatureList):
 # TODO: add unit tests
 # TODO: add perf
 def hasTargetToCreatureBySlot(gameWindowCreatures: CreatureList, slot: Slot, coordinate: Coordinate) -> bool:
-    if not gameWindowCreatures:
+    if len(gameWindowCreatures) == 0:
         return False
     gameWindowWalkableFloorsSqms = getGameWindowWalkableFloorsSqms(
         walkableFloorsSqms[coordinate[2]], coordinate)

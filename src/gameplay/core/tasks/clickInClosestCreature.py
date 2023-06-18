@@ -26,9 +26,3 @@ class ClickInClosestCreatureTask(BaseTask):
 
     def did(self, context: Context) -> bool:
         return context['cavebot']['isAttackingSomeCreature']
-
-    # TODO: add unit tests
-    def onTimeout(self, context: Context) -> Context:
-        # TODO: avoid this, tree should not be reseted manually
-        context['tasksOrchestrator'].reset()
-        return context

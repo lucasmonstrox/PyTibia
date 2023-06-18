@@ -32,7 +32,7 @@ class WalkToTargetCreatureTask(VectorTask):
 
     # TODO: if there are no more creatures, it should only recalculate when it gets close to the creature to avoid recalculating each SQM move
     def shouldRestart(self, context: Context) -> bool:
-        if not self.tasks:
+        if len(self.tasks) == 0:
             return True
         if context['cavebot']['targetCreature'] is None:
             return True

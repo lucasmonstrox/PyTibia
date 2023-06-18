@@ -1,4 +1,3 @@
-import numpy as np
 import src.gameplay.utils as gameplayUtils
 from src.repositories.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from src.repositories.skills.core import getSpeed
@@ -19,6 +18,7 @@ class WalkTask(BaseTask):
         movementSpeed = getBreakpointTileMovementSpeed(
             charSpeed, tileFriction)
         self.delayOfTimeout = (movementSpeed * 2) / 1000
+        self.shouldTimeoutTreeWhenTimeout = True
         self.walkpoint = coordinate
 
     # TODO: add unit tests
@@ -29,13 +29,15 @@ class WalkTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> bool:
-        direction = getDirectionBetweenCoordinates(context['radar']['coordinate'], self.walkpoint)
+        direction = getDirectionBetweenCoordinates(
+            context['radar']['coordinate'], self.walkpoint)
         if direction is None:
             return context
         futureDirection = None
         if self.parentTask and len(self.parentTask.tasks) > 1:
             if self.parentTask.currentTaskIndex + 1 < len(self.parentTask.tasks):
-                futureDirection = getDirectionBetweenCoordinates(self.walkpoint, self.parentTask.tasks[self.parentTask.currentTaskIndex + 1].walkpoint)
+                futureDirection = getDirectionBetweenCoordinates(
+                    self.walkpoint, self.parentTask.tasks[self.parentTask.currentTaskIndex + 1].walkpoint)
         if direction != futureDirection:
             if context['lastPressedKey'] is not None:
                 context = releaseKeys(context)
@@ -64,7 +66,4 @@ class WalkTask(BaseTask):
     # TODO: add unit tests
     def onTimeout(self, context: Context) -> Context:
         context = releaseKeys(context)
-        # TODO: avoid this, tree should not be reseted manually
-        context['tasksOrchestrator'].reset()
         return context
-    

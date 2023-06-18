@@ -1,5 +1,4 @@
 import numpy as np
-from time import time
 import src.gameplay.utils as gameplayUtils
 from src.repositories.radar.core import getBreakpointTileMovementSpeed, getTileFrictionByCoordinate
 from src.repositories.skills.core import getSpeed
@@ -30,16 +29,11 @@ class SingleWalkPressTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        direction = getDirectionBetweenCoordinates(context['radar']['coordinate'], self.coordinate)
+        direction = getDirectionBetweenCoordinates(
+            context['radar']['coordinate'], self.coordinate)
         press(direction)
         return context
 
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
         return gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], self.coordinate)
-
-    # TODO: add unit tests
-    def onTimeout(self, context: Context) -> Context:
-        self.parentTask.status = 'completed'
-        self.parentTask.finishedAt = time()
-        return context

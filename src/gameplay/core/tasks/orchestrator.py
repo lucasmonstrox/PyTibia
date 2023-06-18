@@ -2,6 +2,7 @@ from time import time
 from ...typings import Context
 from .common.base import BaseTask
 
+
 class TasksOrchestrator:
     rootTask = None
 
@@ -113,7 +114,7 @@ class TasksOrchestrator:
                 if self.didTaskTimedout(currentTask):
                     context = currentTask.onTimeout(context)
                     currentTask.statusReason = 'timeout'
-                    return self.markCurrentTaskAsFinished(currentTask, context)
+                    return self.markCurrentTaskAsFinished(currentTask, context, shouldTimeoutTreeWhenTimeout=currentTask.shouldTimeoutTreeWhenTimeout)
                 if currentTask.did(context):
                     currentTask.finishedAt = time()
                     if currentTask.delayAfterComplete > 0:
@@ -128,16 +129,21 @@ class TasksOrchestrator:
         return context
 
     # TODO: add unit tests
-    def markCurrentTaskAsFinished(self, task, context: Context, disableManualTermination=False):
+    def markCurrentTaskAsFinished(self, task, context: Context, disableManualTermination=False, shouldTimeoutTreeWhenTimeout=False):
         if task.manuallyTerminable and disableManualTermination == False:
             task.status = 'awaitingManualTermination'
             return context
         else:
             task.status = 'completed'
             if task.statusReason is None:
-                task.statusReason = 'completed'
+                task.statusReason = 'timeout' if shouldTimeoutTreeWhenTimeout else 'completed'
         context = task.onComplete(context)
         if task.parentTask:
+            if shouldTimeoutTreeWhenTimeout:
+                context = task.parentTask.onTimeout(context)
+                context = self.markCurrentTaskAsFinished(
+                    task.parentTask, context, shouldTimeoutTreeWhenTimeout=shouldTimeoutTreeWhenTimeout)
+                return context
             if task.parentTask.currentTaskIndex < len(task.parentTask.tasks) - 1:
                 task.parentTask.currentTaskIndex += 1
             else:
@@ -146,7 +152,8 @@ class TasksOrchestrator:
                     task.parentTask.currentTaskIndex = 0
                     task.parentTask.retryCount += 1
                     return task.parentTask.onBeforeRestart(context)
-                context = self.markCurrentTaskAsFinished(task.parentTask, context)
+                context = self.markCurrentTaskAsFinished(
+                    task.parentTask, context)
         return context
 
     def didPassedEnoughTimeToExecute(self, task):

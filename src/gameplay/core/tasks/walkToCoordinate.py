@@ -14,11 +14,9 @@ class WalkToCoordinateTask(VectorTask):
         self.coordinate = coordinate
 
     def shouldRestartAfterAllChildrensComplete(self, context: Context) -> bool:
-        if not self.tasks:
+        if len(self.tasks) == 0:
             return True
-        if not gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], self.coordinate):
-            return True
-        return False
+        return not gameplayUtils.coordinatesAreEqual(context['radar']['coordinate'], self.coordinate)
 
     def onBeforeStart(self, context: Context) -> Context:
         self.calculateWalkpoint(context)

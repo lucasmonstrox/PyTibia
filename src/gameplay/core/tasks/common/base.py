@@ -3,7 +3,7 @@ from ....typings import Context
 
 
 class BaseTask:
-    def __init__(self, delayBeforeStart=0, delayAfterComplete=0, delayOfTimeout=0, isRootTask=False, manuallyTerminable=False, name='baseTask', parentTask=None):
+    def __init__(self, delayBeforeStart=0, delayAfterComplete=0, delayOfTimeout=0, isRootTask=False, manuallyTerminable=False, name='baseTask', parentTask=None, shouldTimeoutTreeWhenTimeout=False):
         self.createdAt = time()
         self.startedAt = None
         self.finishedAt = None
@@ -18,6 +18,7 @@ class BaseTask:
         self.parentTask = parentTask
         self.retryCount = 0
         self.rootTask = None
+        self.shouldTimeoutTreeWhenTimeout = shouldTimeoutTreeWhenTimeout
         self.status = 'notStarted'
         self.statusReason = None
 
@@ -55,7 +56,7 @@ class BaseTask:
 
     def onIgnored(self, context: Context) -> Context:
         return context
-    
+
     def onInterrupt(self, context: Context) -> Context:
         return context
 

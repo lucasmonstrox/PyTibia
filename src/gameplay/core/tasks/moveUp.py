@@ -30,10 +30,3 @@ class MoveUp(BaseTask):
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
         return context['radar']['coordinate'][2] == self.floorLevel
-
-    # TODO: add unit tests
-    def onTimeout(self, context: Context) -> Context:
-        # TODO: avoid it. Task should retry
-        self.parentTask.status = 'completed'
-        self.parentTask.status.finishedAt = time()
-        return context

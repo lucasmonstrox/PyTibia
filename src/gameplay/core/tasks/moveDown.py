@@ -1,4 +1,3 @@
-from time import time
 from src.utils.keyboard import press
 from ...typings import Context
 from .common.base import BaseTask
@@ -30,11 +29,3 @@ class MoveDown(BaseTask):
     # TODO: add unit tests
     def did(self, context: Context) -> bool:
         return context['radar']['coordinate'][2] == self.floorLevel
-
-    # TODO: add unit tests
-    def onTimeout(self, context: Context) -> Context:
-        # TODO: avoid it. Task should retry
-        # TODO: add way to cancel/complete parent automatically
-        self.parentTask.status = 'completed'
-        self.parentTask.status.finishedAt = time()
-        return context
