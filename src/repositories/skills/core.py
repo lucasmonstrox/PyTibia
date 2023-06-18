@@ -13,17 +13,19 @@ def getCapacity(screenshot: GrayImage) -> Union[int, None]:
     xpBoostPosition = getXpBoostButtonPosition(screenshot)
     if xpBoostPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 61), xpBoostPosition[2], xpBoostPosition[3]
+    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
+                                           61), xpBoostPosition[2], xpBoostPosition[3]
     return getValuesCount(screenshot, position)
 
 
 # TODO: add unit tests
-# TODO: ad perf
+# TODO: add perf
 def getFood(screenshot: GrayImage) -> Union[int, None]:
     xpBoostPosition = getXpBoostButtonPosition(screenshot)
     if xpBoostPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 89), xpBoostPosition[2], xpBoostPosition[3]
+    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
+                                           89), xpBoostPosition[2], xpBoostPosition[3]
     return getMinutesCount(screenshot, position)
 
 
@@ -33,7 +35,8 @@ def getHp(screenshot: GrayImage) -> Union[int, None]:
     xpBoostPosition = getXpBoostButtonPosition(screenshot)
     if xpBoostPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 19), xpBoostPosition[2], xpBoostPosition[3]
+    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
+                                           19), xpBoostPosition[2], xpBoostPosition[3]
     return getValuesCount(screenshot, position)
 
 
@@ -43,7 +46,8 @@ def getMana(screenshot: GrayImage) -> Union[int, None]:
     xpBoostPosition = getXpBoostButtonPosition(screenshot)
     if xpBoostPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 33), xpBoostPosition[2], xpBoostPosition[3]
+    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
+                                           33), xpBoostPosition[2], xpBoostPosition[3]
     return getValuesCount(screenshot, position)
 
 
@@ -53,7 +57,8 @@ def getSpeed(screenshot: GrayImage) -> Union[int, None]:
     xpBoostPosition = getXpBoostButtonPosition(screenshot)
     if xpBoostPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 75), xpBoostPosition[2], xpBoostPosition[3]
+    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
+                                           75), xpBoostPosition[2], xpBoostPosition[3]
     return getValuesCount(screenshot, position)
 
 
@@ -63,22 +68,22 @@ def getStamina(screenshot: GrayImage) -> Union[int, None]:
     xpBoostPosition = getXpBoostButtonPosition(screenshot)
     if xpBoostPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] + 103), xpBoostPosition[2], xpBoostPosition[3]
+    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
+                                           103), xpBoostPosition[2], xpBoostPosition[3]
     return getMinutesCount(screenshot, position)
 
 
 # TODO: add unit tests
 # TODO: add perf
 def getMinutesCount(screenshot: GrayImage, position: BBox) -> int:
-    (x, y, _, _) = position
-    minutesCountsImage = screenshot[y:y + 8, x + 144 - 14:x + 144]
-    minutesCountsImage = convertGraysToBlack(minutesCountsImage)
+    minutesCountsImage = convertGraysToBlack(
+        screenshot[position[1]:position[1] + 8, position[0] + 144 - 14:position[0] + 144])
     minutesCountsHashKey = hashit(minutesCountsImage)
     minutesCount = 0
     if minutesCountsHashKey in minutesOrHoursHashes:
         minutesCount = minutesOrHoursHashes[minutesCountsHashKey]
-    hoursCountsImage = screenshot[y:y + 8, x + 110:x + 124]
-    hoursCountsImage = convertGraysToBlack(hoursCountsImage)
+    hoursCountsImage = convertGraysToBlack(
+        screenshot[position[1]:position[1] + 8, position[0] + 110:position[0] + 124])
     hoursCountsHashKey = hashit(hoursCountsImage)
     hoursCount = 0
     if hoursCountsHashKey in minutesOrHoursHashes:
@@ -89,20 +94,18 @@ def getMinutesCount(screenshot: GrayImage, position: BBox) -> int:
 # TODO: add unit tests
 # TODO: add perf
 def getValuesCount(screenshot: GrayImage, position: BBox) -> int:
-    (x, y, _, _) = position
-    capacityHundredsCountsImage = screenshot[y:y + 8, x + 144 - 22:x + 144]
     capacityHundredsCountsImage = convertGraysToBlack(
-        capacityHundredsCountsImage)
+        screenshot[position[1]:position[1] + 8, position[0] + 144 - 22:position[0] + 144])
     capacityHundredsCountsImage = np.where(
         np.logical_or(capacityHundredsCountsImage == 126, capacityHundredsCountsImage == 192), 192, 0)
-    capacityHundredsCountsImage = np.array(capacityHundredsCountsImage, dtype=np.uint8)
+    capacityHundredsCountsImage = np.array(
+        capacityHundredsCountsImage, dtype=np.uint8)
     capacityHundredsCountsHashKey = hashit(capacityHundredsCountsImage)
     capacityHundredsCount = 0
     if capacityHundredsCountsHashKey in numbersHashes:
         capacityHundredsCount = numbersHashes[capacityHundredsCountsHashKey]
-    capacityThousandsCountsImage = screenshot[y:y + 8, x + 116 - 22:x + 116]
     capacityThousandsCountsImage = convertGraysToBlack(
-        capacityThousandsCountsImage)
+        screenshot[position[1]:position[1] + 8, position[0] + 116 - 22:position[0] + 116])
     capacityThousandsCountsImage = np.where(
         np.logical_or(capacityThousandsCountsImage == 126, capacityThousandsCountsImage == 192), 192, 0)
     capacityThousandsCountsImage = np.array(
