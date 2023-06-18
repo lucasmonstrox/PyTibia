@@ -9,7 +9,6 @@ from .locators import getHpIconPosition, getManaIconPosition
 # TODO: add parameters types
 # TODO: add unit tests
 # TODO: add perf
-# TODO: change to numba to increase performance
 @njit(cache=True, fastmath=True)
 def getFilledBarPercentage(bar, allowedPixelsColors=[]) -> int:
     barPercent = len(bar)
