@@ -19,7 +19,7 @@ def getFilledBarPercentage(bar, allowedPixelsColors=[]) -> int:
 
 
 # TODO: add unit tests
-# PERF: [0.052583100000000105, 2.1600000000177033e-05]
+# PERF: [0.34756980000000004, 2.9999999999752447e-06]
 def getHpPercentage(screenshot: GrayImage) -> Union[int, None]:
     hpIconPosition = getHpIconPosition(screenshot)
     if hpIconPosition == None:
@@ -29,7 +29,7 @@ def getHpPercentage(screenshot: GrayImage) -> Union[int, None]:
 
 
 # TODO: add unit tests
-# PERF: [0.04806750000000015, 2.3399999999895726e-05]
+# PERF: [0.32003090000000034, 3.200000000092018e-06]
 def getManaPercentage(screenshot: GrayImage) -> Union[int, None]:
     manaIconPosition = getManaIconPosition(screenshot)
     if manaIconPosition == None:
