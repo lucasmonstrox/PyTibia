@@ -6,19 +6,24 @@ def test_should_test_default_params():
     assert task.name == 'openLocker'
     assert task.delayAfterComplete == 1
 
-def test_should_method_shouldIgnore_return_False_when_isLockerOpen_return_False(mocker):
-    context = {'screenshot': []}
-    task = OpenLockerTask()
-    isLockerOpenSpy = mocker.patch('src.repositories.inventory.core.isLockerOpen', return_value=False)
-    assert task.shouldIgnore(context) == False
-    isLockerOpenSpy.assert_called_once_with(context['screenshot'])
 
-def test_should_method_shouldIgnore_return_True_when_isLockerOpen_return_True(mocker):
+def test_should_method_shouldIgnore_return_False_when_isContainerOpen_return_False(mocker):
     context = {'screenshot': []}
     task = OpenLockerTask()
-    isLockerOpenSpy = mocker.patch('src.repositories.inventory.core.isLockerOpen', return_value=True)
+    isContainerOpenSpy = mocker.patch(
+        'src.repositories.inventory.core.isContainerOpen', return_value=False)
+    assert task.shouldIgnore(context) == False
+    isContainerOpenSpy.assert_called_once_with(context['screenshot'], 'locker')
+
+
+def test_should_method_shouldIgnore_return_True_when_isContainerOpen_return_True(mocker):
+    context = {'screenshot': []}
+    task = OpenLockerTask()
+    isContainerOpenSpy = mocker.patch(
+        'src.repositories.inventory.core.isContainerOpen', return_value=True)
     assert task.shouldIgnore(context) == True
-    isLockerOpenSpy.assert_called_once_with(context['screenshot'])
+    isContainerOpenSpy.assert_called_once_with(context['screenshot'], 'locker')
+
 
 def test_should_do(mocker):
     context = {
@@ -28,23 +33,30 @@ def test_should_do(mocker):
     }
     task = OpenLockerTask()
     slot = (0, 0)
-    getSlotFromCoordinateSpy = mocker.patch('src.repositories.gameWindow.core.getSlotFromCoordinate', return_value=slot)
-    rightClickSlotSpy = mocker.patch('src.repositories.gameWindow.slot.rightClickSlot')
+    getSlotFromCoordinateSpy = mocker.patch(
+        'src.repositories.gameWindow.core.getSlotFromCoordinate', return_value=slot)
+    rightClickSlotSpy = mocker.patch(
+        'src.repositories.gameWindow.slot.rightClickSlot')
     assert task.do(context) == context
-    getSlotFromCoordinateSpy.assert_called_once_with(context['radar']['coordinate'], context['deposit']['lockerCoordinate'])
-    rightClickSlotSpy.assert_called_once_with(slot, context['gameWindow']['coordinate'])
+    getSlotFromCoordinateSpy.assert_called_once_with(
+        context['radar']['coordinate'], context['deposit']['lockerCoordinate'])
+    rightClickSlotSpy.assert_called_once_with(
+        slot, context['gameWindow']['coordinate'])
+
 
 def test_should_method_did_return_False_when_shouldIgnore_return_False(mocker):
     context = {'screenshot': []}
     task = OpenLockerTask()
-    shouldIgnoreSpy = mocker.patch.object(task, 'shouldIgnore', return_value=False)
+    shouldIgnoreSpy = mocker.patch.object(
+        task, 'shouldIgnore', return_value=False)
     assert task.did(context) == False
     shouldIgnoreSpy.assert_called_once_with(context)
+
 
 def test_should_method_did_return_True_when_shouldIgnore_return_True(mocker):
     context = {'screenshot': []}
     task = OpenLockerTask()
-    shouldIgnoreSpy = mocker.patch.object(task, 'shouldIgnore', return_value=True)
+    shouldIgnoreSpy = mocker.patch.object(
+        task, 'shouldIgnore', return_value=True)
     assert task.did(context) == True
     shouldIgnoreSpy.assert_called_once_with(context)
-

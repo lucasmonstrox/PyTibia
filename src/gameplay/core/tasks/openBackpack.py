@@ -15,14 +15,16 @@ class OpenBackpackTask(BaseTask):
         self.backpack = backpack
 
     def shouldIgnore(self, context: Context) -> bool:
-        return inventoryCore.isBackpackOpen(context['screenshot'], self.backpack)
+        return inventoryCore.isContainerOpen(context['screenshot'], self.backpack)
 
     def do(self, context: Context) -> Context:
-        backpackPosition = utilsCore.locate(context['screenshot'], images['slots'][self.backpack], confidence=0.8)
+        backpackPosition = utilsCore.locate(
+            context['screenshot'], images['slots'][self.backpack], confidence=0.8)
         if backpackPosition is None:
             return context
         # TODO: click in random BBOX coordinate
-        utilsMouse.rightClick((backpackPosition[0] + 5, backpackPosition[1] + 5))
+        utilsMouse.rightClick(
+            (backpackPosition[0] + 5, backpackPosition[1] + 5))
         return context
 
     def did(self, context: Context) -> bool:

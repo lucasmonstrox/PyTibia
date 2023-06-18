@@ -12,11 +12,13 @@ class OpenLockerTask(BaseTask):
         self.delayAfterComplete = 1
 
     def shouldIgnore(self, context: Context) -> bool:
-        return inventoryCore.isLockerOpen(context['screenshot'])
+        return inventoryCore.isContainerOpen(context['screenshot'], 'locker')
 
     def do(self, context: Context) -> Context:
-        slot = gameWindowCore.getSlotFromCoordinate(context['radar']['coordinate'], context['deposit']['lockerCoordinate'])
-        gameWindowSlot.rightClickSlot(slot, context['gameWindow']['coordinate'])
+        slot = gameWindowCore.getSlotFromCoordinate(
+            context['radar']['coordinate'], context['deposit']['lockerCoordinate'])
+        gameWindowSlot.rightClickSlot(
+            slot, context['gameWindow']['coordinate'])
         return context
 
     def did(self, context: Context) -> bool:
