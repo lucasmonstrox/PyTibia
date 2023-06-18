@@ -15,7 +15,6 @@ dimensions = {
 floors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 floorsConfidence = [0.85, 0.85, 0.9, 0.95, 0.95, 0.95,
                     0.95, 0.85, 0.95, 0.95, 0.95, 0.95, 0.95, 0.9, 0.85, 0.85]
-# floorsImgs = np.load(f'{currentPath}/npys/floorsImgs.npy', allow_pickle=True)
 floorsImgs = [
     loadFromRGBToGray(
         f'{currentPath}/images/floor-0.png'),
@@ -151,7 +150,8 @@ nonWalkablePixelsColors = [
     pixelsColorsValues['vacuumOrUndiscoveredArea'],
 ]
 walkableFloorsSqms = np.ndarray(shape=(16, 2048, 2560), dtype=np.uint)
-availableTilesFrictions = np.array([70, 90, 95, 100, 110, 125, 140, 150, 160, 200, 250])
+availableTilesFrictions = np.array(
+    [70, 90, 95, 100, 110, 125, 140, 150, 160, 200, 250])
 breakpointTileMovementSpeed = {
     1: 850,
     2: 800,
@@ -190,6 +190,3 @@ for floor in floors:
     floorsLevelsImgsHashes[floorHash] = floor
     walkableFloorsSqms[floor] = np.where(
         np.isin(floorsPathsImgs[floor], [105, 226]), 0, 1)
-
-# radarImagesCoordinates = np.load(f'{currentPath}/npys/radarImagesCoordinates.npy', allow_pickle=True)
-# walkableFloorsSqms = np.load(f'{currentPath}/npys/walkableFloorsSqms.npy')
