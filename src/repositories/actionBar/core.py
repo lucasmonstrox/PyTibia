@@ -4,7 +4,7 @@ import src.repositories.actionBar.extractors as actionBarExtractors
 import src.repositories.actionBar.locators as actionBarLocators
 from src.shared.typings import GrayImage
 import src.utils.core as coreUtils
-from .config import images
+from .config import hashes, images
 
 
 # TODO: add unit tests
@@ -47,10 +47,14 @@ def hasCooldownByName(screenshot: GrayImage, name: str) -> Union[bool, None]:
     return hasCooldownByImage(screenshot, images['cooldowns'][name])
 
 
-# TODO: improve performance
-# PERF: [0.08509680000000008, 0.00037780000000031677]
+# PERF: [2.1100000000107144e-05, 5.5999999997169425e-06]
 def hasAttackCooldown(screenshot: GrayImage) -> Union[bool, None]:
-    return hasCooldownByImage(screenshot, images['cooldowns']['attack'])
+    listOfCooldownsImage = actionBarExtractors.getCooldownsImage(screenshot)
+    if listOfCooldownsImage is None:
+        return None
+    cooldownImageHash = coreUtils.hashit(listOfCooldownsImage[0:20, 4:24])
+    hashName = hashes['cooldowns'].get(cooldownImageHash, 'unknown')
+    return hashName == 'attack'
 
 
 # TODO: improve performance
