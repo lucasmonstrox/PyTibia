@@ -17,27 +17,24 @@ class MyTextInput(TextInput):
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         self.callback(self, window, keycode, text, modifiers)
 
-
-class LightHealingCard(BoxLayout):
-    def __init__(self, labelText='', **kwargs):
+class ManaFoodCard(BoxLayout):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs, orientation='vertical')
         self.context = get_current_context()['game']
-        self.contextKey = 'lightHealing'
+        self.potionType = 'manaFood'
         header = BoxLayout()
-        label = MDLabel(text=labelText)
+        label = MDLabel(text='Mana Food')
         switch = Switch()
         switch.bind(active=self.toggleHealthPotion)
         header.add_widget(label)
         header.add_widget(switch)
         self.add_widget(header)
         card = MDCard()
-        content = BoxLayout(orientation='vertical', padding=[
-                            10, 10, 10, 10], spacing=5)
-        hpLabel = MDLabel(text='HP% less than:', theme_text_color='Error')
+        content = BoxLayout(orientation='vertical', padding=[10, 10, 10, 10], spacing=5)
+        hpLabel = MDLabel(text='Mana% less than:', theme_text_color='Primary')
         hpContent = BoxLayout(orientation='vertical')
         hpContent.add_widget(hpLabel)
-        slider = MDSlider(color='red', hint_bg_color='red', hint_text_color='white',
-                          thumb_color_active='red', thumb_color_inactive='red', min=10, step=10)
+        slider = MDSlider(color='blue', hint_bg_color='blue', hint_text_color='white', thumb_color_active='blue', thumb_color_inactive='blue', min=10, step=10)
         slider.bind(value=self.onHpPercentageChange)
         hpContent.add_widget(slider)
         cardHeader = BoxLayout()
@@ -54,21 +51,22 @@ class LightHealingCard(BoxLayout):
         self.add_widget(card)
 
     def toggleHealthPotion(self, _, enabled):
-        self.context.toggleHealingSpellsByKey(self.contextKey, enabled)
+        self.context.toggleHealingPotionsByKey(self.potionType, enabled)
 
     def onHpPercentageChange(self, _, value):
-        self.context.setHealingSpellsHpPercentage(self.contextKey, value)
+        self.context.setHealthPotionHpPercentageLessThanOrEqual(self.potionType, value)
 
     def keyboard_on_key_down(self, instance, window, keyCode, text, modifiers):
+        _, hotkey = keyCode
         allowedHotkeys = [
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12']
-        isNotAllowedHotkey = keyCode[1] not in allowedHotkeys
+        isNotAllowedHotkey = hotkey not in allowedHotkeys
         if isNotAllowedHotkey:
             # TODO: improve phrase
             toast('Invalid hotkey')
             return
-        if keyCode[1] and not modifiers:
+        if hotkey and not modifiers:
             context = get_current_context()['game']
-            context.setHealingSpellsHotkey(self.contextKey, keyCode[1])
-            instance.text = keyCode[1]
+            context.setHealthPotionHotkeyByKey(self.potionType, hotkey)
+            instance.text = hotkey

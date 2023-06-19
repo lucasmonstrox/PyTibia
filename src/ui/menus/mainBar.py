@@ -20,8 +20,9 @@ class MainBar(BoxLayout):
 
     def play(self, _):
         context = kivy.context.get_current_context()['game']
-        self.parent.parent.parent.minimize()
-        context.play()
+        shouldPlay = context.play()
+        if shouldPlay:
+            self.parent.parent.parent.minimize()
 
     def pause(self, _):
         context = kivy.context.get_current_context()['game']
