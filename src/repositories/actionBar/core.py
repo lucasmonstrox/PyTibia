@@ -15,8 +15,7 @@ def getSlotCount(screenshot: GrayImage, slot: int) -> Union[int, None]:
         return None
     x0 = leftSideArrowsPos[0] + leftSideArrowsPos[2] + \
         (slot * 2) + ((slot - 1) * 34)
-    slotImage = screenshot[leftSideArrowsPos[1]
-        :leftSideArrowsPos[1] + 34, x0:x0 + 34]
+    slotImage = screenshot[leftSideArrowsPos[1]:leftSideArrowsPos[1] + 34, x0:x0 + 34]
     digits = slotImage[24:32, 3:33]
     count = 0
     for i in range(5):
@@ -88,16 +87,24 @@ def hasExoriMinCooldown(screenshot: GrayImage) -> Union[bool, None]:
     return hasCooldownByImage(screenshot, images['cooldowns']['exori min'])
 
 
-# TODO: improve performance
-# PERF: [0.08596130000000013, 0.00038250000000017437]
+# PERF: [2.7100000000057634e-05, 5.4999999998806e-06]
 def hasHealingCooldown(screenshot: GrayImage) -> Union[bool, None]:
-    return hasCooldownByImage(screenshot, images['cooldowns']['healing'])
+    listOfCooldownsImage = actionBarExtractors.getCooldownsImage(screenshot)
+    if listOfCooldownsImage is None:
+        return None
+    cooldownImageHash = coreUtils.hashit(listOfCooldownsImage[0:20, 29:49])
+    hashName = hashes['cooldowns'].get(cooldownImageHash, 'unknown')
+    return hashName == 'healing'
 
 
-# TODO: improve performance
-# PERF: [0.08592040000000001, 0.0003776000000002]
+# PERF: [2.0099999999523277e-05, 5.50000000032469e-06]
 def hasSupportCooldown(screenshot: GrayImage) -> Union[bool, None]:
-    return hasCooldownByImage(screenshot, images['cooldowns']['support'])
+    listOfCooldownsImage = actionBarExtractors.getCooldownsImage(screenshot)
+    if listOfCooldownsImage is None:
+        return None
+    cooldownImageHash = coreUtils.hashit(listOfCooldownsImage[0:20, 54:74])
+    hashName = hashes['cooldowns'].get(cooldownImageHash, 'unknown')
+    return hashName == 'support'
 
 
 # TODO: improve performance
@@ -121,7 +128,8 @@ def slotIsEquipped(screenshot: GrayImage, slot: int) -> Union[bool, None]:
         return None
     x0 = leftSideArrowsPos[0] + leftSideArrowsPos[2] + \
         (slot * 2) + ((slot - 1) * 34)
-    slotImage = screenshot[leftSideArrowsPos[1]                           :leftSideArrowsPos[1] + 34, x0:x0 + 34]
+    slotImage = screenshot[leftSideArrowsPos[1]
+        :leftSideArrowsPos[1] + 34, x0:x0 + 34]
     return slotImage[0, 0] == 41
 
 
@@ -132,5 +140,6 @@ def slotIsAvailable(screenshot: GrayImage, slot: int) -> Union[bool, None]:
         return None
     x0 = leftSideArrowsPos[0] + leftSideArrowsPos[2] + \
         (slot * 2) + ((slot - 1) * 34)
-    slotImage = screenshot[leftSideArrowsPos[1]                           :leftSideArrowsPos[1] + 34, x0:x0 + 34]
+    slotImage = screenshot[leftSideArrowsPos[1]
+        :leftSideArrowsPos[1] + 34, x0:x0 + 34]
     return not (slotImage[1, 2] == 54 and slotImage[1, 4] == 54 and slotImage[1, 6] == 54 and slotImage[1, 8] == 54 and slotImage[1, 10] == 54)

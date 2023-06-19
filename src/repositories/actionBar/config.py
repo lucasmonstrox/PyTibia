@@ -10,7 +10,9 @@ cooldownsImagesPath = f'{imagesPath}/cooldowns'
 digitsImagesPath = f'{imagesPath}/digits'
 hashes = {
     'cooldowns': {
-        hashit(loadFromRGBToGray(f'{cooldownsImagesPath}/attack.png')): 'attack'
+        hashit(loadFromRGBToGray(f'{cooldownsImagesPath}/attack.png')): 'attack',
+        hashit(loadFromRGBToGray(f'{cooldownsImagesPath}/healing.png')): 'healing',
+        hashit(loadFromRGBToGray(f'{cooldownsImagesPath}/support.png')): 'support'
     }
 }
 images = {
