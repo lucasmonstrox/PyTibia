@@ -21,6 +21,8 @@ python = "3.9.13"
 scipy = "^1.9.1"
 tcod = "^13.8.1"
 xxhash = "^3.1.0"
+pysondb = "^1.6.7"
+tinydb = "^4.8.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.1.3"

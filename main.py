@@ -84,7 +84,7 @@ def main():
         elif context['way'] == 'waypoint':
             if context['tasksOrchestrator'].getCurrentTask(context) is None:
                 currentWaypointIndex = context['cavebot']['waypoints']['currentIndex']
-                currentWaypoint = context['cavebot']['waypoints']['points'][currentWaypointIndex]
+                currentWaypoint = context['cavebot']['waypoints']['items'][currentWaypointIndex]
                 context['tasksOrchestrator'].setRootTask(
                     context, resolveTasksByWaypoint(currentWaypoint))
         context['gameWindow']['previousMonsters'] = context['gameWindow']['monsters']
