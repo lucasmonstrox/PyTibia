@@ -13,7 +13,7 @@ from .typings import FloorLevel, TileFriction
 # TODO: add unit tests
 # TODO: add perf
 # TODO: get by cached images coordinates hashes
-def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate=None) -> Union[Coordinate, None]:
+def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate = None) -> Union[Coordinate, None]:
     floorLevel = getFloorLevel(screenshot)
     if floorLevel is None:
         return None
@@ -78,28 +78,30 @@ def getFloorLevel(screenshot: GrayImage) -> Union[FloorLevel, None]:
 
 # TODO: add unit tests
 # TODO: add perf
-def getClosestWaypointIndexFromCoordinate(coordinate: Coordinate, waypoints: WaypointList) -> Waypoint:
-    (xOfCoordinate, yOfCoordinate, floorLevel) = coordinate
-    currentCoordinateWithoutFloor = [xOfCoordinate, yOfCoordinate]
-    waypointsCoordinatesWithoutFloor = waypoints['coordinate'][:, :-1]
-    waypointsCoordinatesDistances = distance.cdist(
-        waypointsCoordinatesWithoutFloor, [currentCoordinateWithoutFloor]).flatten()
-    waypointsIndexesOfCurrentFloor = np.nonzero(
-        waypoints['coordinate'][:, 2] == floorLevel)[0]
-    waypointsCoordinatesDistancesOfCurrentFloor = waypointsCoordinatesDistances[
-        waypointsIndexesOfCurrentFloor]
-    lowestWaypointIndex = np.argmin(
-        waypointsCoordinatesDistancesOfCurrentFloor)
-    return waypointsIndexesOfCurrentFloor[lowestWaypointIndex]
+def getClosestWaypointIndexFromCoordinate(coordinate: Coordinate, waypoints: WaypointList) -> Union[int, None]:
+    closestWaypointIndex = None
+    closestWaypointDistance = 9999
+    for waypointIndex, waypoint in enumerate(waypoints):
+        if waypoint['coordinate'][2] != coordinate[2]:
+            continue
+        waypointDistance = distance.cdist(
+            [(waypoint['coordinate'][0], waypoint['coordinate'][1])], [(coordinate[0], coordinate[1])]).flatten()[0]
+        if waypointDistance < closestWaypointDistance:
+            closestWaypointIndex = waypointIndex
+            closestWaypointDistance = waypointDistance
+    return closestWaypointIndex
 
 
 # TODO: add perf
 def getBreakpointTileMovementSpeed(charSpeed: int, tileFriction: TileFriction) -> int:
     tileFrictionNotFound = tileFriction not in tilesFrictionsWithBreakpoints
     if tileFrictionNotFound:
-        closestTilesFrictions = np.flatnonzero(availableTilesFrictions > tileFriction)
-        tileFriction = availableTilesFrictions[closestTilesFrictions[0]] if len(closestTilesFrictions) > 0 else 250
-    availableBreakpointsIndexes = np.flatnonzero(charSpeed >= tilesFrictionsWithBreakpoints[tileFriction])
+        closestTilesFrictions = np.flatnonzero(
+            availableTilesFrictions > tileFriction)
+        tileFriction = availableTilesFrictions[closestTilesFrictions[0]] if len(
+            closestTilesFrictions) > 0 else 250
+    availableBreakpointsIndexes = np.flatnonzero(
+        charSpeed >= tilesFrictionsWithBreakpoints[tileFriction])
     if len(availableBreakpointsIndexes) == 0:
         return breakpointTileMovementSpeed[1]
     return breakpointTileMovementSpeed.get(availableBreakpointsIndexes[-1] + 1)
@@ -112,13 +114,13 @@ def getTileFrictionByCoordinate(coordinate: Coordinate) -> TileFriction:
         coordinate)
     floorLevel = coordinate[2]
     tileFriction = floorsPathsSqms[floorLevel,
-                                          yOfPixelCoordinate, xOfPixelCoordinate]
+                                   yOfPixelCoordinate, xOfPixelCoordinate]
     return tileFriction
 
 
 # TODO: add unit tests
 # TODO: add perf
-def isCloseToCoordinate(currentCoordinate: Coordinate, possibleCloseCoordinate: Coordinate, distanceTolerance: int=10) -> bool:
+def isCloseToCoordinate(currentCoordinate: Coordinate, possibleCloseCoordinate: Coordinate, distanceTolerance: int = 10) -> bool:
     (xOfCurrentCoordinate, yOfCurrentCoordinate, _) = currentCoordinate
     XYOfCurrentCoordinate = (xOfCurrentCoordinate, yOfCurrentCoordinate)
     (xOfPossibleCloseCoordinate, yOfPossibleCloseCoordinate, _) = possibleCloseCoordinate

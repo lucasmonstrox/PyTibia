@@ -1,5 +1,4 @@
 from numba import njit
-import numpy as np
 from src.shared.typings import GrayImage
 
 

@@ -1,6 +1,6 @@
 from src.gameplay.context import context
-from src.tkinter.application import Application
-from src.tkinter.context import Context
+from src.ui.application import Application
+from src.ui.context import Context
 
 
 if __name__ == "__main__":
