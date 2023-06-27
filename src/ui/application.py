@@ -36,4 +36,3 @@ class Application(tk.Tk):
     def focusIn(self, event):
         pass
         # if event.widget == self:
-        #     print('Janela principal recebeu foco')
