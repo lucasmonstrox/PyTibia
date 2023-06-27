@@ -18,6 +18,7 @@ from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserv
 from src.gameplay.healing.observers.healingByPotions import healingByPotionsObserver
 from src.gameplay.healing.observers.healingPriority import healingPriorityObserver
 from src.gameplay.targeting import hasCreaturesToAttack
+from src.gameplay.threads.ui import UIThread
 from src.repositories.gameWindow.creatures import getClosestCreature
 from src.ui.context import Context
 
@@ -88,6 +89,8 @@ def main():
 
     try:
         contextInstance = Context(context)
+        uiThreadInstance = UIThread(contextInstance)
+        uiThreadInstance.start()
         while True:
             if contextInstance.context['pause']:
                 continue
