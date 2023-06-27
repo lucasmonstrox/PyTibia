@@ -1,7 +1,6 @@
 import pyautogui
 from time import sleep, time
 from src.gameplay.cavebot import resolveCavebotTasks, shouldAskForCavebotTasks
-from src.gameplay.context import context
 from src.gameplay.combo import comboSpellsObserver
 from src.gameplay.core.middlewares.battleList import setBattleListMiddleware
 from src.gameplay.core.middlewares.chat import setChatTabsMiddleware
