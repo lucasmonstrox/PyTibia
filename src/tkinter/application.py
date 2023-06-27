@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from .pages.cavebot.cavebotPage import CavebotPage
+from .pages.cavebot import CavebotPage
 from .pages.comboSpells import ComboSpellsPage
 from .pages.config import ConfigPage
 from .pages.inventory import InventoryPage
@@ -30,10 +30,3 @@ class Application(tk.Tk):
         self.tabControl.add(self.comboSpellsPage, text='Combo Spells')
 
         self.tabControl.pack(expand=1, fill='both')
-
-        self.bind('<FocusIn>', self.focusIn)
-
-    def focusIn(self, event):
-        pass
-        # if event.widget == self:
-        #     print('Janela principal recebeu foco')
