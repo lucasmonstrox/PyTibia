@@ -1,4 +1,7 @@
+import numpy as np
 from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
+from src.repositories.battleList.typings import Creature as BattleListCreature
+from src.repositories.gameWindow.typings import Creature as GameWindowCreature
 
 
 context = {
@@ -8,7 +11,7 @@ context = {
     },
     'battleList': {
         'beingAttackedCreatureCategory': None,
-        'creatures': [],
+        'creatures': np.array([], dtype=BattleListCreature),
     },
     'cavebot': {
         'enabled': True,
@@ -38,9 +41,9 @@ context = {
         'coordinate': None,
         'image': None,
         'previousGameWindowImage': None,
-        'previousMonsters': [],
-        'monsters': [],
-        'players': [],
+        'previousMonsters': np.array([], dtype=GameWindowCreature),
+        'monsters': np.array([], dtype=GameWindowCreature),
+        'players': np.array([], dtype=GameWindowCreature),
         'walkedPixelsInSqm': 0,
     },
     'healing': {
@@ -132,7 +135,7 @@ context = {
     },
     'hotkeys': {},
     'loot': {
-        'corpsesToLoot': [],
+        'corpsesToLoot': np.array([], dtype=GameWindowCreature),
     },
     'lastPressedKey': None,
     'pause': False,
