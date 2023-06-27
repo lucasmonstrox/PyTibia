@@ -13,8 +13,7 @@ class GameContext:
         self.context = context
 
     def addWaypoint(self, waypoint):
-        self.context['cavebot']['waypoints']['items'] = np.append(
-            self.context['cavebot']['waypoints']['items'], np.array([waypoint], dtype=Waypoint))
+        self.context['cavebot']['waypoints']['points'] = np.append(self.context['cavebot']['waypoints']['points'], np.array([waypoint], dtype=Waypoint))
 
     def focusInTibia(self):
         win32gui.ShowWindow(self.context['window'], 3)
@@ -32,8 +31,7 @@ class GameContext:
 
     def getCoordinate(self):
         screenshot = getScreenshot()
-        coordinate = getCoordinate(
-            screenshot, previousCoordinate=self.context['radar']['previousCoordinate'])
+        coordinate = getCoordinate(screenshot, previousCoordinate=self.context['radar']['previousCoordinate'])
         return coordinate
 
     def toggleHealingPotionsByKey(self, healthPotionType, enabled):
