@@ -21,11 +21,10 @@ def comboSpellsObserver(context: Context):
         else:
             tasksOrchestrator.do(context)
             return
-    if context['comboSpells']['enabled'] == False:
-        return
-    nearestCreaturesCount = getNearestCreaturesCount(
-        context['gameWindow']['monsters'])
+    nearestCreaturesCount = getNearestCreaturesCount(context['gameWindow']['monsters'])
     if nearestCreaturesCount == 0:
+        return
+    if context['comboSpells']['enabled'] == False:
         return
     for key, comboSpell in enumerate(context['comboSpells']['items']):
         if comboSpell['enabled'] == False:
@@ -36,10 +35,8 @@ def comboSpellsObserver(context: Context):
                 return
             if context['statusBar']['mana'] < spell['metadata']['mana']:
                 continue
-            tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                spell['hotkey'], delayAfterComplete=0.1))
-            nextIndex = getNextArrayIndex(
-                comboSpell['spells'], comboSpell['currentSpellIndex'])
+            tasksOrchestrator.setRootTask(context, UseHotkeyTask(spell['hotkey'], delayAfterComplete=0.1))
+            nextIndex = getNextArrayIndex(comboSpell['spells'], comboSpell['currentSpellIndex'])
             # TODO: improve indexes without using context
             context['comboSpells']['items'][key]['currentSpellIndex'] = nextIndex
             context['comboSpells']['lastUsedSpell'] = spell['name']

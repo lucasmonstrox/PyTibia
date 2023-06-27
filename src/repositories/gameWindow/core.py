@@ -118,9 +118,9 @@ def getSlotImage(gameWindowImage: GrayImage, slot: Tuple[int, int], slotWidth: i
 
 # TODO: add unit tests
 # TODO: add perf
-def isHoleOpen(gameWindowImage: GrayImage, holeOpenImage: GrayImage, coordinate: Coordinate, targetCoordinate: Coordinate) -> bool:
+def isHoleOpen(gameWindowImage: GrayImage, holeOpenImg: GrayImage, coordinate: Coordinate, targetCoordinate: Coordinate) -> bool:
     # TODO: export from config
     slotWidth = len(gameWindowImage[1]) // 15
     slot = getSlotFromCoordinate(coordinate, targetCoordinate)
-    slotImage = getSlotImage(gameWindowImage, slot, slotWidth)
-    return locate(slotImage, holeOpenImage) is not None
+    slotImg = getSlotImage(gameWindowImage, slot, slotWidth)
+    return locate(slotImg, holeOpenImg) is not None

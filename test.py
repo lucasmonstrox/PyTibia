@@ -42,6 +42,7 @@ def main():
         return context
 
     res = timeit.repeat(lambda: handleGameData(context), repeat=10, number=1)
+    print('res', res)
 
 
 if __name__ == '__main__':
