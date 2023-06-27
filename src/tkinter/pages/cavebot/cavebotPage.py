@@ -174,7 +174,20 @@ class CavebotPage(tk.Frame):
         if item:
             index = self.table.index(item)
             waypoint = self.context.context['cavebot']['waypoints']['items'][index]
+            if waypoint['type'] == 'refill':
+                if self.refillModal is None or not self.refillModal.winfo_exists():
+                    self.refillModal = RefillModal(
+                        self, options=waypoint['options'], onConfirm=lambda options: self.updateWaypointByIndex(index, options))
             if waypoint['type'] == 'refillChecker':
                 if self.refillCheckerModal is None or not self.refillCheckerModal.winfo_exists():
                     self.refillCheckerModal = RefillCheckerModal(
-                        self, options=waypoint['options'], onConfirm=lambda options: self.context.updateWaypointByIndex(index, options))
+                        self, options=waypoint['options'], onConfirm=lambda options: self.updateWaypointByIndex(index, options))
+
+    def updateWaypointByIndex(self, index, options):
+        self.context.updateWaypointByIndex(index, options)
+        selecionado = self.table.focus()
+        if selecionado:
+            valores_atuais = self.table.item(selecionado)["values"]
+            valores_atuais[3] = options
+            self.table.item(selecionado, values=valores_atuais)
+            self.table.update()
