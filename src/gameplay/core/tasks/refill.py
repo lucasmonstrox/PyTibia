@@ -22,38 +22,24 @@ class RefillTask(VectorTask):
 
     # TODO: add unit tests
     def onBeforeStart(self, context: Context) -> Context:
-        # TODO: inherit from context bindings
-        itemSlot = {
-            'great health potion': 1,
-            'great mana potion': 2,
-            'great spirit potion': 1,
-            'health potion': 1,
-            'mana potion': 2,
-            'strong health potion': 1,
-            'strong mana potion': 2,
-            'supreme health potion': 1,
-            'ultimate health potion': 1,
-            'ultimate mana potion': 2,
-            'ultimate spirit potion': 1,
-        }
-        manaPotionsAmount = getSlotCount(
-            context['screenshot'], itemSlot[context['refill']['mana']['item']])
-        amountOfManaPotionsToBuy = max(0, context['refill']['mana']['quantity'] - \
-            manaPotionsAmount)
-        healthPotionSlot = itemSlot[context['refill']['health']['item']]
-        healthPotionsAmount = getSlotCount(
-            context['screenshot'], healthPotionSlot)
-        amountOfHealthPotionsToBuy = max(0, context['refill']['health']['quantity'] - \
-            healthPotionsAmount)
+        healthPotionsAmount = getSlotCount(context['screenshot'], 1)
+        manaPotionsAmount = getSlotCount(context['screenshot'], 2)
+        amountOfManaPotionsToBuy = max(
+            0, context['refill']['mana']['quantity'] - manaPotionsAmount)
+        amountOfHealthPotionsToBuy = max(
+            0, context['refill']['health']['quantity'] - healthPotionsAmount)
         self.tasks = [
-            SelectChatTabTask('local chat').setParentTask(self).setRootTask(self),
+            SelectChatTabTask('local chat').setParentTask(
+                self).setRootTask(self),
             EnableChatTask().setParentTask(self).setRootTask(self),
             SayTask('hi').setParentTask(self).setRootTask(self),
             EnableChatTask().setParentTask(self).setRootTask(self),
             SayTask('trade').setParentTask(self).setRootTask(self),
             SetChatOffTask().setParentTask(self).setRootTask(self),
-            BuyItemTask(context['refill']['mana']['item'], amountOfManaPotionsToBuy).setParentTask(self).setRootTask(self),
-            BuyItemTask(context['refill']['health']['item'], amountOfHealthPotionsToBuy).setParentTask(self).setRootTask(self),
+            BuyItemTask(self.waypoint['mana']['item'], amountOfManaPotionsToBuy).setParentTask(
+                self).setRootTask(self),
+            BuyItemTask(self.waypoint['health']['item'], amountOfHealthPotionsToBuy).setParentTask(
+                self).setRootTask(self),
             CloseNpcTradeBoxTask().setParentTask(self).setRootTask(self),
         ]
         return context
@@ -61,7 +47,8 @@ class RefillTask(VectorTask):
     # TODO: add unit tests
     def onComplete(self, context: Context) -> Context:
         # TODO: numbait
-        labelIndexes = np.argwhere(context['cavebot']['waypoints']['points']['label'] == self.waypoint['options']['waypointLabelToRedirect'])[0]
+        labelIndexes = np.argwhere(context['cavebot']['waypoints']['items']
+                                   ['label'] == self.waypoint['options']['waypointLabelToRedirect'])[0]
         if len(labelIndexes) == 0:
             # TODO: raise error
             return context

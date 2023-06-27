@@ -38,7 +38,7 @@ for creature in wikiCreatures:
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-def getClosestCreature(gameWindowCreatures: CreatureList, coordinate: Coordinate):
+def getClosestCreature(gameWindowCreatures, coordinate: Coordinate):
     if len(gameWindowCreatures) == 0:
         return None
     if len(gameWindowCreatures) == 1:
@@ -107,11 +107,11 @@ def getCreaturesBars(gameWindowImage: GrayImage):
 # TODO: Whenever the last species is left, avoid loops and resolve species immediately for remaining creatures bars
 def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordinate, gameWindowImage: GrayImage, coordinate: Coordinate, beingAttackedCreatureCategory: str = None, walkedPixelsInSqm: int = 0):
     if len(battleListCreatures) == 0:
-        return np.array([], dtype=Creature)
+        return []
     creaturesBars = [
         creatureBar for creatureBar in getCreaturesBars(gameWindowImage)]
     if len(creaturesBars) == 0:
-        return np.array([], dtype=Creature)
+        return []
     creatures = []
     gameWindowWidth = len(gameWindowImage[1])
     x = (len(gameWindowImage[1]) / 2) - 1
@@ -130,7 +130,7 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
             if battleListCreatures[battleListIndex]['name'] == 'Unknown':
                 creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'player', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage,
                                         coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
-                if creature[2]:
+                if creature['isBeingAttacked']:
                     discoverTarget = False
                 creatures.append(creature)
                 break
@@ -165,7 +165,7 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
             if hasMatrixInsideOther(creatureWithDirtNameImg, creatureNameImg):
                 creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'monster', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage,
                                         coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
-                if creature[2]:
+                if creature['isBeingAttacked']:
                     discoverTarget = False
                 creatures.append(creature)
                 break
@@ -179,7 +179,7 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
             if hasMatrixInsideOther(creatureWithDirtNameImg2, creatureNameImg2):
                 creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'monster', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage,
                                         coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
-                if creature[2]:
+                if creature['isBeingAttacked']:
                     discoverTarget = False
                 creatures.append(creature)
                 break
@@ -194,21 +194,20 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
             if hasMatrixInsideOther(creatureWithDirtNameImg3, creatureNameImg3):
                 creature = makeCreature(battleListCreatures[battleListIndex]['name'], 'monster', creaturesBars[creatureBarSortedIndex], direction, gameWindowCoordinate, gameWindowImage,
                                         coordinate, slotWidth, discoverTarget=discoverTarget, beingAttackedCreatureCategory=beingAttackedCreatureCategory, walkedPixelsInSqm=walkedPixelsInSqm)
-                if creature[2]:
+                if creature['isBeingAttacked']:
                     discoverTarget = False
                 creatures.append(creature)
                 break
             nonCreaturesForCurrentBar[battleListCreatures[battleListIndex]
                                       ['name']] = True
-    return np.array(creatures, dtype=Creature)
+    return creatures
 
 
 # TODO: add unit tests
 # TODO: add perf
 # TODO: add typings
-# TODO: change to for loop with numba
 def getCreaturesByType(gameWindowCreatures: CreatureList, creatureType):
-    return gameWindowCreatures[gameWindowCreatures['type'] == creatureType]
+    return [gameWindowCreature for gameWindowCreature in gameWindowCreatures if gameWindowCreature['type'] == creatureType]
 
 
 # TODO: add unit tests
@@ -249,26 +248,25 @@ def getDifferentCreaturesBySlots(previousGameWindowCreatures: CreatureList, curr
 def getGameWindowWalkableFloorsSqms(walkableFloorsSqms: np.ndarray, coordinate: Coordinate) -> np.ndarray:
     (xOfPixelCoordinate, yOfPixelCoordinate) = getPixelFromCoordinate(
         coordinate)
-    return walkableFloorsSqms[yOfPixelCoordinate -
-                              5:yOfPixelCoordinate+6, xOfPixelCoordinate-7:xOfPixelCoordinate+8].copy()
+    return walkableFloorsSqms[yOfPixelCoordinate - 5:yOfPixelCoordinate + 6, xOfPixelCoordinate - 7:xOfPixelCoordinate + 8].copy()
 
 
 # TODO: add unit tests
 # TODO: add perf
 # TODO: if something is already compared, avoid it. Check if it is faster
-@njit(cache=True, fastmath=True)
-def getNearestCreaturesCount(creatures: CreatureList) -> int:
+# TODO: add types
+def getNearestCreaturesCount(creatures) -> int:
     nearestCreaturesCount = 0
-    for creatureSlot in creatures['slot']:
-        if (creatureSlot[0] == 6 and creatureSlot[1] == 4) or (creatureSlot[0] == 7 and creatureSlot[1] == 4) or (creatureSlot[0] == 8 and creatureSlot[1] == 4) or (creatureSlot[0] == 6 and creatureSlot[1] == 5) or (creatureSlot[0] == 8 and creatureSlot[1] == 5) or (creatureSlot[0] == 6 and creatureSlot[1] == 6) or (creatureSlot[0] == 7 and creatureSlot[1] == 6) or (creatureSlot[0] == 8 and creatureSlot[1] == 6):
+    for creature in creatures:
+        if (creature['slot'][0] == 6 and creature['slot'][1] == 4) or (creature['slot'][0] == 7 and creature['slot'][1] == 4) or (creature['slot'][0] == 8 and creature['slot'][1] == 4) or (creature['slot'][0] == 6 and creature['slot'][1] == 5) or (creature['slot'][0] == 8 and creature['slot'][1] == 5) or (creature['slot'][0] == 6 and creature['slot'][1] == 6) or (creature['slot'][0] == 7 and creature['slot'][1] == 6) or (creature['slot'][0] == 8 and creature['slot'][1] == 6):
             nearestCreaturesCount += 1
     return nearestCreaturesCount
 
 
 # TODO: add unit tests
 # TODO: add perf
-@njit(cache=True, fastmath=True)
-def getTargetCreature(gameWindowCreatures: CreatureList):
+# TODO: add types
+def getTargetCreature(gameWindowCreatures):
     if len(gameWindowCreatures) == 0:
         return None
     for gameWindowCreature in gameWindowCreatures:
@@ -446,4 +444,13 @@ def makeCreature(creatureName: str, creatureType: str, creatureBar: Tuple[int, i
         xCoordinate + gameWindowMisalignmentX, yCoordinate + gameWindowMisalignmentY)
     isUnderRoof = gameWindowImage[creatureBar[1] +
                                   1, creatureBar[0] + 1] == 192
-    return (creatureName, creatureType, isBeingAttacked, slot, coordinate, windowCoordinate, gameWindowCoordinate, isUnderRoof)
+    return {
+        'name': creatureName,
+        'type': creatureType,
+        'isBeingAttacked': isBeingAttacked,
+        'slot': slot,
+        'coordinate': coordinate,
+        'windowCoordinate': windowCoordinate,
+        'gameWindowCoordinate': gameWindowCoordinate,
+        'isUnderRoof': isUnderRoof
+    }
