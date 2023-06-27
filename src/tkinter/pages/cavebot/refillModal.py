@@ -3,7 +3,7 @@ from tkinter import messagebox, ttk
 
 
 class RefillModal(tk.Toplevel):
-    def __init__(self, parent, onConfirm=lambda: {}, options=None):
+    def __init__(self, parent, onConfirm=lambda: {}):
         super().__init__(parent)
         self.resizable(False, False)
         self.title('Configure potions for refill')
@@ -22,17 +22,11 @@ class RefillModal(tk.Toplevel):
             self.healthPotionFrame, values=['Small Health Potion', 'Health Potion', 'Strong Health Potion', 'Great Health Potion', 'Ultimate Health Potion', 'Supreme Health Potion'], state='readonly')
         self.healthPotionCombobox.grid(
             row=0, column=0, sticky='nsew')
-        if options is not None:
-            healthPotionItem = options.get('healthPotion').get('item')
-            self.healthPotionCombobox.set(healthPotionItem)
 
         self.healthPotionEntry = tk.Entry(self.healthPotionFrame, validate='key',
                                           validatecommand=(self.register(self.validateNumber), "%P"))
         self.healthPotionEntry.grid(
             row=1, column=0, sticky='nsew', pady=(10, 0))
-        if options is not None:
-            healthPotionQuantity = options.get('healthPotion').get('quantity')
-            self.healthPotionEntry.insert(0, healthPotionQuantity)
 
         self.manaPotionFrame = tk.LabelFrame(
             self, text='Mana Potion', padx=10, pady=10)
@@ -45,17 +39,11 @@ class RefillModal(tk.Toplevel):
             self.manaPotionFrame, values=['Mana Potion', 'Strong Mana Potion', 'Great Mana Potion', 'Ultimate Mana Potion'], state='readonly')
         self.manaPotionCombobox.grid(
             row=0, column=0, sticky='nsew')
-        if options is not None:
-            manaPotionItem = options.get('manaPotion').get('item')
-            self.manaPotionCombobox.set(manaPotionItem)
 
         self.manaPotionEntry = tk.Entry(self.manaPotionFrame, validate='key',
                                         validatecommand=(self.register(self.validateNumber), "%P"))
         self.manaPotionEntry.grid(
             row=1, column=0, sticky='nsew', pady=(10, 0))
-        if options is not None:
-            manaPotionQuantity = options.get('manaPotion').get('quantity')
-            self.manaPotionEntry.insert(0, manaPotionQuantity)
 
         self.confirmButton = tk.Button(
             self, text='Confirm', command=self.confirm)
