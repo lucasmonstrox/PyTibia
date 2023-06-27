@@ -13,5 +13,5 @@ def setRadarMiddleware(context: Context) -> Context:
 def setWaypointIndexMiddleware(context: Context) -> Context:
     if context['cavebot']['waypoints']['currentIndex'] is None:
         context['cavebot']['waypoints']['currentIndex'] = getClosestWaypointIndexFromCoordinate(
-            context['radar']['coordinate'], context['cavebot']['waypoints']['items'])
+            context['radar']['coordinate'], context['cavebot']['waypoints']['points'])
     return context

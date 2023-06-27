@@ -2,6 +2,7 @@ import numpy as np
 from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 from src.repositories.battleList.typings import Creature as BattleListCreature
 from src.repositories.gameWindow.typings import Creature as GameWindowCreature
+from src.repositories.radar.typings import Waypoint
 
 
 context = {
@@ -21,7 +22,7 @@ context = {
         'targetCreature': None,
         'waypoints': {
             'currentIndex': None,
-            'items': [],
+            'points': np.array([], dtype=Waypoint),
             'state': None
         },
     },
