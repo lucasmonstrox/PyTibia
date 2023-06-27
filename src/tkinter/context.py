@@ -143,6 +143,11 @@ class Context:
             waypoint)
         self.db.update(self.enabledProfile)
 
+    def updateWaypointByIndex(self, waypointIndex, options):
+        self.context['cavebot']['waypoints']['items'][waypointIndex]['options'] = options
+        self.enabledProfile['config']['cavebot']['waypoints']['items'][waypointIndex]['options'] = options
+        self.db.update(self.enabledProfile)
+
     def removeWaypointByIndex(self, index):
         self.context['cavebot']['waypoints']['items'].pop(index)
         self.enabledProfile['config']['cavebot']['waypoints']['items'].pop(
