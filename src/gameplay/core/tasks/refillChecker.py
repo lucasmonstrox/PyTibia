@@ -29,10 +29,10 @@ class RefillCheckerTask(BaseTask):
         if capacity is None:
             return False
         hasEnoughHealthPotions = quantityOfHealthPotions > self.waypoint[
-            'options']['minimumAmountOfHealthPotions']
+            'options']['minimumOfHealthPotions']
         hasEnoughManaPotions = quantityOfManaPotions > self.waypoint[
-            'options']['minimumAmountOfManaPotions']
-        hasEnoughCapacity = capacity > self.waypoint['options']['minimumAmountOfCap']
+            'options']['minimumOfManaPotions']
+        hasEnoughCapacity = capacity > self.waypoint['options']['minimumOfCapacity']
         return hasEnoughHealthPotions and hasEnoughManaPotions and hasEnoughCapacity
 
     # TODO: add unit tests
