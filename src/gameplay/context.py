@@ -144,17 +144,6 @@ context = {
         'previousCoordinate': None,
         'lastCoordinateVisited': None,
     },
-    'refill': {
-        'enabled': True,
-        'health': {
-            'item': 'supreme health potion',
-            'quantity': 300,
-        },
-        'mana': {
-            'item': 'strong mana potion',
-            'quantity': 500,
-        },
-    },
     'resolution': 1080,
     'statusBar': {
         'hpPercentage': None,
