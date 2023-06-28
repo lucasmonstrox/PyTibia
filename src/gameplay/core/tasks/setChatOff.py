@@ -1,6 +1,6 @@
 from src.gameplay.typings import Context
 from src.repositories.chat.core import getChatStatus
-from src.utils.keyboard import press
+import src.utils.keyboard as keyboard
 from ...typings import Context
 from .common.base import BaseTask
 
@@ -20,5 +20,5 @@ class SetChatOffTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        press('enter')
+        keyboard.press('enter')
         return context
