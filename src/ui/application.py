@@ -34,5 +34,5 @@ class Application(tk.Tk):
         self.bind('<FocusIn>', self.focusIn)
 
     def focusIn(self, event):
-        pass
-        # if event.widget == self:
+        if event.widget == self:
+            self.context.pause()
