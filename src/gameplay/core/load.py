@@ -1,13 +1,3 @@
-import json
-
-
-# TODO: add types
-# TODO: add unit tests
-def loadConfigByJson(filePath: str):
-    with open(filePath) as d:
-        return json.load(d)
-
-
 # TODO: add types
 # TODO: add unit tests
 def loadContextFromConfig(config, context):
