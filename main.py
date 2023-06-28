@@ -11,7 +11,7 @@ def main():
         uiThreadInstance.start()
         pyTibiaThreadInstance = PyTibiaThread(contextInstance)
         pyTibiaThreadInstance.mainloop()
-    except KeyboardInterrupt:
+    except:
         raise SystemExit
 
 
