@@ -52,10 +52,7 @@ Apenas disponível para knight/palaldin
 - Controle total sob os píxeis do mouse para a movimentação humanizada.
 - Utilizar computação visional para detectar objetos que bloqueiam o caminho do char.
 - Utilizar processamento de linguagem natural para falar com outros jogadores.
-- _Crackear_ o kernel e/ou colocar o Tibia a trabalhar em um subsistema para evitar detecções do BattleEye.
 - Party gameplay.
-- Guild gameplay, iniciar uma guerra e dominar um servidor.
-- Levantar fundos e ajudar meus colegas venezuelanos que estão passando por momentos difíceis.
 
 # 🧰 Instalação
 

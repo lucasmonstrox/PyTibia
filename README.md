@@ -52,10 +52,7 @@ Only available for knight/paladin
 - Control every pixel of the mouse to make human movements
 - Use convolutionals neural networks to detect relevant stuffs like blockable objects, dropped loots, etc
 - Use recurrent neural networks to use natural language processing to chat with others players
-- Crack kernel or put tibia working in a sub system to avoid BE detections
 - Make party gameplay
-- Make a guild gameplay, start a war and dominate a tibia server
-- Raise money and send $ to help my Venezuelan friends who are experiencing economic difficulties
 
 # 🧰 Installation
 
