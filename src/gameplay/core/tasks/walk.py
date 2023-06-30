@@ -65,5 +65,4 @@ class WalkTask(BaseTask):
 
     # TODO: add unit tests
     def onTimeout(self, context: Context) -> Context:
-        context = releaseKeys(context)
-        return context
+        return releaseKeys(context)
