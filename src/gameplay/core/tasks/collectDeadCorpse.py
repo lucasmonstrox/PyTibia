@@ -31,12 +31,13 @@ class CollectDeadCorpseTask(BaseTask):
         keyUp('shift')
         return context
 
-        # TODO: add unit tests
+    # TODO: add unit tests
     def onComplete(self, context: Context) -> Context:
         creatureToLoot = context['loot']['corpsesToLoot'][0]
         indexesToDelete = []
         for index, corpseToLoot in enumerate(context['loot']['corpsesToLoot']):
             if gameplayUtils.coordinatesAreEqual(creatureToLoot['coordinate'], corpseToLoot['coordinate']):
                 indexesToDelete.append(index)
-        context['loot']['corpsesToLoot'] = np.delete(context['loot']['corpsesToLoot'], indexesToDelete)
+        context['loot']['corpsesToLoot'] = np.delete(
+            context['loot']['corpsesToLoot'], indexesToDelete)
         return context

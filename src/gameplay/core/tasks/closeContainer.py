@@ -15,7 +15,7 @@ class CloseContainerTask(BaseTask):
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        containerPosition = locate(context['screenshot'], self.containerBarImage, confidence=0.8)
-        containerPosition = containerPosition[0] + 165, containerPosition[1] + 5
-        leftClick(containerPosition)
+        containerPosition = locate(
+            context['screenshot'], self.containerBarImage, confidence=0.8)
+        leftClick(containerPosition[0] + 165, containerPosition[1] + 5)
         return context
