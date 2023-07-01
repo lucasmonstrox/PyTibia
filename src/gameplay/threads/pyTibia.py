@@ -39,7 +39,9 @@ class PyTibiaThread:
             self.context.context = self.context.context['tasksOrchestrator'].do(
                 self.context.context)
             self.context.context['radar']['lastCoordinateVisited'] = self.context.context['radar']['coordinate']
+            healingPriorityObserver(self.context.context)
             healingByPotionsObserver(self.context.context)
+            healingBySpellsObserver(self.context.context)
             comboSpellsObserver(self.context.context)
             endTime = time()
             diff = endTime - startTime
