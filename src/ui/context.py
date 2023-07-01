@@ -145,7 +145,16 @@ class Context:
             waypoint)
         self.db.update(self.enabledProfile)
 
-    def updateWaypointByIndex(self, waypointIndex, options):
+    def hasWaypointWithLabel(self, label: str, ignoreLabel=None) -> bool:
+        for waypoint in self.context['cavebot']['waypoints']['points']:
+            if waypoint['label'] == label and ignoreLabel is not None:
+                return True
+        return False
+
+    def updateWaypointByIndex(self, waypointIndex, label=None, options={}):
+        if label is not None:
+            self.context['cavebot']['waypoints']['items'][waypointIndex]['label'] = label
+            self.enabledProfile['config']['cavebot']['waypoints']['items'][waypointIndex]['label'] = label
         self.context['cavebot']['waypoints']['items'][waypointIndex]['options'] = options
         self.enabledProfile['config']['cavebot']['waypoints']['items'][waypointIndex]['options'] = options
         self.db.update(self.enabledProfile)

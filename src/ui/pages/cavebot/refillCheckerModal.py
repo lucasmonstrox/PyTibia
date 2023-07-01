@@ -3,7 +3,7 @@ from tkinter import messagebox
 
 
 class RefillCheckerModal(tk.Toplevel):
-    def __init__(self, parent, onConfirm=lambda: {}, options={}, waypointsLabels=[]):
+    def __init__(self, parent, onConfirm=lambda: {}, waypoint=None):
         super().__init__(parent)
         self.resizable(False, False)
         self.title('Configure checker for refill')
@@ -11,9 +11,16 @@ class RefillCheckerModal(tk.Toplevel):
         self.columnconfigure(1, weight=1)
         self.onConfirm = onConfirm
 
+        self.labelEntry = tk.Entry(self)
+        self.labelEntry.grid(
+            row=0, column=0, columnspan=2, sticky='nsew')
+        if waypoint is not None:
+            self.labelEntry.insert(
+                0, waypoint['options'].get('waypointLabelToRedirect'))
+
         self.frame = tk.LabelFrame(
             self, text='Minimum of:', padx=10, pady=10)
-        self.frame.grid(column=0, row=0, columnspan=2, padx=10,
+        self.frame.grid(column=0, row=1, columnspan=2, padx=10,
                         pady=10, sticky='nsew')
         self.frame.rowconfigure(0, weight=1)
         self.frame.rowconfigure(1, weight=1)
@@ -27,9 +34,9 @@ class RefillCheckerModal(tk.Toplevel):
                                                           validatecommand=(self.register(self.validateNumber), "%P"))
         self.minimumAmountOfHealthPotionsEntry.grid(
             row=1, column=0, sticky='nsew')
-        if options.get('minimumAmountOfHealthPotions') is not None:
+        if waypoint is not None:
             self.minimumAmountOfHealthPotionsEntry.insert(
-                0, options.get('minimumAmountOfHealthPotions'))
+                0, waypoint['options'].get('minimumAmountOfHealthPotions'))
 
         self.minimumOfManaPotionLabel = tk.Label(
             self.frame, text='Mana Potion:', anchor='w')
@@ -40,9 +47,9 @@ class RefillCheckerModal(tk.Toplevel):
                                                         validatecommand=(self.register(self.validateNumber), "%P"))
         self.minimumAmountOfManaPotionsEntry.grid(
             row=3, column=0, sticky='nsew')
-        if options.get('minimumAmountOfManaPotions') is not None:
+        if waypoint is not None:
             self.minimumAmountOfManaPotionsEntry.insert(
-                0, options.get('minimumAmountOfManaPotions'))
+                0, waypoint['options'].get('minimumAmountOfManaPotions'))
 
         self.minimumOfCapLabel = tk.Label(
             self.frame, text='Cap:', anchor='w')
@@ -53,9 +60,9 @@ class RefillCheckerModal(tk.Toplevel):
                                                 validatecommand=(self.register(self.validateNumber), "%P"))
         self.minimumAmountOfCapEntry.grid(
             row=5, column=0, sticky='nsew')
-        if options.get('minimumAmountOfCap') is not None:
+        if waypoint is not None:
             self.minimumAmountOfCapEntry.insert(
-                0, options.get('minimumAmountOfCap'))
+                0, waypoint['options'].get('minimumAmountOfCap'))
 
         self.confirmButton = tk.Button(
             self, text='Confirm', command=self.confirm)
@@ -75,10 +82,10 @@ class RefillCheckerModal(tk.Toplevel):
         return False
 
     def confirm(self):
-        self.onConfirm({
+        self.onConfirm(None, {
             'minimumAmountOfHealthPotions': self.minimumAmountOfHealthPotionsEntry.get(),
             'minimumAmountOfManaPotions': self.minimumAmountOfManaPotionsEntry.get(),
             'minimumAmountOfCap': self.minimumAmountOfCapEntry.get(),
-            'waypointLabelToRedirect': '',
+            'waypointLabelToRedirect': self.labelEntry.get(),
         })
         self.destroy()

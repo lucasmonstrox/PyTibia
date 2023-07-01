@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 from src.repositories.radar.core import getCoordinate
 from src.utils.core import getScreenshot
+from .baseModal import BaseModal
 from .refillModal import RefillModal
 from .refillCheckerModal import RefillCheckerModal
 
@@ -13,6 +14,7 @@ class CavebotPage(tk.Frame):
         self.columnconfigure(0, weight=8)
         self.columnconfigure(1, weight=2)
         self.rowconfigure(1, weight=1)
+        self.baseModal = None
         self.refillModal = None
         self.refillCheckerModal = None
 
@@ -123,14 +125,19 @@ class CavebotPage(tk.Frame):
         self.refillCheckerButton.grid(
             row=5, column=1, padx=5, pady=5, sticky='nsew')
 
+    def openBaseModal(self):
+        if self.baseModal is None or not self.baseModal.winfo_exists():
+            self.baseModal = BaseModal(self, onConfirm=lambda label, options: self.addWaypoint(
+                'refill', options))
+
     def openRefillModal(self):
         if self.refillModal is None or not self.refillModal.winfo_exists():
-            self.refillModal = RefillModal(self, onConfirm=lambda options: self.addWaypoint(
+            self.refillModal = RefillModal(self, onConfirm=lambda label, options: self.addWaypoint(
                 'refill', options))
 
     def openRefillCheckerModal(self):
         if self.refillCheckerModal is None or not self.refillCheckerModal.winfo_exists():
-            self.refillCheckerModal = RefillCheckerModal(self, onConfirm=lambda options: self.addWaypoint(
+            self.refillCheckerModal = RefillCheckerModal(self, onConfirm=lambda label, options: self.addWaypoint(
                 'refillChecker', options))
 
     # TODO: verificar se a coordenada é walkable
@@ -177,17 +184,23 @@ class CavebotPage(tk.Frame):
             if waypoint['type'] == 'refill':
                 if self.refillModal is None or not self.refillModal.winfo_exists():
                     self.refillModal = RefillModal(
-                        self, options=waypoint['options'], onConfirm=lambda options: self.updateWaypointByIndex(index, options))
-            if waypoint['type'] == 'refillChecker':
+                        self, waypoint=waypoint, onConfirm=lambda label, options: self.updateWaypointByIndex(index, label=label, options=options))
+            elif waypoint['type'] == 'refillChecker':
                 if self.refillCheckerModal is None or not self.refillCheckerModal.winfo_exists():
                     self.refillCheckerModal = RefillCheckerModal(
-                        self, options=waypoint['options'], onConfirm=lambda options: self.updateWaypointByIndex(index, options))
+                        self, waypoint=waypoint, onConfirm=lambda label, options: self.updateWaypointByIndex(index, label=label, options=options))
+            else:
+                if self.baseModal is None or not self.baseModal.winfo_exists():
+                    self.baseModal = BaseModal(
+                        self, waypoint=waypoint, onConfirm=lambda label, options: self.updateWaypointByIndex(index, label=label, options=options))
 
-    def updateWaypointByIndex(self, index, options):
-        self.context.updateWaypointByIndex(index, options)
+    def updateWaypointByIndex(self, index, label=None, options={}):
+        self.context.updateWaypointByIndex(index, label=label, options=options)
         selecionado = self.table.focus()
         if selecionado:
-            valores_atuais = self.table.item(selecionado)["values"]
-            valores_atuais[3] = options
-            self.table.item(selecionado, values=valores_atuais)
+            currentValues = self.table.item(selecionado)['values']
+            if label is not None:
+                currentValues[0] = label
+            currentValues[3] = options
+            self.table.item(selecionado, values=currentValues)
             self.table.update()
