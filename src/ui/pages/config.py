@@ -1,12 +1,15 @@
+import pygetwindow as gw
 import re
 import tkinter as tk
 from tkinter import ttk
+import win32con
 import win32gui
 
 
 class ConfigPage(tk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, context):
         super().__init__(parent)
+        self.context = context
         self.windowsFrame = tk.LabelFrame(
             self, text='Tibia window', padx=10, pady=10)
         self.windowsFrame.grid(column=0, row=0, padx=10,
@@ -58,4 +61,5 @@ class ConfigPage(tk.Frame):
 
     def onChangeWindow(self, _):
         selectedWindow = self.windowsCombobox.get()
-        # TODO: setar o context aqui
+        self.context.context['window'] = gw.getWindowsWithTitle(selectedWindow)[
+            0]

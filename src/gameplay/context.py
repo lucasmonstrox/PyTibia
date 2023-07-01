@@ -135,7 +135,7 @@ context = {
         'corpsesToLoot': [],
     },
     'lastPressedKey': None,
-    'pause': False,
+    'pause': True,
     'radar': {
         'coordinate': None,
         'previousCoordinate': None,

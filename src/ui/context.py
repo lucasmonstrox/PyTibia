@@ -1,5 +1,7 @@
 from os.path import exists
+import time
 from tinydb import Query, TinyDB
+from tkinter import messagebox
 from src.gameplay.core.load import loadContextFromConfig
 
 
@@ -154,26 +156,18 @@ class Context:
             index)
         self.db.update(self.enabledProfile)
 
-    def focusInTibia(self):
-        pass
-        # win32gui.ShowWindow(self.context['window'], 3)
-        # win32gui.SetForegroundWindow(self.context['window'])
-
     def play(self):
-        self.focusInTibia()
-        # sleep(1)
+        if self.context['window'] is None:
+            messagebox.showerror(
+                'Erro', 'Tibia window is not set!')
+            return
+        self.context['window'].activate()
+        time.sleep(1)
         self.context['pause'] = False
 
     def pause(self):
         self.context['pause'] = True
-        self.context['tasksOrchestrator'].setRootTask(None, self.context)
-        # self.context = releaseKeys(self.context)
-
-    # def getCoordinate(self):
-    #     screenshot = getScreenshot()
-    #     coordinate = getCoordinate(
-    #         screenshot, previousCoordinate=self.context['radar']['previousCoordinate'])
-    #     return coordinate
+        self.context['tasksOrchestrator'].setRootTask(self.context, None)
 
     def toggleHealingPotionsByKey(self, healthPotionType, enabled):
         self.context['healing']['potions'][healthPotionType]['enabled'] = enabled

@@ -15,9 +15,20 @@ class Application(tk.Tk):
         self.geometry('920x720')
         self.resizable(False, False)
 
+        playPauseMenu = tk.Frame(self)
+        playPauseMenu.pack(side=tk.TOP)
+
+        playButton = tk.Button(playPauseMenu, text="Play",
+                               command=lambda: self.context.play(), width=10, height=3)
+        playButton.pack(side=tk.LEFT, padx=10, pady=10)
+
+        pauseButton = tk.Button(
+            playPauseMenu, text="Pause", command=lambda: self.context.pause(), width=10, height=3)
+        pauseButton.pack(side=tk.LEFT, padx=10, pady=10)
+
         self.tabControl = ttk.Notebook(self)
 
-        self.configPage = ConfigPage(self.tabControl)
+        self.configPage = ConfigPage(self.tabControl, self.context)
         self.inventoryPage = InventoryPage(self.tabControl, self.context)
         self.cavebotPage = CavebotPage(self.tabControl, self.context)
         self.healingPage = HealingPage(self.tabControl)

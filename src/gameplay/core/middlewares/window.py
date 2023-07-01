@@ -1,3 +1,4 @@
+import pygetwindow as gw
 import re
 import win32gui
 from ...typings import Context
@@ -15,5 +16,5 @@ def setTibiaWindowMiddleware(context: Context) -> Context:
         windowsFilter = list(
             filter(lambda windowName: regex.match(windowName), windowsNames))
         if len(windowsFilter) > 0:
-            context['window'] = windowsFilter[0]
+            context['window'] = gw.getWindowsWithTitle(windowsFilter[0])[0]
     return context
