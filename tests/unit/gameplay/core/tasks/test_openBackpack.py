@@ -2,7 +2,7 @@ from src.gameplay.core.tasks.openBackpack import OpenBackpackTask
 from src.repositories.inventory.config import images
 
 
-backpack = 'fur backpack'
+backpack = 'Fur Backpack'
 context = {'screenshot': []}
 
 

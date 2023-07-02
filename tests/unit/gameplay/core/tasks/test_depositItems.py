@@ -14,11 +14,12 @@ from src.repositories.inventory.core import images
 
 context = {
     'backpacks': {
-        'main': 'brocade backpack',
-        'loot': 'beach backpack',
+        'main': 'Brocade Backpack',
+        'loot': 'Beach Backpack',
     }
 }
 waypoint = {'coordinate': (1, 2, 3)}
+
 
 def test_should_test_default_params():
     task = DepositItemsTask(waypoint)
@@ -26,6 +27,7 @@ def test_should_test_default_params():
     assert task.isRootTask == True
     assert task.delayBeforeStart == 1
     assert task.delayAfterComplete == 1
+
 
 def test_onBeforeStart():
     task = DepositItemsTask(waypoint)
@@ -42,8 +44,10 @@ def test_onBeforeStart():
     assert task.tasks[2].parentTask == task
     assert task.tasks[2].rootTask == task
     assert isinstance(task.tasks[3], ScrollToItemTask)
-    assert np.array_equal(task.tasks[3].containerImage, images['containersBars'][context['backpacks']['main']]) == True
-    assert np.array_equal(task.tasks[3].itemImage, images['slots'][context['backpacks']['loot']]) == True
+    assert np.array_equal(
+        task.tasks[3].containerImage, images['containersBars'][context['backpacks']['main']]) == True
+    assert np.array_equal(
+        task.tasks[3].itemImage, images['slots'][context['backpacks']['loot']]) == True
     assert task.tasks[3].parentTask == task
     assert task.tasks[3].rootTask == task
     assert isinstance(task.tasks[4], DropBackpackIntoStashTask)
@@ -58,12 +62,15 @@ def test_onBeforeStart():
     assert task.tasks[6].parentTask == task
     assert task.tasks[6].rootTask == task
     assert isinstance(task.tasks[7], DragItemsTask)
-    assert np.array_equal(task.tasks[7].containerBarImage, images['containersBars'][context['backpacks']['loot']]) == True
-    assert np.array_equal(task.tasks[7].targetContainerImage, images['slots']['depot chest 2']) == True
+    assert np.array_equal(task.tasks[7].containerBarImage,
+                          images['containersBars'][context['backpacks']['loot']]) == True
+    assert np.array_equal(
+        task.tasks[7].targetContainerImage, images['slots']['depot chest 2']) == True
     assert task.tasks[7].parentTask == task
     assert task.tasks[7].rootTask == task
     assert isinstance(task.tasks[8], CloseContainerTask)
-    assert np.array_equal(task.tasks[8].containerBarImage, images['containersBars'][context['backpacks']['loot']]) == True
+    assert np.array_equal(task.tasks[8].containerBarImage,
+                          images['containersBars'][context['backpacks']['loot']]) == True
     assert task.tasks[8].parentTask == task
     assert task.tasks[8].rootTask == task
     assert isinstance(task.tasks[9], SetNextWaypointTask)
