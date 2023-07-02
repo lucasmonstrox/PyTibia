@@ -30,22 +30,26 @@ class PyTibiaThread:
 
     def mainloop(self):
         while True:
-            if self.context.context['pause']:
-                continue
-            startTime = time()
-            self.context.context = self.handleGameData(self.context.context)
-            self.context.context = self.handleGameplayTasks(
-                self.context.context)
-            self.context.context = self.context.context['tasksOrchestrator'].do(
-                self.context.context)
-            self.context.context['radar']['lastCoordinateVisited'] = self.context.context['radar']['coordinate']
-            healingPriorityObserver(self.context.context)
-            healingByPotionsObserver(self.context.context)
-            healingBySpellsObserver(self.context.context)
-            comboSpellsObserver(self.context.context)
-            endTime = time()
-            diff = endTime - startTime
-            sleep(max(0.045 - diff, 0))
+            try:
+                if self.context.context['pause']:
+                    continue
+                startTime = time()
+                self.context.context = self.handleGameData(
+                    self.context.context)
+                self.context.context = self.handleGameplayTasks(
+                    self.context.context)
+                self.context.context = self.context.context['tasksOrchestrator'].do(
+                    self.context.context)
+                self.context.context['radar']['lastCoordinateVisited'] = self.context.context['radar']['coordinate']
+                healingPriorityObserver(self.context.context)
+                healingByPotionsObserver(self.context.context)
+                healingBySpellsObserver(self.context.context)
+                comboSpellsObserver(self.context.context)
+                endTime = time()
+                diff = endTime - startTime
+                sleep(max(0.045 - diff, 0))
+            except Exception as error:
+                print('An exception occurred:', error)
 
     def handleGameData(self, context):
         if context['pause']:
