@@ -15,7 +15,7 @@
                 "label": "",
                 "type": "walk",
                 "coordinate": [33216, 32450, 7],
-                "options": { "direction": "north" }
+                "options": {}
               },
               {
                 "label": "",
@@ -60,7 +60,7 @@
                 "options": { "direction": "north" }
               },
               {
-                "label": "",
+                "label": "startOfTheCave",
                 "type": "walk",
                 "coordinate": [33208, 32354, 10],
                 "options": {}
@@ -112,6 +112,17 @@
                 "type": "walk",
                 "coordinate": [33221, 32351, 10],
                 "options": {}
+              },
+              {
+                "label": "",
+                "type": "refillChecker",
+                "coordinate": [33225, 32351, 10],
+                "options": {
+                  "minimumAmountOfHealthPotions": "11",
+                  "minimumAmountOfManaPotions": "12",
+                  "minimumAmountOfCap": "13",
+                  "waypointLabelToRedirect": "startOfTheCave"
+                }
               }
             ]
           }
@@ -122,10 +133,7 @@
             {
               "enabled": true,
               "name": "3 ou -",
-              "creatures": {
-                "compare": "lessThan",
-                "value": 4
-              },
+              "creatures": { "compare": "lessThan", "value": 4 },
               "spells": [
                 {
                   "name": "exori",
@@ -157,15 +165,13 @@
                   "hotkey": "f5",
                   "metadata": { "mana": 340 }
                 }
-              ]
+              ],
+              "currentSpellIndex": 0
             },
             {
               "enabled": true,
               "name": "4 ou +",
-              "creatures": {
-                "compare": "greaterThanOrEqual",
-                "value": 4
-              },
+              "creatures": { "compare": "greaterThanOrEqual", "value": 4 },
               "spells": [
                 {
                   "name": "exori gran",
@@ -192,7 +198,8 @@
                   "hotkey": "f6",
                   "metadata": { "mana": 160 }
                 }
-              ]
+              ],
+              "currentSpellIndex": 0
             }
           ]
         },
