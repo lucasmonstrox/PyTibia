@@ -2,7 +2,6 @@ import pygetwindow as gw
 import re
 import tkinter as tk
 from tkinter import ttk
-import win32con
 import win32gui
 
 
