@@ -1,9 +1,8 @@
-import numpy as np
 from src.gameplay.typings import Context
 import src.gameplay.utils as gameplayUtils
-from src.repositories.gameWindow.slot import rightClickSlot
+import src.repositories.gameWindow.slot as gameWindowSlot
 from src.repositories.gameWindow.typings import Creature
-from src.utils.keyboard import keyDown, keyUp
+import src.utils.keyboard as utilsKeyboard
 from ...typings import Context
 from .common.base import BaseTask
 
@@ -16,28 +15,53 @@ class CollectDeadCorpseTask(BaseTask):
         self.delayBeforeStart = 0.85
         self.creature = creature
 
-    # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        keyDown('shift')
-        rightClickSlot([6, 4], context['gameWindow']['coordinate'])
-        rightClickSlot([7, 4], context['gameWindow']['coordinate'])
-        rightClickSlot([8, 4], context['gameWindow']['coordinate'])
-        rightClickSlot([6, 5], context['gameWindow']['coordinate'])
-        rightClickSlot([7, 5], context['gameWindow']['coordinate'])
-        rightClickSlot([8, 5], context['gameWindow']['coordinate'])
-        rightClickSlot([6, 6], context['gameWindow']['coordinate'])
-        rightClickSlot([7, 6], context['gameWindow']['coordinate'])
-        rightClickSlot([8, 6], context['gameWindow']['coordinate'])
-        keyUp('shift')
+        utilsKeyboard.keyDown('shift')
+        gameWindowSlot.rightClickSlot(
+            [6, 4], context['gameWindow']['coordinate'])
+        gameWindowSlot.rightClickSlot(
+            [7, 4], context['gameWindow']['coordinate'])
+        gameWindowSlot.rightClickSlot(
+            [8, 4], context['gameWindow']['coordinate'])
+        gameWindowSlot.rightClickSlot(
+            [6, 5], context['gameWindow']['coordinate'])
+        gameWindowSlot.rightClickSlot(
+            [7, 5], context['gameWindow']['coordinate'])
+        gameWindowSlot.rightClickSlot(
+            [8, 5], context['gameWindow']['coordinate'])
+        gameWindowSlot.rightClickSlot(
+            [6, 6], context['gameWindow']['coordinate'])
+        gameWindowSlot.rightClickSlot(
+            [7, 6], context['gameWindow']['coordinate'])
+        gameWindowSlot.rightClickSlot(
+            [8, 6], context['gameWindow']['coordinate'])
+        utilsKeyboard.keyUp('shift')
         return context
 
-    # TODO: add unit tests
     def onComplete(self, context: Context) -> Context:
-        creatureToLoot = context['loot']['corpsesToLoot'][0]
-        indexesToDelete = []
-        for index, corpseToLoot in enumerate(context['loot']['corpsesToLoot']):
-            if gameplayUtils.coordinatesAreEqual(creatureToLoot['coordinate'], corpseToLoot['coordinate']):
-                indexesToDelete.append(index)
-        context['loot']['corpsesToLoot'] = np.delete(
-            context['loot']['corpsesToLoot'], indexesToDelete)
+        # this is a matrix around corpse to loot, since under corpses will be collected, it will be removed by corpsesToLoot matrix
+        coordinates = [
+            (context['radar']['coordinate'][0] - 1, context['radar']
+             ['coordinate'][1] - 1, context['radar']['coordinate'][2]),
+            (context['radar']['coordinate'][0], context['radar']
+             ['coordinate'][1] - 1, context['radar']['coordinate'][2]),
+            (context['radar']['coordinate'][0] + 1, context['radar']
+             ['coordinate'][1] - 1, context['radar']['coordinate'][2]),
+            (context['radar']['coordinate'][0] - 1, context['radar']
+             ['coordinate'][1], context['radar']['coordinate'][2]),
+            (context['radar']['coordinate'][0], context['radar']
+             ['coordinate'][1], context['radar']['coordinate'][2]),
+            (context['radar']['coordinate'][0] + 1, context['radar']
+             ['coordinate'][1], context['radar']['coordinate'][2]),
+            (context['radar']['coordinate'][0] - 1, context['radar']
+             ['coordinate'][1] + 1, context['radar']['coordinate'][2]),
+            (context['radar']['coordinate'][0], context['radar']
+             ['coordinate'][1] + 1, context['radar']['coordinate'][2]),
+            (context['radar']['coordinate'][0] + 1, context['radar']
+             ['coordinate'][1] + 1, context['radar']['coordinate'][2])
+        ]
+        for coordinate in coordinates:
+            for index, corpseToLoot in enumerate(context['loot']['corpsesToLoot']):
+                if gameplayUtils.coordinatesAreEqual(coordinate, corpseToLoot['coordinate']):
+                    context['loot']['corpsesToLoot'].pop(index)
         return context
