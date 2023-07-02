@@ -43,8 +43,8 @@ def setHandleLootMiddleware(context: Context) -> Context:
                 context, SelectChatTabTask('loot'))
     if hasNewLoot(context['screenshot']):
         if context['cavebot']['previousTargetCreature'] is not None:
-            context['loot']['corpsesToLoot'] = np.append(context['loot']['corpsesToLoot'], [
-                                                         context['cavebot']['previousTargetCreature']], axis=0)
+            context['loot']['corpsesToLoot'].append(
+                context['cavebot']['previousTargetCreature'])
             context['cavebot']['previousTargetCreature'] = None
         # has spelled exori category
         if context['comboSpells']['lastUsedSpell'] is not None and context['comboSpells']['lastUsedSpell'] in ['exori', 'exori gran', 'exori mas']:
@@ -53,7 +53,8 @@ def setHandleLootMiddleware(context: Context) -> Context:
             if len(spellPath) > 0:
                 differentCreatures = getDifferentCreaturesBySlots(
                     context['gameWindow']['previousMonsters'], context['gameWindow']['monsters'], spellPath)
-                context['loot']['corpsesToLoot'].extend(differentCreatures)
+                for creature in differentCreatures:
+                    context['loot']['corpsesToLoot'].append(creature)
             context['comboSpells']['lastUsedSpell'] = None
     context['cavebot']['targetCreature'] = getTargetCreature(
         context['gameWindow']['monsters'])
