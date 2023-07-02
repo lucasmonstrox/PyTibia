@@ -11,7 +11,8 @@ def main():
         uiThreadInstance.start()
         pyTibiaThreadInstance = PyTibiaThread(contextInstance)
         pyTibiaThreadInstance.mainloop()
-    except:
+    except Exception as error:
+        print('An exception occurred:', error)
         raise SystemExit
 
 
