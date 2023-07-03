@@ -68,7 +68,8 @@ def getClosestCreature(gameWindowCreatures, coordinate: Coordinate):
 # TODO: add perf
 @njit(cache=True, fastmath=True)
 def getCreaturesBars(gameWindowImage: GrayImage):
-    imgHeight, imgWidth = gameWindowImage.shape
+    imgHeight = len(gameWindowImage)
+    imgWidth = len(gameWindowImage[0])
     for j in range(imgHeight - 3):
         i = -1
         while (i < (imgWidth - 27)):
