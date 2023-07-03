@@ -45,8 +45,8 @@ def cacheChain(imageList):
 # TODO: add unit tests
 @njit(cache=True, fastmath=True)
 def convertGraysToBlack(arr: np.ndarray) -> np.ndarray:
-    for i in range(len(arr[0])):
-        for j in range(len(arr)):
+    for i in range(len(arr)):
+        for j in range(len(arr[0])):
             if arr[i, j] >= 50 and arr[i, j] <= 100:
                 arr[i, j] = 0
     return arr
