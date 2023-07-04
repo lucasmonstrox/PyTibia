@@ -13,17 +13,17 @@ class SpellsTab(tk.Frame):
         self.rowconfigure(1, weight=1)
 
         self.criticalHealingCard = SpellCard(
-            self, context, 'criticalHealing', title='Utura gran')
+            self, context, 'criticalHealing', title='Critical healing')
         self.criticalHealingCard.grid(column=0, row=0, padx=10,
                                       pady=10, sticky='nsew')
 
         self.mediumHealingCard = SpellCard(
-            self, context, 'mediumHealing', title='Utura gran')
+            self, context, 'mediumHealing', title='Medium healing')
         self.mediumHealingCard.grid(column=1, row=0, padx=10,
                                     pady=10, sticky='nsew')
 
         self.lightHealingCard = SpellCard(
-            self, context, 'lightHealing', title='Utura gran')
+            self, context, 'lightHealing', title='Light healing')
         self.lightHealingCard.grid(column=2, row=0, padx=10,
                                    pady=10, sticky='nsew')
 

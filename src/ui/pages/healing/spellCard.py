@@ -6,6 +6,7 @@ class SpellCard(tk.LabelFrame):
     def __init__(self, parent, context, healingType, title=''):
         super().__init__(parent)
         self.context = context
+        self.text = title
         self.healingType = healingType
         self.columnconfigure(0, weight=3)
         self.columnconfigure(1, weight=7)
