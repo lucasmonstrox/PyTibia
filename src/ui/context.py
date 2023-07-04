@@ -45,86 +45,104 @@ class Context:
                     'highPriority': {
                         'healthFood': {
                             'enabled': False,
-                            'hotkey': None,
-                            'hpPercentageLessThanOrEqual': None,
+                            'hotkey': '',
+                            'hpPercentageLessThanOrEqual': 0,
                         },
                         'manaFood': {
                             'enabled': False,
-                            'hotkey': None,
-                            'manaPercentageLessThanOrEqual': None,
+                            'hotkey': '',
+                            'manaPercentageLessThanOrEqual': 0,
                         },
                         'ssa': {
                             'enabled': False,
-                            'hotkey': None,
-                            'hpPercentageLessThanOrEqual': None,
-                            'hpPercentageGreaterThanOrEqual': None,
+                            'hotkey': '',
+                            'hpPercentageLessThanOrEqual': 0,
+                            'hpPercentageGreaterThanOrEqual': 0,
                         }
                     },
                     'potions': {
                         'firstHealthPotion': {
                             'enabled': False,
-                            'hotkey': None,
-                            'hpPercentageLessThanOrEqual': None,
-                            'manaPercentageGreaterThanOrEqual': None,
+                            'hotkey': '',
+                            'hpPercentageLessThanOrEqual': 0,
+                            'manaPercentageGreaterThanOrEqual': 0,
                         },
                         'secondHealthPotion': {
                             'enabled': False,
-                            'hotkey': None,
-                            'hpPercentageLessThanOrEqual': None,
-                            'manaPercentageGreaterThanOrEqual': None,
+                            'hotkey': '',
+                            'hpPercentageLessThanOrEqual': 0,
+                            'manaPercentageGreaterThanOrEqual': 0,
                         },
                         'thirdHealthPotion': {
                             'enabled': False,
-                            'hotkey': None,
-                            'hpPercentageLessThanOrEqual': None,
-                            'manaPercentageGreaterThanOrEqual': None,
+                            'hotkey': '',
+                            'hpPercentageLessThanOrEqual': 0,
+                            'manaPercentageGreaterThanOrEqual': 0,
                         },
                         'firstManaPotion': {
                             'enabled': False,
-                            'hotkey': None,
-                            'manaPercentageLessThanOrEqual': None,
+                            'hotkey': '',
+                            'manaPercentageLessThanOrEqual': 0,
                         },
                         'secondManaPotion': {
                             'enabled': False,
-                            'hotkey': None,
-                            'manaPercentageLessThanOrEqual': None,
+                            'hotkey': '',
+                            'manaPercentageLessThanOrEqual': 0,
                         },
                         'thirdManaPotion': {
                             'enabled': False,
-                            'hotkey': None,
-                            'manaPercentageLessThanOrEqual': None,
+                            'hotkey': '',
+                            'manaPercentageLessThanOrEqual': 0,
                         },
                     },
                     'spells': {
                         'criticalHealing': {
                             'enabled': False,
-                            'hotkey': None,
-                            'hpPercentageLessThanOrEqual': None,
+                            'hotkey': '',
+                            'hpPercentageLessThanOrEqual': 0,
+                            'manaPercentageGreaterThanOrEqual': 0,
+                            'spell': None
+                        },
+                        'mediumHealing': {
+                            'enabled': False,
+                            'hotkey': '',
+                            'hpPercentageLessThanOrEqual': 0,
+                            'manaPercentageGreaterThanOrEqual': 0,
                             'spell': None
                         },
                         'lightHealing': {
                             'enabled': False,
-                            'hotkey': None,
-                            'hpPercentageLessThanOrEqual': None,
+                            'hotkey': '',
+                            'hpPercentageLessThanOrEqual': 0,
+                            'manaPercentageGreaterThanOrEqual': 0,
+                            'spell': None
+                        },
+                        'uturaGran': {
+                            'enabled': False,
+                            'hotkey': '',
+                            'hpPercentageLessThanOrEqual': 0,
+                            'manaPercentageGreaterThanOrEqual': 0,
                             'spell': None
                         },
                         'utura': {
                             'enabled': False,
-                            'hotkey': None,
+                            'hotkey': '',
+                            'hpPercentageLessThanOrEqual': 0,
+                            'manaPercentageGreaterThanOrEqual': 0,
                             'spell': None
                         },
                         'exuraGranIco': {
                             'enabled': False,
-                            'hotkey': None,
-                            'hpPercentageLessThanOrEqual': None,
-                            'manaPercentageGreaterThanOrEqual': None,
+                            'hotkey': '',
+                            'hpPercentageLessThanOrEqual': 0,
+                            'manaPercentageGreaterThanOrEqual': 0,
                             'spell': None
                         },
                     },
                     'eatFood': {
-                        'enabled': True,
-                        'hotkey': '5',
-                        'eatWhenFoodIslessOrEqual': 5,
+                        'enabled': False,
+                        'hotkey': '',
+                        'eatWhenFoodIslessOrEqual': 0,
                     }
                 },
                 'hotkeys': {}
@@ -183,14 +201,34 @@ class Context:
         self.enabledProfile['config']['healing']['potions'][healthPotionType]['enabled'] = enabled
         self.db.update(self.enabledProfile)
 
+    def toggleSpellByKey(self, healthPotionType, enabled):
+        self.context['healing']['spells'][healthPotionType]['enabled'] = enabled
+        self.enabledProfile['config']['healing']['spells'][healthPotionType]['enabled'] = enabled
+        self.db.update(self.enabledProfile)
+
     def setHealthPotionHotkeyByKey(self, healthPotionType, hotkey):
         self.context['healing']['potions'][healthPotionType]['hotkey'] = hotkey
         self.enabledProfile['config']['healing']['potions'][healthPotionType]['hotkey'] = hotkey
         self.db.update(self.enabledProfile)
 
+    def setSpellHotkeyByKey(self, healthPotionType, hotkey):
+        self.context['healing']['spells'][healthPotionType]['hotkey'] = hotkey
+        self.enabledProfile['config']['healing']['spells'][healthPotionType]['hotkey'] = hotkey
+        self.db.update(self.enabledProfile)
+
     def setHealthPotionHpPercentageLessThanOrEqual(self, healthPotionType, hpPercentage):
         self.context['healing']['potions'][healthPotionType]['hpPercentageLessThanOrEqual'] = hpPercentage
         self.enabledProfile['config']['healing']['potions'][healthPotionType]['hpPercentageLessThanOrEqual'] = hpPercentage
+        self.db.update(self.enabledProfile)
+
+    def setSpellHpPercentageLessThanOrEqual(self, spellType, hpPercentage):
+        self.context['healing']['spells'][spellType]['hpPercentageLessThanOrEqual'] = hpPercentage
+        self.enabledProfile['config']['healing']['spells'][spellType]['hpPercentageLessThanOrEqual'] = hpPercentage
+        self.db.update(self.enabledProfile)
+
+    def setSpellManaPercentageGreaterThanOrEqual(self, spellType, hpPercentage):
+        self.context['healing']['spells'][spellType]['manaPercentageGreaterThanOrEqual'] = hpPercentage
+        self.enabledProfile['config']['healing']['spells'][spellType]['manaPercentageGreaterThanOrEqual'] = hpPercentage
         self.db.update(self.enabledProfile)
 
     def setHealthPotionManaPercentageGreaterThanOrEqual(self, healthPotionType, hpPercentage):
