@@ -4,7 +4,7 @@ from .pages.cavebot.cavebotPage import CavebotPage
 from .pages.comboSpells import ComboSpellsPage
 from .pages.config import ConfigPage
 from .pages.inventory import InventoryPage
-from .pages.healing import HealingPage
+from .pages.healing.healingPage import HealingPage
 
 
 class Application(tk.Tk):
@@ -31,7 +31,7 @@ class Application(tk.Tk):
         self.configPage = ConfigPage(self.tabControl, self.context)
         self.inventoryPage = InventoryPage(self.tabControl, self.context)
         self.cavebotPage = CavebotPage(self.tabControl, self.context)
-        self.healingPage = HealingPage(self.tabControl)
+        self.healingPage = HealingPage(self.tabControl, self.context)
         self.comboSpellsPage = ComboSpellsPage(self.tabControl)
 
         self.tabControl.add(self.configPage, text='Configuration')

@@ -180,12 +180,28 @@ class Context:
 
     def toggleHealingPotionsByKey(self, healthPotionType, enabled):
         self.context['healing']['potions'][healthPotionType]['enabled'] = enabled
+        self.enabledProfile['config']['healing']['potions'][healthPotionType]['enabled'] = enabled
+        self.db.update(self.enabledProfile)
 
     def setHealthPotionHotkeyByKey(self, healthPotionType, hotkey):
         self.context['healing']['potions'][healthPotionType]['hotkey'] = hotkey
+        self.enabledProfile['config']['healing']['potions'][healthPotionType]['hotkey'] = hotkey
+        self.db.update(self.enabledProfile)
 
     def setHealthPotionHpPercentageLessThanOrEqual(self, healthPotionType, hpPercentage):
         self.context['healing']['potions'][healthPotionType]['hpPercentageLessThanOrEqual'] = hpPercentage
+        self.enabledProfile['config']['healing']['potions'][healthPotionType]['hpPercentageLessThanOrEqual'] = hpPercentage
+        self.db.update(self.enabledProfile)
+
+    def setHealthPotionManaPercentageGreaterThanOrEqual(self, healthPotionType, hpPercentage):
+        self.context['healing']['potions'][healthPotionType]['manaPercentageGreaterThanOrEqual'] = hpPercentage
+        self.enabledProfile['config']['healing']['potions'][healthPotionType]['manaPercentageGreaterThanOrEqual'] = hpPercentage
+        self.db.update(self.enabledProfile)
+
+    def setHealthPotionManaPercentageLessThanOrEqual(self, healthPotionType, hpPercentage):
+        self.context['healing']['potions'][healthPotionType]['manaPercentageLessThanOrEqual'] = hpPercentage
+        self.enabledProfile['config']['healing']['potions'][healthPotionType]['manaPercentageLessThanOrEqual'] = hpPercentage
+        self.db.update(self.enabledProfile)
 
     def toggleManaPotionsByKey(self, manaPotionType, enabled):
         self.context['healing']['potions'][manaPotionType]['enabled'] = enabled
