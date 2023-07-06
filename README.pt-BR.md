@@ -27,8 +27,9 @@ Apenas disponível para knight/palaldin
 | Features                  | Done               |
 | ------------------------- | ------------------ |
 | Alerts                    | :x:                |
+| Auto amulet               | :heavy_check_mark: |
 | Auto login                | :x:                |
-| Auto ring                 | :x:                |
+| Auto ring                 | :heavy_check_mark: |
 | Auto server save          | :x:                |
 | Cavebot                   | :heavy_check_mark: |
 | Combo Spells              | :heavy_check_mark: |

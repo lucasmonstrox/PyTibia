@@ -53,11 +53,29 @@ class Context:
                             'hotkey': '',
                             'manaPercentageLessThanOrEqual': 0,
                         },
-                        'ssa': {
+                        'swapRing': {
                             'enabled': False,
-                            'hotkey': '',
-                            'hpPercentageLessThanOrEqual': 0,
-                            'hpPercentageGreaterThanOrEqual': 0,
+                            'firstRing': {
+                                'hotkey': '',
+                                'hpPercentageLessThanOrEqual': 0
+                            },
+                            'secondRing': {
+                                'hotkey': '',
+                                'hpPercentageGreaterThanOrEqual': 0
+                            },
+                            'ringAlwaysEquipped': ''
+                        },
+                        'swapAmulet': {
+                            'enabled': False,
+                            'firstAmulet': {
+                                'hotkey': '',
+                                'hpPercentageLessThanOrEqual': 0
+                            },
+                            'secondAmulet': {
+                                'hotkey': '',
+                                'hpPercentageGreaterThanOrEqual': 0
+                            },
+                            'amuletAlwaysEquipped': ''
                         }
                     },
                     'potions': {
@@ -73,23 +91,12 @@ class Context:
                             'hpPercentageLessThanOrEqual': 0,
                             'manaPercentageGreaterThanOrEqual': 0,
                         },
-                        'thirdHealthPotion': {
-                            'enabled': False,
-                            'hotkey': '',
-                            'hpPercentageLessThanOrEqual': 0,
-                            'manaPercentageGreaterThanOrEqual': 0,
-                        },
                         'firstManaPotion': {
                             'enabled': False,
                             'hotkey': '',
                             'manaPercentageLessThanOrEqual': 0,
                         },
                         'secondManaPotion': {
-                            'enabled': False,
-                            'hotkey': '',
-                            'manaPercentageLessThanOrEqual': 0,
-                        },
-                        'thirdManaPotion': {
                             'enabled': False,
                             'hotkey': '',
                             'manaPercentageLessThanOrEqual': 0,
