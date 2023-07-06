@@ -8,9 +8,9 @@ class UseHotkeyTask(BaseTask):
         super().__init__()
         self.name = 'useHotkey'
         self.delayAfterComplete = delayAfterComplete
-        self.value = hotkey
+        self.hotkey = hotkey
 
     # TODO: add unit tests
     def do(self, context: Context) -> Context:
-        press(self.value)
+        press(self.hotkey)
         return context
