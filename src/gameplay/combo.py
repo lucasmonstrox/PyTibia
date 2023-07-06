@@ -32,15 +32,17 @@ def comboSpellsObserver(context: Context):
             continue
         if comboSpellDidMatch(comboSpell, nearestCreaturesCount):
             spell = comboSpell['spells'][comboSpell['currentSpellIndex']]
+            if hasCooldownByName(context['screenshot'], 'attack'):
+                return
             if hasCooldownByName(context['screenshot'], spell['name']):
                 return
             if context['statusBar']['mana'] < spell['metadata']['mana']:
-                continue
-            tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                spell['hotkey'], delayAfterComplete=0.1))
+                return
+            tasksOrchestrator.setRootTask(
+                context, UseHotkeyTask(spell['hotkey']))
             nextIndex = getNextArrayIndex(
                 comboSpell['spells'], comboSpell['currentSpellIndex'])
             # TODO: improve indexes without using context
             context['comboSpells']['items'][key]['currentSpellIndex'] = nextIndex
             context['comboSpells']['lastUsedSpell'] = spell['name']
-            break
+            return
