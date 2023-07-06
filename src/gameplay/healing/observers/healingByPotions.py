@@ -17,13 +17,13 @@ def healingByPotionsObserver(context: Context):
         else:
             tasksOrchestrator.do(context)
             return
-    for potionType in ['firstHealthPotion', 'secondHealthPotion', 'thirdHealthPotion']:
+    for potionType in ['firstHealthPotion', 'secondHealthPotion']:
         if context['healing']['potions'][potionType]['enabled']:
             if matchHpHealing(context['healing']['potions'][potionType], context['statusBar']) and slotIsAvailable(context['screenshot'], 1):
                 tasksOrchestrator.setRootTask(context, UseHotkeyTask(
                     context['healing']['potions'][potionType]['hotkey'], delayAfterComplete=1))
                 return
-    for potionType in ['firstManaPotion', 'secondManaPotion', 'thirdManaPotion']:
+    for potionType in ['firstManaPotion', 'secondManaPotion']:
         if context['healing']['potions'][potionType]['enabled']:
             if matchManaHealing(context['healing']['potions'][potionType], context['statusBar']) and slotIsAvailable(context['screenshot'], 2):
                 tasksOrchestrator.setRootTask(context, UseHotkeyTask(

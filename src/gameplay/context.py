@@ -76,23 +76,12 @@ context = {
                 'hpPercentageLessThanOrEqual': None,
                 'manaPercentageGreaterThanOrEqual': None,
             },
-            'thirdHealthPotion': {
-                'enabled': False,
-                'hotkey': None,
-                'hpPercentageLessThanOrEqual': None,
-                'manaPercentageGreaterThanOrEqual': None,
-            },
             'firstManaPotion': {
                 'enabled': False,
                 'hotkey': None,
                 'manaPercentageLessThanOrEqual': None,
             },
             'secondManaPotion': {
-                'enabled': False,
-                'hotkey': None,
-                'manaPercentageLessThanOrEqual': None,
-            },
-            'thirdManaPotion': {
                 'enabled': False,
                 'hotkey': None,
                 'manaPercentageLessThanOrEqual': None,
