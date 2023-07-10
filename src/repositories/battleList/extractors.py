@@ -2,15 +2,16 @@ from numba import njit
 import numpy as np
 from typing import Union
 from src.shared.typings import GrayImage
-from .locators import getContainerBottomBarPosition, getContainerTopBarPosition
+from .locators import getContainerBottomBarPosition, getBattleListIconPosition
 
 
 # PERF: [0.05485419999999941, 4.39999999990448e-06]
 def getContent(screenshot: GrayImage) -> Union[GrayImage, None]:
-    containerTopBarPos = getContainerTopBarPosition(screenshot)
-    if containerTopBarPos is None:
+    battleListIconPosition = getBattleListIconPosition(screenshot)
+    if battleListIconPosition is None:
         return None
-    content = screenshot[containerTopBarPos[1] + containerTopBarPos[3]:, containerTopBarPos[0]:containerTopBarPos[0] + 156]
+    content = screenshot[battleListIconPosition[1] + battleListIconPosition[3] +
+                         1:, battleListIconPosition[0] - 1:battleListIconPosition[0] - 1 + 156]
     containerBottomBarPos = getContainerBottomBarPosition(content)
     if containerBottomBarPos is None:
         return None

@@ -3,7 +3,7 @@ import numpy as np
 from typing import Generator, Union
 from src.shared.typings import CreatureCategory, CreatureCategoryOrUnknown, GrayImage
 from src.utils.core import hashit, locate
-from .config import creaturesNamesImagesHashes, skulls
+from .config import creaturesNamesImagesHashes, images
 from .extractors import getCreaturesNamesImages
 from .typings import CreatureList, Creature
 
@@ -27,7 +27,8 @@ def getBeingAttackedCreatures(content: GrayImage, filledSlotsCount: int) -> Gene
             yield False
         else:
             # detecting through corner pixels
-            isBeingAttacked = (content[creatureIndex * 22, 0] == 76 or content[contentIndex, 0] == 166) and (content[contentIndex, 19] == 76 or content[contentIndex, 19] == 166) and (content[contentIndex + 19, 0] == 76 or content[contentIndex + 19, 0] == 166) and (content[contentIndex + 19, 19] == 76 or content[contentIndex + 19, 19] == 166)
+            isBeingAttacked = (content[creatureIndex * 22, 0] == 76 or content[contentIndex, 0] == 166) and (content[contentIndex, 19] == 76 or content[contentIndex, 19] == 166) and (
+                content[contentIndex + 19, 0] == 76 or content[contentIndex + 19, 0] == 166) and (content[contentIndex + 19, 19] == 76 or content[contentIndex + 19, 19] == 166)
             yield isBeingAttacked
             if isBeingAttacked:
                 alreadyCalculatedBeingAttackedCreature = True
@@ -38,10 +39,12 @@ def getCreatures(content: GrayImage) -> CreatureList:
     filledSlotsCount = getFilledSlotsCount(content)
     if filledSlotsCount == 0:
         return np.array([], dtype=Creature)
-    beingAttackedCreatures = [beingAttackedCreature for beingAttackedCreature in getBeingAttackedCreatures(content, filledSlotsCount)]
-    creaturesNames = [creatureName for creatureName in getCreaturesNames(content, filledSlotsCount)]
+    beingAttackedCreatures = [
+        beingAttackedCreature for beingAttackedCreature in getBeingAttackedCreatures(content, filledSlotsCount)]
+    creaturesNames = [creatureName for creatureName in getCreaturesNames(
+        content, filledSlotsCount)]
     return np.array([(creatureName, beingAttackedCreatures[slotIndex])
-                           for slotIndex, creatureName in enumerate(creaturesNames)], dtype=Creature)
+                     for slotIndex, creatureName in enumerate(creaturesNames)], dtype=Creature)
 
 
 # PERF: [0.019119499999998624, 4.020000000082291e-05]
@@ -76,15 +79,15 @@ def hasSkull(content: GrayImage, creatures: CreatureList) -> bool:
             continue
         y = (creatureIndex * 22)
         creatureIconsImage = content[y + 2:y + 13, -38:-2]
-        if locate(creatureIconsImage, skulls['images']['black']):
+        if locate(creatureIconsImage, images['skulls']['black']):
             return True
-        if locate(creatureIconsImage, skulls['images']['orange']):
+        if locate(creatureIconsImage, images['skulls']['orange']):
             return True
-        if locate(creatureIconsImage, skulls['images']['red']):
+        if locate(creatureIconsImage, images['skulls']['red']):
             return True
-        if locate(creatureIconsImage, skulls['images']['white']):
+        if locate(creatureIconsImage, images['skulls']['white']):
             return True
-        if locate(creatureIconsImage, skulls['images']['yellow']):
+        if locate(creatureIconsImage, images['skulls']['yellow']):
             return True
     return False
 

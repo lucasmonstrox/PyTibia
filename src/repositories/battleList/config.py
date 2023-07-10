@@ -8,17 +8,17 @@ from src.wiki.creatures import creatures
 parentPath = pathlib.Path(__file__).parent.resolve()
 imagesPath = f'{parentPath}/images'
 containersPath = f'{imagesPath}/containers'
+iconsPath = f'{imagesPath}/icons'
 monstersPath = f'{imagesPath}/monsters'
 skullsPath = f'{imagesPath}/skulls'
-container = {
-    'images': {
-        'topBar': loadFromRGBToGray(f'{containersPath}/topBar.png'),
+images = {
+    'containers': {
         'bottomBar': loadFromRGBToGray(f'{containersPath}/bottomBar.png'),
     },
-}
-creaturesNamesImagesHashes = {}
-skulls = {
-    'images': {
+    'icons': {
+        'battleList': loadFromRGBToGray(f'{iconsPath}/battleList.png'),
+    },
+    'skulls': {
         'black': loadFromRGBToGray(f'{skullsPath}/black.png'),
         'green': loadFromRGBToGray(f'{skullsPath}/green.png'),
         'orange': loadFromRGBToGray(f'{skullsPath}/orange.png'),
@@ -27,6 +27,7 @@ skulls = {
         'yellow': loadFromRGBToGray(f'{skullsPath}/yellow.png'),
     }
 }
+creaturesNamesImagesHashes = {}
 
 for creatureName in creatures:
     creatureNameImage = loadFromRGBToGray(

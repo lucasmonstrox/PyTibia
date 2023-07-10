@@ -1,5 +1,5 @@
 import pathlib
-from src.repositories.battleList.locators import getContainerTopBarPosition
+from src.repositories.battleList.locators import getBattleListIconPosition
 from src.utils.image import loadFromRGBToGray
 
 
@@ -7,8 +7,9 @@ currentPath = pathlib.Path(__file__).parent.resolve()
 
 
 # TODO: assert "locate" calls and params
-def test_should_get_container_top_bar_pos():
+def test_should_get_battle_list_icon_position():
     screenshotImage = loadFromRGBToGray(f'{currentPath}/screenshot.png')
-    containerTopBarPos = getContainerTopBarPosition(screenshotImage)
-    expectedContainerTopBarPos = (1572, 25, 81, 13)
-    assert containerTopBarPos == expectedContainerTopBarPos
+    battleListIconPosition = getBattleListIconPosition(screenshotImage)
+    print('battleListIconPosition', battleListIconPosition)
+    expectedContainerTopBarPos = (1573, 26, 11, 11)
+    assert battleListIconPosition == expectedContainerTopBarPos
