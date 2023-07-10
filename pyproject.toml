@@ -20,6 +20,7 @@ scipy = "^1.9.1"
 tcod = "^13.8.1"
 tinydb = "^4.8.0"
 xxhash = "^3.1.0"
+pywin32 = "^306"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.1.3"
