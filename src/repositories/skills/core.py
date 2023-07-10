@@ -1,83 +1,86 @@
+from time import time
 import numpy as np
 from typing import Union
 from src.shared.typings import BBox, GrayImage
 from src.utils.core import hashit
 from src.utils.image import convertGraysToBlack
 from .config import minutesOrHoursHashes, numbersHashes
-from .locators import getXpBoostButtonPosition
+from .locators import getSkillsIconPosition
 
 
 # TODO: add unit tests
 # PERF: [0.04747469999999998, 2.9300000000009874e-05]
 def getCapacity(screenshot: GrayImage) -> Union[int, None]:
-    xpBoostPosition = getXpBoostButtonPosition(screenshot)
-    if xpBoostPosition is None:
+    skillsIconPosition = getSkillsIconPosition(screenshot)
+    if skillsIconPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
-                                           61), xpBoostPosition[2], xpBoostPosition[3]
+    position = skillsIconPosition[0] + 5, skillsIconPosition[1] + \
+        131, skillsIconPosition[2], skillsIconPosition[3]
     return getValuesCount(screenshot, position)
 
 
 # TODO: add unit tests
 # TODO: add perf
 def getFood(screenshot: GrayImage) -> Union[int, None]:
-    xpBoostPosition = getXpBoostButtonPosition(screenshot)
-    if xpBoostPosition is None:
+    skillsIconPosition = getSkillsIconPosition(screenshot)
+    if skillsIconPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
-                                           89), xpBoostPosition[2], xpBoostPosition[3]
+    position = skillsIconPosition[0] + 5, skillsIconPosition[1] + \
+        159, skillsIconPosition[2], skillsIconPosition[3]
     return getMinutesCount(screenshot, position)
 
 
 # TODO: add unit tests
 # PERF: [0.04967209999999955, 3.1599999999798456e-05]
 def getHp(screenshot: GrayImage) -> Union[int, None]:
-    xpBoostPosition = getXpBoostButtonPosition(screenshot)
-    if xpBoostPosition is None:
+    skillsIconPosition = getSkillsIconPosition(screenshot)
+    if skillsIconPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
-                                           19), xpBoostPosition[2], xpBoostPosition[3]
+    position = skillsIconPosition[0] + 5, skillsIconPosition[1] + \
+        89, skillsIconPosition[2], skillsIconPosition[3]
     return getValuesCount(screenshot, position)
 
 
 # TODO: add unit tests
 # PERF: [0.05254219999999998, 2.970000000068751e-05]
 def getMana(screenshot: GrayImage) -> Union[int, None]:
-    xpBoostPosition = getXpBoostButtonPosition(screenshot)
-    if xpBoostPosition is None:
+    skillsIconPosition = getSkillsIconPosition(screenshot)
+    if skillsIconPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
-                                           33), xpBoostPosition[2], xpBoostPosition[3]
+    position = skillsIconPosition[0] + 5, skillsIconPosition[1] + \
+        103, skillsIconPosition[2], skillsIconPosition[3]
     return getValuesCount(screenshot, position)
 
 
 # TODO: add unit tests
 # PERF: [0.04700700000000024, 3.0399999999985994e-05]
 def getSpeed(screenshot: GrayImage) -> Union[int, None]:
-    xpBoostPosition = getXpBoostButtonPosition(screenshot)
-    if xpBoostPosition is None:
+    skillsIconPosition = getSkillsIconPosition(screenshot)
+    if skillsIconPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
-                                           75), xpBoostPosition[2], xpBoostPosition[3]
+    position = skillsIconPosition[0] + 5, skillsIconPosition[1] + \
+        145, skillsIconPosition[2], skillsIconPosition[3]
     return getValuesCount(screenshot, position)
 
 
 # TODO: add unit tests
 # PERF: [0.047493200000000346, 2.0000000000131024e-05]
 def getStamina(screenshot: GrayImage) -> Union[int, None]:
-    xpBoostPosition = getXpBoostButtonPosition(screenshot)
-    if xpBoostPosition is None:
+    skillsIconPosition = getSkillsIconPosition(screenshot)
+    if skillsIconPosition is None:
         return None
-    position = (xpBoostPosition[0] - 34), (xpBoostPosition[1] +
-                                           103), xpBoostPosition[2], xpBoostPosition[3]
+    position = (skillsIconPosition[0] + 5), (skillsIconPosition[1] +
+                                             173), skillsIconPosition[2], skillsIconPosition[3]
     return getMinutesCount(screenshot, position)
 
 
 # TODO: add unit tests
 # TODO: add perf
+
+
 def getMinutesCount(screenshot: GrayImage, position: BBox) -> int:
     minutesCountsImage = convertGraysToBlack(
-        screenshot[position[1]:position[1] + 8, position[0] + 144 - 14:position[0] + 144])
+        screenshot[position[1]:position[1] + 8, position[0] + 130:position[0] + 144])
     minutesCountsHashKey = hashit(minutesCountsImage)
     minutesCount = 0
     if minutesCountsHashKey in minutesOrHoursHashes:

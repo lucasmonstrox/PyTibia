@@ -6,12 +6,9 @@ from src.utils.image import loadFromRGBToGray
 
 currentPath = pathlib.Path(__file__).parent.resolve()
 imagesPath = f'{currentPath}/images'
-buttonsImagesPath = f'{imagesPath}/buttons'
+iconsImagesPath = f'{imagesPath}/icons'
 digitsImagesPath = f'{imagesPath}/digits'
 images = {
-    'buttons': {
-        'xpBoost': loadFromRGBToGray(f'{buttonsImagesPath}/xpBoost.png')
-    },
     'digits': {
         0: loadFromRGBToGray(f'{digitsImagesPath}/0.png'),
         1: loadFromRGBToGray(f'{digitsImagesPath}/1.png'),
@@ -23,7 +20,10 @@ images = {
         7: loadFromRGBToGray(f'{digitsImagesPath}/7.png'),
         8: loadFromRGBToGray(f'{digitsImagesPath}/8.png'),
         9: loadFromRGBToGray(f'{digitsImagesPath}/9.png'),
-    }
+    },
+    'icons': {
+        'skills': loadFromRGBToGray(f'{iconsImagesPath}/skills.png')
+    },
 }
 minutesOrHoursHashes = {}
 numbersHashes = {}
