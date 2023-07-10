@@ -14,92 +14,115 @@
               {
                 "label": "",
                 "type": "walk",
-                "coordinate": [33322, 32327, 13],
+                "coordinate": [33216, 32450, 7],
                 "options": {}
               },
               {
                 "label": "",
                 "type": "walk",
-                "coordinate": [33296, 32346, 13],
+                "coordinate": [33215, 32410, 7],
+                "options": { "direction": "north" }
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33212, 32359, 7],
+                "options": { "direction": "north" }
+              },
+              {
+                "label": "",
+                "type": "useShovel",
+                "coordinate": [33212, 32358, 7],
+                "options": { "direction": "north" }
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33227, 32358, 8],
+                "options": { "direction": "east" }
+              },
+              {
+                "label": "",
+                "type": "moveDown",
+                "coordinate": [33228, 32358, 8],
+                "options": { "direction": "east" }
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33223, 32355, 9],
+                "options": { "direction": "north" }
+              },
+              {
+                "label": "",
+                "type": "moveDown",
+                "coordinate": [33223, 32354, 9],
+                "options": { "direction": "north" }
+              },
+              {
+                "label": "startOfTheCave",
+                "type": "walk",
+                "coordinate": [33208, 32354, 10],
                 "options": {}
               },
               {
                 "label": "",
                 "type": "walk",
-                "coordinate": [33310, 32362, 13],
+                "coordinate": [33190, 32348, 10],
                 "options": {}
               },
               {
                 "label": "",
                 "type": "walk",
-                "coordinate": [33324, 32347, 13],
+                "coordinate": [33208, 32367, 10],
                 "options": {}
               },
               {
                 "label": "",
                 "type": "walk",
-                "coordinate": [33341, 32354, 13],
+                "coordinate": [33194, 32366, 10],
                 "options": {}
               },
               {
                 "label": "",
                 "type": "walk",
-                "coordinate": [33328, 32368, 13],
+                "coordinate": [33222, 32386, 10],
                 "options": {}
               },
               {
                 "label": "",
                 "type": "walk",
-                "coordinate": [33297, 32407, 13],
+                "coordinate": [33198, 32398, 10],
                 "options": {}
               },
               {
                 "label": "",
                 "type": "walk",
-                "coordinate": [33328, 32420, 13],
+                "coordinate": [33209, 32404, 10],
                 "options": {}
               },
               {
                 "label": "",
                 "type": "walk",
-                "coordinate": [33290, 32430, 13],
+                "coordinate": [33207, 32364, 10],
                 "options": {}
               },
               {
                 "label": "",
                 "type": "walk",
-                "coordinate": [33296, 32385, 13],
+                "coordinate": [33221, 32351, 10],
                 "options": {}
               },
               {
                 "label": "",
-                "type": "walk",
-                "coordinate": [33276, 32417, 13],
-                "options": {}
-              },
-              {
-                "label": "",
-                "type": "walk",
-                "coordinate": [33326, 32420, 13],
-                "options": {}
-              },
-              {
-                "label": "",
-                "type": "walk",
-                "coordinate": [33333, 32377, 13],
-                "options": {}
-              },
-              {
-                "label": "",
-                "type": "walk",
-                "coordinate": [33308, 32360, 13],
-                "options": {}
-              },
-              {
-                "label": "",
-                "type": "walk",
-                "coordinate": [33318, 32331, 13],
-                "options": {}
+                "type": "refillChecker",
+                "coordinate": [33225, 32351, 10],
+                "options": {
+                  "minimumAmountOfHealthPotions": "11",
+                  "minimumAmountOfManaPotions": "12",
+                  "minimumAmountOfCap": "13",
+                  "waypointLabelToRedirect": "startOfTheCave"
+                }
               }
             ]
           }
