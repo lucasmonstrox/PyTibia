@@ -57,6 +57,24 @@ Only available for knight/paladin
 
 # 🧰 Installation
 
+## Tibia client options
+
+Before installing the python packages, PyTibia requires that the Tibia client has some necessary settings for it to work correctly. Please leave the options exactly as in the next images.
+
+![Controls](/docs/assets/images/controls.png)
+![General Hotkeys](/docs/assets/images/generalHotkeys.png)
+![Action Bar Hotkeys](/docs/assets/images/actionBarHotkeys.png)
+![Custom hotkeys](/docs/assets/images/customHotkeys.png)
+![Interface](/docs/assets/images/interface.png)
+![HUD](/docs/assets/images/hud.png)
+![Console](/docs/assets/images/console.png)
+![Game Window](/docs/assets/images/gameWindow.png)
+![Action Bars](/docs/assets/images/actionBars.png)
+![Graphics](/docs/assets/images/graphics.png)
+![Effects](/docs/assets/images/effects.png)
+![Misc](/docs/assets/images/misc.png)
+![Gameplay](/docs/assets/images/gameplay.png)
+
 ## Prerequisites
 
 - [`Python`](https://www.python.org/downloads/release/python-3913) 3.9.13
