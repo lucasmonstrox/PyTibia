@@ -57,6 +57,62 @@ Apenas disponível para knight/palaldin
 
 # 🧰 Instalação
 
+## Opções do Tibia client
+
+Antes de instalar os pacotes do pythons, o PyTibia requer uma configuração necessária para funcionar corretamente com o Tibia client. Por favor, deixa as opções exatamente como nas imagens abaixo:
+
+![Controls](/docs/assets/images/controls.png)
+![General Hotkeys](/docs/assets/images/generalHotkeys.png)
+![Action Bar Hotkeys](/docs/assets/images/actionBarHotkeys.png)
+![Custom hotkeys](/docs/assets/images/customHotkeys.png)
+![Interface](/docs/assets/images/interface.png)
+![HUD](/docs/assets/images/hud.png)
+![Console](/docs/assets/images/console.png)
+![Game Window](/docs/assets/images/gameWindow.png)
+![Action Bars](/docs/assets/images/actionBars.png)
+![Graphics](/docs/assets/images/graphics.png)
+![Effects](/docs/assets/images/effects.png)
+![Misc](/docs/assets/images/misc.png)
+![Gameplay](/docs/assets/images/gameplay.png)
+
+No Tibia client, deixa o painel de skills aberto, a battle list, e deixa a game window na maior resolução, exatamente como na imagem abaixo:
+
+![Client](/docs/assets/images/client.png)
+
+Por enquanto as hotkeys no PyTibia não são configuráveis, é necessário deixar exatamente como a tabela abaixo:
+
+| Hotkey | Item                            |
+| ------ | ------------------------------- |
+| 1      | Health Potion                   |
+| 2      | Mana Potion                     |
+| 3      | Health food                     |
+| 4      | Mana food                       |
+| 5      | Light healing(exura ico)        |
+| 6      | Critical healing(exura med ico) |
+| 7      | utura                           |
+| 8      | utura gran                      |
+| 9      | exana kor                       |
+| 0      | exana pox                       |
+| f1     | exori                           |
+| f2     | exori gran                      |
+| f3     | exori ico                       |
+| f4     | exori hur                       |
+| f5     | exori mas                       |
+| f6     | exori min                       |
+| f7     | utamo tempo                     |
+| f8     | utito tempo                     |
+| f9     | ring                            |
+| f10    | amulet                          |
+| f11    | ring 1                          |
+| f12    | ring 2                          |
+| u      | swap amulet 1                   |
+| i      | swap amulet 2                   |
+| o      | rope                            |
+| p      | shovel                          |
+| f      | food                            |
+
+![Default Hotkeys](/docs/assets/images/defaultHotkeys.png)
+
 ## Pré-requisitos
 
 - [`Python`](https://www.python.org/downloads/release/python-3913) 3.9.13

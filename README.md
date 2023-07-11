@@ -59,7 +59,7 @@ Only available for knight/paladin
 
 ## Tibia client options
 
-Before installing the python packages, PyTibia requires that the Tibia client has some necessary settings for it to work correctly. Please leave the options exactly as in the next images.
+Before installing the python packages, PyTibia requires that the Tibia client has some necessary settings for it to work correctly. Please leave the options exactly as in the next images:
 
 ![Controls](/docs/assets/images/controls.png)
 ![General Hotkeys](/docs/assets/images/generalHotkeys.png)
@@ -75,11 +75,11 @@ Before installing the python packages, PyTibia requires that the Tibia client ha
 ![Misc](/docs/assets/images/misc.png)
 ![Gameplay](/docs/assets/images/gameplay.png)
 
-In the Tibia client, open the skills panel, the battle list, and set the gameWindow to the highest resolution. Exactly like in the picture below:
+In the Tibia client, open the skills panel, the battle list, and set the gameWindow to the highest resolution, exactly like in the picture below:
 
 ![Client](/docs/assets/images/client.png)
 
-For now PyTibia's hotkeys are not configurable, it is necessary to leave it exactly as follows:
+For now PyTibia's hotkeys are not configurable, it is necessary to leave it exactly like table below:
 
 | Hotkey | Item                            |
 | ------ | ------------------------------- |
