@@ -75,6 +75,10 @@ Before installing the python packages, PyTibia requires that the Tibia client ha
 ![Misc](/docs/assets/images/misc.png)
 ![Gameplay](/docs/assets/images/gameplay.png)
 
+In the Tibia client, open the skills panel, the battle list, and set the gameWindow to the highest resolution. Exactly like in the picture below:
+
+![Client](/docs/assets/images/client.png)
+
 ## Prerequisites
 
 - [`Python`](https://www.python.org/downloads/release/python-3913) 3.9.13
