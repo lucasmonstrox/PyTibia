@@ -79,6 +79,40 @@ In the Tibia client, open the skills panel, the battle list, and set the gameWin
 
 ![Client](/docs/assets/images/client.png)
 
+For now PyTibia's hotkeys are not configurable, it is necessary to leave it exactly as follows:
+
+| Hotkey | Item                            |
+| ------ | ------------------------------- |
+| 1      | Health Potion                   |
+| 2      | Mana Potion                     |
+| 3      | Health food                     |
+| 4      | Mana food                       |
+| 5      | Light healing(exura ico)        |
+| 6      | Critical healing(exura med ico) |
+| 7      | utura                           |
+| 8      | utura gran                      |
+| 9      | exana kor                       |
+| 0      | exana pox                       |
+| f1     | exori                           |
+| f2     | exori gran                      |
+| f3     | exori ico                       |
+| f4     | exori hur                       |
+| f5     | exori mas                       |
+| f6     | exori min                       |
+| f7     | utamo tempo                     |
+| f8     | utito tempo                     |
+| f9     | ring                            |
+| f10    | amulet                          |
+| f11    | ring 1                          |
+| f12    | ring 2                          |
+| u      | swap amulet 1                   |
+| i      | swap amulet 2                   |
+| o      | rope                            |
+| p      | shovel                          |
+| f      | food                            |
+
+![Default Hotkeys](/docs/assets/images/defaultHotkeys.png)
+
 ## Prerequisites
 
 - [`Python`](https://www.python.org/downloads/release/python-3913) 3.9.13
