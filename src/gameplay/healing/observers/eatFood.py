@@ -22,5 +22,5 @@ def eatFood(context: Context):
     food = getFood(context['screenshot'])
     if food > context['healing']['eatFood']['eatWhenFoodIslessOrEqual']:
         return
-    tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-        context['healing']['eatFood']['hotkey'], delayAfterComplete=2))
+    tasksOrchestrator.setRootTask(
+        context, UseHotkeyTask('f', delayAfterComplete=2))
