@@ -1,5 +1,7 @@
 import tkinter as tk
 from .spellCard import SpellCard
+from .uturaCard import UturaCard
+from .uturaGranCard import UturaGranCard
 
 
 class SpellsTab(tk.Frame):
@@ -21,12 +23,11 @@ class SpellsTab(tk.Frame):
         self.lightHealingCard.grid(column=1, row=0, padx=10,
                                    pady=10, sticky='nsew')
 
-        self.uturaCard = SpellCard(
-            self, context, 'utura', title='Utura')
+        self.uturaCard = UturaCard(self, context)
         self.uturaCard.grid(column=0, row=1, padx=10,
                             pady=10, sticky='nsew')
 
-        self.uturaGranCard = SpellCard(
-            self, context, 'uturaGran', title='Utura gran')
+        self.uturaGranCard = UturaGranCard(
+            self, context)
         self.uturaGranCard.grid(column=1, row=1, padx=10,
                                 pady=10, sticky='nsew')
