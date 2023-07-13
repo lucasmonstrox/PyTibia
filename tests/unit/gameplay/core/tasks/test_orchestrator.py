@@ -584,9 +584,9 @@ def test_call_all_tree_onTimeout(mocker):
     assert len(tasksOrchestrator.rootTask.tasks) == 0
     tasksOrchestrator.do(context)
     assert rootTask.tasks[0].status == 'running'
-    assert rootTask.tasks[0].statusReason == None
+    assert rootTask.tasks[0].statusReason is None
     assert rootTask.tasks[1].status == 'notStarted'
-    assert rootTask.tasks[1].statusReason == None
+    assert rootTask.tasks[1].statusReason is None
     firstTaskOnTimeoutSpy = mocker.patch.object(
         rootTask.tasks[0], 'onTimeout', return_value=context)
     secondTaskOnTimeoutSpy = mocker.patch.object(
@@ -599,7 +599,7 @@ def test_call_all_tree_onTimeout(mocker):
     assert rootTask.tasks[0].status == 'completed'
     assert rootTask.tasks[0].statusReason == 'timeout'
     assert rootTask.tasks[1].status == 'notStarted'
-    assert rootTask.tasks[1].statusReason == None
+    assert rootTask.tasks[1].statusReason is None
     assert rootTask.status == 'completed'
     assert rootTask.statusReason == 'timeout'
 
@@ -633,9 +633,9 @@ def test_not_call_all_tree_onTimeout(mocker):
     assert len(tasksOrchestrator.rootTask.tasks) == 0
     tasksOrchestrator.do(context)
     assert rootTask.tasks[0].status == 'running'
-    assert rootTask.tasks[0].statusReason == None
+    assert rootTask.tasks[0].statusReason is None
     assert rootTask.tasks[1].status == 'notStarted'
-    assert rootTask.tasks[1].statusReason == None
+    assert rootTask.tasks[1].statusReason is None
     firstTaskOnTimeoutSpy = mocker.patch.object(
         rootTask.tasks[0], 'onTimeout', return_value=context)
     secondTaskOnTimeoutSpy = mocker.patch.object(
@@ -648,16 +648,16 @@ def test_not_call_all_tree_onTimeout(mocker):
     assert rootTask.tasks[0].status == 'completed'
     assert rootTask.tasks[0].statusReason == 'timeout'
     assert rootTask.tasks[1].status == 'notStarted'
-    assert rootTask.tasks[1].statusReason == None
+    assert rootTask.tasks[1].statusReason is None
     assert rootTask.status == 'running'
-    assert rootTask.statusReason == None
+    assert rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert rootTask.tasks[0].status == 'completed'
     assert rootTask.tasks[0].statusReason == 'timeout'
     assert rootTask.tasks[1].status == 'running'
-    assert rootTask.tasks[1].statusReason == None
+    assert rootTask.tasks[1].statusReason is None
     assert rootTask.status == 'running'
-    assert rootTask.statusReason == None
+    assert rootTask.statusReason is None
     tasksOrchestrator.do(context)
     assert rootTask.tasks[0].status == 'completed'
     assert rootTask.tasks[0].statusReason == 'timeout'
