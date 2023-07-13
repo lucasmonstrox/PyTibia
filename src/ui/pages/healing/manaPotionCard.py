@@ -1,10 +1,10 @@
-import re
+# import re
 import tkinter as tk
 
 
 class ManaPotionCard(tk.LabelFrame):
-    def __init__(self, parent, context, healthPotionType):
-        super().__init__(parent)
+    def __init__(self, parent, context, healthPotionType, title=''):
+        super().__init__(parent, text=title)
         self.context = context
         self.healthPotionType = healthPotionType
         self.columnconfigure(0, weight=3)
@@ -35,18 +35,18 @@ class ManaPotionCard(tk.LabelFrame):
         self.manaPercentageLessThenOrEqualSlider.grid(column=1, row=1, padx=10,
                                                       pady=10, sticky='nsew')
 
-        self.hotkeyLabel = tk.Label(
-            self, text='Hotkey:')
-        self.hotkeyLabel.grid(column=0, row=2, padx=10,
-                              pady=10, sticky='nsew')
+        # self.hotkeyLabel = tk.Label(
+        #     self, text='Hotkey:')
+        # self.hotkeyLabel.grid(column=0, row=2, padx=10,
+        #                       pady=10, sticky='nsew')
 
-        self.hotkeyEntryVar = tk.StringVar()
-        self.hotkeyEntryVar.set(self.context.context['healing']
-                                ['potions'][healthPotionType]['hotkey'])
-        self.hotkeyEntry = tk.Entry(self, textvariable=self.hotkeyEntryVar)
-        self.hotkeyEntry.bind('<Key>', self.onChangeHotkey)
-        self.hotkeyEntry.grid(column=1, row=2, padx=10,
-                              pady=10, sticky='nsew')
+        # self.hotkeyEntryVar = tk.StringVar()
+        # self.hotkeyEntryVar.set(self.context.context['healing']
+        #                         ['potions'][healthPotionType]['hotkey'])
+        # self.hotkeyEntry = tk.Entry(self, textvariable=self.hotkeyEntryVar)
+        # self.hotkeyEntry.bind('<Key>', self.onChangeHotkey)
+        # self.hotkeyEntry.grid(column=1, row=2, padx=10,
+        #                       pady=10, sticky='nsew')
 
     def onToggleCheckButton(self):
         self.context.toggleHealingPotionsByKey(
@@ -56,12 +56,12 @@ class ManaPotionCard(tk.LabelFrame):
         self.context.setHealthPotionManaPercentageLessThanOrEqual(
             self.healthPotionType, self.manaPercentageLessThenOrEqualVar.get())
 
-    def onChangeHotkey(self, event):
-        key = event.char
-        if key == '\b':
-            return
-        if re.match(r'^F[1-9]|1[0-2]$', key) or re.match(r'^[0-9]$', key) or re.match(r'^[a-z]$', key):
-            self.hotkeyEntry.delete(0, tk.END)
-            self.context.setHealthPotionHotkeyByKey(self.healthPotionType, key)
-            return
-        return 'break'
+    # def onChangeHotkey(self, event):
+    #     key = event.char
+    #     if key == '\b':
+    #         return
+    #     if re.match(r'^F[1-9]|1[0-2]$', key) or re.match(r'^[0-9]$', key) or re.match(r'^[a-z]$', key):
+    #         self.hotkeyEntry.delete(0, tk.END)
+    #         self.context.setHealthPotionHotkeyByKey(self.healthPotionType, key)
+    #         return
+    #     return 'break'

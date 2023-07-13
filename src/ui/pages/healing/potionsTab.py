@@ -14,21 +14,11 @@ class PotionsTab(tk.Frame):
         self.context = context
 
         self.firstHealthPotionCard = HealthPotionCard(
-            self, context, 'firstHealthPotion')
+            self, context, 'firstHealthPotion', title='Health potion')
         self.firstHealthPotionCard.grid(column=0, row=0, padx=10,
                                         pady=10, sticky='nsew')
 
-        self.secondHealthPotionCard = HealthPotionCard(
-            self, context, 'secondHealthPotion')
-        self.secondHealthPotionCard.grid(column=0, row=1, padx=10,
-                                         pady=10, sticky='nsew')
-
         self.firstManaPotionCard = ManaPotionCard(
-            self, context, 'firstManaPotion')
+            self, context, 'firstManaPotion', title='Mana potion')
         self.firstManaPotionCard.grid(column=1, row=0, padx=10,
                                       pady=10, sticky='nsew')
-
-        self.secondManaPotionCard = ManaPotionCard(
-            self, context, 'secondManaPotion')
-        self.secondManaPotionCard.grid(column=1, row=1, padx=10,
-                                       pady=10, sticky='nsew')

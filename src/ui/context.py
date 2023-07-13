@@ -41,26 +41,25 @@ class Context:
                     'items': []
                 },
                 'healing': {
-                    'enabled': True,
                     'highPriority': {
                         'healthFood': {
                             'enabled': False,
-                            'hotkey': '',
+                            'hotkey': '3',
                             'hpPercentageLessThanOrEqual': 0,
                         },
                         'manaFood': {
                             'enabled': False,
-                            'hotkey': '',
+                            'hotkey': '4',
                             'manaPercentageLessThanOrEqual': 0,
                         },
                         'swapRing': {
                             'enabled': False,
                             'firstRing': {
-                                'hotkey': '',
+                                'hotkey': 'f11',
                                 'hpPercentageLessThanOrEqual': 0
                             },
                             'secondRing': {
-                                'hotkey': '',
+                                'hotkey': 'f12',
                                 'hpPercentageGreaterThanOrEqual': 0
                             },
                             'ringAlwaysEquipped': ''
@@ -68,11 +67,11 @@ class Context:
                         'swapAmulet': {
                             'enabled': False,
                             'firstAmulet': {
-                                'hotkey': '',
+                                'hotkey': 'u',
                                 'hpPercentageLessThanOrEqual': 0
                             },
                             'secondAmulet': {
-                                'hotkey': '',
+                                'hotkey': 'i',
                                 'hpPercentageGreaterThanOrEqual': 0
                             },
                             'amuletAlwaysEquipped': ''
@@ -81,66 +80,41 @@ class Context:
                     'potions': {
                         'firstHealthPotion': {
                             'enabled': False,
-                            'hotkey': '',
-                            'hpPercentageLessThanOrEqual': 0,
-                            'manaPercentageGreaterThanOrEqual': 0,
-                        },
-                        'secondHealthPotion': {
-                            'enabled': False,
-                            'hotkey': '',
+                            'hotkey': '1',
                             'hpPercentageLessThanOrEqual': 0,
                             'manaPercentageGreaterThanOrEqual': 0,
                         },
                         'firstManaPotion': {
                             'enabled': False,
-                            'hotkey': '',
-                            'manaPercentageLessThanOrEqual': 0,
-                        },
-                        'secondManaPotion': {
-                            'enabled': False,
-                            'hotkey': '',
+                            'hotkey': '2',
                             'manaPercentageLessThanOrEqual': 0,
                         },
                     },
                     'spells': {
                         'criticalHealing': {
                             'enabled': False,
-                            'hotkey': '',
-                            'hpPercentageLessThanOrEqual': 0,
-                            'manaPercentageGreaterThanOrEqual': 0,
-                            'spell': None
-                        },
-                        'mediumHealing': {
-                            'enabled': False,
-                            'hotkey': '',
+                            'hotkey': '5',
                             'hpPercentageLessThanOrEqual': 0,
                             'manaPercentageGreaterThanOrEqual': 0,
                             'spell': None
                         },
                         'lightHealing': {
                             'enabled': False,
-                            'hotkey': '',
-                            'hpPercentageLessThanOrEqual': 0,
-                            'manaPercentageGreaterThanOrEqual': 0,
-                            'spell': None
-                        },
-                        'uturaGran': {
-                            'enabled': False,
-                            'hotkey': '',
+                            'hotkey': '7',
                             'hpPercentageLessThanOrEqual': 0,
                             'manaPercentageGreaterThanOrEqual': 0,
                             'spell': None
                         },
                         'utura': {
                             'enabled': False,
-                            'hotkey': '',
+                            'hotkey': '8',
                             'hpPercentageLessThanOrEqual': 0,
                             'manaPercentageGreaterThanOrEqual': 0,
                             'spell': None
                         },
-                        'exuraGranIco': {
+                        'uturaGran': {
                             'enabled': False,
-                            'hotkey': '',
+                            'hotkey': '9',
                             'hpPercentageLessThanOrEqual': 0,
                             'manaPercentageGreaterThanOrEqual': 0,
                             'spell': None
@@ -148,11 +122,10 @@ class Context:
                     },
                     'eatFood': {
                         'enabled': False,
-                        'hotkey': '',
+                        'hotkey': '0',
                         'eatWhenFoodIslessOrEqual': 0,
                     }
                 },
-                'hotkeys': {}
             }
         })
 

@@ -3,10 +3,7 @@
     "1": {
       "enabled": true,
       "config": {
-        "backpacks": {
-          "main": "Anniversary Backpack",
-          "loot": "Beach Backpack"
-        },
+        "backpacks": { "main": "Brocade Backpack", "loot": "Beach Backpack" },
         "cavebot": {
           "enabled": false,
           "waypoints": {
@@ -128,7 +125,7 @@
           }
         },
         "comboSpells": {
-          "enabled": true,
+          "enabled": false,
           "items": [
             {
               "enabled": true,
@@ -155,11 +152,7 @@
                   "hotkey": "f6",
                   "metadata": { "mana": 200 }
                 },
-                {
-                  "name": "exori",
-                  "hotkey": "f1",
-                  "metadata": { "mana": 115 }
-                }
+                { "name": "exori", "hotkey": "f1", "metadata": { "mana": 115 } }
               ],
               "currentSpellIndex": 0
             },
@@ -199,23 +192,22 @@
           ]
         },
         "healing": {
-          "enabled": true,
           "highPriority": {
             "healthFood": {
               "enabled": false,
-              "hotkey": "",
+              "hotkey": "3",
               "hpPercentageLessThanOrEqual": 0
             },
             "manaFood": {
-              "enabled": true,
-              "hotkey": "",
-              "manaPercentageLessThanOrEqual": null
+              "enabled": false,
+              "hotkey": "4",
+              "manaPercentageLessThanOrEqual": 0
             },
             "swapRing": {
               "enabled": true,
               "firstRing": {
                 "hotkey": "f11",
-                "hpPercentageLessThanOrEqual": 50
+                "hpPercentageLessThanOrEqual": 40
               },
               "secondRing": {
                 "hotkey": "f12",
@@ -224,117 +216,67 @@
               "ringAlwaysEquipped": "secondRing"
             },
             "swapAmulet": {
-              "enabled": false,
+              "enabled": true,
               "firstAmulet": {
-                "hotkey": "",
-                "hpPercentageLessThanOrEqual": 0
+                "hotkey": "u",
+                "hpPercentageLessThanOrEqual": 40
               },
               "secondAmulet": {
-                "hotkey": "",
-                "hpPercentageGreaterThanOrEqual": 0
+                "hotkey": "i",
+                "hpPercentageGreaterThanOrEqual": 80
               },
-              "amuletAlwaysEquipped": ""
+              "amuletAlwaysEquipped": "secondAmulet"
             }
           },
           "potions": {
             "firstHealthPotion": {
               "enabled": true,
               "hotkey": "1",
-              "hpPercentageLessThanOrEqual": 75,
-              "manaPercentageGreaterThanOrEqual": 0
-            },
-            "secondHealthPotion": {
-              "enabled": false,
-              "hotkey": "",
-              "hpPercentageLessThanOrEqual": 0,
+              "hpPercentageLessThanOrEqual": 40,
               "manaPercentageGreaterThanOrEqual": 0
             },
             "firstManaPotion": {
               "enabled": true,
               "hotkey": "2",
-              "manaPercentageLessThanOrEqual": 90
-            },
-            "secondManaPotion": {
-              "enabled": false,
-              "hotkey": "",
-              "manaPercentageLessThanOrEqual": 0
+              "manaPercentageLessThanOrEqual": 80
             }
           },
           "spells": {
             "criticalHealing": {
-              "enabled": true,
-              "hotkey": "7",
-              "hpPercentageLessThanOrEqual": 95,
-              "manaPercentageGreaterThanOrEqual": 0,
-              "spell": {
-                "name": "exura med ico",
-                "manaNeeded": 90,
-                "cooldownInSeconds": 1
-              }
-            },
-            "mediumHealing": {
               "enabled": false,
-              "hotkey": "",
-              "hpPercentageLessThanOrEqual": 0,
+              "hotkey": "5",
+              "hpPercentageLessThanOrEqual": 70,
               "manaPercentageGreaterThanOrEqual": 0,
-              "spell": {
-                "name": "exura med ico",
-                "manaNeeded": 90,
-                "cooldownInSeconds": 1
-              }
+              "spell": null
             },
             "lightHealing": {
               "enabled": false,
-              "hotkey": "",
-              "hpPercentageLessThanOrEqual": 0,
+              "hotkey": "6",
+              "hpPercentageLessThanOrEqual": 90,
               "manaPercentageGreaterThanOrEqual": 0,
-              "spell": {
-                "name": "exura med ico",
-                "manaNeeded": 90,
-                "cooldownInSeconds": 1
-              }
-            },
-            "uturaGran": {
-              "enabled": false,
-              "hotkey": "4",
-              "hpPercentageLessThanOrEqual": 50,
-              "manaPercentageGreaterThanOrEqual": 80,
-              "spell": {
-                "name": "utura",
-                "manaNeeded": 40,
-                "cooldownInSeconds": 1
-              }
+              "spell": null
             },
             "utura": {
-              "enabled": false,
-              "hotkey": "5",
-              "hpPercentageLessThanOrEqual": 60,
-              "manaPercentageGreaterThanOrEqual": 90,
-              "spell": {
-                "name": "utura",
-                "manaNeeded": 40,
-                "cooldownInSeconds": 1
-              }
-            },
-            "exuraGranIco": {
-              "enabled": false,
-              "hotkey": "6",
+              "enabled": true,
+              "hotkey": "7",
               "hpPercentageLessThanOrEqual": 70,
-              "manaPercentageGreaterThanOrEqual": 100,
-              "spell": {
-                "name": "exura gran ico",
-                "manaNeeded": 200,
-                "cooldownInSeconds": 600
-              }
+              "manaPercentageGreaterThanOrEqual": 0,
+              "spell": { "name": "utura", "manaNeeded": 75 }
+            },
+            "uturaGran": {
+              "enabled": true,
+              "hotkey": "8",
+              "hpPercentageLessThanOrEqual": 80,
+              "manaPercentageGreaterThanOrEqual": 0,
+              "spell": { "name": "utura gran", "manaNeeded": 165 }
             }
           },
           "eatFood": {
             "enabled": true,
-            "hotkey": "5",
-            "eatWhenFoodIslessOrEqual": 5
+            "hotkey": "f",
+            "eatWhenFoodIslessOrEqual": 0
           }
-        },
-        "hotkeys": { "shovel": "f9" }
+        }
       }
     }
   }

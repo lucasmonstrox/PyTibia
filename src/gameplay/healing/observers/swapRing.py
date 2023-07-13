@@ -8,7 +8,7 @@ tasksOrchestrator = TasksOrchestrator()
 
 
 # TODO: add unit tests
-def healingPriorityObserver(context: Context):
+def swapRing(context: Context):
     currentTask = tasksOrchestrator.getCurrentTask(context)
     if currentTask is not None:
         if currentTask.status == 'completed':

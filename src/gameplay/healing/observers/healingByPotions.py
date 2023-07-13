@@ -9,7 +9,7 @@ tasksOrchestrator = TasksOrchestrator()
 
 
 # TODO: add unit tests
-def healingByPotionsObserver(context: Context):
+def healingByPotions(context: Context):
     currentTask = tasksOrchestrator.getCurrentTask(context)
     if currentTask is not None:
         if currentTask.status == 'completed':
@@ -17,15 +17,13 @@ def healingByPotionsObserver(context: Context):
         else:
             tasksOrchestrator.do(context)
             return
-    for potionType in ['firstHealthPotion', 'secondHealthPotion']:
-        if context['healing']['potions'][potionType]['enabled']:
-            if matchHpHealing(context['healing']['potions'][potionType], context['statusBar']) and slotIsAvailable(context['screenshot'], 1):
-                tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                    context['healing']['potions'][potionType]['hotkey'], delayAfterComplete=1))
-                return
-    for potionType in ['firstManaPotion', 'secondManaPotion']:
-        if context['healing']['potions'][potionType]['enabled']:
-            if matchManaHealing(context['healing']['potions'][potionType], context['statusBar']) and slotIsAvailable(context['screenshot'], 2):
-                tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                    context['healing']['potions'][potionType]['hotkey'], delayAfterComplete=1))
-                return
+    if context['healing']['potions']['firstHealthPotion']['enabled']:
+        if matchHpHealing(context['healing']['potions']['firstHealthPotion'], context['statusBar']) and slotIsAvailable(context['screenshot'], 1):
+            tasksOrchestrator.setRootTask(context, UseHotkeyTask(
+                context['healing']['potions']['firstHealthPotion']['hotkey'], delayAfterComplete=1))
+            return
+    if context['healing']['potions']['firstManaPotion']['enabled']:
+        if matchManaHealing(context['healing']['potions']['firstManaPotion'], context['statusBar']) and slotIsAvailable(context['screenshot'], 2):
+            tasksOrchestrator.setRootTask(context, UseHotkeyTask(
+                context['healing']['potions']['firstManaPotion']['hotkey'], delayAfterComplete=1))
+            return

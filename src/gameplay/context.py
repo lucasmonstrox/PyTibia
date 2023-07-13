@@ -3,8 +3,8 @@ from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 
 context = {
     'backpacks': {
-        'main': 'brocade backpack',
-        'loot': 'beach backpack',
+        'main': '',
+        'loot': '',
     },
     'battleList': {
         'beingAttackedCreatureCategory': None,
@@ -44,7 +44,6 @@ context = {
         'walkedPixelsInSqm': 0,
     },
     'healing': {
-        'enabled': True,
         'highPriority': {
             'healthFood': {
                 'enabled': False,
@@ -56,11 +55,29 @@ context = {
                 'hotkey': None,
                 'manaPercentageLessThanOrEqual': None,
             },
-            'ssa': {
+            'swapRing': {
                 'enabled': False,
-                'hotkey': None,
-                'hpPercentageLessThanOrEqual': None,
-                'hpPercentageGreaterThanOrEqual': None,
+                'firstRing': {
+                    'hotkey': None,
+                    'hpPercentageLessThanOrEqual': 0
+                },
+                'secondRing': {
+                    'hotkey': None,
+                    'hpPercentageGreaterThanOrEqual': 0
+                },
+                'ringAlwaysEquipped': ''
+            },
+            'swapAmulet': {
+                'enabled': False,
+                'firstAmulet': {
+                    'hotkey': None,
+                    'hpPercentageLessThanOrEqual': 0
+                },
+                'secondAmulet': {
+                    'hotkey': None,
+                    'hpPercentageGreaterThanOrEqual': 0
+                },
+                'amuletAlwaysEquipped': ''
             }
         },
         'potions': {
@@ -70,18 +87,7 @@ context = {
                 'hpPercentageLessThanOrEqual': None,
                 'manaPercentageGreaterThanOrEqual': None,
             },
-            'secondHealthPotion': {
-                'enabled': False,
-                'hotkey': None,
-                'hpPercentageLessThanOrEqual': None,
-                'manaPercentageGreaterThanOrEqual': None,
-            },
             'firstManaPotion': {
-                'enabled': False,
-                'hotkey': None,
-                'manaPercentageLessThanOrEqual': None,
-            },
-            'secondManaPotion': {
                 'enabled': False,
                 'hotkey': None,
                 'manaPercentageLessThanOrEqual': None,
@@ -103,23 +109,26 @@ context = {
             'utura': {
                 'enabled': False,
                 'hotkey': None,
-                'spell': None
+                'spell': {
+                    'name': 'utura',
+                    'manaNeeded': '75'
+                }
             },
-            'exuraGranIco': {
+            'uturaGran': {
                 'enabled': False,
                 'hotkey': None,
-                'hpPercentageLessThanOrEqual': None,
-                'manaPercentageGreaterThanOrEqual': None,
-                'spell': None
+                'spell': {
+                    'name': 'utura gran',
+                    'manaNeeded': '165'
+                }
             },
         },
         'eatFood': {
-            'enabled': True,
-            'hotkey': '5',
-            'eatWhenFoodIslessOrEqual': 5,
+            'enabled': False,
+            'hotkey': '',
+            'eatWhenFoodIslessOrEqual': 0,
         }
     },
-    'hotkeys': {},
     'loot': {
         'corpsesToLoot': [],
     },

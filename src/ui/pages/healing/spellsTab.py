@@ -8,7 +8,6 @@ class SpellsTab(tk.Frame):
         self.context = context
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
-        self.columnconfigure(2, weight=1)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
 
@@ -17,27 +16,17 @@ class SpellsTab(tk.Frame):
         self.criticalHealingCard.grid(column=0, row=0, padx=10,
                                       pady=10, sticky='nsew')
 
-        self.mediumHealingCard = SpellCard(
-            self, context, 'mediumHealing', title='Medium healing')
-        self.mediumHealingCard.grid(column=1, row=0, padx=10,
-                                    pady=10, sticky='nsew')
-
         self.lightHealingCard = SpellCard(
             self, context, 'lightHealing', title='Light healing')
-        self.lightHealingCard.grid(column=2, row=0, padx=10,
+        self.lightHealingCard.grid(column=1, row=0, padx=10,
                                    pady=10, sticky='nsew')
-
-        self.uturaGranCard = SpellCard(
-            self, context, 'uturaGran', title='Utura gran')
-        self.uturaGranCard.grid(column=0, row=1, padx=10,
-                                pady=10, sticky='nsew')
 
         self.uturaCard = SpellCard(
             self, context, 'utura', title='Utura')
-        self.uturaCard.grid(column=1, row=1, padx=10,
+        self.uturaCard.grid(column=0, row=1, padx=10,
                             pady=10, sticky='nsew')
 
-        self.exuraGranIcoCard = SpellCard(
-            self, context, 'exuraGranIco', title='Utura')
-        self.exuraGranIcoCard.grid(column=2, row=1, padx=10,
-                                   pady=10, sticky='nsew')
+        self.uturaGranCard = SpellCard(
+            self, context, 'uturaGran', title='Utura gran')
+        self.uturaGranCard.grid(column=1, row=1, padx=10,
+                                pady=10, sticky='nsew')

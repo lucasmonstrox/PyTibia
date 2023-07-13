@@ -13,6 +13,4 @@ def loadContextFromConfig(config, context):
         context['comboSpells']['items'].append(comboSpellsItem)
     # healing
     context['healing'] = config['healing'].copy()
-    # hotkeys
-    context['hotkeys'] = config['hotkeys'].copy()
     return context

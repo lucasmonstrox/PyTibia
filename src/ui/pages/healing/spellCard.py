@@ -1,10 +1,10 @@
-import re
+# import re
 import tkinter as tk
 
 
 class SpellCard(tk.LabelFrame):
     def __init__(self, parent, context, healingType, title=''):
-        super().__init__(parent)
+        super().__init__(parent, text=title)
         self.context = context
         self.text = title
         self.healingType = healingType
@@ -13,7 +13,7 @@ class SpellCard(tk.LabelFrame):
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=1)
-        self.rowconfigure(3, weight=1)
+        # self.rowconfigure(3, weight=1)
 
         self.checkVar = tk.BooleanVar()
         self.checkVar.set(self.context.context['healing']
@@ -49,18 +49,18 @@ class SpellCard(tk.LabelFrame):
         self.manaPercentageGreaterThanOrEqualSlider.grid(column=1, row=2, padx=10,
                                                          pady=10, sticky='nsew')
 
-        self.hotkeyLabel = tk.Label(
-            self, text='Hotkey:')
-        self.hotkeyLabel.grid(column=0, row=3, padx=10,
-                              pady=10, sticky='nsew')
+        # self.hotkeyLabel = tk.Label(
+        #     self, text='Hotkey:')
+        # self.hotkeyLabel.grid(column=0, row=3, padx=10,
+        #                       pady=10, sticky='nsew')
 
-        self.hotkeyEntryVar = tk.StringVar()
-        self.hotkeyEntryVar.set(self.context.context['healing']
-                                ['spells'][healingType]['hotkey'])
-        self.hotkeyEntry = tk.Entry(self, textvariable=self.hotkeyEntryVar)
-        self.hotkeyEntry.bind('<Key>', self.onChangeHotkey)
-        self.hotkeyEntry.grid(column=1, row=3, padx=10,
-                              pady=10, sticky='nsew')
+        # self.hotkeyEntryVar = tk.StringVar()
+        # self.hotkeyEntryVar.set(self.context.context['healing']
+        #                         ['spells'][healingType]['hotkey'])
+        # self.hotkeyEntry = tk.Entry(self, textvariable=self.hotkeyEntryVar)
+        # self.hotkeyEntry.bind('<Key>', self.onChangeHotkey)
+        # self.hotkeyEntry.grid(column=1, row=3, padx=10,
+        #                       pady=10, sticky='nsew')
 
     def onToggleCheckButton(self):
         self.context.toggleSpellByKey(
@@ -74,12 +74,12 @@ class SpellCard(tk.LabelFrame):
         self.context.setSpellManaPercentageGreaterThanOrEqual(
             self.healingType, self.manaPercentageGreaterThanOrEqualVar.get())
 
-    def onChangeHotkey(self, event):
-        key = event.char
-        if key == '\b':
-            return
-        if re.match(r'^F[1-9]|1[0-2]$', key) or re.match(r'^[0-9]$', key) or re.match(r'^[a-z]$', key):
-            self.hotkeyEntry.delete(0, tk.END)
-            self.context.setSpellHotkeyByKey(self.healingType, key)
-            return
-        return 'break'
+    # def onChangeHotkey(self, event):
+    #     key = event.char
+    #     if key == '\b':
+    #         return
+    #     if re.match(r'^F[1-9]|1[0-2]$', key) or re.match(r'^[0-9]$', key) or re.match(r'^[a-z]$', key):
+    #         self.hotkeyEntry.delete(0, tk.END)
+    #         self.context.setSpellHotkeyByKey(self.healingType, key)
+    #         return
+    #     return 'break'
