@@ -4,7 +4,7 @@ import tkinter as tk
 
 class HealthPotionCard(tk.LabelFrame):
     def __init__(self, parent, context, healthPotionType, title=''):
-        super().__init__(parent, text=title)
+        super().__init__(parent, padx=10, pady=10, text=title)
         self.context = context
         self.healthPotionType = healthPotionType
         self.columnconfigure(0, weight=3)
@@ -15,38 +15,36 @@ class HealthPotionCard(tk.LabelFrame):
         self.rowconfigure(3, weight=1)
 
         self.checkVar = tk.BooleanVar()
-        self.checkVar.set(self.context.context['healing']
-                          ['potions'][healthPotionType]['enabled'])
+        self.checkVar.set(
+            self.context.context['healing']['potions'][healthPotionType]['enabled'])
         self.checkbutton = tk.Checkbutton(
             self, text='Enabled', variable=self.checkVar, command=self.onToggleCheckButton)
-        self.checkbutton.grid(column=1, row=0, padx=10,
-                              pady=10, sticky='e')
+        self.checkbutton.grid(column=1, row=0, sticky='e')
 
         self.hpPercentageLessThanOrEqualLabel = tk.Label(
             self, text='HP % less than or equal:')
-        self.hpPercentageLessThanOrEqualLabel.grid(column=0, row=1, padx=10,
-                                                   pady=10, sticky='e')
+        self.hpPercentageLessThanOrEqualLabel.grid(
+            column=0, row=1, sticky='nsew')
 
         self.hpLessThanOrEqualVar = tk.IntVar()
         self.hpLessThanOrEqualVar.set(self.context.context['healing']
                                       ['potions'][healthPotionType]['hpPercentageLessThanOrEqual'])
         self.hpLessThanOrEqualSlider = tk.Scale(self, from_=0, to=100,
                                                 resolution=10, orient=tk.HORIZONTAL, variable=self.hpLessThanOrEqualVar, command=self.onChangeHp)
-        self.hpLessThanOrEqualSlider.grid(column=1, row=1, padx=10,
-                                          pady=10, sticky='nsew')
+        self.hpLessThanOrEqualSlider.grid(column=1, row=1, sticky='ew')
 
         self.manaPercentageGreaterThanOrEqualLabel = tk.Label(
             self, text='Mana % greater than or equal:')
-        self.manaPercentageGreaterThanOrEqualLabel.grid(column=0, row=2, padx=10,
-                                                        pady=10, sticky='e')
+        self.manaPercentageGreaterThanOrEqualLabel.grid(
+            column=0, row=2, sticky='nsew')
 
         self.manaPercentageGreaterThanOrEqualVar = tk.IntVar()
         self.manaPercentageGreaterThanOrEqualVar.set(self.context.context['healing']
                                                      ['potions'][healthPotionType]['manaPercentageGreaterThanOrEqual'])
         self.manaPercentageGreaterThanOrEqualSlider = tk.Scale(self, from_=0, to=100,
                                                                resolution=10, orient=tk.HORIZONTAL, variable=self.manaPercentageGreaterThanOrEqualVar, command=self.onChangeMana)
-        self.manaPercentageGreaterThanOrEqualSlider.grid(column=1, row=2, padx=10,
-                                                         pady=10, sticky='nsew')
+        self.manaPercentageGreaterThanOrEqualSlider.grid(
+            column=1, row=2, sticky='ew')
 
         # self.hotkeyLabel = tk.Label(
         #     self, text='Hotkey:')

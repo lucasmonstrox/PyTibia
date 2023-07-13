@@ -19,21 +19,20 @@ class ManaPotionCard(tk.LabelFrame):
                           ['potions'][healthPotionType]['enabled'])
         self.checkbutton = tk.Checkbutton(
             self, text='Enabled', variable=self.checkVar, command=self.onToggleCheckButton)
-        self.checkbutton.grid(column=1, row=0, padx=10,
-                              pady=10, sticky='e')
+        self.checkbutton.grid(column=1, row=0, sticky='e')
 
         self.manaPercentageLessThenOrEqualLabel = tk.Label(
             self, text='Mana % less than or equal:')
-        self.manaPercentageLessThenOrEqualLabel.grid(column=0, row=1, padx=10,
-                                                     pady=10, sticky='e')
+        self.manaPercentageLessThenOrEqualLabel.grid(
+            column=0, row=1, sticky='nsew')
 
         self.manaPercentageLessThenOrEqualVar = tk.IntVar()
         self.manaPercentageLessThenOrEqualVar.set(self.context.context['healing']
                                                   ['potions'][healthPotionType]['manaPercentageLessThanOrEqual'])
         self.manaPercentageLessThenOrEqualSlider = tk.Scale(self, from_=0, to=100,
                                                             resolution=10, orient=tk.HORIZONTAL, variable=self.manaPercentageLessThenOrEqualVar, command=self.onChangeMana)
-        self.manaPercentageLessThenOrEqualSlider.grid(column=1, row=1, padx=10,
-                                                      pady=10, sticky='nsew')
+        self.manaPercentageLessThenOrEqualSlider.grid(
+            column=1, row=1, sticky='ew')
 
         # self.hotkeyLabel = tk.Label(
         #     self, text='Hotkey:')

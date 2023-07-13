@@ -18,13 +18,12 @@ class UturaGranCard(tk.LabelFrame):
             self.context.context['healing']['spells']['uturaGran']['enabled'])
         self.checkbutton = tk.Checkbutton(
             self, text='Enabled', variable=self.checkVar, command=self.onToggleCheckButton)
-        self.checkbutton.grid(column=1, row=0, padx=10,
-                              pady=10, sticky='e')
+        self.checkbutton.grid(column=1, row=0, sticky='nsew')
 
         self.hpPercentageLessThanOrEqualLabel = tk.Label(
             self, text='HP % less than or equal:')
         self.hpPercentageLessThanOrEqualLabel.grid(
-            column=0, row=2, sticky='nsew')
+            column=0, row=2, sticky='ew')
 
         self.hpLessThanOrEqualVar = tk.IntVar()
         self.hpLessThanOrEqualVar.set(self.context.context['healing']
@@ -36,7 +35,7 @@ class UturaGranCard(tk.LabelFrame):
         self.manaPercentageGreaterThanOrEqualLabel = tk.Label(
             self, text='Mana % greater than or equal:')
         self.manaPercentageGreaterThanOrEqualLabel.grid(
-            column=0, row=3, sticky='e')
+            column=0, row=3, sticky='nsew')
 
         self.manaPercentageGreaterThanOrEqualVar = tk.IntVar()
         self.manaPercentageGreaterThanOrEqualVar.set(self.context.context['healing']
@@ -44,7 +43,7 @@ class UturaGranCard(tk.LabelFrame):
         self.manaPercentageGreaterThanOrEqualSlider = tk.Scale(self, from_=0, to=100,
                                                                resolution=10, orient=tk.HORIZONTAL, variable=self.manaPercentageGreaterThanOrEqualVar, command=self.onChangeMana)
         self.manaPercentageGreaterThanOrEqualSlider.grid(
-            column=1, row=3, sticky='nsew')
+            column=1, row=3, sticky='ew')
 
     def onToggleCheckButton(self):
         self.context.toggleSpellByKey(

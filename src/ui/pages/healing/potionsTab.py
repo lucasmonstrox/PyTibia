@@ -10,8 +10,6 @@ class PotionsTab(tk.Frame):
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
-        self.rowconfigure(2, weight=1)
-        self.context = context
 
         self.healthPotionCard = HealthPotionCard(
             self, context, 'firstHealthPotion', title='Health potion')
