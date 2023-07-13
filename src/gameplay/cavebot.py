@@ -8,20 +8,23 @@ from .typings import Context
 def resolveCavebotTasks(context: Context) -> Union[AttackClosestCreatureTask, None]:
     currentTask = context['tasksOrchestrator'].getCurrentTask(context)
     if context['cavebot']['isAttackingSomeCreature']:
-        if context['cavebot']['targetCreature'] == None:
+        if context['cavebot']['targetCreature'] is None:
             return context
         if hasTargetToCreature(
-            context['gameWindow']['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False:
-            if context['cavebot']['closestCreature'] == None:
+                context['gameWindow']['monsters'], context['cavebot']['targetCreature'], context['radar']['coordinate']) == False:
+            if context['cavebot']['closestCreature'] is None:
                 return context
-            context['tasksOrchestrator'].setRootTask(context, AttackClosestCreatureTask())
+            context['tasksOrchestrator'].setRootTask(
+                context, AttackClosestCreatureTask())
             return context
         if currentTask is None or context['tasksOrchestrator'].rootTask.name != 'attackClosestCreature':
-            context['tasksOrchestrator'].setRootTask(context, AttackClosestCreatureTask())
+            context['tasksOrchestrator'].setRootTask(
+                context, AttackClosestCreatureTask())
         return context
-    if context['cavebot']['closestCreature'] == None:
+    if context['cavebot']['closestCreature'] is None:
         return context
-    context['tasksOrchestrator'].setRootTask(context, AttackClosestCreatureTask())
+    context['tasksOrchestrator'].setRootTask(
+        context, AttackClosestCreatureTask())
     return context
 
 
