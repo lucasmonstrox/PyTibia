@@ -1,1 +1,281 @@
-{"_default": {"1": {"enabled": true, "config": {"backpacks": {"main": "Brocade Backpack", "loot": "Beach Backpack"}, "cavebot": {"enabled": false, "waypoints": {"items": [{"label": "", "type": "walk", "coordinate": [33216, 32450, 7], "options": {}}, {"label": "", "type": "walk", "coordinate": [33215, 32410, 7], "options": {"direction": "north"}}, {"label": "", "type": "walk", "coordinate": [33212, 32359, 7], "options": {"direction": "north"}}, {"label": "", "type": "useShovel", "coordinate": [33212, 32358, 7], "options": {"direction": "north"}}, {"label": "", "type": "walk", "coordinate": [33227, 32358, 8], "options": {"direction": "east"}}, {"label": "", "type": "moveDown", "coordinate": [33228, 32358, 8], "options": {"direction": "east"}}, {"label": "", "type": "walk", "coordinate": [33223, 32355, 9], "options": {"direction": "north"}}, {"label": "", "type": "moveDown", "coordinate": [33223, 32354, 9], "options": {"direction": "north"}}, {"label": "startOfTheCave", "type": "walk", "coordinate": [33208, 32354, 10], "options": {}}, {"label": "", "type": "walk", "coordinate": [33190, 32348, 10], "options": {}}, {"label": "", "type": "walk", "coordinate": [33208, 32367, 10], "options": {}}, {"label": "", "type": "walk", "coordinate": [33194, 32366, 10], "options": {}}, {"label": "", "type": "walk", "coordinate": [33222, 32386, 10], "options": {}}, {"label": "", "type": "walk", "coordinate": [33198, 32398, 10], "options": {}}, {"label": "", "type": "walk", "coordinate": [33209, 32404, 10], "options": {}}, {"label": "", "type": "walk", "coordinate": [33207, 32364, 10], "options": {}}, {"label": "", "type": "walk", "coordinate": [33221, 32351, 10], "options": {}}, {"label": "", "type": "refillChecker", "coordinate": [33225, 32351, 10], "options": {"minimumAmountOfHealthPotions": "11", "minimumAmountOfManaPotions": "12", "minimumAmountOfCap": "13", "waypointLabelToRedirect": "startOfTheCave"}}]}}, "comboSpells": {"enabled": false, "items": [{"enabled": true, "name": "3 ou -", "creatures": {"compare": "lessThan", "value": 4}, "spells": [{"name": "exori", "hotkey": "f1", "metadata": {"mana": 115}}, {"name": "exori gran", "hotkey": "f2", "metadata": {"mana": 340}}, {"name": "exori", "hotkey": "f1", "metadata": {"mana": 115}}, {"name": "exori min", "hotkey": "f6", "metadata": {"mana": 200}}, {"name": "exori", "hotkey": "f1", "metadata": {"mana": 115}}], "currentSpellIndex": 0}, {"enabled": true, "name": "4 ou +", "creatures": {"compare": "greaterThanOrEqual", "value": 4}, "spells": [{"name": "exori gran", "hotkey": "f2", "metadata": {"mana": 340}}, {"name": "exori mas", "hotkey": "f5", "metadata": {"mana": 160}}, {"name": "exori", "hotkey": "f1", "metadata": {"mana": 115}}, {"name": "exori gran", "hotkey": "f2", "metadata": {"mana": 340}}, {"name": "exori mas", "hotkey": "f5", "metadata": {"mana": 160}}], "currentSpellIndex": 0}]}, "healing": {"highPriority": {"healthFood": {"enabled": false, "hotkey": "3", "hpPercentageLessThanOrEqual": 0}, "manaFood": {"enabled": false, "hotkey": "4", "manaPercentageLessThanOrEqual": 0}, "swapRing": {"enabled": true, "firstRing": {"hotkey": "f11", "hpPercentageLessThanOrEqual": 40}, "secondRing": {"hotkey": "f12", "hpPercentageGreaterThanOrEqual": 80}, "ringAlwaysEquipped": "secondRing"}, "swapAmulet": {"enabled": true, "firstAmulet": {"hotkey": "u", "hpPercentageLessThanOrEqual": 40}, "secondAmulet": {"hotkey": "i", "hpPercentageGreaterThanOrEqual": 80}, "amuletAlwaysEquipped": "secondAmulet"}}, "potions": {"firstHealthPotion": {"enabled": true, "hotkey": "1", "hpPercentageLessThanOrEqual": 40, "manaPercentageGreaterThanOrEqual": 0}, "firstManaPotion": {"enabled": true, "hotkey": "2", "manaPercentageLessThanOrEqual": 80}}, "spells": {"criticalHealing": {"enabled": false, "hotkey": "5", "hpPercentageLessThanOrEqual": 70, "manaPercentageGreaterThanOrEqual": 20, "spell": null}, "lightHealing": {"enabled": false, "hotkey": "6", "hpPercentageLessThanOrEqual": 80, "manaPercentageGreaterThanOrEqual": 20, "spell": null}, "utura": {"enabled": true, "hotkey": "7", "hpPercentageLessThanOrEqual": 80, "manaPercentageGreaterThanOrEqual": 20}, "uturaGran": {"enabled": true, "hotkey": "8", "hpPercentageLessThanOrEqual": 70, "manaPercentageGreaterThanOrEqual": 20}}, "eatFood": {"enabled": true, "hotkey": "f", "eatWhenFoodIslessOrEqual": 0}}}}}}
+{
+  "_default": {
+    "1": {
+      "enabled": true,
+      "config": {
+        "backpacks": { "main": "Brocade Backpack", "loot": "Beach Backpack" },
+        "cavebot": {
+          "enabled": false,
+          "waypoints": {
+            "items": [
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33216, 32450, 7],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33215, 32410, 7],
+                "options": { "direction": "north" }
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33212, 32359, 7],
+                "options": { "direction": "north" }
+              },
+              {
+                "label": "",
+                "type": "useShovel",
+                "coordinate": [33212, 32358, 7],
+                "options": { "direction": "north" }
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33227, 32358, 8],
+                "options": { "direction": "east" }
+              },
+              {
+                "label": "",
+                "type": "moveDown",
+                "coordinate": [33228, 32358, 8],
+                "options": { "direction": "east" }
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33223, 32355, 9],
+                "options": { "direction": "north" }
+              },
+              {
+                "label": "",
+                "type": "moveDown",
+                "coordinate": [33223, 32354, 9],
+                "options": { "direction": "north" }
+              },
+              {
+                "label": "startOfTheCave",
+                "type": "walk",
+                "coordinate": [33208, 32354, 10],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33190, 32348, 10],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33208, 32367, 10],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33194, 32366, 10],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33222, 32386, 10],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33198, 32398, 10],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33209, 32404, 10],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33207, 32364, 10],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33221, 32351, 10],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "refillChecker",
+                "coordinate": [33225, 32351, 10],
+                "options": {
+                  "minimumAmountOfHealthPotions": "11",
+                  "minimumAmountOfManaPotions": "12",
+                  "minimumAmountOfCap": "13",
+                  "waypointLabelToRedirect": "startOfTheCave"
+                }
+              }
+            ]
+          }
+        },
+        "comboSpells": {
+          "enabled": false,
+          "items": [
+            {
+              "enabled": true,
+              "name": "3 ou -",
+              "creatures": { "compare": "lessThan", "value": 4 },
+              "spells": [
+                {
+                  "name": "exori",
+                  "hotkey": "f1",
+                  "metadata": { "mana": 115 }
+                },
+                {
+                  "name": "exori gran",
+                  "hotkey": "f2",
+                  "metadata": { "mana": 340 }
+                },
+                {
+                  "name": "exori",
+                  "hotkey": "f1",
+                  "metadata": { "mana": 115 }
+                },
+                {
+                  "name": "exori min",
+                  "hotkey": "f6",
+                  "metadata": { "mana": 200 }
+                },
+                { "name": "exori", "hotkey": "f1", "metadata": { "mana": 115 } }
+              ],
+              "currentSpellIndex": 0
+            },
+            {
+              "enabled": true,
+              "name": "4 ou +",
+              "creatures": { "compare": "greaterThanOrEqual", "value": 4 },
+              "spells": [
+                {
+                  "name": "exori gran",
+                  "hotkey": "f2",
+                  "metadata": { "mana": 340 }
+                },
+                {
+                  "name": "exori mas",
+                  "hotkey": "f5",
+                  "metadata": { "mana": 160 }
+                },
+                {
+                  "name": "exori",
+                  "hotkey": "f1",
+                  "metadata": { "mana": 115 }
+                },
+                {
+                  "name": "exori gran",
+                  "hotkey": "f2",
+                  "metadata": { "mana": 340 }
+                },
+                {
+                  "name": "exori mas",
+                  "hotkey": "f5",
+                  "metadata": { "mana": 160 }
+                }
+              ],
+              "currentSpellIndex": 0
+            }
+          ]
+        },
+        "healing": {
+          "highPriority": {
+            "healthFood": {
+              "enabled": false,
+              "hotkey": "3",
+              "hpPercentageLessThanOrEqual": 0
+            },
+            "manaFood": {
+              "enabled": false,
+              "hotkey": "4",
+              "manaPercentageLessThanOrEqual": 0
+            },
+            "swapRing": {
+              "enabled": true,
+              "firstRing": {
+                "hotkey": "f11",
+                "hpPercentageLessThanOrEqual": 40
+              },
+              "secondRing": {
+                "hotkey": "f12",
+                "hpPercentageGreaterThanOrEqual": 80
+              },
+              "ringAlwaysEquipped": "secondRing"
+            },
+            "swapAmulet": {
+              "enabled": true,
+              "firstAmulet": {
+                "hotkey": "u",
+                "hpPercentageLessThanOrEqual": 40
+              },
+              "secondAmulet": {
+                "hotkey": "i",
+                "hpPercentageGreaterThanOrEqual": 80
+              },
+              "amuletAlwaysEquipped": "secondAmulet"
+            }
+          },
+          "potions": {
+            "firstHealthPotion": {
+              "enabled": true,
+              "hotkey": "1",
+              "hpPercentageLessThanOrEqual": 40,
+              "manaPercentageGreaterThanOrEqual": 0
+            },
+            "firstManaPotion": {
+              "enabled": true,
+              "hotkey": "2",
+              "manaPercentageLessThanOrEqual": 80
+            }
+          },
+          "spells": {
+            "criticalHealing": {
+              "enabled": true,
+              "hotkey": "5",
+              "hpPercentageLessThanOrEqual": 70,
+              "manaPercentageGreaterThanOrEqual": 20,
+              "spell": "exura ico"
+            },
+            "lightHealing": {
+              "enabled": true,
+              "hotkey": "6",
+              "hpPercentageLessThanOrEqual": 80,
+              "manaPercentageGreaterThanOrEqual": 20,
+              "spell": "exura med ico"
+            },
+            "utura": {
+              "enabled": true,
+              "hotkey": "7",
+              "hpPercentageLessThanOrEqual": 70,
+              "manaPercentageGreaterThanOrEqual": 30
+            },
+            "uturaGran": {
+              "enabled": true,
+              "hotkey": "8",
+              "hpPercentageLessThanOrEqual": 70,
+              "manaPercentageGreaterThanOrEqual": 30
+            }
+          },
+          "eatFood": {
+            "enabled": true,
+            "hotkey": "f",
+            "eatWhenFoodIslessOrEqual": 0
+          }
+        }
+      }
+    }
+  }
+}

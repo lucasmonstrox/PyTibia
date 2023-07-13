@@ -211,6 +211,11 @@ class Context:
         self.enabledProfile['config']['healing']['spells'][spellType]['manaPercentageGreaterThanOrEqual'] = hpPercentage
         self.db.update(self.enabledProfile)
 
+    def setSpellName(self, spellType, spell):
+        self.context['healing']['spells'][spellType]['spell'] = spell
+        self.enabledProfile['config']['healing']['spells'][spellType]['spell'] = spell
+        self.db.update(self.enabledProfile)
+
     def setHealthPotionManaPercentageGreaterThanOrEqual(self, healthPotionType, hpPercentage):
         self.context['healing']['potions'][healthPotionType]['manaPercentageGreaterThanOrEqual'] = hpPercentage
         self.enabledProfile['config']['healing']['potions'][healthPotionType]['manaPercentageGreaterThanOrEqual'] = hpPercentage

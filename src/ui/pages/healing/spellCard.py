@@ -25,13 +25,16 @@ class SpellCard(tk.LabelFrame):
                               pady=10, sticky='e')
 
         self.spellsLabel = tk.Label(
-            self, text='Spells:')
+            self, text='Spell:')
         self.spellsLabel.grid(column=0, row=1, sticky='nsew')
 
         self.spellsCombobox = ttk.Combobox(
-            self, values=[], state='readonly')
-        # self.spellsCombobox.bind(
-        #     "<<ComboboxSelected>>", self.onChangeWindow)
+            self, values=['exura infir ico', 'exura ico', 'exura med ico', 'exura gran ico'], state='readonly')
+        if self.context.enabledProfile is not None:
+            self.spellsCombobox.set(
+                self.context.enabledProfile['config']['healing']['spells'][healingType]['spell'])
+        self.spellsCombobox.bind(
+            "<<ComboboxSelected>>", self.onChangeSpell)
         self.spellsCombobox.grid(column=1, row=1, sticky='ew')
 
         self.hpPercentageLessThanOrEqualLabel = tk.Label(
@@ -59,22 +62,12 @@ class SpellCard(tk.LabelFrame):
         self.manaPercentageGreaterThanOrEqualSlider.grid(
             column=1, row=3, sticky='nsew')
 
-        # self.hotkeyLabel = tk.Label(
-        #     self, text='Hotkey:')
-        # self.hotkeyLabel.grid(column=0, row=3, padx=10,
-        #                       pady=10, sticky='nsew')
-
-        # self.hotkeyEntryVar = tk.StringVar()
-        # self.hotkeyEntryVar.set(self.context.context['healing']
-        #                         ['spells'][healingType]['hotkey'])
-        # self.hotkeyEntry = tk.Entry(self, textvariable=self.hotkeyEntryVar)
-        # self.hotkeyEntry.bind('<Key>', self.onChangeHotkey)
-        # self.hotkeyEntry.grid(column=1, row=3, padx=10,
-        #                       pady=10, sticky='nsew')
-
     def onToggleCheckButton(self):
         self.context.toggleSpellByKey(
             self.healingType, self.checkVar.get())
+
+    def onChangeSpell(self, _):
+        self.context.setSpellName(self.healingType, self.spellsCombobox.get())
 
     def onChangeHp(self, _):
         self.context.setSpellHpPercentageLessThanOrEqual(
@@ -83,13 +76,3 @@ class SpellCard(tk.LabelFrame):
     def onChangeMana(self, _):
         self.context.setSpellManaPercentageGreaterThanOrEqual(
             self.healingType, self.manaPercentageGreaterThanOrEqualVar.get())
-
-    # def onChangeHotkey(self, event):
-    #     key = event.char
-    #     if key == '\b':
-    #         return
-    #     if re.match(r'^F[1-9]|1[0-2]$', key) or re.match(r'^[0-9]$', key) or re.match(r'^[a-z]$', key):
-    #         self.hotkeyEntry.delete(0, tk.END)
-    #         self.context.setSpellHotkeyByKey(self.healingType, key)
-    #         return
-    #     return 'break'
