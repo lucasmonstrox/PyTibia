@@ -10,8 +10,9 @@ from .typings import Context
 tasksOrchestrator = TasksOrchestrator()
 
 
+# TODO: do not execute algorithm when has no combo spells
 # TODO: add unit tests
-def comboSpellsObserver(context: Context):
+def comboSpells(context: Context):
     if context['statusBar']['mana'] is None:
         return
     currentTask = tasksOrchestrator.getCurrentTask(context)
@@ -21,8 +22,6 @@ def comboSpellsObserver(context: Context):
         else:
             tasksOrchestrator.do(context)
             return
-    if context['comboSpells']['enabled'] == False:
-        return
     nearestCreaturesCount = getNearestCreaturesCount(
         context['gameWindow']['monsters'])
     if nearestCreaturesCount == 0:
