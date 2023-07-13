@@ -1,7 +1,8 @@
 import pyautogui
 from time import sleep, time
+import traceback
 from src.gameplay.cavebot import resolveCavebotTasks, shouldAskForCavebotTasks
-from src.gameplay.combo import comboSpellsObserver
+from src.gameplay.combo import comboSpells
 from src.gameplay.core.middlewares.battleList import setBattleListMiddleware
 from src.gameplay.core.middlewares.chat import setChatTabsMiddleware
 from src.gameplay.core.middlewares.gameWindow import setDirectionMiddleware, setHandleLootMiddleware, setGameWindowCreaturesMiddleware, setGameWindowMiddleware
@@ -11,10 +12,11 @@ from src.gameplay.core.middlewares.screenshot import setScreenshotMiddleware
 from src.gameplay.core.middlewares.tasks import setCleanUpTasksMiddleware
 from src.gameplay.core.tasks.lootCorpse import LootCorpseTask
 from src.gameplay.resolvers import resolveTasksByWaypoint
-from src.gameplay.healing.observers.eatFood import eatFoodObserver
-from src.gameplay.healing.observers.healingBySpells import healingBySpellsObserver
-from src.gameplay.healing.observers.healingByPotions import healingByPotionsObserver
-from src.gameplay.healing.observers.healingPriority import healingPriorityObserver
+from src.gameplay.healing.observers.eatFood import eatFood
+from src.gameplay.healing.observers.healingBySpells import healingBySpells
+from src.gameplay.healing.observers.healingByPotions import healingByPotions
+from src.gameplay.healing.observers.swapAmulet import swapAmulet
+from src.gameplay.healing.observers.swapRing import swapRing
 from src.gameplay.targeting import hasCreaturesToAttack
 from src.repositories.gameWindow.creatures import getClosestCreature
 
@@ -41,15 +43,17 @@ class PyTibiaThread:
                 self.context.context = self.context.context['tasksOrchestrator'].do(
                     self.context.context)
                 self.context.context['radar']['lastCoordinateVisited'] = self.context.context['radar']['coordinate']
-                healingPriorityObserver(self.context.context)
-                healingByPotionsObserver(self.context.context)
-                healingBySpellsObserver(self.context.context)
-                comboSpellsObserver(self.context.context)
+                healingByPotions(self.context.context)
+                healingBySpells(self.context.context)
+                comboSpells(self.context.context)
+                swapAmulet(self.context.context)
+                swapRing(self.context.context)
+                eatFood(self.context.context)
                 endTime = time()
                 diff = endTime - startTime
                 sleep(max(0.045 - diff, 0))
-            except Exception as error:
-                print('An exception occurred:', error)
+            except:
+                print('An exception occurred:', traceback.format_exc())
 
     def handleGameData(self, context):
         if context['pause']:
