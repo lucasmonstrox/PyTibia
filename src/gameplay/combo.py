@@ -3,6 +3,7 @@ from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 from src.repositories.actionBar.core import hasCooldownByName
 from src.repositories.gameWindow.creatures import getNearestCreaturesCount
 from src.utils.array import getNextArrayIndex
+from src.wiki.spells import spells
 from .core.tasks.useHotkey import UseHotkeyTask
 from .typings import Context
 
@@ -35,7 +36,7 @@ def comboSpells(context: Context):
                 return
             if hasCooldownByName(context['screenshot'], spell['name']):
                 return
-            if context['statusBar']['mana'] < spell['metadata']['mana']:
+            if context['statusBar']['mana'] < spells[spell['name']]['manaNeeded']:
                 return
             tasksOrchestrator.setRootTask(
                 context, UseHotkeyTask(spell['hotkey']))

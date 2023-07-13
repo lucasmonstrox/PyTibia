@@ -134,25 +134,24 @@
               "spells": [
                 {
                   "name": "exori",
-                  "hotkey": "f1",
-                  "metadata": { "mana": 115 }
+                  "hotkey": "f1"
                 },
                 {
                   "name": "exori gran",
-                  "hotkey": "f2",
-                  "metadata": { "mana": 340 }
+                  "hotkey": "f2"
                 },
                 {
                   "name": "exori",
-                  "hotkey": "f1",
-                  "metadata": { "mana": 115 }
+                  "hotkey": "f1"
                 },
                 {
                   "name": "exori min",
-                  "hotkey": "f6",
-                  "metadata": { "mana": 200 }
+                  "hotkey": "f6"
                 },
-                { "name": "exori", "hotkey": "f1", "metadata": { "mana": 115 } }
+                {
+                  "name": "exori",
+                  "hotkey": "f1"
+                }
               ],
               "currentSpellIndex": 0
             },
@@ -163,28 +162,23 @@
               "spells": [
                 {
                   "name": "exori gran",
-                  "hotkey": "f2",
-                  "metadata": { "mana": 340 }
+                  "hotkey": "f2"
                 },
                 {
                   "name": "exori mas",
-                  "hotkey": "f5",
-                  "metadata": { "mana": 160 }
+                  "hotkey": "f5"
                 },
                 {
                   "name": "exori",
-                  "hotkey": "f1",
-                  "metadata": { "mana": 115 }
+                  "hotkey": "f1"
                 },
                 {
                   "name": "exori gran",
-                  "hotkey": "f2",
-                  "metadata": { "mana": 340 }
+                  "hotkey": "f2"
                 },
                 {
                   "name": "exori mas",
-                  "hotkey": "f5",
-                  "metadata": { "mana": 160 }
+                  "hotkey": "f5"
                 }
               ],
               "currentSpellIndex": 0
