@@ -1,24 +1,26 @@
+from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 from src.gameplay.core.tasks.useHotkey import UseHotkeyTask
-from src.repositories.actionBar.core import slotIsAvailable
+from src.repositories.actionBar.core import slotIsAvailable, slotIsEquipped
 from src.repositories.skills.core import getFood
 from ...typings import Context
 
 
-eatFoodTask = None
+tasksOrchestrator = TasksOrchestrator()
 
 
 # TODO: add unit tests
-def eatFoodObserver(context: Context):
-    global eatFoodTask
-    if eatFoodTask is not None:
-        if eatFoodTask.status == 'completed':
-            eatFoodTask = None
+def eatFood(context: Context):
+    currentTask = tasksOrchestrator.getCurrentTask(context)
+    if currentTask is not None:
+        if currentTask.status == 'completed':
+            tasksOrchestrator.reset()
         else:
-            eatFoodTask.do(context)
+            tasksOrchestrator.do(context)
             return
     if not context['healing']['eatFood']['enabled']:
         return
     food = getFood(context['screenshot'])
     if food > context['healing']['eatFood']['eatWhenFoodIslessOrEqual']:
         return
-    eatFoodTask = UseHotkeyTask(context['healing']['eatFood']['hotkey'], delayAfterComplete=0.5)
+    tasksOrchestrator.setRootTask(context, UseHotkeyTask(
+        context['healing']['eatFood']['hotkey'], delayAfterComplete=2))
