@@ -3,6 +3,8 @@ import time
 from tinydb import Query, TinyDB
 from tkinter import messagebox
 from src.gameplay.core.load import loadContextFromConfig
+from src.repositories.chat.core import getTabs
+from src.utils.core import getScreenshot
 
 
 class Context:
@@ -170,6 +172,12 @@ class Context:
             return
         self.context['window'].activate()
         time.sleep(1)
+        screenshot = getScreenshot()
+        chatTabs = getTabs(screenshot)
+        if 'loot' not in chatTabs:
+            messagebox.showerror(
+                'Erro', 'Loot tab must be open!')
+            return
         self.context['pause'] = False
 
     def pause(self):
