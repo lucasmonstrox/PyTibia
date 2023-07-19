@@ -76,8 +76,6 @@ def getStamina(screenshot: GrayImage) -> Union[int, None]:
 
 # TODO: add unit tests
 # TODO: add perf
-
-
 def getMinutesCount(screenshot: GrayImage, position: BBox) -> int:
     minutesCountsImage = convertGraysToBlack(
         screenshot[position[1]:position[1] + 8, position[0] + 130:position[0] + 144])
