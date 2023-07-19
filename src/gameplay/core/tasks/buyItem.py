@@ -19,5 +19,6 @@ class BuyItemTask(BaseTask):
 
     def do(self, context: Context) -> Context:
         # TODO: split into multiple tasks
-        refillCore.buyItem(context['screenshot'], self.itemName, self.itemQuantity)
+        refillCore.buyItem(context['screenshot'],
+                           self.itemName, self.itemQuantity)
         return context
