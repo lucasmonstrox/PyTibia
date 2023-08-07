@@ -144,6 +144,7 @@ poetry run python -m pytest --cov=src
 
 # ✅ TODO
 
+- Avoid inserting duplicate labels on waypoints
 - Translate README for Spanish language
 - Add api docs
 - Add apidocs(github pages) deploy on CI
