@@ -1,22 +1,16 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import ttk
 
 
 class RefillCheckerModal(tk.Toplevel):
-    def __init__(self, parent, onConfirm=lambda: {}, waypoint=None):
+    def __init__(self, parent, onConfirm=lambda: {}, waypoint=None, waypointsLabels=[]):
         super().__init__(parent)
         self.resizable(False, False)
         self.title('Configure checker for refill')
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
         self.onConfirm = onConfirm
-
-        self.labelEntry = tk.Entry(self)
-        self.labelEntry.grid(
-            row=0, column=0, columnspan=2, sticky='nsew')
-        if waypoint is not None:
-            self.labelEntry.insert(
-                0, waypoint['options'].get('waypointLabelToRedirect'))
 
         self.frame = tk.LabelFrame(
             self, text='Minimum of:', padx=10, pady=10)
@@ -64,6 +58,19 @@ class RefillCheckerModal(tk.Toplevel):
             self.minimumAmountOfCapEntry.insert(
                 0, waypoint['options'].get('minimumAmountOfCap'))
 
+        self.waypointLabelToRedirectLabel = tk.Label(
+            self.frame, text='Go to label:', anchor='w')
+        self.waypointLabelToRedirectLabel.grid(
+            row=6, column=0, sticky='nsew')
+
+        self.waypointLabelToRedirectCombobox = ttk.Combobox(
+            self.frame, values=waypointsLabels, state='readonly')
+        self.waypointLabelToRedirectCombobox.grid(
+            row=7, column=0, sticky='nsew')
+        if waypoint is not None and waypoint['options']['waypointLabelToRedirect'] != '':
+            self.waypointLabelToRedirectCombobox.set(
+                waypoint['options']['waypointLabelToRedirect'])
+
         self.confirmButton = tk.Button(
             self, text='Confirm', command=self.confirm)
         self.confirmButton.grid(
@@ -86,6 +93,6 @@ class RefillCheckerModal(tk.Toplevel):
             'minimumAmountOfHealthPotions': self.minimumAmountOfHealthPotionsEntry.get(),
             'minimumAmountOfManaPotions': self.minimumAmountOfManaPotionsEntry.get(),
             'minimumAmountOfCap': self.minimumAmountOfCapEntry.get(),
-            'waypointLabelToRedirect': self.labelEntry.get(),
+            'waypointLabelToRedirect': self.waypointLabelToRedirectCombobox.get(),
         })
         self.destroy()

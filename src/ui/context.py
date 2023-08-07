@@ -145,6 +145,11 @@ class Context:
             waypoint)
         self.db.update(self.enabledProfile)
 
+    def getAllWaypointLabels(self):
+        waypointsLabels = [waypointItem['label'] for waypointItem in self.context['cavebot']
+                           ['waypoints']['items'] if waypointItem['label'] != '']
+        return waypointsLabels
+
     def hasWaypointWithLabel(self, label: str, ignoreLabel=None) -> bool:
         for waypoint in self.context['cavebot']['waypoints']['points']:
             if waypoint['label'] == label and ignoreLabel is not None:
@@ -173,11 +178,11 @@ class Context:
         self.context['window'].activate()
         time.sleep(1)
         screenshot = getScreenshot()
-        chatTabs = getTabs(screenshot)
-        if 'loot' not in chatTabs:
-            messagebox.showerror(
-                'Erro', 'Loot tab must be open!')
-            return
+        # chatTabs = getTabs(screenshot)
+        # if 'loot' not in chatTabs:
+        #     messagebox.showerror(
+        #         'Erro', 'Loot tab must be open!')
+        #     return
         self.context['pause'] = False
 
     def pause(self):

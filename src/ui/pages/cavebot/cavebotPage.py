@@ -136,9 +136,13 @@ class CavebotPage(tk.Frame):
                 'refill', options))
 
     def openRefillCheckerModal(self):
+        waypointsLabels = self.context.getAllWaypointLabels()
+        if len(waypointsLabels) == 0:
+            messagebox.showerror(
+                'Erro', 'There must be at least one labeled waypoint!')
         if self.refillCheckerModal is None or not self.refillCheckerModal.winfo_exists():
             self.refillCheckerModal = RefillCheckerModal(self, onConfirm=lambda label, options: self.addWaypoint(
-                'refillChecker', options))
+                'refillChecker', options), waypointsLabels=waypointsLabels)
 
     # TODO: verificar se a coordenada é walkable
     def addWaypoint(self, waypointType, options={}):
@@ -187,8 +191,9 @@ class CavebotPage(tk.Frame):
                         self, waypoint=waypoint, onConfirm=lambda label, options: self.updateWaypointByIndex(index, label=label, options=options))
             elif waypoint['type'] == 'refillChecker':
                 if self.refillCheckerModal is None or not self.refillCheckerModal.winfo_exists():
+                    waypointsLabels = self.context.getAllWaypointLabels()
                     self.refillCheckerModal = RefillCheckerModal(
-                        self, waypoint=waypoint, onConfirm=lambda label, options: self.updateWaypointByIndex(index, label=label, options=options))
+                        self, waypoint=waypoint, onConfirm=lambda label, options: self.updateWaypointByIndex(index, label=label, options=options), waypointsLabels=waypointsLabels)
             else:
                 if self.baseModal is None or not self.baseModal.winfo_exists():
                     self.baseModal = BaseModal(
