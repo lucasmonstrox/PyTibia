@@ -27,7 +27,7 @@ class HealthFoodCard(tk.LabelFrame):
         self.hpLessThanOrEqualVar = tk.IntVar()
         self.hpLessThanOrEqualVar.set(
             self.context.context['healing']['highPriority']['healthFood']['hpPercentageLessThanOrEqual'])
-        self.hpLessThanOrEqualSlider = tk.Scale(self, from_=0, to=100,
+        self.hpLessThanOrEqualSlider = tk.Scale(self, from_=10, to=100,
                                                 resolution=10, orient=tk.HORIZONTAL, variable=self.hpLessThanOrEqualVar, command=self.onChangeHp)
         self.hpLessThanOrEqualSlider.grid(column=1, row=1, sticky='ew')
 

@@ -27,7 +27,7 @@ class ManaFoodCard(tk.LabelFrame):
         self.manaPercentageLessThanOrEqualVar = tk.IntVar()
         self.manaPercentageLessThanOrEqualVar.set(
             self.context.context['healing']['highPriority']['manaFood']['manaPercentageLessThanOrEqual'])
-        self.manaPercentageLessThanOrEqualSlider = tk.Scale(self, from_=0, to=100,
+        self.manaPercentageLessThanOrEqualSlider = tk.Scale(self, from_=10, to=100,
                                                             resolution=10, orient=tk.HORIZONTAL, variable=self.manaPercentageLessThanOrEqualVar, command=self.onChangeMana)
         self.manaPercentageLessThanOrEqualSlider.grid(
             column=1, row=1, sticky='ew')
