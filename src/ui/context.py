@@ -194,6 +194,23 @@ class Context:
         self.enabledProfile['config']['healing']['potions'][healthPotionType]['enabled'] = enabled
         self.db.update(self.enabledProfile)
 
+    def toggleHealingHighPriorityByKey(self, key, enabled):
+        self.context['healing']['highPriority'][key]['enabled'] = enabled
+        self.enabledProfile['config']['healing']['highPriority'][key]['enabled'] = enabled
+        self.db.update(self.enabledProfile)
+
+    def setHealthFoodHpPercentageLessThanOrEqual(self, hpPercentageLessThanOrEqual):
+        self.context['healing']['highPriority']['healthFood']['hpPercentageLessThanOrEqual'] = hpPercentageLessThanOrEqual
+        self.enabledProfile['config']['healing']['highPriority']['healthFood'][
+            'hpPercentageLessThanOrEqual'] = hpPercentageLessThanOrEqual
+        self.db.update(self.enabledProfile)
+
+    def setManaFoodHpPercentageLessThanOrEqual(self, manaPercentageLessThanOrEqual):
+        self.context['healing']['highPriority']['manaFood']['manaPercentageLessThanOrEqual'] = manaPercentageLessThanOrEqual
+        self.enabledProfile['config']['healing']['highPriority']['manaFood'][
+            'manaPercentageLessThanOrEqual'] = manaPercentageLessThanOrEqual
+        self.db.update(self.enabledProfile)
+
     def toggleSpellByKey(self, healthPotionType, enabled):
         self.context['healing']['spells'][healthPotionType]['enabled'] = enabled
         self.enabledProfile['config']['healing']['spells'][healthPotionType]['enabled'] = enabled
