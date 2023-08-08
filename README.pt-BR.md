@@ -144,6 +144,7 @@ poetry run python -m pytest --cov=src
 
 # ✅ TODO
 
+- Adicionar waypoint de logout
 - Adicionar alerta ao editar label de waypoint que já está sendo usada
 - Evitar inserir labes duplicados em waypoints
 - Traduzir o README para a língua espanhola
