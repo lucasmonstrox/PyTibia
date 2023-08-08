@@ -56,6 +56,7 @@ def setHandleLootMiddleware(context: Context) -> Context:
                 for creature in differentCreatures:
                     context['loot']['corpsesToLoot'].append(creature)
             context['comboSpells']['lastUsedSpell'] = None
+            context['comboSpells']['lastUsedSpellAt'] = None
     context['cavebot']['targetCreature'] = getTargetCreature(
         context['gameWindow']['monsters'])
     if context['cavebot']['targetCreature'] is not None:

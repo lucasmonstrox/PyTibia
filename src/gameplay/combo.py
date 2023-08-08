@@ -1,3 +1,4 @@
+from time import time
 from src.gameplay.comboSpells.core import comboSpellDidMatch
 from src.gameplay.core.tasks.orchestrator import TasksOrchestrator
 from src.repositories.actionBar.core import hasCooldownByName
@@ -45,4 +46,5 @@ def comboSpells(context: Context):
             # TODO: improve indexes without using context
             context['comboSpells']['items'][key]['currentSpellIndex'] = nextIndex
             context['comboSpells']['lastUsedSpell'] = spell['name']
+            context['comboSpells']['lastUsedSpellAt'] = time()
             return

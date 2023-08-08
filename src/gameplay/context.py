@@ -29,6 +29,7 @@ context = {
     'comboSpells': {
         'enabled': True,
         'lastUsedSpell': None,
+        'lastUsedSpellAt': None,
         'items': [],
     },
     'deposit': {
