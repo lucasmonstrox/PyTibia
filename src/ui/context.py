@@ -64,7 +64,7 @@ class Context:
                                 'hotkey': 'f12',
                                 'hpPercentageGreaterThan': 0
                             },
-                            'ringAlwaysEquipped': ''
+                            'tankRingAlwaysEquipped': False
                         },
                         'swapAmulet': {
                             'enabled': False,

@@ -66,7 +66,7 @@ context = {
                     'hotkey': None,
                     'hpPercentageGreaterThanOrEqual': 0
                 },
-                'ringAlwaysEquipped': ''
+                'tankRingAlwaysEquipped': False
             },
             'swapAmulet': {
                 'enabled': False,
