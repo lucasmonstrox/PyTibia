@@ -9,7 +9,7 @@ rings = {
     'Club Ring': {'minimumRequiredLevel': 0, 'vocation': 'all', 'arm': 0, 'durationInMinutes': 30, 'weight': 0.9},
     'Crystal Ring': {'minimumRequiredLevel': 0, 'vocation': 'all', 'arm': 0, 'durationInMinutes': None, 'weight': 0.90},
     'Death Ring': {'minimumRequiredLevel': 0, 'vocation': 'all', 'arm': 1, 'durationInMinutes': 7.5, 'weight': 0.8},
-    'Dwarven Ring': {'minimumRequiredLevel': 220, 'vocation': 'all', 'arm': 0, 'durationInMinutes': 60, 'weight': 1.1},
+    'Dwarven Ring': {'minimumRequiredLevel': 0, 'vocation': 'all', 'arm': 0, 'durationInMinutes': 60, 'weight': 1.1},
     'Enchanted Blister Ring': {'minimumRequiredLevel': 220, 'vocation': 'all', 'arm': 0, 'durationInMinutes': 60, 'weight': 0.9},
     'Enchanted Ring of Souls': {'minimumRequiredLevel': 200, 'vocation': 'all', 'arm': 0, 'durationInMinutes': 120, 'weight': 0.8},
     'Energy Ring': {'minimumRequiredLevel': 0, 'vocation': 'knight/paladin', 'arm': 0, 'durationInMinutes': 10, 'weight': 0.8},
