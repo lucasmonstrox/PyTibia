@@ -103,10 +103,10 @@ Por enquanto as hotkeys no PyTibia não são configuráveis, é necessário deix
 | f8     | utito tempo                     |
 | f9     | ring                            |
 | f10    | amulet                          |
-| f11    | ring 1                          |
-| f12    | ring 2                          |
-| u      | swap amulet 1                   |
-| i      | swap amulet 2                   |
+| f11    | tank ring                       |
+| f12    | main ring                       |
+| u      | tank amulet                     |
+| i      | main amulet                     |
 | o      | rope                            |
 | p      | shovel                          |
 | f      | food                            |
