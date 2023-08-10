@@ -56,25 +56,25 @@ class Context:
                         },
                         'swapRing': {
                             'enabled': False,
-                            'firstRing': {
+                            'tankRing': {
                                 'hotkey': 'f11',
                                 'hpPercentageLessThanOrEqual': 0
                             },
-                            'secondRing': {
+                            'mainRing': {
                                 'hotkey': 'f12',
-                                'hpPercentageGreaterThanOrEqual': 0
+                                'hpPercentageGreaterThan': 0
                             },
                             'ringAlwaysEquipped': ''
                         },
                         'swapAmulet': {
                             'enabled': False,
-                            'firstAmulet': {
+                            'tankAmulet': {
                                 'hotkey': 'u',
                                 'hpPercentageLessThanOrEqual': 0
                             },
-                            'secondAmulet': {
+                            'mainAmulet': {
                                 'hotkey': 'i',
-                                'hpPercentageGreaterThanOrEqual': 0
+                                'hpPercentageGreaterThan': 0
                             },
                             'amuletAlwaysEquipped': ''
                         }
@@ -229,6 +229,30 @@ class Context:
     def setHealthPotionHpPercentageLessThanOrEqual(self, healthPotionType, hpPercentage):
         self.context['healing']['potions'][healthPotionType]['hpPercentageLessThanOrEqual'] = hpPercentage
         self.enabledProfile['config']['healing']['potions'][healthPotionType]['hpPercentageLessThanOrEqual'] = hpPercentage
+        self.db.update(self.enabledProfile)
+
+    def setSwapRingHpPercentageLessThanOrEqual(self, hpPercentageLessThanOrEqual):
+        self.context['healing']['highPriority']['swapRing']['tankRing']['hpPercentageLessThanOrEqual'] = hpPercentageLessThanOrEqual
+        self.enabledProfile['config']['healing']['highPriority']['swapRing']['tankRing'][
+            'hpPercentageLessThanOrEqual'] = hpPercentageLessThanOrEqual
+        self.db.update(self.enabledProfile)
+
+    def setSwapRingHpPercentageGreaterThan(self, hpPercentageGreaterThan):
+        self.context['healing']['highPriority']['swapRing']['mainRing']['hpPercentageGreaterThan'] = hpPercentageGreaterThan
+        self.enabledProfile['config']['healing']['highPriority']['swapRing']['mainRing'][
+            'hpPercentageGreaterThan'] = hpPercentageGreaterThan
+        self.db.update(self.enabledProfile)
+
+    def setSwapAmuletHpPercentageLessThanOrEqual(self, hpPercentageLessThanOrEqual):
+        self.context['healing']['highPriority']['swapAmulet']['tankAmulet']['hpPercentageLessThanOrEqual'] = hpPercentageLessThanOrEqual
+        self.enabledProfile['config']['healing']['highPriority']['swapAmulet']['tankAmulet'][
+            'hpPercentageLessThanOrEqual'] = hpPercentageLessThanOrEqual
+        self.db.update(self.enabledProfile)
+
+    def setSwapAmuletHpPercentageGreaterThan(self, hpPercentageGreaterThan):
+        self.context['healing']['highPriority']['swapAmulet']['mainAmulet']['hpPercentageGreaterThan'] = hpPercentageGreaterThan
+        self.enabledProfile['config']['healing']['highPriority']['swapAmulet']['mainAmulet'][
+            'hpPercentageGreaterThan'] = hpPercentageGreaterThan
         self.db.update(self.enabledProfile)
 
     def setSpellHpPercentageLessThanOrEqual(self, spellType, hpPercentage):

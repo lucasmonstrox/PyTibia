@@ -21,40 +21,40 @@ def swapRing(context: Context):
         firstSlotIsAvailable = slotIsAvailable(context['screenshot'], 21)
         secondSlotIsEquipped = slotIsEquipped(context['screenshot'], 22)
         secondSlotIsAvailable = slotIsAvailable(context['screenshot'], 22)
-        if context['statusBar']['hpPercentage'] <= context['healing']['highPriority']['swapRing']['firstRing']['hpPercentageLessThanOrEqual']:
+        if context['statusBar']['hpPercentage'] <= context['healing']['highPriority']['swapRing']['tankRing']['hpPercentageLessThanOrEqual']:
             if not firstSlotIsEquipped and firstSlotIsAvailable:
                 tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                    context['healing']['highPriority']['swapRing']['firstRing']['hotkey'], delayAfterComplete=2))
+                    context['healing']['highPriority']['swapRing']['tankRing']['hotkey'], delayAfterComplete=2))
             return
-        if context['statusBar']['hpPercentage'] >= context['healing']['highPriority']['swapRing']['secondRing']['hpPercentageGreaterThanOrEqual']:
+        if context['statusBar']['hpPercentage'] > context['healing']['highPriority']['swapRing']['mainRing']['hpPercentageGreaterThan']:
             if not secondSlotIsEquipped and secondSlotIsAvailable:
                 tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                    context['healing']['highPriority']['swapRing']['secondRing']['hotkey'], delayAfterComplete=2))
+                    context['healing']['highPriority']['swapRing']['mainRing']['hotkey'], delayAfterComplete=2))
             return
         if context['healing']['highPriority']['swapRing']['ringAlwaysEquipped']:
             ringType = context['healing']['highPriority']['swapRing']['ringAlwaysEquipped']
-            if ringType == 'firstRing' and secondSlotIsEquipped:
+            if ringType == 'tankRing' and secondSlotIsEquipped:
                 if firstSlotIsAvailable:
                     tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                        context['healing']['highPriority']['swapRing']['firstRing']['hotkey'], delayAfterComplete=2))
+                        context['healing']['highPriority']['swapRing']['tankRing']['hotkey'], delayAfterComplete=2))
                 else:
                     tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                        context['healing']['highPriority']['swapRing']['secondRing']['hotkey'], delayAfterComplete=2))
+                        context['healing']['highPriority']['swapRing']['mainRing']['hotkey'], delayAfterComplete=2))
                 return
-            if ringType == 'secondRing' and firstSlotIsEquipped:
+            if ringType == 'mainRing' and firstSlotIsEquipped:
                 if secondSlotIsAvailable:
                     tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                        context['healing']['highPriority']['swapRing']['secondRing']['hotkey'], delayAfterComplete=2))
+                        context['healing']['highPriority']['swapRing']['mainRing']['hotkey'], delayAfterComplete=2))
                 else:
                     tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                        context['healing']['highPriority']['swapRing']['firstRing']['hotkey'], delayAfterComplete=2))
+                        context['healing']['highPriority']['swapRing']['tankRing']['hotkey'], delayAfterComplete=2))
                 return
             return
         if firstSlotIsEquipped:
             tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                context['healing']['highPriority']['swapRing']['firstRing']['hotkey'], delayAfterComplete=2))
+                context['healing']['highPriority']['swapRing']['tankRing']['hotkey'], delayAfterComplete=2))
             return
         if secondSlotIsEquipped:
             tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                context['healing']['highPriority']['swapRing']['secondRing']['hotkey'], delayAfterComplete=2))
+                context['healing']['highPriority']['swapRing']['mainRing']['hotkey'], delayAfterComplete=2))
             return

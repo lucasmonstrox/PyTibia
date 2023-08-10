@@ -21,40 +21,40 @@ def swapAmulet(context: Context):
         firstSlotIsAvailable = slotIsAvailable(context['screenshot'], 23)
         secondSlotIsEquipped = slotIsEquipped(context['screenshot'], 24)
         secondSlotIsAvailable = slotIsAvailable(context['screenshot'], 24)
-        if context['statusBar']['hpPercentage'] <= context['healing']['highPriority']['swapAmulet']['firstAmulet']['hpPercentageLessThanOrEqual']:
+        if context['statusBar']['hpPercentage'] <= context['healing']['highPriority']['swapAmulet']['tankAmulet']['hpPercentageLessThanOrEqual']:
             if not firstSlotIsEquipped and firstSlotIsAvailable:
                 tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                    context['healing']['highPriority']['swapAmulet']['firstAmulet']['hotkey'], delayAfterComplete=2))
+                    context['healing']['highPriority']['swapAmulet']['tankAmulet']['hotkey'], delayAfterComplete=2))
             return
-        if context['statusBar']['hpPercentage'] >= context['healing']['highPriority']['swapAmulet']['secondAmulet']['hpPercentageGreaterThanOrEqual']:
+        if context['statusBar']['hpPercentage'] > context['healing']['highPriority']['swapAmulet']['mainAmulet']['hpPercentageGreaterThan']:
             if not secondSlotIsEquipped and secondSlotIsAvailable:
                 tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                    context['healing']['highPriority']['swapAmulet']['secondAmulet']['hotkey'], delayAfterComplete=2))
+                    context['healing']['highPriority']['swapAmulet']['mainAmulet']['hotkey'], delayAfterComplete=2))
             return
         if context['healing']['highPriority']['swapAmulet']['amuletAlwaysEquipped']:
             amuletType = context['healing']['highPriority']['swapAmulet']['amuletAlwaysEquipped']
-            if amuletType == 'firstAmulet' and secondSlotIsEquipped:
+            if amuletType == 'tankAmulet' and secondSlotIsEquipped:
                 if firstSlotIsAvailable:
                     tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                        context['healing']['highPriority']['swapAmulet']['firstAmulet']['hotkey'], delayAfterComplete=2))
+                        context['healing']['highPriority']['swapAmulet']['tankAmulet']['hotkey'], delayAfterComplete=2))
                 else:
                     tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                        context['healing']['highPriority']['swapAmulet']['secondAmulet']['hotkey'], delayAfterComplete=2))
+                        context['healing']['highPriority']['swapAmulet']['mainAmulet']['hotkey'], delayAfterComplete=2))
                 return
-            if amuletType == 'secondAmulet' and firstSlotIsEquipped:
+            if amuletType == 'mainAmulet' and firstSlotIsEquipped:
                 if secondSlotIsAvailable:
                     tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                        context['healing']['highPriority']['swapAmulet']['secondAmulet']['hotkey'], delayAfterComplete=2))
+                        context['healing']['highPriority']['swapAmulet']['mainAmulet']['hotkey'], delayAfterComplete=2))
                 else:
                     tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                        context['healing']['highPriority']['swapAmulet']['firstAmulet']['hotkey'], delayAfterComplete=2))
+                        context['healing']['highPriority']['swapAmulet']['tankAmulet']['hotkey'], delayAfterComplete=2))
                 return
             return
         if firstSlotIsEquipped:
             tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                context['healing']['highPriority']['swapAmulet']['firstAmulet']['hotkey'], delayAfterComplete=2))
+                context['healing']['highPriority']['swapAmulet']['tankAmulet']['hotkey'], delayAfterComplete=2))
             return
         if secondSlotIsEquipped:
             tasksOrchestrator.setRootTask(context, UseHotkeyTask(
-                context['healing']['highPriority']['swapAmulet']['secondAmulet']['hotkey'], delayAfterComplete=2))
+                context['healing']['highPriority']['swapAmulet']['mainAmulet']['hotkey'], delayAfterComplete=2))
             return

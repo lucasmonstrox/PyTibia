@@ -17,6 +17,7 @@ def cacheObjectPosition(func: Callable) -> Callable:
     lastW = None
     lastH = None
     lastImgHash = None
+
     def inner(screenshot):
         nonlocal lastX, lastY, lastW, lastH, lastImgHash
         if lastX != None and lastY != None and lastW != None and lastH != None:
@@ -29,7 +30,8 @@ def cacheObjectPosition(func: Callable) -> Callable:
         lastY = res[1]
         lastW = res[2]
         lastH = res[3]
-        lastImgHash = hashit(screenshot[lastY:lastY + lastH, lastX:lastX + lastW])
+        lastImgHash = hashit(
+            screenshot[lastY:lastY + lastH, lastX:lastX + lastW])
         return res
     return inner
 
@@ -45,7 +47,7 @@ def hashitHex(arr: np.ndarray) -> str:
 
 
 # TODO: add unit tests
-def locate(compareImage: GrayImage, img: GrayImage, confidence: float=0.85) -> Union[BBox, None]:
+def locate(compareImage: GrayImage, img: GrayImage, confidence: float = 0.85) -> Union[BBox, None]:
     match = cv2.matchTemplate(compareImage, img, cv2.TM_CCOEFF_NORMED)
     res = cv2.minMaxLoc(match)
     if res[1] <= confidence:
@@ -54,7 +56,7 @@ def locate(compareImage: GrayImage, img: GrayImage, confidence: float=0.85) -> U
 
 
 # TODO: add unit tests
-def locateMultiple(compareImg: GrayImage, img: GrayImage, confidence: float=0.85) -> Union[BBox, None]:
+def locateMultiple(compareImg: GrayImage, img: GrayImage, confidence: float = 0.85) -> Union[BBox, None]:
     match = cv2.matchTemplate(compareImg, img, cv2.TM_CCOEFF_NORMED)
     loc = np.where(match >= confidence)
     resultList = []

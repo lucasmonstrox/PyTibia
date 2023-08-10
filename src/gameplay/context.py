@@ -58,11 +58,11 @@ context = {
             },
             'swapRing': {
                 'enabled': False,
-                'firstRing': {
+                'tankRing': {
                     'hotkey': None,
                     'hpPercentageLessThanOrEqual': 0
                 },
-                'secondRing': {
+                'mainRing': {
                     'hotkey': None,
                     'hpPercentageGreaterThanOrEqual': 0
                 },
@@ -70,13 +70,13 @@ context = {
             },
             'swapAmulet': {
                 'enabled': False,
-                'firstAmulet': {
+                'tankAmulet': {
                     'hotkey': None,
                     'hpPercentageLessThanOrEqual': 0
                 },
-                'secondAmulet': {
+                'mainAmulet': {
                     'hotkey': None,
-                    'hpPercentageGreaterThanOrEqual': 0
+                    'hpPercentageGreaterThan': 0
                 },
                 'amuletAlwaysEquipped': ''
             }
