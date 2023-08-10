@@ -76,7 +76,7 @@ class Context:
                                 'hotkey': 'i',
                                 'hpPercentageGreaterThan': 0
                             },
-                            'amuletAlwaysEquipped': ''
+                            'tankAmuletAlwaysEquipped': False
                         }
                     },
                     'potions': {

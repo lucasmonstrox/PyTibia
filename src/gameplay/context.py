@@ -78,7 +78,7 @@ context = {
                     'hotkey': None,
                     'hpPercentageGreaterThan': 0
                 },
-                'amuletAlwaysEquipped': ''
+                'tankAmuletAlwaysEquipped': False
             }
         },
         'potions': {

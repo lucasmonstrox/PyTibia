@@ -185,8 +185,11 @@
                 "hotkey": "u",
                 "hpPercentageLessThanOrEqual": 50
               },
-              "mainAmulet": { "hotkey": "i", "hpPercentageGreaterThan": 70 },
-              "amuletAlwaysEquipped": "mainAmulet"
+              "mainAmulet": {
+                "hotkey": "i",
+                "hpPercentageGreaterThan": 90
+              },
+              "tankAmuletAlwaysEquipped": false
             }
           },
           "potions": {
