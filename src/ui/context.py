@@ -188,6 +188,7 @@ class Context:
     def pause(self):
         self.context['pause'] = True
         self.context['tasksOrchestrator'].setRootTask(self.context, None)
+        self.context['cavebot']['waypoints']['currentIndex'] = None
 
     def toggleHealingPotionsByKey(self, healthPotionType, enabled):
         self.context['healing']['potions'][healthPotionType]['enabled'] = enabled
