@@ -33,12 +33,13 @@ def comboSpells(context: Context):
             continue
         if comboSpellDidMatch(comboSpell, nearestCreaturesCount):
             spell = comboSpell['spells'][comboSpell['currentSpellIndex']]
+            if context['statusBar']['mana'] < spells[spell['name']]['manaNeeded']:
+                return
             if hasCooldownByName(context['screenshot'], 'attack'):
                 return
             if hasCooldownByName(context['screenshot'], spell['name']):
                 return
-            if context['statusBar']['mana'] < spells[spell['name']]['manaNeeded']:
-                return
+            # TODO: verify if spell hotkey slot is available
             tasksOrchestrator.setRootTask(
                 context, UseHotkeyTask(spell['hotkey']))
             nextIndex = getNextArrayIndex(
