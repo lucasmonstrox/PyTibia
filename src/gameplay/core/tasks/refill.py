@@ -43,15 +43,3 @@ class RefillTask(VectorTask):
             CloseNpcTradeBoxTask().setParentTask(self).setRootTask(self),
         ]
         return context
-
-    # TODO: add unit tests
-    def onComplete(self, context: Context) -> Context:
-        # TODO: numbait
-        labelIndexes = np.argwhere(context['cavebot']['waypoints']['items']
-                                   ['label'] == self.waypoint['options']['waypointLabelToRedirect'])[0]
-        if len(labelIndexes) == 0:
-            # TODO: raise error
-            return context
-        context['cavebot']['waypoints']['currentIndex'] = labelIndexes[0]
-        context['cavebot']['waypoints']['state'] = None
-        return context
