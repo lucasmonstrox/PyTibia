@@ -1,4 +1,3 @@
-import numpy as np
 from src.repositories.actionBar.core import getSlotCount
 from src.shared.typings import Waypoint
 from ...typings import Context
@@ -9,6 +8,7 @@ from .enableChat import EnableChatTask
 from .say import SayTask
 from .selectChatTab import SelectChatTabTask
 from .setChatOff import SetChatOffTask
+from .setNextWaypoint import SetNextWaypointTask
 
 
 class RefillTask(VectorTask):
@@ -41,5 +41,6 @@ class RefillTask(VectorTask):
             BuyItemTask(self.waypoint['options']['healthPotion']['item'], amountOfHealthPotionsToBuy).setParentTask(
                 self).setRootTask(self),
             CloseNpcTradeBoxTask().setParentTask(self).setRootTask(self),
+            SetNextWaypointTask().setParentTask(self).setRootTask(self),
         ]
         return context

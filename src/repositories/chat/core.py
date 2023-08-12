@@ -3,8 +3,8 @@ from typing import Tuple, Union
 from src.shared.typings import BBox, GrayImage
 from src.repositories.gameWindow.core import getLeftArrowPosition
 from src.utils.core import cacheObjectPosition, hashit, locate, locateMultiple
-from src.utils.image import cacheChain, convertGraysToBlack, loadFromRGBToGray
-from .config import hashes, images
+from src.utils.image import convertGraysToBlack, loadFromRGBToGray
+from .config import hashes
 
 
 currentPath = pathlib.Path(__file__).parent.resolve()
@@ -27,7 +27,8 @@ def getTabs(screenshot: GrayImage):
     tabs = {}
     leftSidebarArrowsPosition = getLeftArrowPosition(screenshot)
     chatMenuPosition = getChatMenuPosition(screenshot)
-    x, y, width, height = leftSidebarArrowsPosition[0] + 18, chatMenuPosition[1], chatMenuPosition[0] - (leftSidebarArrowsPosition[0] + 18), 20
+    x, y, width, height = leftSidebarArrowsPosition[0] + 18, chatMenuPosition[1], chatMenuPosition[0] - (
+        leftSidebarArrowsPosition[0] + 18), 20
     chatsTabsContainerImage = screenshot[y:y + height, x:x + width]
     while shouldFindTabs:
         xOfTab = tabIndex * 96
@@ -38,7 +39,8 @@ def getTabs(screenshot: GrayImage):
         tabImage = chatsTabsContainerImage[2:16, xOfTab + 2:xOfTab + 2 + 92]
         tabName = hashes['tabs'].get(hashit(tabImage), 'Unknown')
         if tabName != 'Unknown':
-            tabs.setdefault(tabName, {'isSelected': firstPixel == 114, 'position': (x + xOfTab, y, 92, 14)})
+            tabs.setdefault(
+                tabName, {'isSelected': firstPixel == 114, 'position': (x + xOfTab, y, 92, 14)})
         tabIndex += 1
     return tabs
 
@@ -118,13 +120,3 @@ def getChatMessagesContainerPosition(screenshot: GrayImage) -> BBox:
     chatMenu = getChatMenuPosition(screenshot)
     chatStatus = getChatStatus(screenshot)
     return leftSidebarArrows[0] + 5, chatMenu[1] + 18, chatStatus[0][0] + 40, (chatStatus[0][1] - 6) - (chatMenu[1] + 13)
-
-
-@cacheChain([
-    images['tabs']['loot']['selectedLoot'],
-    images['tabs']['loot']['unselectedLoot'],
-    images['tabs']['loot']['unselectedLootWithNewestMessage'],
-    images['tabs']['loot']['unselectedLootWithUnreadMessage'],
-])
-def getLootTabPosition(_: GrayImage) -> Tuple[BBox, int]:
-    pass

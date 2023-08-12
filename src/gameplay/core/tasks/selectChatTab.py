@@ -20,7 +20,6 @@ class SelectChatTabTask(BaseTask):
         return tab['isSelected']
 
     # TODO: add unit tests
-    # TODO: what if tab does not exists?
     def do(self, context):
         tabPosition = context['chat']['tabs'][self.tabName]['position']
         # TODO: implement random click in BBox

@@ -10,15 +10,15 @@ npcTradeBarImage = loadFromRGBToGray(
 npcTradeOkImage = loadFromRGBToGray(
     f'{currentPath}/images/npcTradeOk.png')
 images = {
-    'great health potion': loadFromRGBToGray(f'{currentPath}/images/potions/greatHealthPotion.png'),
-    'great mana potion': loadFromRGBToGray(f'{currentPath}/images/potions/greatManaPotion.png'),
-    'great spirit potion': loadFromRGBToGray(f'{currentPath}/images/potions/greatSpiritPotion.png'),
-    'health potion': loadFromRGBToGray(f'{currentPath}/images/potions/healthPotion.png'),
-    'mana potion': loadFromRGBToGray(f'{currentPath}/images/potions/manaPotion.png'),
-    'strong health potion': loadFromRGBToGray(f'{currentPath}/images/potions/strongHealthPotion.png'),
-    'strong mana potion': loadFromRGBToGray(f'{currentPath}/images/potions/strongManaPotion.png'),
-    'supreme health potion': loadFromRGBToGray(f'{currentPath}/images/potions/supremeHealthPotion.png'),
-    'ultimate health potion': loadFromRGBToGray(f'{currentPath}/images/potions/ultimateHealthPotion.png'),
-    'ultimate mana potion': loadFromRGBToGray(f'{currentPath}/images/potions/ultimateManaPotion.png'),
-    'ultimate spirit potion': loadFromRGBToGray(f'{currentPath}/images/potions/ultimateSpiritPotion.png'),
+    'Great Health Potion': loadFromRGBToGray(f'{currentPath}/images/potions/greatHealthPotion.png'),
+    'Great Mana Potion': loadFromRGBToGray(f'{currentPath}/images/potions/greatManaPotion.png'),
+    'Great spirit Potion': loadFromRGBToGray(f'{currentPath}/images/potions/greatSpiritPotion.png'),
+    'Health Potion': loadFromRGBToGray(f'{currentPath}/images/potions/healthPotion.png'),
+    'Mana Potion': loadFromRGBToGray(f'{currentPath}/images/potions/manaPotion.png'),
+    'Strong Health Potion': loadFromRGBToGray(f'{currentPath}/images/potions/strongHealthPotion.png'),
+    'Strong Mana Potion': loadFromRGBToGray(f'{currentPath}/images/potions/strongManaPotion.png'),
+    'Supreme Health Potion': loadFromRGBToGray(f'{currentPath}/images/potions/supremeHealthPotion.png'),
+    'Ultimate Health Potion': loadFromRGBToGray(f'{currentPath}/images/potions/ultimateHealthPotion.png'),
+    'Ultimate Mana Potion': loadFromRGBToGray(f'{currentPath}/images/potions/ultimateManaPotion.png'),
+    'Ultimate Spirit Potion': loadFromRGBToGray(f'{currentPath}/images/potions/ultimateSpiritPotion.png'),
 }

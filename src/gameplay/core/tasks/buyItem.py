@@ -5,6 +5,7 @@ from .common.base import BaseTask
 
 
 # TODO: check if item was bought checking gold difference on did
+# TODO: check if has necessary money to buy item. If not, an alert to user must be sent
 class BuyItemTask(BaseTask):
     def __init__(self, itemName: str, itemQuantity: str):
         super().__init__()

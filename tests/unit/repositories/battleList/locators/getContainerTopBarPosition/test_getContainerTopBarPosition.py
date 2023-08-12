@@ -10,6 +10,5 @@ currentPath = pathlib.Path(__file__).parent.resolve()
 def test_should_get_battle_list_icon_position():
     screenshotImage = loadFromRGBToGray(f'{currentPath}/screenshot.png')
     battleListIconPosition = getBattleListIconPosition(screenshotImage)
-    print('battleListIconPosition', battleListIconPosition)
     expectedContainerTopBarPos = (1573, 26, 11, 11)
     assert battleListIconPosition == expectedContainerTopBarPos

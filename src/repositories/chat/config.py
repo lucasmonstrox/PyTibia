@@ -9,28 +9,34 @@ tabsImagesPath = f'{imagesPath}/tabs'
 images = {
     'tabs': {
         'localChat': {
-            'selectedLocalChat': loadFromRGBToGray(f'{tabsImagesPath}/selectedLocalChat.png'),
-            'unselectedLocalChat': loadFromRGBToGray(f'{tabsImagesPath}/unselectedLocalChat.png'),
-            'unselectedLocalChatWithNewestMessage': loadFromRGBToGray(f'{tabsImagesPath}/unselectedLocalChatWithNewestMessage.png'),
-            'unselectedLocalChatWithUnreadMessage': loadFromRGBToGray(f'{tabsImagesPath}/unselectedLocalChatWithUnreadMessage.png'),
+            'selected': loadFromRGBToGray(f'{tabsImagesPath}/localChat/selected.png'),
+            'unselected': loadFromRGBToGray(f'{tabsImagesPath}/localChat/unselected.png'),
+            'newestMessage': loadFromRGBToGray(f'{tabsImagesPath}/localChat/newestMessage.png'),
+            'unreadMessage': loadFromRGBToGray(f'{tabsImagesPath}/localChat/unreadMessage.png'),
         },
         'loot': {
-            'selectedLoot': loadFromRGBToGray(f'{tabsImagesPath}/selectedLoot.png'),
-            'unselectedLoot': loadFromRGBToGray(f'{tabsImagesPath}/unselectedLoot.png'),
-            'unselectedLootWithNewestMessage': loadFromRGBToGray(f'{tabsImagesPath}/unselectedLootWithNewestMessage.png'),
-            'unselectedLootWithUnreadMessage': loadFromRGBToGray(f'{tabsImagesPath}/unselectedLootWithUnreadMessage.png'),
+            'selected': loadFromRGBToGray(f'{tabsImagesPath}/loot/selected.png'),
+            'unselected': loadFromRGBToGray(f'{tabsImagesPath}/loot/unselected.png'),
+            'newestMessage': loadFromRGBToGray(f'{tabsImagesPath}/loot/newestMessage.png'),
+            'unreadMessage': loadFromRGBToGray(f'{tabsImagesPath}/loot/unreadMessage.png'),
+        },
+        'npcs': {
+            'selected': loadFromRGBToGray(f'{tabsImagesPath}/npcs/selected.png'),
+            'unselected': loadFromRGBToGray(f'{tabsImagesPath}/npcs/unselected.png'),
         }
     }
 }
 hashes = {
     'tabs': {
-        hashit(images['tabs']['localChat']['selectedLocalChat']): 'local chat',
-        hashit(images['tabs']['localChat']['unselectedLocalChat']): 'local chat',
-        hashit(images['tabs']['localChat']['unselectedLocalChatWithNewestMessage']): 'local chat',
-        hashit(images['tabs']['localChat']['unselectedLocalChatWithUnreadMessage']): 'local chat',
-        hashit(images['tabs']['loot']['selectedLoot']): 'loot',
-        hashit(images['tabs']['loot']['unselectedLoot']): 'loot',
-        hashit(images['tabs']['loot']['unselectedLootWithNewestMessage']): 'loot',
-        hashit(images['tabs']['loot']['unselectedLootWithUnreadMessage']): 'loot',
+        hashit(images['tabs']['localChat']['selected']): 'local chat',
+        hashit(images['tabs']['localChat']['unselected']): 'local chat',
+        hashit(images['tabs']['localChat']['newestMessage']): 'local chat',
+        hashit(images['tabs']['localChat']['unreadMessage']): 'local chat',
+        hashit(images['tabs']['loot']['selected']): 'loot',
+        hashit(images['tabs']['loot']['unselected']): 'loot',
+        hashit(images['tabs']['loot']['newestMessage']): 'loot',
+        hashit(images['tabs']['loot']['unreadMessage']): 'loot',
+        hashit(images['tabs']['npcs']['selected']): 'npcs',
+        hashit(images['tabs']['npcs']['unselected']): 'npcs',
     }
 }
