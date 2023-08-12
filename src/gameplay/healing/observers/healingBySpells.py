@@ -36,4 +36,3 @@ def healingBySpells(context: Context):
         if context['statusBar']['mana'] >= spells['utura gran']['manaNeeded'] and not hasCooldownByName(context['screenshot'], 'utura gran'):
             tasksOrchestrator.setRootTask(
                 context, UseHotkeyTask('8'))
-            return
