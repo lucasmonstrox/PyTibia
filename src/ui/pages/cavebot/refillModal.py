@@ -32,8 +32,8 @@ class RefillModal(tk.Toplevel):
         self.healthPotionEntry.grid(
             row=1, column=0, sticky='nsew', pady=(10, 0))
         if waypoint is not None:
-            healthPotionQuantity = waypoint['options'].get(
-                'healthPotion').get('quantity')
+            healthPotionQuantity = str(
+                waypoint['options'].get('healthPotion').get('quantity'))
             self.healthPotionEntry.insert(0, healthPotionQuantity)
 
         self.manaPotionFrame = tk.LabelFrame(
@@ -56,8 +56,8 @@ class RefillModal(tk.Toplevel):
         self.manaPotionEntry.grid(
             row=1, column=0, sticky='nsew', pady=(10, 0))
         if waypoint is not None:
-            manaPotionQuantity = waypoint['options'].get(
-                'manaPotion').get('quantity')
+            manaPotionQuantity = str(waypoint['options'].get(
+                'manaPotion').get('quantity'))
             self.manaPotionEntry.insert(0, manaPotionQuantity)
 
         self.confirmButton = tk.Button(
@@ -81,11 +81,11 @@ class RefillModal(tk.Toplevel):
         self.onConfirm(None, {
             'healthPotion': {
                 'item': self.healthPotionCombobox.get(),
-                'quantity': self.healthPotionEntry.get()
+                'quantity': int(self.healthPotionEntry.get())
             },
             'manaPotion': {
                 'item': self.manaPotionCombobox.get(),
-                'quantity': self.manaPotionEntry.get()
+                'quantity': int(self.manaPotionEntry.get())
             },
         })
         self.destroy()

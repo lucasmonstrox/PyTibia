@@ -25,9 +25,9 @@ class RefillTask(VectorTask):
         healthPotionsAmount = getSlotCount(context['screenshot'], 1)
         manaPotionsAmount = getSlotCount(context['screenshot'], 2)
         amountOfManaPotionsToBuy = max(
-            0, context['refill']['mana']['quantity'] - manaPotionsAmount)
+            0, self.waypoint['options']['manaPotion']['quantity'] - manaPotionsAmount)
         amountOfHealthPotionsToBuy = max(
-            0, context['refill']['health']['quantity'] - healthPotionsAmount)
+            0, self.waypoint['options']['healthPotion']['quantity'] - healthPotionsAmount)
         self.tasks = [
             SelectChatTabTask('local chat').setParentTask(
                 self).setRootTask(self),
@@ -36,9 +36,9 @@ class RefillTask(VectorTask):
             EnableChatTask().setParentTask(self).setRootTask(self),
             SayTask('trade').setParentTask(self).setRootTask(self),
             SetChatOffTask().setParentTask(self).setRootTask(self),
-            BuyItemTask(self.waypoint['mana']['item'], amountOfManaPotionsToBuy).setParentTask(
+            BuyItemTask(self.waypoint['options']['manaPotion']['item'], amountOfManaPotionsToBuy).setParentTask(
                 self).setRootTask(self),
-            BuyItemTask(self.waypoint['health']['item'], amountOfHealthPotionsToBuy).setParentTask(
+            BuyItemTask(self.waypoint['options']['healthPotion']['item'], amountOfHealthPotionsToBuy).setParentTask(
                 self).setRootTask(self),
             CloseNpcTradeBoxTask().setParentTask(self).setRootTask(self),
         ]
