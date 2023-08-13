@@ -18,25 +18,25 @@
                 "label": "",
                 "type": "walk",
                 "coordinate": [33215, 32410, 7],
-                "options": { "direction": "north" }
+                "options": {}
               },
               {
                 "label": "",
                 "type": "walk",
                 "coordinate": [33212, 32359, 7],
-                "options": { "direction": "north" }
+                "options": {}
               },
               {
                 "label": "",
                 "type": "useShovel",
                 "coordinate": [33212, 32358, 7],
-                "options": { "direction": "north" }
+                "options": {}
               },
               {
                 "label": "",
                 "type": "walk",
                 "coordinate": [33227, 32358, 8],
-                "options": { "direction": "east" }
+                "options": {}
               },
               {
                 "label": "",
@@ -48,13 +48,13 @@
                 "label": "",
                 "type": "walk",
                 "coordinate": [33223, 32355, 9],
-                "options": { "direction": "north" }
+                "options": {}
               },
               {
                 "label": "",
                 "type": "moveDown",
                 "coordinate": [33223, 32354, 9],
-                "options": {}
+                "options": { "direction": "north" }
               },
               {
                 "label": "caveStart",
@@ -115,10 +115,79 @@
                 "type": "refillChecker",
                 "coordinate": [33220, 32355, 9],
                 "options": {
-                  "minimumAmountOfHealthPotions": "10",
-                  "minimumAmountOfManaPotions": "20",
-                  "minimumAmountOfCap": "30",
+                  "minimumAmountOfHealthPotions": 300,
+                  "minimumAmountOfManaPotions": 300,
+                  "minimumAmountOfCap": 1000,
                   "waypointLabelToRedirect": "caveStart"
+                }
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33222, 32353, 10],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "moveUp",
+                "coordinate": [33222, 32354, 10],
+                "options": { "direction": "south" }
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33229, 32358, 9],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "moveUp",
+                "coordinate": [33228, 32358, 9],
+                "options": { "direction": "west" }
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33212, 32358, 8],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "useRope",
+                "coordinate": [33212, 32358, 8],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33222, 32387, 7],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "depositGold",
+                "coordinate": [33222, 32387, 7],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "walk",
+                "coordinate": [33217, 32403, 7],
+                "options": {}
+              },
+              {
+                "label": "",
+                "type": "refill",
+                "coordinate": [33217, 32402, 7],
+                "options": {
+                  "healthPotion": {
+                    "item": "Supreme Health Potion",
+                    "quantity": 402
+                  },
+                  "manaPotion": {
+                    "item": "Strong Mana Potion",
+                    "quantity": 402
+                  }
                 }
               }
             ]
@@ -173,10 +242,7 @@
                 "hotkey": "f11",
                 "hpPercentageLessThanOrEqual": 50
               },
-              "mainRing": {
-                "hotkey": "f12",
-                "hpPercentageGreaterThan": 90
-              },
+              "mainRing": { "hotkey": "f12", "hpPercentageGreaterThan": 90 },
               "tankRingAlwaysEquipped": true
             },
             "swapAmulet": {
@@ -185,22 +251,19 @@
                 "hotkey": "u",
                 "hpPercentageLessThanOrEqual": 50
               },
-              "mainAmulet": {
-                "hotkey": "i",
-                "hpPercentageGreaterThan": 90
-              },
+              "mainAmulet": { "hotkey": "i", "hpPercentageGreaterThan": 90 },
               "tankAmuletAlwaysEquipped": false
             }
           },
           "potions": {
             "firstHealthPotion": {
-              "enabled": false,
+              "enabled": true,
               "hotkey": "1",
               "hpPercentageLessThanOrEqual": 40,
               "manaPercentageGreaterThanOrEqual": 0
             },
             "firstManaPotion": {
-              "enabled": false,
+              "enabled": true,
               "hotkey": "2",
               "manaPercentageLessThanOrEqual": 80
             }

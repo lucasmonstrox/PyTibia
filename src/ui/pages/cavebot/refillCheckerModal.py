@@ -30,7 +30,7 @@ class RefillCheckerModal(tk.Toplevel):
             row=1, column=0, sticky='nsew')
         if waypoint is not None:
             self.minimumAmountOfHealthPotionsEntry.insert(
-                0, waypoint['options'].get('minimumAmountOfHealthPotions'))
+                0, str(waypoint['options'].get('minimumAmountOfHealthPotions')))
 
         self.minimumOfManaPotionLabel = tk.Label(
             self.frame, text='Mana Potion:', anchor='w')
@@ -43,7 +43,7 @@ class RefillCheckerModal(tk.Toplevel):
             row=3, column=0, sticky='nsew')
         if waypoint is not None:
             self.minimumAmountOfManaPotionsEntry.insert(
-                0, waypoint['options'].get('minimumAmountOfManaPotions'))
+                0, str(waypoint['options'].get('minimumAmountOfManaPotions')))
 
         self.minimumOfCapLabel = tk.Label(
             self.frame, text='Cap:', anchor='w')
@@ -56,7 +56,7 @@ class RefillCheckerModal(tk.Toplevel):
             row=5, column=0, sticky='nsew')
         if waypoint is not None:
             self.minimumAmountOfCapEntry.insert(
-                0, waypoint['options'].get('minimumAmountOfCap'))
+                0, str(waypoint['options'].get('minimumAmountOfCap')))
 
         self.waypointLabelToRedirectLabel = tk.Label(
             self.frame, text='Go to label:', anchor='w')
@@ -90,9 +90,9 @@ class RefillCheckerModal(tk.Toplevel):
 
     def confirm(self):
         self.onConfirm(None, {
-            'minimumAmountOfHealthPotions': self.minimumAmountOfHealthPotionsEntry.get(),
-            'minimumAmountOfManaPotions': self.minimumAmountOfManaPotionsEntry.get(),
-            'minimumAmountOfCap': self.minimumAmountOfCapEntry.get(),
+            'minimumAmountOfHealthPotions': int(self.minimumAmountOfHealthPotionsEntry.get()),
+            'minimumAmountOfManaPotions': int(self.minimumAmountOfManaPotionsEntry.get()),
+            'minimumAmountOfCap': int(self.minimumAmountOfCapEntry.get()),
             'waypointLabelToRedirect': self.waypointLabelToRedirectCombobox.get(),
         })
         self.destroy()
