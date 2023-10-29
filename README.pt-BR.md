@@ -20,6 +20,10 @@ O BOT não está finalizado e passa por constantes mudanças.
 
 Sinta-se livre para utilizar de qualquer função, criar sua própria versão ou aguardar o lançamento de uma versão inicial.
 
+# 🤖 BearSharp
+
+PyTibia agora é BearSharp, você pode entrar no discord clicando no link https://discord.gg/rqm9E3EGBr
+
 # 🗺️ Recursos
 
 Apenas disponível para knight/palaldin
