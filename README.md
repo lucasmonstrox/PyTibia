@@ -22,7 +22,9 @@ Be free to use any function to create your custom BOT or wait for the release of
 
 # 🤖 BearSharp
 
-Due to personal commitments that demand my attention, I'm temporarily pausing the development of the bot project for Tibia. However, I'm happy to share that my friend has a fantastic project called BearSharp(discord https://discord.gg/rqm9E3EGBr) which offers excellent features and is continually updated. While my project is down, I encourage you to check out BearSharp's exceptional work. I'm sure you'll find everything you need and more there.
+Due to personal commitments that demand my attention, I'm temporarily pausing the development of the bot project for Tibia. However, I'm happy to share that my friend has a fantastic project called BearSharp which offers excellent features and is continually updated. While my project is down, I encourage you to check out BearSharp's exceptional work. I'm sure you'll find everything you need and more there.
+
+Here is the BearSharp discord link: https://discord.gg/rqm9E3EGBr
 
 Thank you for your understanding and I continue to look forward to resuming my work as soon as possible.
 
