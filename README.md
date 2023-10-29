@@ -20,6 +20,10 @@ This BOT ins't ready yet, this BOT still under construction.
 
 Be free to use any function to create your custom BOT or wait for the release of v0.
 
+# 🤖 BearSharp
+
+PyTibia is now BearSharp, you can join the discord by clicking on the link https://discord.gg/rqm9E3EGBr
+
 # 🗺️ Features
 
 Only available for knight/paladin
