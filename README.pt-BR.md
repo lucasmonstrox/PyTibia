@@ -22,7 +22,9 @@ Sinta-se livre para utilizar de qualquer função, criar sua própria versão ou
 
 # 🤖 BearSharp
 
-Devido a compromissos pessoais que demandam minha atenção, estou temporariamente pausando o desenvolvimento do projeto do bot para o Tibia. No entanto, estou feliz em compartilhar que meu amigo tem um projeto fantástico chamado BearSharp(discord https://discord.gg/rqm9E3EGBr), que oferece recursos excelentes e é continuamente atualizado. Enquanto meu projeto estiver inativo, encorajo vocês a conferirem o trabalho excepcional do BearSharp. Tenho certeza de que vocês encontrarão tudo o que precisam e mais lá.
+Devido a compromissos pessoais que demandam minha atenção, estou temporariamente pausando o desenvolvimento do projeto do bot para o Tibia. No entanto, estou feliz em compartilhar que meu amigo tem um projeto fantástico chamado BearSharp, que oferece recursos excelentes e é continuamente atualizado. Enquanto meu projeto estiver inativo, encorajo vocês a conferirem o trabalho excepcional do BearSharp. Tenho certeza de que vocês encontrarão tudo o que precisam e mais lá.
+
+Aqui está o link do discord do BearSharp: https://discord.gg/rqm9E3EGBr
 
 Agradeço pela compreensão e continuo ansioso para retomar meu trabalho assim que possível.
 
