@@ -22,7 +22,9 @@ Be free to use any function to create your custom BOT or wait for the release of
 
 # 🤖 BearSharp
 
-PyTibia is now BearSharp, you can join the discord by clicking on the link https://discord.gg/rqm9E3EGBr
+Due to personal commitments that demand my attention, I'm temporarily pausing the development of the bot project for Tibia. However, I'm happy to share that my friend has a fantastic project called BearSharp(discord https://discord.gg/rqm9E3EGBr) which offers excellent features and is continually updated. While my project is down, I encourage you to check out BearSharp's exceptional work. I'm sure you'll find everything you need and more there.
+
+Thank you for your understanding and I continue to look forward to resuming my work as soon as possible.
 
 # 🗺️ Features
 
