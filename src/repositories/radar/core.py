@@ -9,13 +9,10 @@ from .extractors import getRadarImage
 from .locators import getRadarToolsPosition
 from .typings import FloorLevel, TileFriction
 
-from src.utils.image import save
 
 # TODO: add unit tests
 # TODO: add perf
 # TODO: get by cached images coordinates hashes
-
-
 def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate = None) -> Union[Coordinate, None]:
     floorLevel = getFloorLevel(screenshot)
     if floorLevel is None:
