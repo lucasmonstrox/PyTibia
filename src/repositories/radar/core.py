@@ -9,10 +9,13 @@ from .extractors import getRadarImage
 from .locators import getRadarToolsPosition
 from .typings import FloorLevel, TileFriction
 
+from src.utils.image import save
 
 # TODO: add unit tests
 # TODO: add perf
 # TODO: get by cached images coordinates hashes
+
+
 def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate = None) -> Union[Coordinate, None]:
     floorLevel = getFloorLevel(screenshot)
     if floorLevel is None:
@@ -22,6 +25,27 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate = None) 
         return None
     radarImage = getRadarImage(screenshot, radarToolsPosition)
     radarHashedImg = hashitHex(radarImage)
+    radarImage[52, 53] = 128
+    radarImage[52, 53] = 128
+    radarImage[52, 54] = 128
+    radarImage[53, 53] = 128
+    radarImage[53, 54] = 128
+    radarImage[54, 51] = 128
+    radarImage[54, 52] = 128
+    radarImage[55, 51] = 128
+    radarImage[55, 52] = 128
+    radarImage[54, 53] = 128
+    radarImage[54, 54] = 128
+    radarImage[55, 53] = 128
+    radarImage[55, 54] = 128
+    radarImage[54, 55] = 128
+    radarImage[54, 56] = 128
+    radarImage[55, 55] = 128
+    radarImage[55, 56] = 128
+    radarImage[56, 53] = 128
+    radarImage[56, 54] = 128
+    radarImage[57, 53] = 128
+    radarImage[57, 54] = 128
     # TODO: use get instead
     if radarHashedImg in coordinates:
         return coordinates[radarHashedImg]
