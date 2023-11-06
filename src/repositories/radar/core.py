@@ -23,7 +23,6 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate = None) 
     radarImage = getRadarImage(screenshot, radarToolsPosition)
     radarHashedImg = hashitHex(radarImage)
     radarImage[52, 53] = 128
-    radarImage[52, 53] = 128
     radarImage[52, 54] = 128
     radarImage[53, 53] = 128
     radarImage[53, 54] = 128
