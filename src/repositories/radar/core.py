@@ -2,27 +2,31 @@ from numba import njit
 import numpy as np
 from scipy.spatial import distance
 from typing import Union
-from src.shared.typings import Coordinate, GrayImage, GrayPixel, Waypoint, WaypointList
+from src.shared.typings import Coordinate, GrayImage, GrayPixel, WaypointList
 from src.utils.core import hashit, locate
 from src.utils.coordinate import getCoordinateFromPixel, getPixelFromCoordinate
 from .config import availableTilesFrictions, breakpointTileMovementSpeed, coordinates, dimensions, floorsImgs, floorsLevelsImgsHashes, floorsPathsSqms, nonWalkablePixelsColors, tilesFrictionsWithBreakpoints, walkableFloorsSqms
 from .extractors import getRadarImage
 from .locators import getRadarToolsPosition
 from .typings import FloorLevel, TileFriction
+from src.utils.image import save
 
 
 # TODO: add unit tests
 # TODO: add perf
 # TODO: get by cached images coordinates hashes
-def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate = None) -> Union[Coordinate, None]:
-    floorLevel = getFloorLevel(screenshot)
-    if floorLevel is None:
-        return None
+def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate = None) -> Coordinate | None:
     radarToolsPosition = getRadarToolsPosition(screenshot)
     if radarToolsPosition is None:
         return None
     radarImage = getRadarImage(screenshot, radarToolsPosition)
     radarHashedImg = hashit(radarImage)
+    hashedCoordinate = coordinates.get(radarHashedImg, None)
+    if hashedCoordinate is not None:
+        return hashedCoordinate
+    floorLevel = getFloorLevel(screenshot)
+    if floorLevel is None:
+        return None
     radarImage[52, 53] = 128
     radarImage[52, 54] = 128
     radarImage[53, 53] = 128
@@ -43,13 +47,10 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate = None) 
     radarImage[56, 54] = 128
     radarImage[57, 53] = 128
     radarImage[57, 54] = 128
-    # TODO: use get instead
-    if radarHashedImg in coordinates:
-        return coordinates[radarHashedImg]
     if previousCoordinate is not None:
         (previousCoordinateXPixel, previousCoordinateYPixel) = getPixelFromCoordinate(
             previousCoordinate)
-        paddingSize = 20
+        paddingSize = 5
         yStart = previousCoordinateYPixel - \
             (dimensions['halfHeight'] + paddingSize)
         yEnd = previousCoordinateYPixel + \
@@ -59,8 +60,7 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate = None) 
         xEnd = previousCoordinateXPixel + \
             (dimensions['halfWidth'] + paddingSize)
         areaImgToCompare = floorsImgs[floorLevel][yStart:yEnd, xStart:xEnd]
-        areaFoundImg = locate(
-            areaImgToCompare, radarImage, confidence=0.9)
+        areaFoundImg = locate(areaImgToCompare, radarImage, confidence=0.9)
         if areaFoundImg:
             currentCoordinateXPixel = previousCoordinateXPixel - \
                 paddingSize + areaFoundImg[0]
@@ -81,7 +81,7 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate = None) 
 
 # TODO: add unit tests
 # TODO: add perf
-def getFloorLevel(screenshot: GrayImage) -> Union[FloorLevel, None]:
+def getFloorLevel(screenshot: GrayImage) -> FloorLevel | None:
     radarToolsPosition = getRadarToolsPosition(screenshot)
     if radarToolsPosition is None:
         return None
