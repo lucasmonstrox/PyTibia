@@ -1,3 +1,4 @@
+from numba import njit
 import numpy as np
 from scipy.spatial import distance
 from typing import Union
@@ -154,6 +155,7 @@ def isCloseToCoordinate(currentCoordinate: Coordinate, possibleCloseCoordinate: 
 # TODO: add unit tests
 # TODO: add perf
 # TODO: 2 coordinates was tested. Is very hard too test all coordinates(16 floors * 2560 mapWidth * 2048 mapHeight = 83.886.080 pixels)
+@njit(cache=True)
 def isCoordinateWalkable(coordinate: Coordinate) -> bool:
     (xOfPixel, yOfPixel) = getPixelFromCoordinate(coordinate)
     return (walkableFloorsSqms[coordinate[2], yOfPixel, xOfPixel]) == 1

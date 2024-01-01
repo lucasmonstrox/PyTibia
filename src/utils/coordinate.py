@@ -1,3 +1,4 @@
+from numba import njit
 import numpy as np
 from scipy.spatial import distance
 from typing import List, Union
@@ -61,5 +62,6 @@ def getDirectionBetweenCoordinates(coordinate: Coordinate, nextCoordinate: Coord
         return 'up'
 
 
+@njit(cache=True, fastmath=True)
 def getPixelFromCoordinate(coordinate: Coordinate) -> XYCoordinate:
     return coordinate[0] - 31744, coordinate[1] - 30976
