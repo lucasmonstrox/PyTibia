@@ -142,7 +142,7 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
             if nonCreaturesForCurrentBar.get(battleListCreatures[battleListIndex]['name'], None) is not None:
                 continue
             creatureNameImg = creaturesNamesHashes.get(
-                battleListCreatures[battleListIndex]['name']).copy()
+                battleListCreatures[battleListIndex]['name'])
             (creatureBarX,
              creatureBarY) = creaturesBars[creatureBarSortedIndex]
             creatureBarY0 = creatureBarY - 13
@@ -175,7 +175,7 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
                 creatures.append(creature)
                 break
             creatureNameImg2 = creaturesNamesHashes.get(
-                battleListCreatures[battleListIndex]['name']).copy()
+                battleListCreatures[battleListIndex]['name'])
             creatureWithDirtNameImg2 = gameWindowImage[creatureBarY0:creatureBarY1,
                                                        startingX + 1:endingX + 1]
             if creatureNameImg2.shape[1] != creatureWithDirtNameImg2.shape[1]:
@@ -191,7 +191,7 @@ def getCreatures(battleListCreatures, direction, gameWindowCoordinate: XYCoordin
             creatureWithDirtNameImg3 = gameWindowImage[creatureBarY0:creatureBarY1,
                                                        startingX:endingX - 1]
             creatureNameImg3 = creaturesNamesHashes.get(
-                battleListCreatures[battleListIndex]['name']).copy()
+                battleListCreatures[battleListIndex]['name'])
             creatureNameImg3 = creatureNameImg3[:, 1:creatureNameImg3.shape[1]]
             if creatureWithDirtNameImg3.shape[1] != creatureNameImg3.shape[1]:
                 creatureNameImg3 = creatureNameImg3[:,
@@ -253,7 +253,7 @@ def getDifferentCreaturesBySlots(previousGameWindowCreatures: CreatureList, curr
 def getGameWindowWalkableFloorsSqms(walkableFloorsSqms: np.ndarray, coordinate: Coordinate) -> np.ndarray:
     (xOfPixelCoordinate, yOfPixelCoordinate) = getPixelFromCoordinate(
         coordinate)
-    return walkableFloorsSqms[yOfPixelCoordinate - 5:yOfPixelCoordinate + 6, xOfPixelCoordinate - 7:xOfPixelCoordinate + 8].copy()
+    return walkableFloorsSqms[yOfPixelCoordinate - 5:yOfPixelCoordinate + 6, xOfPixelCoordinate - 7:xOfPixelCoordinate + 8]
 
 
 # TODO: add unit tests
@@ -344,7 +344,7 @@ def isCreatureBeingAttacked(gameWindowImage: GrayImage, borderX: int, yOfCreatur
 def isTrappedByCreatures(gameWindowCreatures: CreatureList, radarCoordinate: Coordinate) -> bool:
     pixelRadarCoordinate = getPixelFromCoordinate(radarCoordinate)
     playerBox = walkableFloorsSqms[radarCoordinate[2], pixelRadarCoordinate[1] -
-                                   1: pixelRadarCoordinate[1] + 2, pixelRadarCoordinate[0] - 1: pixelRadarCoordinate[0] + 2].copy()
+                                   1: pixelRadarCoordinate[1] + 2, pixelRadarCoordinate[0] - 1: pixelRadarCoordinate[0] + 2]
     for gameWindowCreature in gameWindowCreatures:
         distanceOf = distance.cdist([gameWindowCreature['coordinate']], [
                                     radarCoordinate], 'euclidean').flatten()[0]
