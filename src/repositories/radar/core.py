@@ -2,7 +2,7 @@ import numpy as np
 from scipy.spatial import distance
 from typing import Union
 from src.shared.typings import Coordinate, GrayImage, GrayPixel, Waypoint, WaypointList
-from src.utils.core import hashit, hashitHex, locate
+from src.utils.core import hashit, locate
 from src.utils.coordinate import getCoordinateFromPixel, getPixelFromCoordinate
 from .config import availableTilesFrictions, breakpointTileMovementSpeed, coordinates, dimensions, floorsImgs, floorsLevelsImgsHashes, floorsPathsSqms, nonWalkablePixelsColors, tilesFrictionsWithBreakpoints, walkableFloorsSqms
 from .extractors import getRadarImage
@@ -21,7 +21,7 @@ def getCoordinate(screenshot: GrayImage, previousCoordinate: Coordinate = None) 
     if radarToolsPosition is None:
         return None
     radarImage = getRadarImage(screenshot, radarToolsPosition)
-    radarHashedImg = hashitHex(radarImage)
+    radarHashedImg = hashit(radarImage)
     radarImage[52, 53] = 128
     radarImage[52, 54] = 128
     radarImage[53, 53] = 128

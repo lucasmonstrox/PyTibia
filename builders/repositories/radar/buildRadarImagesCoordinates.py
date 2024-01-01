@@ -1,7 +1,7 @@
 import numpy as np
 from src.repositories.radar.typings import CoordinateHash
 from src.repositories.radar.config import nonWalkablePixelsColors
-from src.utils.core import hashitHex
+from src.utils.core import hashit
 from src.utils.image import loadFromRGBToGray
 
 
@@ -53,7 +53,7 @@ def main():
             coordinateScreenshot[56, 54] = crossPixelColor
             coordinateScreenshot[57, 53] = crossPixelColor
             coordinateScreenshot[57, 54] = crossPixelColor
-            coordinateHash = hashitHex(coordinateScreenshot)
+            coordinateHash = hashit(coordinateScreenshot)
             coordinatesToAppend = np.array(
                 [(coordinateHash, coordinate)], dtype=CoordinateHash)
             coordinatesAsArray = np.append(

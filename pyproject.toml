@@ -7,6 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 dxcam = {git = "https://github.com/lucasmonstrox/DXcam"}
+cityhash = "^0.4.7"
 mypy = "^1.1.1"
 nptyping = "^2.5.0"
 numba = "^0.58.1"
@@ -16,11 +17,10 @@ pillow = "^9.1.1"
 pyautogui = "^0.9.53"
 pygetwindow = "^0.0.9"
 python = "3.11.7"
+pywin32 = "^306"
 scipy = "^1.9.1"
 tcod = "^13.8.1"
 tinydb = "^4.8.0"
-xxhash = "^3.1.0"
-pywin32 = "^306"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.1.3"
