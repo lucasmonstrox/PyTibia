@@ -66,37 +66,41 @@ def getClosestCreature(gameWindowCreatures, coordinate: Coordinate):
 
 # TODO: add unit tests
 # TODO: add perf
-@njit(cache=True, fastmath=True)
-def getCreaturesBars(gameWindowImage: GrayImage):
-    imgHeight = len(gameWindowImage)
-    imgWidth = len(gameWindowImage[0])
-    for j in range(imgHeight - 3):
-        i = -1
-        while (i < (imgWidth - 27)):
-            i += 1
-            if gameWindowImage[j, i + 26] == 0:
-                if gameWindowImage[j, i] == 0:
-                    upperBorderIsBlack = True
-                    bottomBorderIsBlack = True
-                    # detecting upper/bottom black borders
-                    for l in range(25):
-                        if gameWindowImage[j, i + 25 - l] != 0:
-                            upperBorderIsBlack = False
-                            i += 25 - l
-                            break
-                        if gameWindowImage[j + 3, i + 25 - l] != 0:
-                            bottomBorderIsBlack = False
-                            i += 25 - l
-                            break
-                    if upperBorderIsBlack == False or bottomBorderIsBlack == False:
-                        continue
-                    # detecting left/right bars
-                    if gameWindowImage[j + 1, i] != 0 or gameWindowImage[j + 2, i] != 0 or gameWindowImage[j + 1, i + 26] != 0 or gameWindowImage[j + 2, i + 26] != 0:
-                        continue
-                    yield (i, j)
-                    i += 26
-            else:
-                i += 26
+@njit(cache=True, fastmath=True, boundscheck=False)
+def getCreaturesBars(gameWindowImage: GrayImage) -> List[tuple[int, int]]:
+    bars = [(-1, -1)] * 45
+    width = len(gameWindowImage[0]) - 27
+    height = len(gameWindowImage) - 3
+    creatureIndex = 0
+    for y in range(height):
+        x = -1
+        while x < width:
+            x += 1
+            if gameWindowImage[y][x + 26] != 0:
+                x += 26
+                continue
+            if gameWindowImage[y][x] != 0:
+                continue
+            bothBordersAreBlack = True
+            for l in range(25):
+                key = x + 25 - l
+                if gameWindowImage[y][key] != 0 or gameWindowImage[y + 3][key] != 0:
+                    bothBordersAreBlack = False
+                    x = key
+                    break
+            if bothBordersAreBlack == False:
+                continue
+            if (
+                gameWindowImage[y + 1][x] != 0 or
+                gameWindowImage[y + 2][x] != 0 or
+                gameWindowImage[y + 1][x + 26] != 0 or
+                gameWindowImage[y + 2][x + 26] != 0
+            ):
+                continue
+            bars[creatureIndex] = (x, y)
+            creatureIndex += 1
+            x += 26
+    return np.array([bar for bar in bars if bar[0] != -1])
 
 
 # TODO: add unit tests
