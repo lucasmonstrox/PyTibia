@@ -20,7 +20,7 @@ def getContent(screenshot: GrayImage) -> Union[GrayImage, None]:
 
 # PERF: [0.8151709999999994, 1.1999999999900979e-05]
 # TODO: add unit tests
-@njit(cache=True, fastmath=True)
+@njit(cache=True, fastmath=True, boundscheck=False)
 def getCreaturesNamesImages(content: GrayImage, filledSlotsCount: int) -> GrayImage:
     creaturesNamesImages = np.zeros((filledSlotsCount, 115), dtype=np.uint8)
     for i in range(filledSlotsCount):
