@@ -181,7 +181,6 @@ If you want to become a contributor, send a message to my [**linkedin**](https:/
 A special thanks to [**Murilo Chianfa**](https://github.com/MuriloChianfa), the owner of [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12). I started this bot especially to overcome [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12) slowdowns.
 
 You can check the bot development at [https://twitch.tv/lucasmonstrocs](https://twitch.tv/lucasmonstrocs).
-You can enjoy our discord through the link [https://discord.gg/TP4axAca6a](https://discord.gg/TP4axAca6a)
 
 # 📝 License
 

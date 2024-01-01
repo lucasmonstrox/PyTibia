@@ -180,7 +180,6 @@ Gostaria de fazer parte da equipe? Me contate no [**linkedin**](https://www.link
 Agradecimentos especiais ao [**Murilo Chianfa**](https://github.com/MuriloChianfa), responsável pelo [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12). Eu iniciei o bot para resolver problemas que não foram resolvidos no [**TibiaAuto12**](https://github.com/MuriloChianfa/TibiaAuto12).
 
 Você pode acompanhar o desenvolvimento do bot na minha stream [https://twitch.tv/lucasmonstrocs](https://twitch.tv/lucasmonstrocs).
-Você pode entrar no nosso discord através do link [https://discord.gg/TP4axAca6a](https://discord.gg/TP4axAca6a)
 
 ## 📝 Licença
 
