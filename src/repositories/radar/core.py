@@ -9,7 +9,6 @@ from .config import availableTilesFrictions, breakpointTileMovementSpeed, coordi
 from .extractors import getRadarImage
 from .locators import getRadarToolsPosition
 from .typings import FloorLevel, TileFriction
-from src.utils.image import save
 
 
 # TODO: add unit tests
