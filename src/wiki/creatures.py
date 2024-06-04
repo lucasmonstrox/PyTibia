@@ -666,6 +666,7 @@ creatures = {
     'Lumbering Carnivor': {'exp': 1452, 'hp': 2600},
     'Mad Mage': {'exp': 1800, 'hp': 2500},
     'Mad Scientist': {'exp': 205, 'hp': 325, 'gameWindowMisalignment': {'x': 16, 'y': 16}},
+    'Mad Sheep': {'exp': 0, 'hp': 22},
     'Mad Technomancer': {'exp': 55, 'hp': 1800, 'gameWindowMisalignment': {'x': 16, 'y': 16}},
     'Madareth': {'exp': 10000, 'hp': 75000},
     'Magma Crawler': {'exp': 2700, 'hp': 4800},
