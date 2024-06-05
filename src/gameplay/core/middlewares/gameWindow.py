@@ -1,4 +1,3 @@
-import numpy as np
 from src.repositories.battleList.core import getBeingAttackedCreatureCategory
 from src.repositories.chat.core import hasNewLoot
 from src.repositories.gameWindow.config import gameWindowSizes
