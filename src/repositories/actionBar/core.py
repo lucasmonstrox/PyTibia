@@ -16,14 +16,15 @@ def getSlotCount(screenshot: GrayImage, slot: int) -> Union[int, None]:
     x0 = leftSideArrowsPos[0] + leftSideArrowsPos[2] + \
         (slot * 2) + ((slot - 1) * 34)
     slotImage = screenshot[leftSideArrowsPos[1]:leftSideArrowsPos[1] + 34, x0:x0 + 34]
-    digits = slotImage[24:32, 3:33]
+    digits = slotImage[24:32, 2:32]
     count = 0
     for i in range(5):
-        x = (6 * (5 - i) - 3)
+        x = ((6 * (5 - i)) - 3)
         number = images['digits'].get(
             coreUtils.hashit(digits[2:6, x:x + 1]), None)
         if number is None:
-            break
+            number = 0
+            continue
         count += number * math.pow(10, i)
     return int(count)
 
