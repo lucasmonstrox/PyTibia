@@ -19,7 +19,7 @@ class OpenBackpackTask(BaseTask):
 
     def do(self, context: Context) -> Context:
         backpackPosition = utilsCore.locate(
-            context['screenshot'], images['slots'][self.backpack], confidence=0.8)
+            context['screenshot'], images['slots'][self.backpack], confidence=0.75)
         if backpackPosition is None:
             return context
         # TODO: click in random BBOX coordinate
