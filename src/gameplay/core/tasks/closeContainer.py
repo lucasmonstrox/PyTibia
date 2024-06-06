@@ -3,7 +3,7 @@ from src.utils.core import locate
 from src.utils.mouse import leftClick
 from ...typings import Context
 from .common.base import BaseTask
-
+import pyautogui
 
 # TODO: check if container bar is hide
 class CloseContainerTask(BaseTask):
@@ -17,5 +17,8 @@ class CloseContainerTask(BaseTask):
     def do(self, context: Context) -> Context:
         containerPosition = locate(
             context['screenshot'], self.containerBarImage, confidence=0.8)
-        leftClick(containerPosition[0] + 165, containerPosition[1] + 5)
+        currentMouseCoordinate = pyautogui.position()
+        if containerPosition is not None:
+            leftClick((containerPosition[0] + 165, containerPosition[1] + 5))
+        pyautogui.moveTo(currentMouseCoordinate)
         return context
