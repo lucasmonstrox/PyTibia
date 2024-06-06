@@ -17,8 +17,8 @@ hashes = {
 }
 images = {
     'arrows': {
-        'left': loadFromRGBToGray(f'{arrowsImagesPath }/left.png'),
-        'right': loadFromRGBToGray(f'{arrowsImagesPath }/right.png'),
+        'left': loadFromRGBToGray(f'{arrowsImagesPath}/left.png'),
+        'right': loadFromRGBToGray(f'{arrowsImagesPath}/right.png'),
     },
     # TODO: add exiva
     # TODO: add utito mas sio
