@@ -23,3 +23,7 @@ class OpenLockerTask(BaseTask):
 
     def did(self, context: Context) -> bool:
         return self.shouldIgnore(context)
+
+    def onComplete(self, context: Context) -> Context:
+        context['deposit']['lockerCoordinate'] = None
+        return context
