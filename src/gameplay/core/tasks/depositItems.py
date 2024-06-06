@@ -25,6 +25,8 @@ class DepositItemsTask(VectorTask):
     def onBeforeStart(self, context: Context) -> Context:
         self.tasks = [
             GoToFreeDepotTask(self.waypoint).setParentTask(self).setRootTask(self),
+            CloseContainerTask(images['containersBars'][context['backpacks']['loot']]).setParentTask(self).setRootTask(self),
+            CloseContainerTask(images['containersBars'][context['backpacks']['main']]).setParentTask(self).setRootTask(self),
             OpenLockerTask().setParentTask(self).setRootTask(self),
             OpenBackpackTask(context['backpacks']['main']).setParentTask(self).setRootTask(self),
             ScrollToItemTask(images['containersBars'][context['backpacks']['main']], images['slots'][context['backpacks']['loot']]).setParentTask(self).setRootTask(self),
