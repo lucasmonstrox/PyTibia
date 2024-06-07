@@ -68,7 +68,7 @@ def getClosestCreature(gameWindowCreatures, coordinate: Coordinate):
 # TODO: add perf
 @njit(cache=True, fastmath=True, boundscheck=False)
 def getCreaturesBars(gameWindowImage: GrayImage) -> List[tuple[int, int]]:
-    bars = [(-1, -1)] * 45
+    bars = []
     width = len(gameWindowImage[0]) - 27
     height = len(gameWindowImage) - 3
     creatureIndex = 0
@@ -97,10 +97,10 @@ def getCreaturesBars(gameWindowImage: GrayImage) -> List[tuple[int, int]]:
                 gameWindowImage[y + 2][x + 26] != 0
             ):
                 continue
-            bars[creatureIndex] = (x, y)
+            bars.append((x, y))
             creatureIndex += 1
             x += 26
-    return np.array([bar for bar in bars if bar[0] != -1])
+    return np.array(bars)
 
 
 # TODO: add unit tests
@@ -280,7 +280,8 @@ def hasTargetToCreatureBySlot(gameWindowCreatures: CreatureList, slot: Slot, coo
         return False
     gameWindowWalkableFloorsSqms = getGameWindowWalkableFloorsSqms(
         walkableFloorsSqms[coordinate[2]], coordinate)
-    creaturesSlots = gameWindowCreatures['slot'][:, [1, 0]]
+    slots = np.array([creature['slot'] for creature in gameWindowCreatures])
+    creaturesSlots = slots[:, [1, 0]]
     gameWindowWalkableFloorsSqms[creaturesSlots[:,
                                                 0], creaturesSlots[:, 1]] = 0
     gameWindowWalkableFloorsSqms[slot[1], slot[0]] = 1
