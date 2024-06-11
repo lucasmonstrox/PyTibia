@@ -35,4 +35,4 @@ def shouldAskForCavebotTasks(context: Context) -> bool:
     currentTask = context['tasksOrchestrator'].getCurrentTask(context)
     if currentTask is None:
         return True
-    return (currentTask.name not in ['dropFlasks', 'lootCorpse', 'moveDown', 'moveUp', 'refillChecker', 'singleWalk', 'refillChecker', 'useRopeWaypoint', 'useShovelWaypoint'])
+    return (currentTask.name not in ['dropFlasks', 'lootCorpse', 'moveDown', 'moveUp', 'refillChecker', 'singleWalk', 'refillChecker', 'useRopeWaypoint', 'useTeleportWaypoint', 'useShovelWaypoint'])

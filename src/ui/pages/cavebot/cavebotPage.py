@@ -85,6 +85,10 @@ class CavebotPage(tk.Frame):
             self.actionsFrame, text='Walk', command=lambda: self.addWaypoint('walk'))
         self.walkButton.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
 
+        self.useTeleportButton = tk.Button(
+            self.actionsFrame, text='Use Teleport', command=lambda: self.addWaypoint('useTeleport'))
+        self.useTeleportButton.grid(row=0, column=1, padx=5, pady=5, sticky='nsew')
+
         self.ropeButton = tk.Button(
             self.actionsFrame, text='Rope', command=lambda: self.addWaypoint('useRope'))
         self.ropeButton.grid(row=1, column=0, padx=5, pady=5, sticky='nsew')
