@@ -149,7 +149,7 @@ nonWalkablePixelsColors = [
     pixelsColorsValues['water'],
     pixelsColorsValues['vacuumOrUndiscoveredArea'],
 ]
-walkableFloorsSqms = np.ndarray(shape=(16, 2048, 2560), dtype=np.uint)
+walkableFloorsSqms = np.ndarray(shape=(16, 2048, 2560), dtype=np.uint8)
 availableTilesFrictions = np.array(
     [70, 90, 95, 100, 110, 125, 140, 150, 160, 200, 250])
 breakpointTileMovementSpeed = {
