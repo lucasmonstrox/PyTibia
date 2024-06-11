@@ -14,25 +14,25 @@ def getLeftArrowPosition(screenshot: GrayImage) -> Union[BBox, None]:
         if arrowsImagesHashes.get(leftArrowImageHash, None) is not None:
             return gameWindowCache['left']['position']
     leftGameWindow01Position = locate(
-        screenshot, images['arrows']['leftGameWindow01'])
+        screenshot, images['arrows']['leftGameWindow01'], confidence=0.95)
     if leftGameWindow01Position is not None:
         gameWindowCache['left']['arrow'] = 'leftGameWindow01'
         gameWindowCache['left']['position'] = leftGameWindow01Position
         return leftGameWindow01Position
     leftGameWindow11Position = locate(
-        screenshot, images['arrows']['leftGameWindow11'])
+        screenshot, images['arrows']['leftGameWindow11'], confidence=0.95)
     if leftGameWindow11Position is not None:
         gameWindowCache['left']['arrow'] = 'leftGameWindow11'
         gameWindowCache['left']['position'] = leftGameWindow11Position
         return leftGameWindow11Position
     leftGameWindow10Position = locate(
-        screenshot, images['arrows']['leftGameWindow10'])
+        screenshot, images['arrows']['leftGameWindow10'], confidence=0.95)
     if leftGameWindow10Position is not None:
         gameWindowCache['left']['arrow'] = 'leftGameWindow10'
         gameWindowCache['left']['position'] = leftGameWindow10Position
         return leftGameWindow10Position
     leftGameWindow00Position = locate(
-        screenshot, images['arrows']['leftGameWindow00'])
+        screenshot, images['arrows']['leftGameWindow00'], confidence=0.95)
     if leftGameWindow00Position is not None:
         gameWindowCache['left']['arrow'] = 'leftGameWindow00'
         gameWindowCache['left']['position'] = leftGameWindow00Position
@@ -49,25 +49,25 @@ def getRightArrowPosition(screenshot: GrayImage) -> Union[BBox, None]:
         if arrowsImagesHashes.get(rightArrowImageHash, None) is not None:
             return gameWindowCache['right']['position']
     rightGameWindow01Position = locate(
-        screenshot, images['arrows']['rightGameWindow01'])
+        screenshot, images['arrows']['rightGameWindow01'], confidence=0.95)
     if rightGameWindow01Position is not None:
         gameWindowCache['right']['arrow'] = 'rightGameWindow01'
         gameWindowCache['right']['position'] = rightGameWindow01Position
         return rightGameWindow01Position
     rightGameWindow11Position = locate(
-        screenshot, images['arrows']['rightGameWindow11'])
+        screenshot, images['arrows']['rightGameWindow11'], confidence=0.95)
     if rightGameWindow11Position is not None:
         gameWindowCache['right']['arrow'] = 'rightGameWindow11'
         gameWindowCache['right']['position'] = rightGameWindow11Position
         return rightGameWindow11Position
     rightGameWindow10Position = locate(
-        screenshot, images['arrows']['rightGameWindow10'])
+        screenshot, images['arrows']['rightGameWindow10'], confidence=0.95)
     if rightGameWindow10Position is not None:
         gameWindowCache['right']['arrow'] = 'rightGameWindow10'
         gameWindowCache['right']['position'] = rightGameWindow10Position
         return rightGameWindow10Position
     rightGameWindow00Position = locate(
-        screenshot, images['arrows']['rightGameWindow00'])
+        screenshot, images['arrows']['rightGameWindow00'], confidence=0.95)
     if rightGameWindow00Position is not None:
         gameWindowCache['right']['arrow'] = 'rightGameWindow00'
         gameWindowCache['right']['position'] = rightGameWindow00Position
