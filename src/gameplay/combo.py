@@ -12,9 +12,11 @@ from .typings import Context
 tasksOrchestrator = TasksOrchestrator()
 
 
-# TODO: do not execute algorithm when has no combo spells
 # TODO: add unit tests
 def comboSpells(context: Context):
+    # TODO: instead of making this comparison, it should be using thread and being turned off when disabled
+    if not context['comboSpells']['enabled']:
+        return
     if context['statusBar']['mana'] is None:
         return
     currentTask = tasksOrchestrator.getCurrentTask(context)
