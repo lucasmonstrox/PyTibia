@@ -66,41 +66,39 @@ def getClosestCreature(gameWindowCreatures, coordinate: Coordinate):
 
 # TODO: add unit tests
 # TODO: add perf
-@njit(cache=True, fastmath=True, boundscheck=False)
+@njit(fastmath=True)
 def getCreaturesBars(gameWindowImage: GrayImage) -> List[tuple[int, int]]:
     bars = []
-    width = len(gameWindowImage[0]) - 27
-    height = len(gameWindowImage) - 3
+    width = gameWindowImage.shape[1] - 27
+    height = gameWindowImage.shape[0] - 3
     creatureIndex = 0
     for y in range(height):
         x = -1
         while x < width:
             x += 1
-            if gameWindowImage[y][x + 26] != 0:
+            if gameWindowImage[y, x + 26] != 0:
                 x += 26
-                continue
-            if gameWindowImage[y][x] != 0:
                 continue
             bothBordersAreBlack = True
             for l in range(25):
                 key = x + 25 - l
-                if gameWindowImage[y][key] != 0 or gameWindowImage[y + 3][key] != 0:
+                if gameWindowImage[y, key] != 0 or gameWindowImage[y + 3, key] != 0:
                     bothBordersAreBlack = False
                     x = key
                     break
             if bothBordersAreBlack == False:
                 continue
             if (
-                gameWindowImage[y + 1][x] != 0 or
-                gameWindowImage[y + 2][x] != 0 or
-                gameWindowImage[y + 1][x + 26] != 0 or
-                gameWindowImage[y + 2][x + 26] != 0
+                gameWindowImage[y + 1, x] != 0 or
+                gameWindowImage[y + 2, x] != 0 or
+                gameWindowImage[y + 1, x + 26] != 0 or
+                gameWindowImage[y + 2, x + 26] != 0
             ):
                 continue
             bars.append((x, y))
             creatureIndex += 1
             x += 26
-    return np.array(bars)
+    return bars
 
 
 # TODO: add unit tests
