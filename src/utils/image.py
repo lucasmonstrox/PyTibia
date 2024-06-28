@@ -5,7 +5,7 @@ from PIL import Image
 from typing import Union
 from src.shared.typings import BBox, GrayImage
 from src.utils.core import hashit, locate
-
+from src.utils.benchmark import Benchmark
 
 # TODO: add types
 # TODO: add unit tests
@@ -41,16 +41,11 @@ def cacheChain(imageList):
         return inner
     return decorator
 
-
 # TODO: add unit tests
-@njit(cache=True, fastmath=True)
-def convertGraysToBlack(arr: np.ndarray) -> np.ndarray:
-    for i in range(len(arr)):
-        for j in range(len(arr[0])):
-            if arr[i, j] >= 50 and arr[i, j] <= 100:
-                arr[i, j] = 0
-    return arr
 
+def convertGraysToBlack(arr: np.ndarray) -> np.ndarray:
+    arr[(arr >= 50) & (arr <= 100)] = 0
+    return arr
 
 # TODO: add unit tests
 def RGBtoGray(image: np.ndarray) -> GrayImage:
